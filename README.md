@@ -1,2 +1,4 @@
-# PlantaLudum
-Jeu permettant d'apprendre à reconnaitre les plantes Trachéophytes de France.
+# PlantaLudum Game
+
+Write in React, Typescript...
+
