@@ -1,0 +1,48 @@
+
+
+.button {
+  border-radius: 10px;
+  padding: 1em 2em;
+  position: relative;
+  font-size: inherit;
+  cursor: pointer;
+  transition: background .2s;
+
+  &.outlined {
+    color: rgb(var(--color-text));
+    background: transparent;
+    border: 1px solid rgb(var(--color));
+
+    &:hover {
+      background: rgba(var(--color), .2);
+    }
+  }
+
+  &.solid{
+    background: rgb(var(--color));
+    //border: 1px solid rgb(var(--color));
+
+    &:hover {
+      background: rgba(var(--color), .8);
+    }
+  }
+
+  &.soft {
+    background: rgba(var(--color), .6);
+    //border: 1px solid rgb(var(--color));
+
+    &:hover {
+      background: rgba(var(--color), .8);
+    }
+  }
+
+  &.fill {
+    width: 100%;
+    flex: auto;
+  }
+
+  &.sm { padding: .25em .75em }
+  &.md { padding: .375em 1em }
+  &.lg { padding: .5em 1.5em }
+  &.big { padding: 1em 2em }
+}

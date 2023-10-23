@@ -1,0 +1,53 @@
+import React, { useMemo } from "react";
+import PropTypes from "prop-types";
+
+import "./style.scss";
+
+function PasswordChecker({ password }) {
+  const status = useMemo(() => {
+    return checkPassword(password);
+  }, [password]);
+  return (
+    <div className="password-checker">
+      <div className="gauge">
+        <span
+          style={{
+            width: `${status[0]}%`,
+            background: `${status[1]}`,
+          }}
+        ></span>
+      </div>
+      <p>{status[2]}</p>
+    </div>
+  );
+}
+
+function checkPassword(password) {
+  if (password.length >= 16) {
+    return [
+      100,
+      "#AF52DE",
+      "Waouu, votre mot de passe est extraordaire. Enfin presque ;)",
+    ];
+  }
+  if (password.length > 10) {
+    return [80, "#34C759", "Super bravo !"];
+  } else if (password.length > 6) {
+    return [
+      40,
+      "#FF9330",
+      "Vous y êtes persque... Ajouter peut-être quelques symboles.",
+    ];
+  }
+  return [
+    20,
+    "#FF3B30",
+    "Mettez plus de caractère/symbole/chiffre, sinon même une plante pourra le cracker.",
+  ];
+}
+
+PasswordChecker.propTypes = {
+  password: PropTypes.string,
+}
+
+export default PasswordChecker;

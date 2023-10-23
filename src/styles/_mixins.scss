@@ -1,0 +1,3 @@
+@mixin calc-border-radius ($outer-radius, $distance) {
+    border-radius: calc($outer-radius - $distance);
+}

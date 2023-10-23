@@ -1,0 +1,103 @@
+
+.input-wrapper {
+  display: inline-flex;
+  flex-direction: column;
+  position: relative;
+  margin-bottom: 1.5em;
+
+  input {
+    background: transparent;
+    border-radius: 10px;
+    outline: none;
+    padding: 1em 2em;
+    font-size: inherit;
+    color: rgb(var(--color-secondary));
+    transition: box-shadow .3s ease;
+
+    &.sm { padding: .25em .75em }
+    &.md { padding: .375em 1em }
+    &.lg { padding: .5em 1.5em }
+    &.big { padding: 1em 2em }
+
+    &:placeholder-shown {
+      border: 1px solid rgba(var(--color-secondary), .2);
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 2px rgba(var(--color-secondary), .2);
+
+      & + label {
+        top: 0;
+        transform: translateY(-50%);
+      }
+
+      & ~ .info {
+        //animation: info-slide-left .3s forwards;
+      }
+    }
+
+    &:not(:placeholder-shown):invalid {
+      border: 1px solid rgba(var(--color-danger), .4);
+
+      & ~ .info {
+        opacity: 1;
+        fill: rgb(var(--color-danger));
+      }
+    }
+
+    &:not(:placeholder-shown):valid {
+      border: 1px solid rgba(var(--color-secondary), .2);
+
+      & ~ .info {
+        opacity: 1;
+        fill: rgb(var(--color-success));
+      }
+    }
+
+    &:not(:placeholder-shown) + label {
+      top: 0;
+      transform: translateY(-50%);
+    }
+  }
+
+  label {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 2em;
+    transition: transform .2s ease, top .2s ease;
+    cursor: text;
+
+    &::after {
+      content: "";
+      background: rgb(var(--color-background));
+      width: 100%;
+      height: 20%;
+      position: absolute;
+      left: 0;
+      top: 50%;
+      z-index: -1;
+      transform: translateY(-50%);
+    }
+  }
+
+  .info {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%) translateX(-5%);
+    right: 2em;
+    opacity: 0;
+    transition: transform .3s ease, opacity .3s ease;
+  }
+}
+
+@keyframes info-slide-left {
+  0% {
+    opacity: 0;
+    transform: translateX(5%) translateY(-50%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) translateY(-50%);
+  }
+}

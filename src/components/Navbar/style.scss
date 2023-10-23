@@ -1,0 +1,52 @@
+@import '../../styles/typescale';
+
+.navbar {
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1em 16vw;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 20;
+
+  .gradient {
+    width: 100vw;
+    height: 20vh;
+
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+    background: linear-gradient(0deg, rgb(var(--color-background)) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .navbar-left {
+    display: flex;
+    align-items: center;
+  }
+
+  .title {
+    display: flex;
+    align-items: center;
+  }
+
+  .logo {
+    margin-right: 1em;
+    transition: transform 10s cubic-bezier(.12,.5,.56,.97);
+  }
+
+  h1 {
+    @extend %h5;
+    font-family: "DancingScript", sans-serif;
+    margin-right: 2em;
+
+  }
+
+  nav a {
+    margin-right: 2em;
+  }
+}

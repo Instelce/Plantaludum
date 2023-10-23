@@ -1,0 +1,86 @@
+
+// Reset
+@import url('./reset.css');
+
+@import './typescale';
+
+// Fonts
+@import url('./fonts/dancing-script.css');
+@import url('./fonts/switzer.css');
+
+// Variables
+:root {
+  --color-text: 211, 210, 210;
+  --color-background: 31, 31, 31;
+  --color-primary: 157, 193, 110;
+  --color-secondary: 224, 224, 224;
+  --color-accent: 0, 159, 4;
+  --color-success: 52, 199, 89;
+  --color-danger: 255, 147, 48;
+}
+
+* { box-sizing: border-box }
+
+html {font-size: 100%;} /*16px*/
+
+body {
+  margin: 0;
+  background-color: rgb(var(--color-background));
+  font-family: 'Switzer', Roboto, sans-serif;
+  line-height: 1.75;
+  color: rgb(var(--color-text));
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  border: 0;
+  outline: none;
+}
+
+.container {
+  width: 100%;
+  min-height: 40vh;
+  display: block;
+  position: relative;
+
+  &.center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &.fill-window { height: 100vh; }
+}
+
+.fixed-container {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: block;
+  position: relative;
+}
+
+.link {
+  color: rgb(var(--color-primary));
+  transition: color .2s;
+
+  &:hover {
+    color: rgba(var(--color-primary), .8);
+  }
+}
+
+.main-title {
+  @extend %h2;
+  font-family: "DancingScript", serif !important;
+}
+
+@import './forms';
+
+// Page imports
+@import "pages/main-menu";
+@import "pages/quiz-choice";
+@import "pages/quiz-page";
