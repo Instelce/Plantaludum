@@ -37,22 +37,21 @@ function Login({ handleLogin }) {
             .
           </p>
         </div>
-        <Input label="Email" type="email" info size="big"/>
+        <Input label="Email" type="email" showInfo size="big"/>
         <Input
           label="Mot de passe"
           type="password"
-          info
+          showInfo
           size="big"
           value={passwordValue}
-          handleChange={setPasswordValue}
+          handleValueChange={setPasswordValue}
         />
         <Button
+            label="Connexion"
           type="submit"
           color="primary"
           size="big"
-        >
-          Connexion
-        </Button>
+        />
       </form>
     </div>
   );

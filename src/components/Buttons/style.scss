@@ -18,7 +18,7 @@
     }
   }
 
-  &.solid{
+  &.solid {
     background: rgb(var(--color));
     //border: 1px solid rgb(var(--color));
 
@@ -39,6 +39,11 @@
   &.fill {
     width: 100%;
     flex: auto;
+  }
+
+  &:disabled {
+    opacity: .8;
+    cursor: not-allowed;
   }
 
   &.sm { padding: .25em .75em }

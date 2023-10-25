@@ -9,9 +9,8 @@ export function useTimer({startValue= 5}) {
     const [toggle, setToggle] = useState(false)
 
     useEffect(() => {
-
         const timerFunc = setTimeout(() => {
-            console.log('effect', toggle, timer)
+            // console.log('effect', toggle, timer)
             if (toggle && timer['minutes'] > 0) {
                 setTimer(v => ( {...timer, seconds: v['seconds'] - 1} ))
                 if (timer['seconds'] === 0) {

@@ -1,11 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import Slider from "../../components/Slider/index.jsx";
+import ImageSlider from "../../components/ImageSlider/index.jsx";
 import ChoiceBlock from "../../components/ChoiceBlock/index.jsx";
 import {RefreshCw, Star, X} from "react-feather";
 import {useTimer} from "../../hooks/useTimer.js";
-import {Link, useNavigate, useParams} from "react-router-dom";
+import {Link, redirect, useNavigate, useParams} from "react-router-dom";
 
 const plantsSrc = [
+    "https://images.unsplash.com/photo-1670788050449-32d3139a34c5?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDExfEpwZzZLaWRsLUhrfHxlbnwwfHx8fHw%3D",
+    "https://images.unsplash.com/photo-1697638332466-16f48f835b96?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDh8SnBnNktpZGwtSGt8fGVufDB8fHx8fA%3D%3D",
+    "https://images.unsplash.com/photo-1697273300766-5bbaa53ec2f0?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDM1fEpwZzZLaWRsLUhrfHxlbnwwfHx8fHw%3D",
     "https://api.tela-botanica.org/img:000243414CRS.jpg",
     "https://api.tela-botanica.org/img:000208259CRS.jpg",
     "https://api.tela-botanica.org/img:000244988CRS.jpg",
@@ -19,41 +22,77 @@ const plantsSrc = [
 ]
 
 const questions = [
-    [
-        {name: "1", scientifiqueName: "Lorem a", rightAnswer: false},
-        {name: "2", scientifiqueName: "Lorem b", rightAnswer: true},
-        {name: "3", scientifiqueName: "Lorem b", rightAnswer: false}
-    ],
-    [
-        {name: "1b", scientifiqueName: "Lorem a", rightAnswer: false},
-        {name: "2b", scientifiqueName: "Lorem b", rightAnswer: false},
-        {name: "3b", scientifiqueName: "Lorem b", rightAnswer: true}
-    ],
-    [
-        {name: "1", scientifiqueName: "Lorem a", rightAnswer: false},
-        {name: "2", scientifiqueName: "Lorem b", rightAnswer: true},
-        {name: "3", scientifiqueName: "Lorem b", rightAnswer: false},
-        {name: "4", scientifiqueName: "Lorem c", rightAnswer: false}
-    ],
-    [
-        {name: "1n", scientifiqueName: "Lorem a", rightAnswer: true},
-        {name: "2n", scientifiqueName: "Lorem b", rightAnswer: false},
-        {name: "3c", scientifiqueName: "Lorem b", rightAnswer: false}
-    ],
-    // [
-    //     {name: "1n", scientifiqueName: "Lorem a", rightAnswer: false},
-    //     {name: "2n", scientifiqueName: "Lorem a", rightAnswer: false},
-    //     {name: "3n", scientifiqueName: "Lorem a", rightAnswer: false},
-    //     {name: "4n", scientifiqueName: "Lorem b", rightAnswer: true},
-    //     {name: "5c", scientifiqueName: "Lorem b", rightAnswer: false}
-    // ]
-]
-
-
-const choices = [
-    {name: "Vesce fausse-esparcette", scientifiqueName: "Abacosa onobrychioides", rightAnswer: false},
-    {name: "Narth\u00e9cie des marais", scientifiqueName: "Abama ossifraga", rightAnswer: true},
-    {name: "AANarth\u00e9cie des marais", scientifiqueName: "Abamaa", rightAnswer: false}
+    {
+        images: [
+            "https://api.tela-botanica.org/img:000092753CRS.jpg",
+            "https://api.tela-botanica.org/img:002251388CRS.jpg",
+            "https://api.tela-botanica.org/img:001118914CRS.jpg",
+        ],
+        choices: [
+            {title: "1", subtitle: "Lorem a", rightAnswer: false},
+            {title: "2", subtitle: "Lorem b", rightAnswer: true},
+            {title: "3", subtitle: "Lorem b", rightAnswer: false}
+        ]
+    },
+    {
+        images: [
+            "https://api.tela-botanica.org/img:000243414CRS.jpg",
+            "https://api.tela-botanica.org/img:000208259CRS.jpg",
+            "https://api.tela-botanica.org/img:000244988CRS.jpg",
+            "https://api.tela-botanica.org/img:000073996CRS.jpg",
+        ],
+        choices: [
+            {title: "1b", subtitle: "Lorem a", rightAnswer: false},
+            {title: "2b", subtitle: "Lorem b", rightAnswer: false},
+            {title: "3b", subtitle: "Lorem b", rightAnswer: true}
+        ]
+    },
+    {
+        images: [
+            "https://api.tela-botanica.org/img:000244988CRS.jpg",
+            "https://api.tela-botanica.org/img:000073996CRS.jpg",
+            "https://api.tela-botanica.org/img:000192173CRS.jpg",
+            "https://api.tela-botanica.org/img:002479913CRS.jpg",
+            "https://api.tela-botanica.org/img:000116167CRS.jpg",
+            "https://api.tela-botanica.org/img:000092753CRS.jpg",
+        ],
+        choices: [
+            {title: "1", subtitle: "Lorem a", rightAnswer: false},
+            {title: "2", subtitle: "Lorem b", rightAnswer: true},
+            {title: "3", subtitle: "Lorem b", rightAnswer: false},
+            {title: "4", subtitle: "Lorem c", rightAnswer: false}
+        ]
+    },
+    {
+        images: [
+            "https://api.tela-botanica.org/img:000243414CRS.jpg",
+            "https://api.tela-botanica.org/img:000208259CRS.jpg",
+            "https://api.tela-botanica.org/img:000244988CRS.jpg",
+            "https://api.tela-botanica.org/img:000073996CRS.jpg",
+        ],
+        choices: [
+            {title: "1n", subtitle: "Lorem a", rightAnswer: false},
+            {title: "2n", subtitle: "Lorem a", rightAnswer: false},
+            {title: "3n", subtitle: "Lorem a", rightAnswer: false},
+            {title: "4n", subtitle: "Lorem b", rightAnswer: true},
+            {title: "5c", subtitle: "Lorem b", rightAnswer: false}
+        ]
+    },
+    {
+       images: [
+           "https://images.unsplash.com/photo-1670788050449-32d3139a34c5?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDExfEpwZzZLaWRsLUhrfHxlbnwwfHx8fHw%3D",
+           "https://images.unsplash.com/photo-1697638332466-16f48f835b96?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDh8SnBnNktpZGwtSGt8fGVufDB8fHx8fA%3D%3D",
+           "https://images.unsplash.com/photo-1697273300766-5bbaa53ec2f0?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDM1fEpwZzZLaWRsLUhrfHxlbnwwfHx8fHw%3D",
+           "https://api.tela-botanica.org/img:000243414CRS.jpg",
+           "https://api.tela-botanica.org/img:000208259CRS.jpg",
+           "https://api.tela-botanica.org/img:000244988CRS.jpg",
+       ],
+        choices: [
+            {title: "1n", subtitle: "Lorem a", rightAnswer: true},
+            {title: "2n", subtitle: "Lorem b", rightAnswer: false},
+            {title: "3c", subtitle: "Lorem b", rightAnswer: false}
+        ]
+    }
 ]
 
 
@@ -61,10 +100,12 @@ function QuizPage(props) {
     const navigate = useNavigate();
     let { quizId } = useParams()
     const {stringTime, start, reset} = useTimer({startValue:5})
-    const [stars, setStars] = useState(2)
+    const [stars, setStars] = useState(0)
     const [progress, setProgress] = useState(0)
     const [showResult, setShowResult] = useState(false)
     const [score, setScore] = useState(0)
+    const [isRight, setIsRight] = useState(undefined)
+    const [userErrors, setUserErrors] = useState(0)
     // const [currentQuestion, setCurrentQuestion] = useState(0)
 
     useEffect(() => {
@@ -73,26 +114,49 @@ function QuizPage(props) {
     }, []);
 
     useEffect(() => {
+        // reset values
+        if (progress === 0) {
+            setStars(0)
+        }
+
+        // set stars
+        if (progress % 3 === 3 && progress - userErrors > 1) {
+            setStars(s => s + 1)
+        }
+
+        // update progress
         if (showResult && progress < questions.length) {
             setTimeout(() => {
                 setProgress(p => p + 1);
                 setShowResult(false);
             }, 1000);
         }
+
+        // redirect to result page if quiz is finished
         if (progress === questions.length) {
-            navigate(`resultat`);
+            setTimeout(() => {
+                navigate(`/quiz/${quizId}/resultat`);
+            }, 2000)
         }
     }, [showResult]);
+
+    useEffect(() => {
+        // update score
+        if (isRight !== undefined) {
+            if (isRight) {
+                setScore(s => s + 200)
+            } else {
+                setUserErrors(e => e + 1);
+            }
+            setIsRight(undefined)
+        }
+    }, [isRight]);
 
     const resetQuiz = () => {
         reset();
         setProgress(0);
         setShowResult(false);
     }
-
-    // const checkResult = (bool, ) => {
-    //
-    // }
 
     return (
         <div className="container center quiz-page">
@@ -106,7 +170,7 @@ function QuizPage(props) {
                         </Link>
                     </div>
                     <div className="quiz-score">
-                        600
+                        {score}
                     </div>
                     <div className="quiz-star">
                         <Stars count={stars} />
@@ -116,12 +180,18 @@ function QuizPage(props) {
                     <span style={{ width: `${progress * 100 / questions.length}%` }}></span>
                 </div>
                 <div className="quiz-content">
-                    <Slider images={plantsSrc} />
+                    <ImageSlider images={questions[progress]?.images} />
                     <div>
-                        {questions[progress]?.map((choice, index) => (
-                            <ChoiceBlock key={choice.name} index={index} choice={choice} showResult={showResult} setShowResult={setShowResult} />
-                        ))}
-                        <p>Double click sur la réponse de ton choix</p>
+                        {questions[progress] ? (
+                            <>
+                                {questions[progress]?.choices.map((choice, index) => (
+                                    <ChoiceBlock key={choice.title} index={index} choice={choice} showResult={showResult} setShowResult={setShowResult} setIsRight={setIsRight} />
+                                ))}
+                                <p>Double click sur la réponse de ton choix</p>
+                            </>
+                        ) : (
+                           <p>Fini !</p>
+                        )}
                     </div>
                 </div>
             </div>

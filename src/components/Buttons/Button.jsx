@@ -7,33 +7,34 @@ import "./style.scss";
  * Button
  */
 function Button({
+  label,
   type = "button",
   color,
-  size = "ld",
+  size = "lg",
   variant = "solid",
   disabled = false,
   fill = false,
-  children,
 }) {
   return (
     <button
       type={type}
-      className={`button ${variant} ${size} ${disabled ? "disabled" : ""} ${
+      className={`button ${variant} ${size} ${
         fill ? "fill" : ""
       }`}
+      disabled={disabled}
       style={{ ["--color"]: `var(--color-${color})` }}
     >
-      {children}
+      {label}
     </button>
   );
 }
 
 Button.propTypes = {
-  type: PropTypes.string,
-  children: PropTypes.node,
-  color: PropTypes.string,
-  size: PropTypes.string,
-  variant: PropTypes.string,
+  label: PropTypes.string,
+  type: PropTypes.oneOf(['button', 'submit']),
+  color: PropTypes.oneOf(['primary', 'secondary', 'accent', 'success', 'danger']),
+  size: PropTypes.oneOf(['sm', 'md', 'lg', 'big']),
+  variant: PropTypes.oneOf(['outlined', 'solid', 'soft']),
   disabled: PropTypes.bool,
   fill: PropTypes.bool,
 };

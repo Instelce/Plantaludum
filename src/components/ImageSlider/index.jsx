@@ -2,17 +2,28 @@ import React, {useState} from 'react';
 
 import './style.scss'
 import {ArrowLeft, ArrowRight} from "react-feather";
+import PropTypes from "prop-types";
 
-function Slider({images}) {
+/**
+ * Image slider, take an array of image url.
+ */
+function ImageSlider({images}) {
     const [current, setCurrent] = useState(0)
-    const lenght = images?.length;
+    const length = images?.length;
+
+    // reset images
+    const [prevImages, setPrevImages] = useState(images);
+    if (images !== prevImages) {
+        setCurrent(0)
+        setPrevImages(images)
+    }
 
     const next = () => {
-        setCurrent((current) => current === lenght - 1 ? 0 : current + 1)
+        setCurrent((current) => current === length - 1 ? 0 : current + 1)
     }
 
     const prev = () => {
-        setCurrent((current) => current === 0 ? lenght - 1 : current - 1)
+        setCurrent((current) => current === 0 ? length - 1 : current - 1)
     }
 
     if (!Array.isArray(images) || images?.length <= 0) {
@@ -23,7 +34,7 @@ function Slider({images}) {
         <div className="slider">
             <div className="slide-container">
                 {images?.map((src, index) => (
-                    <div key={src} index={index} className={index === current ? 'slide active' : 'slide'}>
+                    <div key={src} className={index === current ? 'slide active' : 'slide'}>
                         <img src={src} alt={index} />
                     </div>
                 ))}
@@ -33,7 +44,7 @@ function Slider({images}) {
                 <p className="slider-info">
                     {current + 1}
                     <span></span>
-                    {lenght}
+                    {length}
                 </p>
                 <ArrowRight onClick={next} />
             </div>
@@ -41,4 +52,8 @@ function Slider({images}) {
     );
 }
 
-export default Slider;
+ImageSlider.propTypes = {
+    images: PropTypes.arrayOf(PropTypes.string),
+}
+
+export default ImageSlider;

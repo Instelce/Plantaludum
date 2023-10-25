@@ -2,8 +2,10 @@ import React, {useEffect, useLayoutEffect, useRef, useState} from 'react';
 
 import './style.scss'
 import ChoiceBlock from "../ChoiceBlock/index.jsx";
-import Slider from "../Slider/index.jsx";
+import ImageSlider from "../ImageSlider/index.jsx";
 import {X} from "react-feather";
+import PropTypes from "prop-types";
+import {getRandomInt} from "../../utils.js";
 
 function PlantQuiz({show, setShow, plant, quizSubmit}) {
     const ref = useRef(null)
@@ -32,7 +34,7 @@ function PlantQuiz({show, setShow, plant, quizSubmit}) {
                 </div>
             </div>
             <div className="quiz-wrapper">
-                <Slider images={plant.images} />
+                <ImageSlider images={plant.images} />
 
                 <div className="quiz-body">
                     <div className="quiz-header">
@@ -55,6 +57,23 @@ function PlantQuiz({show, setShow, plant, quizSubmit}) {
             </div>
         </div>
     );
+}
+
+
+PlantQuiz.propTypes = {
+    show: PropTypes.bool,
+    setShow: PropTypes.func,
+    plant: PropTypes.arrayOf(PropTypes.shape({
+        src: PropTypes.string,
+        size: PropTypes.number,
+        name: PropTypes.string,
+        found: PropTypes.bool,
+        x: PropTypes.number,
+        y: PropTypes.number,
+        images: PropTypes.array,
+        choices: PropTypes.array,
+    })),
+    quizSubmit: PropTypes.bool
 }
 
 export default PlantQuiz;

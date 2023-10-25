@@ -19,20 +19,18 @@ function Register(props) {
             <Link to="/connexion" className="link">connecte</Link> toi si tu en a déjà un.
           </p>
         </div>
-        <Input label="Nom" type="text" info />
-        <Input label="Email" type="email" info />
+        <Input label="Nom" type="text" showInfo/>
+        <Input label="Email" type="email" showInfo/>
         <Input
           label="Mot de passe"
           type="password"
-          info
+          showInfo
           value={passwordValue}
-          handleChange={setPasswordValue}
+          handleValueChange={setPasswordValue}
         />
-        <Input label="Confirmation du mot de passe" type="password" info />
+        <Input label="Confirmation du mot de passe" type="password" showInfo/>
         <PasswordChecker password={passwordValue} />
-        <ButtonLink to="/connexion" color="primary" size="big" fill={true}>
-          Créer
-        </ButtonLink>
+        <ButtonLink to="/connexion" label="Créer" color="primary" size="big" fill={true} />
       </form>
     </div>
   );

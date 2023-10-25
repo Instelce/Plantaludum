@@ -3,7 +3,7 @@ import React, { useId } from "react";
 import "./style.scss";
 import PropTypes from "prop-types";
 
-function Input({ label, type, size="lg", info, value, handleChange=null }) {
+function Input({ label, type, size="lg", disabled= false, showInfo= false, value, handleValueChange=null }) {
   const id = useId();
   return (
     <div className="input-wrapper">
@@ -13,11 +13,12 @@ function Input({ label, type, size="lg", info, value, handleChange=null }) {
         id={id}
         name={id}
         placeholder=" "
+          disabled={disabled}
         value={value}
-        onChange={(e) => handleChange ? handleChange(e.target.value) : null}
+        onChange={(e) => handleValueChange ? handleValueChange(e.target.value) : null}
       />
       <label htmlFor={id}>{label}</label>
-        { info &&
+        { showInfo &&
             <svg
                 className="info"
                 width="21"
@@ -39,10 +40,12 @@ function Input({ label, type, size="lg", info, value, handleChange=null }) {
 
 Input.propTypes = {
     label: PropTypes.string,
-    type: PropTypes.string,
-    info: PropTypes.bool,
+    type: PropTypes.oneOf(['text', 'email', 'password']),
+    size: PropTypes.oneOf(['sm', 'md', 'lg', 'big']),
+    showInfo: PropTypes.bool,
+    disabled: PropTypes.bool,
     value: PropTypes.string,
-    handleChange: PropTypes.func,
+    handleValueChange: PropTypes.func,
 }
 
 export default Input;

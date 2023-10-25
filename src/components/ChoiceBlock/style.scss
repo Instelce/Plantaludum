@@ -16,6 +16,9 @@
   justify-content: space-between;
   align-items: center;
 
+  .choice-text {
+    margin-right: 2rem;
+  }
 
   p:nth-child(1) {
     @extend %h5;
@@ -37,7 +40,7 @@
     }
 
     &.right-answer {
-      transform: scale(1.05);
+      transform: scale(1.05) translateX(0);
     }
 
     .choice-result {
@@ -59,7 +62,6 @@
   &:not(.show-result) {
 
   }
-
 
   .choice-result {
     width: 2em;

@@ -44,9 +44,9 @@ function createPlants() {
                 "https://api.tela-botanica.org/img:000023106CRS.jpg",
             ],
             choices: [
-                {name: "Vesce fausse-esparcette", scientifiqueName: "Abacosa onobrychioides", rightAnswer: false},
-                {name: "Narth\u00e9cie des marais", scientifiqueName: "Abama ossifraga", rightAnswer: true},
-                {name: "AANarth\u00e9cie des marais", scientifiqueName: "Abamaa ossifraga", rightAnswer: false}
+                {title: "Vesce fausse-esparcette", subtitle: "Abacosa onobrychioides", rightAnswer: false},
+                {title: "Narth\u00e9cie des marais", subtitle: "Abama ossifraga", rightAnswer: true},
+                {title: "AANarth\u00e9cie des marais", subtitle: "Abamaa ossifraga", rightAnswer: false}
             ]
         })
     }
@@ -102,7 +102,7 @@ function Home(props) {
                     `}
                 >
                     <h1 className="main-title">Plantaludum</h1>
-                    <ButtonLink to="/connexion" size="ld" color="primary" fill={true}>Jouer</ButtonLink>
+                    <ButtonLink label="Jouer" to="/connexion" size="ld" color="primary" fill={true}></ButtonLink>
                 </div>
             </CardWrapper>
             <PlantQuiz show={showQuiz} setShow={setShowQuiz} plant={currentPlant} quizSubmit={handleQuizSubmit} />

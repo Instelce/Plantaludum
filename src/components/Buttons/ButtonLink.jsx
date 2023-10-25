@@ -10,6 +10,7 @@ import Button from "./Button.jsx";
  */
 function ButtonLink({
   to,
+    label,
   type = "button",
   color,
   size = "ld",
@@ -21,6 +22,7 @@ function ButtonLink({
   return (
     <Link to={to}>
       <Button
+          label={label}
         type={type}
         color={color}
         size={size}
@@ -28,7 +30,7 @@ function ButtonLink({
         disabled={disabled}
         fill={fill}
       >
-        {children}
+        {label}
       </Button>
     </Link>
   );
@@ -36,6 +38,7 @@ function ButtonLink({
 
 ButtonLink.propTypes = {
   to: PropTypes.string,
+  label: PropTypes.string,
   type: PropTypes.string,
   color: PropTypes.string,
   size: PropTypes.string,

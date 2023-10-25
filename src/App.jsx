@@ -8,7 +8,8 @@ import Login from "./pages/Login.jsx";
 import MainMenu from "./pages/protected/MainMenu.jsx";
 import QuizChoice from "./pages/protected/QuizChoice.jsx";
 import QuizPage from "./pages/protected/QuizPage.jsx";
-import QuizResult from "./pages/protected/QuizResult.jsx";
+
+import QuizResult from "./pages/protected/QuizResultS.jsx";
 
 function App(props) {
   const [user, setUser] = useState(null);
@@ -43,13 +44,12 @@ function App(props) {
             // <ProtectedRoute isAllowed={!!user}>
               <QuizPage />
             // </ProtectedRoute>
-          }>
-            <Route path="resultat" element={
-              // <ProtectedRoute isAllowed={!!user}>
-              <QuizResult />
-              // </ProtectedRoute>
-            } />
-          </Route>
+          } />
+          <Route path="quiz/:quizId/resultat" element={
+            // <ProtectedRoute isAllowed={!!user}>
+            <QuizResult />
+            // </ProtectedRoute>
+          } />
 
         </Route>
       </Routes>
