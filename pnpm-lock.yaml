@@ -7,9 +7,15 @@ dependencies:
   '@emotion/react':
     specifier: ^11.11.1
     version: 11.11.1(@types/react@18.2.15)(react@18.2.0)
+  '@storybook/manager-api':
+    specifier: ^7.5.1
+    version: 7.5.1(react-dom@18.2.0)(react@18.2.0)
   '@storybook/preview-api':
     specifier: ^7.5.1
     version: 7.5.1
+  '@storybook/theming':
+    specifier: ^7.5.1
+    version: 7.5.1(react-dom@18.2.0)(react@18.2.0)
   gsap:
     specifier: ^3.12.2
     version: 3.12.2
@@ -3318,7 +3324,6 @@ packages:
       store2: 2.14.2
       telejson: 7.2.0
       ts-dedent: 2.2.0
-    dev: true
 
   /@storybook/manager@7.5.1:
     resolution: {integrity: sha512-Jo83sj7KvsZ78vvqjH72ErmQ31Frx6GBLbpeYXZtbAXWl0/LHsxAEVz0Mke+DixzWDyP0/cn+Nw8QUfA+Oz1fg==}
@@ -3446,7 +3451,6 @@ packages:
       qs: 6.11.2
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-    dev: true
 
   /@storybook/telemetry@7.5.1:
     resolution: {integrity: sha512-z9PGouNqvZ2F7vD79qDF4PN7iW3kE3MO7YX0iKTmzgLi4ImKuXIJRF04GRH8r+WYghnbomAyA4o6z9YJMdNuVw==}
@@ -3484,7 +3488,6 @@ packages:
       memoizerific: 1.11.3
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-    dev: true
 
   /@storybook/types@7.5.1:
     resolution: {integrity: sha512-ZcMSaqFNx1E+G00nRDUi8kKL7gxJVlnCvbKLNj3V85guy4DkIYAZr31yDqze07gDWbjvKoHIp3tKpgE+2i8upQ==}
@@ -6371,7 +6374,6 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       yallist: 4.0.0
-    dev: true
 
   /lz-string@1.5.0:
     resolution: {integrity: sha512-h5bgJWpxJNswbU7qCrV0tIKQCaS3blPDrqKWx+QxzuzL1zGUzij9XCWLrSLsJPu5t+eWA/ycetzYAO5IOMcWAQ==}
@@ -7553,7 +7555,6 @@ packages:
     hasBin: true
     dependencies:
       lru-cache: 6.0.0
-    dev: true
 
   /send@0.18.0:
     resolution: {integrity: sha512-qqWzuOjSFOuqPjFe4NOsMLafToQQwBSOEpS+FwEt3A2V3vKubTquT3vmLTQpFgMXp8AlFWFuP1qKaJZOtPpVXg==}
@@ -7730,7 +7731,6 @@ packages:
 
   /store2@2.14.2:
     resolution: {integrity: sha512-siT1RiqlfQnGqgT/YzXVUNsom9S0H1OX+dpdGN1xkyYATo4I6sep5NmsRD/40s3IIOvlCq6akxkqG82urIZW1w==}
-    dev: true
 
   /storybook@7.5.1:
     resolution: {integrity: sha512-Wg3j3z5H03PYnEcmlnhf6bls0OtjmsNPsQ93dTV8F4AweqBECwzjf94Wj++NrP3X+WbfMoCbBU6LRFuEyzCCxw==}
@@ -8527,7 +8527,6 @@ packages:
 
   /yallist@4.0.0:
     resolution: {integrity: sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==}
-    dev: true
 
   /yaml@1.10.2:
     resolution: {integrity: sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg==}

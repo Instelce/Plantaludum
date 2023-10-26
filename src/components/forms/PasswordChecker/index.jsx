@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 import PropTypes from "prop-types";
 
 import "./style.scss";
+import ProgressBar from "../../ProrgessBar/index.jsx";
 
 function PasswordChecker({ password }) {
   const status = useMemo(() => {
@@ -9,14 +10,7 @@ function PasswordChecker({ password }) {
   }, [password]);
   return (
     <div className="password-checker">
-      <div className="gauge">
-        <span
-          style={{
-            width: `${status[0]}%`,
-            background: `${status[1]}`,
-          }}
-        ></span>
-      </div>
+      <ProgressBar value={status[0]} color={status[1]} thickness="medium" shape="rounded" />
       <p>{status[2]}</p>
     </div>
   );

@@ -43,7 +43,7 @@ ChoiceBlock.propTypes = {
     choice: PropTypes.arrayOf(PropTypes.shape({
         title: PropTypes.string,
         subtitle: PropTypes.string,
-        rightAwnser: PropTypes.bool,
+        rightAnswer: PropTypes.bool,
     })),
     showResult: PropTypes.bool,
     setShowResult: PropTypes.func,

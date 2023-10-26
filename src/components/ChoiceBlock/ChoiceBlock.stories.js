@@ -7,7 +7,6 @@ export default {
     title: 'Components/ChoiceBlock',
     component: ChoiceBlock,
     parameters: {
-        layout: "centered",
     },
     argTypes: {
         onDoubleClick: {action: 'showResult'},
@@ -16,12 +15,23 @@ export default {
 }
 
 
-export const Default = {
+export const Right = {
     args: {
         choice: {
             title: "Title",
             subtitle: "Sub",
-            rightAwnser: false
+            rightAnswer: true
+        },
+        showResult: false,
+    }
+}
+
+export const Wrong = {
+    args: {
+        choice: {
+            title: "Title",
+            subtitle: "Sub",
+            rightAnswer: false
         },
         showResult: false,
     }

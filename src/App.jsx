@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Root from "./pages/Root.jsx";
 import Error from "./pages/Error.jsx";
 import Home from "./pages/Home.jsx";
@@ -8,7 +8,6 @@ import Login from "./pages/Login.jsx";
 import MainMenu from "./pages/protected/MainMenu.jsx";
 import QuizChoice from "./pages/protected/QuizChoice.jsx";
 import QuizPage from "./pages/protected/QuizPage.jsx";
-
 import QuizResult from "./pages/protected/QuizResultS.jsx";
 
 function App(props) {
@@ -17,7 +16,7 @@ function App(props) {
   const handleLogin = (user) => setUser(user);
   const handleLogout = () => setUser(null);
 
-  console.log(user)
+  console.log(user);
 
   return (
     <>
@@ -25,7 +24,10 @@ function App(props) {
         <Route path="/" element={<Root />} errorElement={<Error />}>
           <Route index path="/" element={<Home />} />
           <Route path="inscription" element={<Register />} />
-          <Route path="connexion" element={<Login handleLogin={handleLogin} />} />
+          <Route
+            path="connexion"
+            element={<Login handleLogin={handleLogin} />}
+          />
           <Route
             path="menu"
             element={
@@ -34,23 +36,31 @@ function App(props) {
               </ProtectedRoute>
             }
           >
-            <Route path="choix" element={
-              <ProtectedRoute isAllowed={!!user}>
-                <QuizChoice />
-              </ProtectedRoute>
-            } />
+            <Route
+              path="choix"
+              element={
+                <ProtectedRoute isAllowed={!!user}>
+                  <QuizChoice />
+                </ProtectedRoute>
+              }
+            />
           </Route>
-          <Route path="quiz/:quizId" element={
-            // <ProtectedRoute isAllowed={!!user}>
+          <Route
+            path="quiz/:quizId"
+            element={
+              // <ProtectedRoute isAllowed={!!user}>
               <QuizPage />
-            // </ProtectedRoute>
-          } />
-          <Route path="quiz/:quizId/resultat" element={
-            // <ProtectedRoute isAllowed={!!user}>
-            <QuizResult />
-            // </ProtectedRoute>
-          } />
-
+              // </ProtectedRoute>
+            }
+          />
+          <Route
+            path="quiz/:quizId/resultat"
+            element={
+              // <ProtectedRoute isAllowed={!!user}>
+              <QuizResult />
+              // </ProtectedRoute>
+            }
+          />
         </Route>
       </Routes>
     </>

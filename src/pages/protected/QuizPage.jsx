@@ -4,6 +4,8 @@ import ChoiceBlock from "../../components/ChoiceBlock/index.jsx";
 import {RefreshCw, Star, X} from "react-feather";
 import {useTimer} from "../../hooks/useTimer.js";
 import {Link, redirect, useNavigate, useParams} from "react-router-dom";
+import Stars from "../../components/Stars/index.jsx";
+import ProgressBar from "../../components/ProrgessBar/index.jsx";
 
 const plantsSrc = [
     "https://images.unsplash.com/photo-1670788050449-32d3139a34c5?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDExfEpwZzZLaWRsLUhrfHxlbnwwfHx8fHw%3D",
@@ -172,13 +174,12 @@ function QuizPage(props) {
                     <div className="quiz-score">
                         {score}
                     </div>
-                    <div className="quiz-star">
-                        <Stars count={stars} />
-                    </div>
+                    <Stars count={stars} />
                 </div>
-                <div className="quiz-progress-bar">
-                    <span style={{ width: `${progress * 100 / questions.length}%` }}></span>
-                </div>
+                <ProgressBar value={progress * 100 / questions.length} color="rgb(var(--color-primary))" thickness="large" shape="rounded" />
+                {/*<div className="quiz-progress-bar">*/}
+                {/*    <span style={{ width: `${progress * 100 / questions.length}%` }}></span>*/}
+                {/*</div>*/}
                 <div className="quiz-content">
                     <ImageSlider images={questions[progress]?.images} />
                     <div>
@@ -199,18 +200,6 @@ function QuizPage(props) {
     );
 }
 
-function Stars ({count}) {
-    let starsElem = []
-    for (let i = 0; i < count; i++) {
-        starsElem.push(<Star color="#FFCC00" fill="#FFCC00" />)
-    }
-    for (let i = 0; i < 3 - count; i++) {
-        starsElem.push(<Star color="rgba(var(--color-secondary), .2)" fill="rgba(var(--color-secondary), .2)" />)
-    }
 
-    return <>
-        {starsElem}
-    </>
-}
 
 export default QuizPage;

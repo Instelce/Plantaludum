@@ -1,0 +1,26 @@
+
+.progress-bar {
+  width: 100%;
+  min-width: 100px;
+  display: inline-block;
+  border: 1px solid rgba(var(--color-secondary), .2);
+  overflow: hidden;
+
+  &.rounded {
+    border-radius: 1000px;
+  }
+
+  &.medium {
+    height: 5px;
+  }
+
+  &.large {
+    height: 10px;
+  }
+
+  span {
+    height: 100%;
+    display: block;
+    transition: width .3s cubic-bezier(.62,1,.6,.86);
+  }
+}
