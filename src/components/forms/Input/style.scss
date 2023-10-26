@@ -1,4 +1,6 @@
 
+@import "../../../styles/typescale";
+
 .input-wrapper {
   display: inline-flex;
   flex-direction: column;
@@ -14,10 +16,22 @@
     color: rgb(var(--color-secondary));
     transition: box-shadow .3s ease;
 
-    &.sm { padding: .25em .75em }
-    &.md { padding: .375em 1em }
-    &.lg { padding: .5em 1.5em }
-    &.big { padding: 1em 2em }
+    &.sm {
+      ~ label { --padding-left: .75rem; }
+      padding: .300em .75em;
+    }
+    &.md {
+      ~ label { --padding-left: 1rem; }
+      padding: .375em 1em
+    }
+    &.lg {
+      ~ label { --padding-left: 1em; }
+      padding: .5em 1em
+    }
+    &.big {
+      ~ label { --padding-left: 2em; }
+      padding: 1em 2em
+    }
 
     &:placeholder-shown {
       border: 1px solid rgba(var(--color-secondary), .2);
@@ -64,7 +78,7 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    left: 2em;
+    left: var(--padding-left);
     transition: transform .2s ease, top .2s ease;
     cursor: text;
 
@@ -84,10 +98,12 @@
   .info {
     position: absolute;
     top: 50%;
+    right: 2rem;
+    //padding-right: 2rem;
     transform: translateY(-50%) translateX(-5%);
-    right: 2em;
     opacity: 0;
     transition: transform .3s ease, opacity .3s ease;
+    background: rgb(var(--color-background));
   }
 }
 

@@ -2,9 +2,9 @@
 
 import Input from "./index.jsx";
 import { useArgs } from "@storybook/preview-api";
-import { Story } from "@storybook/blocks";
 
-function Component(Story, ctx) {
+
+/*function Component(Story, ctx) {
   const [, setArgs] = useArgs();
 
   const handleValueChange = (value) => {
@@ -17,7 +17,7 @@ function Component(Story, ctx) {
   };
 
   return <Story args={{ ...ctx.args, handleValueChange }} />;
-}
+}*/
 
 export default {
   title: "Components/Forms/Input",
@@ -27,13 +27,10 @@ export default {
   },
   tags: ["autodocs"],
   decorators: [
-    (Story) => {
-      <Component />;
-    },
+    // (Story) => {
+    //   <Component />;
+    // },
   ],
-  // decorators: [
-  //
-  // ]
 };
 
 export const Default = {

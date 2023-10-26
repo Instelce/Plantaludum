@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import Navbar from "../components/Navbar/index.jsx";
 import {styled} from "styled-components"
 import {css} from "@emotion/css";
-import PlantCard from "../components/PlantCard/index.jsx";
+import FloatingPlantCard from "../components/FloatingPlantCard/index.jsx";
 import {getRandomInt} from "../utils.js";
 import PlantQuiz from "../components/PlantQuiz/index.jsx";
 import animate from "../animate.js";
@@ -85,7 +85,7 @@ function Home(props) {
         <div className="fixed-container">
             <CardWrapper active={!showQuiz}>
                 {plants.map((plant, index) => (
-                    <PlantCard
+                    <FloatingPlantCard
                         key={plant.src}
                         index={index}
                         plant={plant}

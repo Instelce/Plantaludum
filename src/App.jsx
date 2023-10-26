@@ -9,6 +9,8 @@ import MainMenu from "./pages/protected/MainMenu.jsx";
 import QuizChoice from "./pages/protected/QuizChoice.jsx";
 import QuizPage from "./pages/protected/QuizPage.jsx";
 import QuizResult from "./pages/protected/QuizResultS.jsx";
+import PropTypes from "prop-types";
+import Explorer from "./pages/Explorer.jsx";
 
 function App(props) {
   const [user, setUser] = useState(null);
@@ -45,6 +47,7 @@ function App(props) {
               }
             />
           </Route>
+          <Route path="explorer" element={<Explorer />} />
           <Route
             path="quiz/:quizId"
             element={
@@ -74,5 +77,11 @@ function ProtectedRoute({ isAllowed, redirectPath = "/connexion", children }) {
 
   return children;
 }
+
+ProtectedRoute.propTypes = {
+  isAllowed: PropTypes.bool,
+  redirectPath: PropTypes.string,
+  children: PropTypes.node,
+};
 
 export default App;

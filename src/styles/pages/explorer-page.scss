@@ -1,0 +1,34 @@
+
+@import '../typescale';
+
+.explorer {
+  .topbar {
+    width: 100%;
+    padding: 2rem 20vw;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background: rgb(var(--color-background));
+    position: sticky;
+
+    div:nth-child(1) {
+      display: inline-block;
+
+      h1 {
+        @extend %h4;
+        font-family: DancingScript, serif;
+        line-height: 1;
+      }
+    }
+  }
+
+  .grid {
+    width: 100%;
+    padding: 1rem 20vw;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 8rem;
+  }
+}
