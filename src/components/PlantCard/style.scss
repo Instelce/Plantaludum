@@ -3,11 +3,17 @@
 .plant-card {
   width: 100%;
   position: relative;
+  border: 1px solid rgba(var(--color-secondary), .2);
   border-radius: 10px;
 
+  transition: transform 200ms cubic-bezier(.16,.18,.64,.96);
+
   .image-wrapper {
+    width: 100%;
+    padding: 0;
     border-radius: 10px;
     overflow: hidden;
+    transform: scale(1);
   }
 
   .image-container {
@@ -36,6 +42,13 @@
     }
 
     &:hover {
+      .image-container {
+        transform: scale(1.5);
+      }
+
+      .card-name {
+        padding: .5rem 1rem;
+      }
 
       img {
         transform: scale(1.05);
@@ -45,19 +58,23 @@
 
   .card-name {
     width: fit-content;
+    white-space: nowrap;
     padding: 1rem 2rem;
     background: rgba(var(--color-secondary));
     border-radius: 1000px;
     position: absolute;
     bottom: 0;
-    left: 0;
+    left: 50%;
     color: rgb(var(--color-background));
-    transform: translateY(50%) translateX(0);
+    transform: translateY(50%) translateX(-50%);
+    z-index: 5;
 
-    //transition: transform .1s ease;
+    transition: transform 100ms cubic-bezier(.16,.18,.64,.96), left 100ms cubic-bezier(.16,.18,.64,.96);
   }
 
   .card-content {
+    border-radius: 10px;
+    height: 100%;
     padding: 2rem;
     position: absolute;
     top: 0;
@@ -66,8 +83,17 @@
     opacity: 0;
     z-index: -1;
 
+    transition: opacity .3s ease;
+
     p {
       margin-top: 2rem;
+    }
+  }
+
+  &.show-content {
+    .card-content {
+      opacity: 1;
+      z-index: 2;
     }
   }
 }

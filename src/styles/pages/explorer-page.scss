@@ -5,13 +5,14 @@
   .topbar {
     width: 100%;
     padding: 2rem 20vw;
+    z-index: 10;
 
     display: flex;
     align-items: center;
     justify-content: space-between;
 
     background: rgb(var(--color-background));
-    position: sticky;
+    position: fixed;
 
     div:nth-child(1) {
       display: inline-block;
@@ -30,5 +31,6 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-column-gap: 8rem;
+    grid-row-gap: 8rem;
   }
 }

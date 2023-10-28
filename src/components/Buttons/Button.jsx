@@ -14,9 +14,11 @@ function Button({
   variant = "solid",
   disabled = false,
   fill = false,
+  onClick
 }) {
   return (
     <button
+      onClick={onClick}
       type={type}
       className={`button ${variant} ${size} ${
         fill ? "fill" : ""
@@ -37,6 +39,7 @@ Button.propTypes = {
   variant: PropTypes.oneOf(['outlined', 'solid', 'soft']),
   disabled: PropTypes.bool,
   fill: PropTypes.bool,
+  onClick: PropTypes.func,
 };
 
 export default Button;
