@@ -3,7 +3,7 @@ import Input from "../components/forms/Input/index.jsx";
 import PlantCard from "../components/PlantCard/index.jsx";
 import Modal from "../components/Modal/index.jsx";
 import Button from "../components/Buttons/Button.jsx";
-import Dropdown, {Option} from "../components/Dropdown/index.jsx";
+import Dropdown, {Option} from "../components/forms/Dropdown/index.jsx";
 
 
 const plants = [
@@ -54,19 +54,22 @@ const plants = [
 
 function Explorer(props) {
   const [showModal, setShowModal] = useState(false)
+  const [filter, setFilter] = useState("")
 
   return <div className="container explorer">
     <div className="topbar">
       <div>
-        <h1>Plantaludum</h1>
+        <h1>
+          <a href="/menu">Plantaludum</a>
+        </h1>
         <p>Explorer</p>
       </div>
       <Input
         label="Rechercher"
         size="big"
       />
-      <span>
-        <Dropdown>
+      <div>
+        <Dropdown setValue={setFilter}>
           <Option>
             option 1
           </Option>
@@ -79,9 +82,12 @@ function Explorer(props) {
           <Option>
             option 4
           </Option>
+          <Option>
+            loooonge optiiionnn
+          </Option>
           abc je ne dois pas être la
         </Dropdown>
-      </span>
+      </div>
     </div>
     <div className="grid">
       {plants.map((plant, index) => (

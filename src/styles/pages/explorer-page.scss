@@ -7,12 +7,18 @@
     padding: 2rem 20vw;
     z-index: 10;
 
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    //display: flex;
+    //align-items: center;
+    //justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
 
     background: rgb(var(--color-background));
     position: fixed;
+
+    .input-wrapper {
+      margin-bottom: 0;
+    }
 
     div:nth-child(1) {
       display: inline-block;
@@ -22,6 +28,11 @@
         font-family: DancingScript, serif;
         line-height: 1;
       }
+    }
+
+    div:last-child {
+      display: flex;
+      justify-content: flex-end;
     }
   }
 

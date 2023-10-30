@@ -2,6 +2,7 @@
 @import "../../../styles/typescale";
 
 .input-wrapper {
+  height: fit-content;
   display: inline-flex;
   flex-direction: column;
   position: relative;

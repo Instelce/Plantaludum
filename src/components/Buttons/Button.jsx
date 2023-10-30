@@ -14,17 +14,17 @@ function Button({
   variant = "solid",
   disabled = false,
   fill = false,
-  onClick
+  ...props
 }) {
   return (
     <button
-      onClick={onClick}
       type={type}
       className={`button ${variant} ${size} ${
         fill ? "fill" : ""
       }`}
       disabled={disabled}
       style={{ ["--color"]: `var(--color-${color})` }}
+      {...props}
     >
       {label}
     </button>
