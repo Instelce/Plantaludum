@@ -2,6 +2,10 @@
 
 .dropdown {
   position: relative;
+  display: flex;
+  flex-direction: column;
+
+  svg { height: 1rem; width: 1rem}
 
   .dropdown-options {
     min-width: 100%;
@@ -28,7 +32,8 @@
     .dropdown-options {
       opacity: 1;
       pointer-events: auto;
-      transform: translateY(105%);
+      transform: translateY(110%);
+      z-index: 100;
 
       .option {
         z-index: 100;
@@ -47,8 +52,13 @@
   width: 100%;
   text-align: left;
   cursor: pointer;
+  display: block;
 
-  transition: background .3s;
+  svg {
+    height: 1rem;
+  }
+
+  //transition: background .3s;
 
   &.active {
     background: rgba(var(--color-secondary), .2);

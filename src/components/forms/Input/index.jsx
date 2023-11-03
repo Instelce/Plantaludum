@@ -4,6 +4,7 @@ import "./style.scss";
 import PropTypes from "prop-types";
 
 function Input({
+  id=undefined,
   label,
   type,
   size = "lg",
@@ -12,14 +13,14 @@ function Input({
   value,
   handleValueChange = null,
 }) {
-  const id = useId();
+  const defaultId = useId();
   return (
     <div className="input-wrapper">
       <input
         className={size}
         type={type}
-        id={id}
-        name={id}
+        id={id ? id : defaultId}
+        name={id ? id : defaultId}
         placeholder=" "
         disabled={disabled}
         value={value}
@@ -27,7 +28,7 @@ function Input({
           handleValueChange ? handleValueChange(e.target.value) : null
         }
       />
-      <label htmlFor={id}>{label}</label>
+      <label htmlFor={id ? id : defaultId}>{label}</label>
       {showInfo && (
         <svg
           className="info"
@@ -49,6 +50,7 @@ function Input({
 }
 
 Input.propTypes = {
+  id: PropTypes.string,
   label: PropTypes.string,
   type: PropTypes.oneOf(["text", "email", "password"]),
   size: PropTypes.oneOf(["sm", "md", "lg", "big"]),

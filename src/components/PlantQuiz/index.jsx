@@ -7,7 +7,7 @@ import {X} from "react-feather";
 import PropTypes from "prop-types";
 import {getRandomInt} from "../../utils.js";
 
-function PlantQuiz({show, setShow, plant, quizSubmit}) {
+function PlantQuiz({show, setShow, plant, handleQuizSubmit}) {
     const ref = useRef(null)
     const [showResult, setShowResult] = useState(false)
 
@@ -44,13 +44,16 @@ function PlantQuiz({show, setShow, plant, quizSubmit}) {
 
                     <div className="quiz-choices">
                         {plant.choices?.map((choice, index) => (
+                          <div
+                            key={choice.scientifiqueName}
+                          >
                             <ChoiceBlock
-                                key={choice.scientifiqueName}
                                 index={index}
                                 choice={choice}
                                 showResult={showResult}
                                 setShowResult={setShowResult}
                             />
+                          </div>
                         ))}
                     </div>
                 </div>
@@ -63,7 +66,7 @@ function PlantQuiz({show, setShow, plant, quizSubmit}) {
 PlantQuiz.propTypes = {
     show: PropTypes.bool,
     setShow: PropTypes.func,
-    plant: PropTypes.arrayOf(PropTypes.shape({
+    plant: PropTypes.shape({
         src: PropTypes.string,
         size: PropTypes.number,
         name: PropTypes.string,
@@ -72,8 +75,8 @@ PlantQuiz.propTypes = {
         y: PropTypes.number,
         images: PropTypes.array,
         choices: PropTypes.array,
-    })),
-    quizSubmit: PropTypes.bool
+    }),
+    handleQuizSubmit: PropTypes.func
 }
 
 export default PlantQuiz;

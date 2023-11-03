@@ -5,7 +5,7 @@ import Button from "../../Buttons/Button.jsx";
 import classNames from "classnames";
 
 
-function Dropdown({setValue, defaultValue= undefined, placeholder="Option", children}) {
+function Dropdown({label, size="lg", setValue, defaultValue= undefined, placeholder="Option", children}) {
   const [showOptions, setShowOptions] = useState(false)
   const [currentValue, setCurrentValue] = useState(undefined)
   const [buttonFocus, setButtonFocus] = useState(true)
@@ -27,9 +27,10 @@ function Dropdown({setValue, defaultValue= undefined, placeholder="Option", chil
 
   return (
     <div className={classNames("dropdown", {'show-options': showOptions})}>
+      <label htmlFor="">{label}</label>
       <Button
         label={currentValue ? currentValue : placeholder}
-        color="secondary" variant="outlined" size="big"
+        color="secondary" variant="outlined" size={size}
         onFocus={() => setButtonFocus(true)}
         onBlur={() => setButtonFocus(false)}
         onClick={() => setShowOptions(!showOptions)}

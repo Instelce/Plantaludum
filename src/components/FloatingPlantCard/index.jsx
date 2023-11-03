@@ -30,14 +30,14 @@ function FloatingPlantCard({plant, handleClick}) {
 
 
 FloatingPlantCard.propTypes = {
-    plant: PropTypes.arrayOf(PropTypes.shape({
+    plant: PropTypes.shape({
         size: PropTypes.number,
         x: PropTypes.number,
         y: PropTypes.number,
         found: PropTypes.bool,
         name: PropTypes.string,
         src: PropTypes.string,
-    })),
+    }),
     handleClick: PropTypes.func,
 }
 

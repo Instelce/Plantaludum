@@ -6,10 +6,10 @@ import './style.scss'
 export default function Stars ({count}) {
     let starsElem = []
     for (let i = 0; i < count; i++) {
-        starsElem.push(<Star color="#FFCC00" fill="#FFCC00" />)
+        starsElem.push(<Star key={i} color="#FFCC00" fill="#FFCC00" />)
     }
     for (let i = 0; i < 3 - count; i++) {
-        starsElem.push(<Star color="rgba(var(--color-secondary), .2)" fill="rgba(var(--color-secondary), .2)" />)
+        starsElem.push(<Star key={i} color="rgba(var(--color-secondary), .2)" fill="rgba(var(--color-secondary), .2)" />)
     }
 
     return <>

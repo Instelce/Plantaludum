@@ -15,9 +15,10 @@
   "dependencies": {
     "@emotion/css": "^11.11.2",
     "@emotion/react": "^11.11.1",
-    "@storybook/manager-api": "^7.5.1",
-    "@storybook/preview-api": "^7.5.1",
-    "@storybook/theming": "^7.5.1",
+    "@storybook/manager-api": "^7.5.2",
+    "@storybook/preview-api": "^7.5.2",
+    "@storybook/theming": "^7.5.2",
+    "axios": "^1.6.0",
     "body-scroll-lock": "4.0.0-beta.0",
     "classnames": "^2.3.2",
     "gsap": "^3.12.2",
@@ -26,9 +27,9 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-feather": "^2.0.10",
-    "react-router-dom": "^6.16.0",
-    "sass": "^1.69.0",
-    "styled-components": "^6.0.8"
+    "react-router-dom": "^6.18.0",
+    "sass": "^1.69.5",
+    "styled-components": "^6.1.0"
   },
   "devDependencies": {
     "@storybook/addon-essentials": "7.5.1",
@@ -39,15 +40,15 @@
     "@storybook/react": "7.5.1",
     "@storybook/react-vite": "7.5.1",
     "@storybook/testing-library": "0.2.2",
-    "@types/react": "^18.2.15",
-    "@types/react-dom": "^18.2.7",
-    "@vitejs/plugin-react": "^4.0.3",
-    "eslint": "^8.45.0",
-    "eslint-plugin-react": "^7.32.2",
+    "@types/react": "^18.2.34",
+    "@types/react-dom": "^18.2.14",
+    "@vitejs/plugin-react": "^4.1.1",
+    "eslint": "^8.52.0",
+    "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.4.3",
+    "eslint-plugin-react-refresh": "^0.4.4",
     "eslint-plugin-storybook": "^0.6.15",
     "storybook": "7.5.1",
-    "vite": "^4.4.5"
+    "vite": "^4.5.0"
   }
 }

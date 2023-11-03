@@ -6,15 +6,19 @@
     width: 100%;
     padding: 2rem 20vw;
     z-index: 10;
+    position: relative;
 
     //display: flex;
     //align-items: center;
     //justify-content: space-between;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
 
     background: rgb(var(--color-background));
-    position: fixed;
+    //position: fixed;
+  }
+
+  .topbar-top {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
 
     .input-wrapper {
       margin-bottom: 0;
@@ -33,6 +37,41 @@
     div:last-child {
       display: flex;
       justify-content: flex-end;
+    }
+  }
+
+  .topbar-filters {
+    padding: 1rem 2rem;
+    opacity: 0;
+    position: absolute;
+    bottom: 0;
+    right: 20vw;
+    transform: translate(10%, 100%);
+
+    border-radius: 10px;
+    border: 1px solid rgba(var(--color-secondary), .2);
+    background: rgb(var(--color-background));
+
+    transition: opacity .3s, transform .3s;
+
+    pointer-events: none;
+
+    &.show {
+      pointer-events: auto;
+      opacity: 1;
+      transform: translate(0, 100%);
+    }
+
+    h3 {
+      font-weight: 500;
+    }
+
+    & > button:last-child {
+      margin-top: 1rem;
+    }
+
+    & > div:not(:first-child) {
+      margin-top: 1rem;
     }
   }
 

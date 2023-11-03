@@ -4,7 +4,29 @@ import PlantCard from "../components/PlantCard/index.jsx";
 import Modal from "../components/Modal/index.jsx";
 import Button from "../components/Buttons/Button.jsx";
 import Dropdown, {Option} from "../components/forms/Dropdown/index.jsx";
+import classNames from "classnames";
+import Stars from "../components/Stars/index.jsx";
 
+
+const sorts = [
+  {
+    name: "name",
+    defaultValue: "ascending"
+  },
+  {
+    name: "difficulty",
+    defaultValue: "ascending"
+  }
+]
+
+const filters = [
+  {
+    name: "difficulty",
+    defaultValue: undefined,
+    minValue: 1,
+    maxValue: 3,
+  }
+]
 
 const plants = [
   {
@@ -55,38 +77,53 @@ const plants = [
 function Explorer(props) {
   const [showModal, setShowModal] = useState(false)
   const [filter, setFilter] = useState("")
+  const [showFilter, setShowFilter] = useState(false)
+  const [quizzes, setQuizzes] = useState(plants)
 
   return <div className="container explorer">
     <div className="topbar">
-      <div>
-        <h1>
-          <a href="/menu">Plantaludum</a>
-        </h1>
-        <p>Explorer</p>
+      <div className="topbar-top">
+        <div>
+          <h1>
+            <a href="/menu">Plantaludum</a>
+          </h1>
+          <p>Explorer</p>
+        </div>
+        <Input
+          label="Rechercher"
+          size="big"
+        />
+        <div>
+         <Button
+           label={ showFilter ? "Fermer" : "Filtrer" }
+           size="big"
+           variant="outlined"
+           color="secondary"
+           onClick={() => setShowFilter(!showFilter)}
+         />
+        </div>
       </div>
-      <Input
-        label="Rechercher"
-        size="big"
-      />
-      <div>
-        <Dropdown setValue={setFilter}>
-          <Option>
-            option 1
-          </Option>
-          <Option>
-            option 2
-          </Option>
-          <Option>
-            option 3
-          </Option>
-          <Option>
-            option 4
-          </Option>
-          <Option>
-            loooonge optiiionnn
-          </Option>
-          abc je ne dois pas être la
-        </Dropdown>
+      <div className={classNames("topbar-filters", {show: showFilter})}>
+        <div>
+          <h3>Filters</h3>
+          <Dropdown label="Difficulté" placeholder="Difficulté" setValue={setFilter}>
+            <Option><Stars count={1} /></Option>
+            <Option><Stars count={2} /></Option>
+            <Option><Stars count={3} /></Option>
+          </Dropdown>
+        </div>
+        <div>
+          <h3>Trier</h3>
+          <Dropdown label="Nom" placeholder="Nom" setValue={setFilter}>
+            <Option>de A à Z</Option>
+            <Option>de Z à A</Option>
+          </Dropdown>
+          <Dropdown label="Difficulté" placeholder="Difficulté" setValue={setFilter}>
+            <Option>Croissant</Option>
+            <Option>Décroissant</Option>
+          </Dropdown>
+        </div>
+        <Button label="Appliquer" size="lg" color="primary" variant="solid" fill />
       </div>
     </div>
     <div className="grid">

@@ -7,6 +7,8 @@ import {getRandomInt} from "../utils.js";
 import PlantQuiz from "../components/PlantQuiz/index.jsx";
 import animate from "../animate.js";
 import ButtonLink from "../components/Buttons/ButtonLink.jsx";
+import defaultFetch, {floreFetch} from "../api/axios.js";
+import {useFetch} from "../hooks/useFetch.js";
 
 
 function createPlants() {
@@ -30,7 +32,7 @@ function createPlants() {
         if (i%2 === 0) {
             col += 1
         }
-        console.log(Math.ceil(plantsSrc.length/2/2), col, plantsSrc[i])
+        // console.log(Math.ceil(plantsSrc.length/2/2), col, plantsSrc[i])
         plants.push({
             src: plantsSrc[i],
             size: size,
@@ -59,6 +61,11 @@ function Home(props) {
     const [plants, setPlants] = useState(createPlants())
     const [currentPlant, setCurrentPlant] = useState({})
     const [showQuiz, setShowQuiz] = useState(false)
+
+    const { data: plantsData, loading } = useFetch({fetchFunc: floreFetch.get('/api/plants')})
+
+    useEffect(() => {
+    }, []);
 
      const handleCardClick = (e, plant) => {
         e.preventDefault()
@@ -102,10 +109,10 @@ function Home(props) {
                     `}
                 >
                     <h1 className="main-title">Plantaludum</h1>
-                    <ButtonLink label="Jouer" to="/connexion" size="ld" color="primary" fill={true}></ButtonLink>
+                    <ButtonLink label="Jouer" to="/connexion" size="big" color="primary" fill={true}></ButtonLink>
                 </div>
             </CardWrapper>
-            <PlantQuiz show={showQuiz} setShow={setShowQuiz} plant={currentPlant} quizSubmit={handleQuizSubmit} />
+            <PlantQuiz show={showQuiz} setShow={setShowQuiz} plant={currentPlant} handleQuizSubmit={handleQuizSubmit} />
         </div>
     );
 }

@@ -9,16 +9,15 @@ import MainMenu from "./pages/protected/MainMenu.jsx";
 import QuizChoice from "./pages/protected/QuizChoice.jsx";
 import QuizPage from "./pages/protected/QuizPage.jsx";
 import QuizResult from "./pages/protected/QuizResultS.jsx";
-import PropTypes from "prop-types";
 import Explorer from "./pages/Explorer.jsx";
+import ProtectedRoute from "./routes/ProtectedRoute.jsx";
+import useAuth from "./hooks/useAuth.js";
 
 function App(props) {
-  const [user, setUser] = useState(null);
+  const {setAuth} = useAuth()
 
-  const handleLogin = (user) => setUser(user);
-  const handleLogout = () => setUser(null);
-
-  console.log(user);
+  const handleLogin = (auth) => setAuth(auth)
+  const handleLogout = () => setAuth({})
 
   return (
     <>
@@ -33,7 +32,7 @@ function App(props) {
           <Route
             path="menu"
             element={
-              <ProtectedRoute isAllowed={!!user}>
+              <ProtectedRoute>
                 <MainMenu />
               </ProtectedRoute>
             }
@@ -41,7 +40,7 @@ function App(props) {
             <Route
               path="choix"
               element={
-                <ProtectedRoute isAllowed={!!user}>
+                <ProtectedRoute>
                   <QuizChoice />
                 </ProtectedRoute>
               }
@@ -69,19 +68,5 @@ function App(props) {
     </>
   );
 }
-
-function ProtectedRoute({ isAllowed, redirectPath = "/connexion", children }) {
-  if (!isAllowed) {
-    return <Navigate to={redirectPath} replace />;
-  }
-
-  return children;
-}
-
-ProtectedRoute.propTypes = {
-  isAllowed: PropTypes.bool,
-  redirectPath: PropTypes.string,
-  children: PropTypes.node,
-};
 
 export default App;
