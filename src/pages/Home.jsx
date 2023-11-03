@@ -3,69 +3,116 @@ import Navbar from "../components/Navbar/index.jsx";
 import {styled} from "styled-components"
 import {css} from "@emotion/css";
 import FloatingPlantCard from "../components/FloatingPlantCard/index.jsx";
-import {getRandomInt} from "../utils.js";
+import {
+    arrayChoice,
+    deleteDublicates,
+    getRandomInt,
+    simpleFetch
+} from "../utils.js";
 import PlantQuiz from "../components/PlantQuiz/index.jsx";
 import animate from "../animate.js";
 import ButtonLink from "../components/Buttons/ButtonLink.jsx";
 import defaultFetch, {floreFetch} from "../api/axios.js";
 import {useFetch} from "../hooks/useFetch.js";
+import {random} from "gsap/gsap-core";
+import {all} from "axios";
 
 
-function createPlants() {
-    const plantsSrc = [
-        "https://api.tela-botanica.org/img:000243414CRS.jpg",
-        "https://api.tela-botanica.org/img:000208259CRS.jpg",
-        "https://api.tela-botanica.org/img:000244988CRS.jpg",
-        "https://api.tela-botanica.org/img:000073996CRS.jpg",
-        "https://api.tela-botanica.org/img:000192173CRS.jpg",
-        "https://api.tela-botanica.org/img:002479913CRS.jpg",
-        "https://api.tela-botanica.org/img:000116167CRS.jpg",
-        "https://api.tela-botanica.org/img:000092753CRS.jpg",
-        "https://api.tela-botanica.org/img:002251388CRS.jpg",
-        "https://api.tela-botanica.org/img:001118914CRS.jpg",
-    ]
-    let plants = []
-    let size = 300;
-    let col = -1
+export async function homeLoader({request, params}) {
 
-    for (let i = 0; i < plantsSrc.length; i++) {
-        if (i%2 === 0) {
-            col += 1
-        }
-        // console.log(Math.ceil(plantsSrc.length/2/2), col, plantsSrc[i])
-        plants.push({
-            src: plantsSrc[i],
-            size: size,
-            name: `Vesce fausse-esparcette ${getRandomInt(0, 100)}`,
-            found: false,
-            x: 20*col+3,
-            y: (col === Math.ceil(plantsSrc.length/2/2-1) ? (i%2 === 0 ? getRandomInt(10, 15) : getRandomInt(60, 70)) : (i%2 === 0 ? getRandomInt(10, 20) : getRandomInt(50, 60))),
-            images: [
-                "https://api.tela-botanica.org/img:000067643CRS.jpg",
-                "https://api.tela-botanica.org/img:000067644CRS.jpg",
-                "https://api.tela-botanica.org/img:000023106CRS.jpg",
-            ],
-            choices: [
-                {title: "Vesce fausse-esparcette", subtitle: "Abacosa onobrychioides", rightAnswer: false},
-                {title: "Narth\u00e9cie des marais", subtitle: "Abama ossifraga", rightAnswer: true},
-                {title: "AANarth\u00e9cie des marais", subtitle: "Abamaa ossifraga", rightAnswer: false}
-            ]
-        })
-    }
-
-    return plants
 }
 
 
 function Home(props) {
-    const [plants, setPlants] = useState(createPlants())
+    let tempPlants = []
+    const [plants, setPlants] = useState([])
     const [currentPlant, setCurrentPlant] = useState({})
     const [showQuiz, setShowQuiz] = useState(false)
 
-    const { data: plantsData, loading } = useFetch({fetchFunc: floreFetch.get('/api/plants')})
+    const { data: plantsData, loading } = useFetch({fetchFunc: floreFetch.get('/api/plants/random/10')})
 
     useEffect(() => {
-    }, []);
+        if (!loading) {
+            // let tempPlants = []
+            let col = -1;
+            const size = 300;
+
+            // loop 10 plants
+            for (let i = 0; i < 10; i++) {
+                let choices = []
+                let images = []
+                let plant = plantsData[i]
+                // console.log(plant)
+
+                floreFetch.get(`/api/images?plant__id=${plant.id}`)
+                  .then(response => {
+                    if (response.status === 200) {
+                        const allImages = response.data
+                        // console.log(i, plant.id, allImages)
+                        // console.log(plant)
+
+                        // get images
+                        let randomImages = arrayChoice(allImages.results, allImages.count >= 6 ? 6 : allImages.count)
+                        for (let id in randomImages) {
+                            if (randomImages[id]?.url) {
+                                images.push(randomImages[id].url)
+                            }
+                        }
+                        images = deleteDublicates(images)
+
+                        // console.log(images)
+
+                        // get choices
+                        let randomChoices = arrayChoice(plantsData, 2)
+
+                        let randomPlace = getRandomInt(0, randomChoices.length + 1);
+                        let id = 0;
+                        for (let i = 0; i < randomChoices.length + 1; i++) {
+                            if (i === randomPlace) {
+                                // console.log(i)
+                                choices.push({
+                                    title: plant.french_name ? plant.french_name : plant.correct_name,
+                                    subtitle: plant.scientific_name,
+                                    rightAnswer: true
+                                })
+                            } else {
+                                // console.log(i, "rchoice", randomChoices[id])
+                                choices.push({
+                                    title: randomChoices[id].french_name ? randomChoices[id].french_name : randomChoices[id].correct_name,
+                                    subtitle: randomChoices[id].scientific_name,
+                                    rightAnswer: false
+                                })
+                                id++;
+                            }
+                        }
+                        choices = deleteDublicates(choices)
+                        console.log(plant.french_name, choices)
+
+                        tempPlants.push({
+                              src: allImages.results[getRandomInt(0, allImages.results.length - 1)]?.url,
+                              size: size,
+                              name: plant.french_name ? plant.french_name : plant.scientific_name,
+                              found: false,
+                              x: 20*(i%5)+3,
+                              y: (col === Math.ceil(10/2/2-1) ? (i%2 === 0 ? getRandomInt(10, 15) : getRandomInt(60, 70)) : (i%2 === 0 ? getRandomInt(10, 20) : getRandomInt(50, 60))),
+                              images: images,
+                              choices: choices
+                        })
+
+                        if (tempPlants.length === 10) {
+                            setPlants(tempPlants)
+                        }
+                    }
+                })
+            }
+        }
+    }, [loading]);
+
+    useEffect(() => {
+        if (tempPlants.length === 10) {
+            setPlants(tempPlants)
+        }
+    }, [tempPlants]);
 
      const handleCardClick = (e, plant) => {
         e.preventDefault()
@@ -85,20 +132,21 @@ function Home(props) {
             }
         })
         setPlants(updatePlants)
-        console.log(plants)
     }
 
     return (
         <div className="fixed-container">
             <CardWrapper active={!showQuiz}>
-                {plants.map((plant, index) => (
-                    <FloatingPlantCard
-                        key={plant.src}
-                        index={index}
-                        plant={plant}
-                        handleClick={handleCardClick}
-                    />
-                ))}
+                {!loading &&
+                    plants.map((plant, index) => (
+                        <FloatingPlantCard
+                            key={plant.src}
+                            index={index}
+                            plant={plant}
+                            handleClick={handleCardClick}
+                        />
+                    )
+                )}
                 <div
                     className={css`
                       position: absolute;

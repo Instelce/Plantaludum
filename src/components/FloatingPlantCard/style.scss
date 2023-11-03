@@ -4,16 +4,21 @@
   cursor: pointer;
   transition: transform .3s ease;
 
+
   .card-image {
     width: 100%;
-    height: 100%;
     aspect-ratio: 1;
     border-radius: 10px;
     overflow: hidden;
+
+    background: rgba(var(--color-secondary), .2);
     transition: transform .3s cubic-bezier(.12,.5,.56,.97);
   }
 
   img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
     transition: transform .3s cubic-bezier(.12,.5,.56,.97);
   }
 

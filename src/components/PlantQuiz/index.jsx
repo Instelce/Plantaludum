@@ -12,13 +12,15 @@ function PlantQuiz({show, setShow, plant, handleQuizSubmit}) {
     const [showResult, setShowResult] = useState(false)
 
     const close = () => {
-        console.log('##', showResult, plant.found)
         setShow(!show)
-        quizSubmit(plant, showResult)
+        handleQuizSubmit(plant, showResult)
         setShowResult(false)
     }
 
     useEffect(() => {
+        if (show) {
+            console.log(plant.name, plant.choices)
+        }
         if (ref.current.classList.contains('show') && plant.found) {
             setShowResult(true)
         } else if (!ref.current.classList.contains('show') && plant.found) {
@@ -45,13 +47,14 @@ function PlantQuiz({show, setShow, plant, handleQuizSubmit}) {
                     <div className="quiz-choices">
                         {plant.choices?.map((choice, index) => (
                           <div
-                            key={choice.scientifiqueName}
+                            key={choice.title}
                           >
                             <ChoiceBlock
                                 index={index}
                                 choice={choice}
                                 showResult={showResult}
                                 setShowResult={setShowResult}
+                                setIsRight={() => null}
                             />
                           </div>
                         ))}

@@ -8,7 +8,6 @@ export function useFetch({fetchFunc}) {
 
   useEffect(() => {
      fetchFunc.then(response => {
-      console.log("data", response.data)
       setData(response.data)
     }).catch((err) => {
       setErrors(err)

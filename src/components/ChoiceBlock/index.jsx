@@ -40,11 +40,11 @@ function ChoiceBlock({choice, showResult, setShowResult, setIsRight}) {
 }
 
 ChoiceBlock.propTypes = {
-    choice: PropTypes.arrayOf(PropTypes.shape({
+    choice: PropTypes.shape({
         title: PropTypes.string,
         subtitle: PropTypes.string,
         rightAnswer: PropTypes.bool,
-    })),
+    }),
     showResult: PropTypes.bool,
     setShowResult: PropTypes.func,
     setIsRight: PropTypes.func
