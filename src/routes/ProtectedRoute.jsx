@@ -1,12 +1,22 @@
 import {Navigate} from "react-router-dom";
 import PropTypes from "prop-types";
-import useAuth from "../hooks/useAuth.js";
+import useAuth from "../hooks/auth/useAuth.js";
+import useRefreshToken from "../hooks/auth/useRefreshToken.js";
 
 function ProtectedRoute({children, redirectPath = "/connexion"}) {
   const {accessToken} = useAuth()
+  const refresh = useRefreshToken()
 
   if (!accessToken) {
-    return <Navigate to={redirectPath} replace />;
+    async () => {
+      const {newAccessToken} = await refresh()
+
+      if (!newAccessToken) {
+        return <Navigate to={redirectPath} replace />;
+      } else {
+        return children
+      }
+    }
   }
 
   return children;

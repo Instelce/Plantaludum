@@ -11,7 +11,7 @@ import QuizPage from "./pages/protected/QuizPage.jsx";
 import QuizResult from "./pages/protected/QuizResultS.jsx";
 import Explorer from "./pages/Explorer.jsx";
 import ProtectedRoute from "./routes/ProtectedRoute.jsx";
-import useAuth from "./hooks/useAuth.js";
+import useAuth from "./hooks/auth/useAuth.js";
 
 function App(props) {
   return (
@@ -19,45 +19,36 @@ function App(props) {
       <Routes>
         <Route path="/" element={<Root />} errorElement={<Error />}>
           <Route index path="/" element={<Home />} />
+
           <Route path="inscription" element={<Register />} />
-          <Route
-            path="connexion"
-            element={<Login/>}
-          />
-          <Route
-            path="menu"
-            element={
+
+          <Route path="connexion" element={<Login/>} />
+
+          <Route path="explorer" element={<Explorer />} />
+
+          <Route path="menu" element={
               <ProtectedRoute>
                 <MainMenu />
               </ProtectedRoute>
-            }
-          >
-            <Route
-              path="choix"
-              element={
+            }>
+            <Route path="choix" element={
                 <ProtectedRoute>
                   <QuizChoice />
                 </ProtectedRoute>
-              }
-            />
+              } />
           </Route>
-          <Route path="explorer" element={<Explorer />} />
-          <Route
-            path="quiz/:quizId"
-            element={
+
+          <Route path="quiz/:quizId" element={
               <ProtectedRoute>
                 <QuizPage />
               </ProtectedRoute>
-            }
-          />
-          <Route
-            path="quiz/:quizId/resultat"
-            element={
+            } />
+
+          <Route path="quiz/:quizId/resultat" element={
               <ProtectedRoute>
                 <QuizResult />
               </ProtectedRoute>
-            }
-          />
+            } />
         </Route>
       </Routes>
     </>

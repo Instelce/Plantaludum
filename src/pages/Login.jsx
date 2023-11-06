@@ -3,7 +3,7 @@ import {Link, useLocation, useNavigate} from "react-router-dom";
 import Input from "../components/forms/Input/index.jsx";
 import Button from "../components/Buttons/Button.jsx";
 import PropTypes from "prop-types";
-import useAuth from "../hooks/useAuth.js";
+import useAuth from "../hooks/auth/useAuth.js";
 import defaultFetch from "../api/axios.js";
 import useFormFilled from "../hooks/useFormFilled.js";
 
@@ -15,7 +15,7 @@ function Login({ handleLogin }) {
   const location = useLocation()
   const fromLocation = location?.state?.from?.pathname || '/menu'
   const [loading, setLoading] = useState(false)
-  const {form, handleFormChange, isFilled} = useFormFilled()
+  const {formRef, handleFormChange, isFilled} = useFormFilled()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -44,7 +44,7 @@ function Login({ handleLogin }) {
 
   return (
     <div className="container center">
-      <form ref={form} className="form-page" onSubmit={handleSubmit} onChange={(e) => handleFormChange(e.target)}>
+      <form ref={formRef} className="form-page" onSubmit={handleSubmit} onChange={(e) => handleFormChange(e.target)}>
         <div className="form-header">
           <h1>Content de te revoir !</h1>
           <p>

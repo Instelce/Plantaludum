@@ -1,4 +1,4 @@
-import useAuth from "./useAuth"
+import useAuth from "./useAuth.js"
 // import {privateFetch} from "../api/axios.js";
 import usePrivateFetch from "./usePrivateFetch.js";
 

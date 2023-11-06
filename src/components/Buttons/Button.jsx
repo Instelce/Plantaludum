@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import "./style.scss";
+import classNames from "classnames";
 
 /**
  * Button
@@ -14,19 +15,21 @@ function Button({
   variant = "solid",
   disabled = false,
   fill = false,
+  icon = null,
   ...props
 }) {
   return (
     <button
       type={type}
-      className={`button ${variant} ${size} ${
-        fill ? "fill" : ""
-      }`}
+      className={classNames(`button ${variant} ${size}`, {fill: fill}, {icon: icon !== null})}
       disabled={disabled}
       style={{ ["--color"]: `var(--color-${color})` }}
       {...props}
     >
       {label}
+      {icon !== null && <span>
+        {icon}
+      </span>}
     </button>
   );
 }
@@ -39,7 +42,7 @@ Button.propTypes = {
   variant: PropTypes.oneOf(['outlined', 'solid', 'soft']),
   disabled: PropTypes.bool,
   fill: PropTypes.bool,
-  onClick: PropTypes.func,
+  icon: PropTypes.node,
 };
 
 export default Button;

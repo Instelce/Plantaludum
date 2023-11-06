@@ -107,9 +107,9 @@ function Explorer(props) {
         <div>
           <h3>Filters</h3>
           <Dropdown label="Difficulté" placeholder="Difficulté" setValue={setFilter}>
-            <Option><Stars count={1} /></Option>
-            <Option><Stars count={2} /></Option>
-            <Option><Stars count={3} /></Option>
+            <Option value={1}><Stars count={1} /></Option>
+            <Option value={2}><Stars count={2} /></Option>
+            <Option value={3}><Stars count={3} /></Option>
           </Dropdown>
         </div>
         <div>

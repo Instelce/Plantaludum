@@ -6,19 +6,31 @@
   position: relative;
   font-size: inherit;
   cursor: pointer;
-  transition: background .2s, box-shadow .3s ease;;
+  transition: background .2s, box-shadow .3s ease, border .3s ease;
 
   &:focus {
     box-shadow: 0 0 0 2px rgb(var(--color-background)), 0 0 0 4px rgba(var(--color-secondary), .2);
   }
 
+  &.icon {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    span {
+      display: flex;
+      margin-left: 1rem;
+    }
+  }
+
   &.outlined {
     color: rgb(var(--color-text));
     background: transparent;
-    border: 1px solid rgb(var(--color));
+    border: 1px solid rgba(var(--color), .6);
 
     &:hover {
-      background: rgba(var(--color), .2);
+      border: 1px solid rgba(var(--color), 1);
+      //background: rgba(var(--color), .1);
     }
   }
 

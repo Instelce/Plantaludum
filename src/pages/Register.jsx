@@ -6,11 +6,14 @@ import Button from "../components/Buttons/Button.jsx";
 import PasswordChecker from "../components/forms/PasswordChecker/index.jsx";
 import ButtonLink from "../components/Buttons/ButtonLink.jsx";
 import defaultFetch from "../api/axios.js";
+import useFormFilled from "../hooks/useFormFilled.js";
+
 
 function Register(props) {
   const navigate = useNavigate()
   const [responseHelper, setResponseHelper] = useState({})
   const [passwordValue, setPasswordValue] = useState("");
+  const {formRef, handleFormChange, isFilled} = useFormFilled()
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -39,7 +42,7 @@ function Register(props) {
 
   return (
     <div className="container center">
-      <form className="form-page" onSubmit={handleSubmit}>
+      <form ref={formRef} className="form-page" onSubmit={handleSubmit} onChange={(e) => handleFormChange(e.target)}>
         <div className="form-header">
           <h1>Bienvenu</h1>
           <p>
@@ -85,7 +88,7 @@ function Register(props) {
           helperText={responseHelper?.password_confirmation}
         />
         <PasswordChecker password={passwordValue} />
-        <Button label="Créer" type="submit" color="primary" size="big" fill />
+        <Button label="Créer" type="submit" color="primary" size="big" fill disabled={!isFilled} />
       </form>
     </div>
   );

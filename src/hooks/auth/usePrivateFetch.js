@@ -1,7 +1,7 @@
-import {privateFetch} from "../api/axios.js";
+import {privateFetch} from "../../api/axios.js";
 import { useEffect } from 'react'
-import useAuth from "./useAuth";
-import useRefreshToken from "./useRefreshToken";
+import useAuth from "./useAuth.js";
+import useRefreshToken from "./useRefreshToken.js";
 
 export default function usePrivateFetch() {
 

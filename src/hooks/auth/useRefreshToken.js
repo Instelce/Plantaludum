@@ -1,5 +1,5 @@
-import defaultFetch from "../api/axios.js";
-import useAuth from "./useAuth";
+import defaultFetch from "../../api/axios.js";
+import useAuth from "./useAuth.js";
 
 export default function useRefreshToken() {
   const { setAccessToken, setCSRFToken } = useAuth()

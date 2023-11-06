@@ -30,7 +30,7 @@ function useFormFilled() {
       }
   }
 
-  return {form: form, handleFormChange: handleFormChange, isFilled: isFilled}
+  return {formRef: form, handleFormChange: handleFormChange, isFilled: isFilled}
 }
 
 export default useFormFilled;
