@@ -52,7 +52,7 @@ function Home(props) {
                         // console.log(plant)
 
                         // get images
-                        let randomImages = arrayChoice(allImages.results, allImages.count >= 6 ? 6 : allImages.count)
+                        let randomImages = arrayChoice(allImages.results, allImages.count >= 8 ? 8 : allImages.count)
                         for (let id in randomImages) {
                             if (randomImages[id]?.url) {
                                 images.push(randomImages[id].url)

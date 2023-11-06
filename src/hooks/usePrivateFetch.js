@@ -1,49 +1,46 @@
-import defaultFetch, {axiosPrivate, privateFetch} from "../api/axios.js";
-import useRefreshToken from "./useRefreshToken.js";
-import useAuth from "./useAuth.js";
-import {useEffect} from "react";
+import {privateFetch} from "../api/axios.js";
+import { useEffect } from 'react'
+import useAuth from "./useAuth";
+import useRefreshToken from "./useRefreshToken";
 
-function usePrivateFetch() {
+export default function usePrivateFetch() {
+
+  const { accessToken, setAccessToken, csrftoken, user } = useAuth()
   const refresh = useRefreshToken()
-  const {auth} = useAuth()
 
   useEffect(() => {
-
     const requestIntercept = privateFetch.interceptors.request.use(
-      config => {
-        if (!config.headers['Authorization']) {
-          config.headers['Authorization'] = `Bearer ${auth?.accessToken}`
+      (config) => {
+        if (!config.headers["Authorization"]) {
+          config.headers['Authorization'] = `Bearer ${accessToken}`;
+          config.headers['X-CSRFToken'] = csrftoken
         }
         return config
       },
       (error) => Promise.reject(error)
     )
 
-    const responceIntercept = privateFetch.interceptors.response.use(
+    const responseIntercept = privateFetch.interceptors.response.use(
       response => response,
       async (error) => {
         const prevRequest = error?.config;
-
-        console.log(prevRequest)
-
-        // get new access token if it's expired and resend previous request with the new access token
-        if (error?.config?.status === 403 && !prevRequest.send) {
-          prevRequest.send = true;
-          const newAccessToken = refresh();
-          prevRequest.headers['Authorization'] = `Bearer ${newAccessToken}`
+        if ((error?.response?.status === 403 || error?.response?.status === 401) && !prevRequest?.sent) {
+          prevRequest.sent = true;
+          const { csrfToken: newCSRFToken, accessToken: newAccessToken } = await refresh();
+          setAccessToken(newAccessToken)
+          prevRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+          prevRequest.headers['X-CSRFToken'] = newCSRFToken
           return privateFetch(prevRequest)
         }
-
-        return Promise.reject(error)
+        return Promise.reject(error);
       }
     )
 
     return () => {
-      defaultFetch.interceptors.request.eject(requestIntercept)
+      privateFetch.interceptors.request.eject(requestIntercept)
+      privateFetch.interceptors.response.eject(responseIntercept)
     }
-  }, [auth, refresh]);
+  }, [accessToken, user])
 
-  return axiosPrivate;
+  return privateFetch
 }
-
-export default usePrivateFetch;

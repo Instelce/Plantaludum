@@ -1,12 +1,21 @@
 
 @import "../../../styles/typescale";
 
+
+.input-container {
+  .helper-text {
+    margin-top: .2rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
 .input-wrapper {
+  width: 100%;
   height: fit-content;
   display: inline-flex;
   flex-direction: column;
   position: relative;
-  margin-bottom: 1.5em;
+  //margin-bottom: 1.5em;
 
   input {
     background: transparent;

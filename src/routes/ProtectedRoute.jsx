@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 import useAuth from "../hooks/useAuth.js";
 
 function ProtectedRoute({children, redirectPath = "/connexion"}) {
-  const {auth} = useAuth()
+  const {accessToken} = useAuth()
 
-  if (!auth) {
+  if (!accessToken) {
     return <Navigate to={redirectPath} replace />;
   }
 

@@ -1,11 +1,18 @@
-import React, { useRef } from "react";
+import {useEffect, useRef} from "react";
 import { Link, useOutlet } from "react-router-dom";
+import usePrivateFetch from "../../hooks/usePrivateFetch.js";
+import useRefreshToken from "../../hooks/useRefreshToken.js";
+import Button from "../../components/Buttons/Button.jsx";
+import useLogout from "../../hooks/useLogout.js";
 
 export default MainMenu;
 
 function MainMenu(props) {
     const outlet = useOutlet()
     const hoverSound = useRef(null)
+    const privateFetch = usePrivateFetch()
+    const refresh = useRefreshToken()
+    const logout = useLogout()
 
     const handleHover = () => {
         hoverSound.current.play()
@@ -13,6 +20,20 @@ function MainMenu(props) {
     const handleLeave = () => {
         hoverSound.current.pause()
         hoverSound.current.currentTime = 0;
+    }
+
+    const addQuiz = () => {
+        privateFetch.post('/api/quizzes', {
+            "name": "niceeee",
+            "description": "Lorem ipsum dolor sit amet. okokok",
+            "difficulty": 3,
+            "private": true,
+            "user": 1
+        }).then(r => {
+            console.log(r.data, r.headers)
+        }).catch(error => {
+            console.log(error.data, error.headers)
+        })
     }
 
     return (
@@ -33,6 +54,9 @@ function MainMenu(props) {
                                     <li><Link to="" onMouseEnter={handleHover} onMouseLeave={handleLeave}>Duel</Link></li>
                                     <li><Link to="" onMouseEnter={handleHover} onMouseLeave={handleLeave}>Classement</Link></li>
                                     <li><Link to="" onMouseEnter={handleHover} onMouseLeave={handleLeave}>Profile</Link></li>
+                                    <li><Button label="Refresh" color="primary" onClick={refresh}>Refresh</Button></li>
+                                    <li><Button label="New" color="primary" onClick={addQuiz} /></li>
+                                    <li><Button label="Logout" color="primary" onClick={logout} /></li>
                                 </ul>
                             </nav>
                         </div>

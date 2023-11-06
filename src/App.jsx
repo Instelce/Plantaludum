@@ -14,11 +14,6 @@ import ProtectedRoute from "./routes/ProtectedRoute.jsx";
 import useAuth from "./hooks/useAuth.js";
 
 function App(props) {
-  const {setAuth} = useAuth()
-
-  const handleLogin = (auth) => setAuth(auth)
-  const handleLogout = () => setAuth({})
-
   return (
     <>
       <Routes>
@@ -27,7 +22,7 @@ function App(props) {
           <Route path="inscription" element={<Register />} />
           <Route
             path="connexion"
-            element={<Login handleLogin={handleLogin} />}
+            element={<Login/>}
           />
           <Route
             path="menu"
@@ -50,17 +45,17 @@ function App(props) {
           <Route
             path="quiz/:quizId"
             element={
-              // <ProtectedRoute isAllowed={!!user}>
-              <QuizPage />
-              // </ProtectedRoute>
+              <ProtectedRoute>
+                <QuizPage />
+              </ProtectedRoute>
             }
           />
           <Route
             path="quiz/:quizId/resultat"
             element={
-              // <ProtectedRoute isAllowed={!!user}>
-              <QuizResult />
-              // </ProtectedRoute>
+              <ProtectedRoute>
+                <QuizResult />
+              </ProtectedRoute>
             }
           />
         </Route>

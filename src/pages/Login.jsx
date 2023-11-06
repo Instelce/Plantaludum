@@ -1,32 +1,50 @@
-import React, { useMemo, useState } from "react";
-import {Link, useNavigate} from "react-router-dom";
+import {useEffect, useState} from "react";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import Input from "../components/forms/Input/index.jsx";
 import Button from "../components/Buttons/Button.jsx";
 import PropTypes from "prop-types";
-import ButtonLink from "../components/Buttons/ButtonLink.jsx";
+import useAuth from "../hooks/useAuth.js";
+import defaultFetch from "../api/axios.js";
+import useFormFilled from "../hooks/useFormFilled.js";
 
 function Login({ handleLogin }) {
+  const {setAccessToken, setCSRFToken} = useAuth()
   const [passwordValue, setPasswordValue] = useState("");
+  const [responseHelper, setResponseHelper] = useState({})
   const navigate = useNavigate()
+  const location = useLocation()
+  const fromLocation = location?.state?.from?.pathname || '/menu'
+  const [loading, setLoading] = useState(false)
+  const {form, handleFormChange, isFilled} = useFormFilled()
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("handle");
+    const formData = new FormData(e.target)
 
-    // check if user exist ...
-    // token ...
+    setLoading(true)
 
-    // then
-    handleLogin({
-      id: 1,
-      name: "Franklin",
-    });
-    navigate('/menu')
-  };
+    try {
+      const response = await defaultFetch.post('auth/login', {
+        email: formData.get('email'),
+        password: formData.get('password')
+      })
+
+      setAccessToken(response?.data?.access_token)
+      setCSRFToken(response.headers["x-csrftoken"])
+      setLoading(false)
+
+      navigate(fromLocation, {replace: true})
+    } catch (error) {
+      console.log(error)
+      setLoading(false)
+      setResponseHelper(error?.response.data)
+    }
+    
+  }
 
   return (
     <div className="container center">
-      <form className="form-page" onSubmit={handleSubmit}>
+      <form ref={form} className="form-page" onSubmit={handleSubmit} onChange={(e) => handleFormChange(e.target)}>
         <div className="form-header">
           <h1>Content de te revoir !</h1>
           <p>
@@ -37,20 +55,30 @@ function Login({ handleLogin }) {
             .
           </p>
         </div>
-        <Input label="Email" type="email" showInfo size="big"/>
         <Input
+          id="email"
+          label="Email"
+          type="text"
+          size="big"
+          showInfo
+          helperText={responseHelper.email}/>
+        <Input
+          id="password"
           label="Mot de passe"
           type="password"
           showInfo
           size="big"
           value={passwordValue}
           handleValueChange={setPasswordValue}
+          helperText={responseHelper.password}
         />
+        <p style={{marginBottom: "1rem"}}>{responseHelper.detail}</p>
         <Button
-            label="Connexion"
+          label="Connexion"
           type="submit"
           color="primary"
           size="big"
+          disabled={!isFilled}
         />
       </form>
     </div>
