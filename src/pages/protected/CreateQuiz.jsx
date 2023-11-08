@@ -59,8 +59,7 @@ function CreateQuiz(props) {
           size="big"
           url={`http://127.0.0.1:8001/api/plants`}
           fieldName="french_name"
-          maxSuggestions={4}
-          // url={`${import.meta.env.FLORE_API_URL}/api/plants`}
+          maxSuggestions={5}
         />
         <Checkbox
           label="Privé"

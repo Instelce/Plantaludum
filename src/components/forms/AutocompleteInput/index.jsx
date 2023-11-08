@@ -14,11 +14,12 @@ function AutocompleteInput({
   url,
   fieldName,
   maxSuggestions=10,
-  isValid = null,
+  setValidValue = null,
 }) {
   const [searchValue, setSearchValue] = useState("")
   const [suggestions, setSuggestions] = useState(null)
   const debouncedSearchValue = useDebounce(searchValue, 300)
+  const [selectedValue, setSelectedValue] = useState("")
 
   useEffect(() => {
     axios.get(url, {params: {search: debouncedSearchValue}})
@@ -29,14 +30,15 @@ function AutocompleteInput({
 
   const handleOptionClick = (value) => {
     console.log(value)
+    setSelectedValue(prev => value)
     setSearchValue(prev => value)
-    isValid?.(prev => true)
+    setValidValue?.(prev => value)
   }
 
   return (
-    <div className="autocomplete">
-      <Input label={label} size={size} value={searchValue} handleValueChange={setSearchValue} />
-      <Suggestions searchValue={searchValue} fieldName={fieldName} suggestions={suggestions} maxSuggestions={maxSuggestions} setSelectedValue={handleOptionClick} />
+    <div className="autocomplete" style={{marginBottom: "1rem"}}>
+      <Input label={label} size={size} value={searchValue} handleValueChange={setSearchValue} mb="0" />
+      {searchValue !== selectedValue && <Suggestions searchValue={searchValue} fieldName={fieldName} suggestions={suggestions} maxSuggestions={maxSuggestions} setSelectedValue={handleOptionClick} />}
     </div>
   );
 }
@@ -47,27 +49,46 @@ AutocompleteInput.propTypes = {
   url: PropTypes.string,
   fieldName: PropTypes.string,
   maxSuggestions: PropTypes.number,
-  isValid: PropTypes.func
+  setValidValue: PropTypes.func
 }
 
 
 function Suggestions ({searchValue, fieldName, suggestions, maxSuggestions, setSelectedValue}) {
+  const [selectedSuggestion, setSelectedSuggestion] = useState(0)
   const filteredSuggestions = useMemo(() => {
     if (searchValue.length === 0) {
       return []
     } else {
       console.log(suggestions?.map(el => el[fieldName]).filter(value => value.toLowerCase().startsWith(searchValue)).slice(0, maxSuggestions))
-      return deleteDublicates(suggestions?.map(el => el[fieldName]).filter(value => value.toLowerCase().startsWith(searchValue)).slice(0, maxSuggestions))
+      return deleteDublicates(suggestions?.map(el => el[fieldName]).filter(value => value).slice(0, maxSuggestions))
+      // return deleteDublicates(suggestions?.map(el => el[fieldName]).filter(value => value.toLowerCase().startsWith(searchValue)).slice(0, maxSuggestions))
     }
   }, [suggestions])
 
   useEffect(() => {
-    console.log(searchValue, filteredSuggestions.length)
-  }, [searchValue]);
+    const accessibility = (e) => {
+      switch (e.key) {
+        case 'ArrowDown':
+          setSelectedSuggestion(prev => prev < filteredSuggestions.length - 1 ? prev + 1 : prev); break;
+        case 'ArrowUp':
+          setSelectedSuggestion(prev => prev > 0 ? prev - 1 : prev); break;
+        case 'Enter':
+          setSelectedValue(filteredSuggestions[selectedSuggestion]);
+          setSelectedSuggestion(prev => 0)
+          break;
+      }
+    }
+
+    window.addEventListener("keydown", accessibility)
+
+    return () => {
+      window.removeEventListener("keydown", accessibility)
+    }
+  }, [selectedSuggestion]);
 
   return <div className={classNames("options-container", {show: filteredSuggestions?.length !== 0})}>
     {filteredSuggestions?.map((option, index) => (
-      <Option key={option} index={index} value={option} onClick={(e) => setSelectedValue(option)}>{option}</Option>
+      <Option key={option} index={index} value={option} active={selectedSuggestion === index} onClick={(e) => setSelectedValue(option)}>{option}</Option>
     ))}
   </div>
 }

@@ -24,7 +24,8 @@
     padding: 1em 2em;
     font-size: inherit;
     color: rgb(var(--color-secondary));
-    transition: box-shadow .3s ease;
+    border: 1px solid rgba(var(--color-secondary), .2);
+    transition: box-shadow .3s ease, border .3s ease;
 
     &.sm {
       ~ label { --padding-left: .75rem; }
@@ -43,8 +44,8 @@
       padding: 1em 2em
     }
 
-    &:placeholder-shown {
-      border: 1px solid rgba(var(--color-secondary), .2);
+    &:hover {
+      border: 1px solid rgba(var(--color-secondary), .4);
     }
 
     &:focus {

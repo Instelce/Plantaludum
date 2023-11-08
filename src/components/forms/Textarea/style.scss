@@ -16,11 +16,10 @@ textarea {
   font-size: inherit;
   color: inherit;
 
-  transition: box-shadow .3s ease;
+  transition: box-shadow .3s ease, border .3s ease;
 
-
-  &:placeholder-shown {
-    border: 1px solid rgba(var(--color-secondary), .2);
+  &:hover {
+    border: 1px solid rgba(var(--color-secondary), .4);
   }
 
   &:focus {

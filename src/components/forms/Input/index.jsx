@@ -12,13 +12,15 @@ function Input({
   showInfo = false,
   value,
   handleValueChange = null,
-  helperText = "",
+  helperText = null,
+  mb= "1rem",
   ...props
 }) {
   const defaultId = useId();
+
   return (
     <>
-      <div className="input-container">
+      <div className="input-container" style={ !helperText ? {marginBottom: mb} : {}}>
         <div className="input-wrapper">
           <input
             className={size}
@@ -51,7 +53,7 @@ function Input({
             </svg>
           )}
         </div>
-        <p className="helper-text">{helperText}</p>
+        {helperText && <p className="helper-text">{helperText}</p>}
       </div>
     </>
   );
@@ -66,7 +68,8 @@ Input.propTypes = {
   disabled: PropTypes.bool,
   value: PropTypes.string,
   handleValueChange: PropTypes.func,
-  helperText: PropTypes.string
+  helperText: PropTypes.string,
+  mb: PropTypes.string
 };
 
 export default Input;

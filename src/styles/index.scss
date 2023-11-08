@@ -21,6 +21,10 @@
 
 * { box-sizing: border-box }
 
+*::selection {
+  background: rgba(var(--color-primary), .2);
+}
+
 html {font-size: 100%;} /*16px*/
 
 body {
