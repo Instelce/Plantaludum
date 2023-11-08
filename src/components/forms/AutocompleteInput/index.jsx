@@ -13,7 +13,8 @@ function AutocompleteInput({
   size,
   url,
   fieldName,
-  maxSuggestions=10,
+  maxSuggestions = 10,
+  handleValueChange,
   setValidValue = null,
 }) {
   const [searchValue, setSearchValue] = useState("")
@@ -24,15 +25,22 @@ function AutocompleteInput({
   useEffect(() => {
     axios.get(url, {params: {search: debouncedSearchValue}})
       .then(response => {
+        console.log("res", response.data)
           setSuggestions(prev => response.data.results)
       })
   }, [debouncedSearchValue]);
 
+  useEffect(() => {
+    if (searchValue !== selectedValue) {
+      setValidValue?.(prev => false)
+    }
+  }, [searchValue]);
+
   const handleOptionClick = (value) => {
-    console.log(value)
     setSelectedValue(prev => value)
     setSearchValue(prev => value)
     setValidValue?.(prev => value)
+    handleValueChange(prev => value)
   }
 
   return (
@@ -49,6 +57,7 @@ AutocompleteInput.propTypes = {
   url: PropTypes.string,
   fieldName: PropTypes.string,
   maxSuggestions: PropTypes.number,
+  handleValueChange: PropTypes.func,
   setValidValue: PropTypes.func
 }
 
@@ -59,7 +68,7 @@ function Suggestions ({searchValue, fieldName, suggestions, maxSuggestions, setS
     if (searchValue.length === 0) {
       return []
     } else {
-      console.log(suggestions?.map(el => el[fieldName]).filter(value => value.toLowerCase().startsWith(searchValue)).slice(0, maxSuggestions))
+      console.log("sug", suggestions?.map(el => el[fieldName]).filter(value => value.toLowerCase().startsWith(searchValue)).slice(0, maxSuggestions))
       return deleteDublicates(suggestions?.map(el => el[fieldName]).filter(value => value).slice(0, maxSuggestions))
       // return deleteDublicates(suggestions?.map(el => el[fieldName]).filter(value => value.toLowerCase().startsWith(searchValue)).slice(0, maxSuggestions))
     }

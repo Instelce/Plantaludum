@@ -35,7 +35,7 @@ function Button({
 }
 
 Button.propTypes = {
-  label: PropTypes.string,
+  label: PropTypes.string || PropTypes.number,
   type: PropTypes.oneOf(['button', 'submit']),
   color: PropTypes.oneOf(['primary', 'secondary', 'accent', 'success', 'danger']),
   size: PropTypes.oneOf(['sm', 'md', 'lg', 'big']),
