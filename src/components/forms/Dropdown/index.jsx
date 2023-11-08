@@ -1,18 +1,26 @@
-import React, {Children, useEffect, useMemo, useRef, useState} from 'react';
+import React, {
+  Children,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState
+} from 'react';
 import './style.scss';
-import Input from "../Input/index.jsx";
 import Button from "../../Buttons/Button.jsx";
 import classNames from "classnames";
+import Option from "../Option/index.jsx"
 import PropTypes from "prop-types";
 import {ChevronDown} from "react-feather";
 
 
-function Dropdown({label, size="lg", setValue, defaultValue= undefined, placeholder="Option", children}) {
+function Dropdown({label, size="lg", mb, setValue, defaultValue= undefined, placeholder="Option", children, ...props}) {
   const [showOptions, setShowOptions] = useState(false)
   const [currentValue, setCurrentValue] = useState(undefined)
   const [buttonFocus, setButtonFocus] = useState(true)
   const [mouseOnOptions, setMouseOnOptions] = useState(false)
   const optionsRef = useRef(null)
+  const id = useId()
 
   useEffect(() => {
     if (defaultValue) {
@@ -21,7 +29,7 @@ function Dropdown({label, size="lg", setValue, defaultValue= undefined, placehol
   }, []);
 
   useEffect(() => {
-    console.log(children)
+    // console.log(children)
 
     if (!buttonFocus && showOptions && !mouseOnOptions) {
       setShowOptions(false)
@@ -29,19 +37,21 @@ function Dropdown({label, size="lg", setValue, defaultValue= undefined, placehol
   }, [buttonFocus, showOptions]);
 
   return (
-    <div className={classNames("dropdown", {'show-options': showOptions})}>
-      <label htmlFor="">{label}</label>
+    <div className={classNames("dropdown")} style={{marginBottom: mb}}>
+      <label htmlFor={id} className={classNames({up: currentValue !== undefined})}>{label}</label>
       <Button
-        label={currentValue ? currentValue : placeholder}
+        id={id}
+        label={currentValue ? currentValue : <span></span>}
         color="secondary" variant="outlined" size={size}
         onFocus={() => setButtonFocus(true)}
         onBlur={() => setButtonFocus(false)}
         onClick={() => setShowOptions(!showOptions)}
         icon={<ChevronDown />}
+        {...props}
       />
       <div
         ref={optionsRef}
-        className="dropdown-options"
+        className={classNames("options-container", {show: showOptions})}
         onMouseEnter={() => setMouseOnOptions(() => true)}
         onMouseLeave={() => setMouseOnOptions(() => false)}
       >
@@ -54,9 +64,9 @@ function Dropdown({label, size="lg", setValue, defaultValue= undefined, placehol
                 key: index,
                 onClick: (e) => {
                   e.preventDefault()
+                  setValue(prev => value);
                   setCurrentValue(option.props.value ? option.props.children : value);
-                  setShowOptions(false)
-                  setValue(value)
+                  setShowOptions(false);
               }});
           } else {
             return null
@@ -69,14 +79,11 @@ function Dropdown({label, size="lg", setValue, defaultValue= undefined, placehol
 
 Dropdown.propTypes = {
   label: PropTypes.string,
-  size: PropTypes.oneOf(['sm', 'md', 'lg', 'big'])
-}
-
-
-export function Option({value=null, active, children, onClick}) {
-  return <button type="button" className={classNames("option", {active: active})} onClick={onClick}>
-    {children}
-  </button>
+  size: PropTypes.oneOf(['sm', 'md', 'lg', 'big']),
+  setValue: PropTypes.func,
+  defaultValue: PropTypes.string || PropTypes.number,
+  placeholder: PropTypes.string,
+  children: PropTypes.node
 }
 
 export default Dropdown;

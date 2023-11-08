@@ -1,4 +1,4 @@
-import Dropdown, { Option } from "./index.jsx";
+import Dropdown from "./index.jsx";
 import "./style.scss";
 
 export default {

@@ -61,8 +61,8 @@
     cursor: not-allowed;
   }
 
-  &.sm { padding: .25em .75em }
-  &.md { padding: .375em 1em }
-  &.lg { padding: .5em 1.5em }
-  &.big { padding: 1em 2em }
+  &.sm { padding: .25em .75em; --padding-horizontal: .25em; }
+  &.md { padding: .375em 1em;  --padding-horizontal: .375em;}
+  &.lg { padding: .5em 1.5em; --padding-horizontal: .5em;}
+  &.big { padding: 1em 2em; --padding-horizontal: 1em;}
 }

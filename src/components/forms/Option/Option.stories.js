@@ -1,5 +1,5 @@
-import { Option } from "./index.jsx";
-import "./style.scss"
+import Option from "./index.jsx";
+
 
 export default {
   title: "Components/Forms/Dropdown/Option",

@@ -3,9 +3,10 @@ import Input from "../components/forms/Input/index.jsx";
 import PlantCard from "../components/PlantCard/index.jsx";
 import Modal from "../components/Modal/index.jsx";
 import Button from "../components/Buttons/Button.jsx";
-import Dropdown, {Option} from "../components/forms/Dropdown/index.jsx";
+import Dropdown from "../components/forms/Dropdown/index.jsx";
 import classNames from "classnames";
 import Stars from "../components/Stars/index.jsx";
+import Option from "../components/forms/Option/index.jsx"
 
 
 const sorts = [

@@ -31,6 +31,8 @@ export function deleteDublicates(array) {
 export async function simpleFetch(url, options={}) {
     let loading = false
     let data = []
+    let error = undefined
+
     await fetch(url, {
         ...options,
         headers: {
@@ -42,7 +44,9 @@ export async function simpleFetch(url, options={}) {
       .then(d => {
           data = d
           loading = true
+      }).catch(e => {
+        error = e
       })
 
-    return {loading: loading, data: data}
+    return {loading: loading, data: data, error: error}
 }

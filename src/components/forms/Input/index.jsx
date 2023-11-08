@@ -12,7 +12,8 @@ function Input({
   showInfo = false,
   value,
   handleValueChange = null,
-  helperText = ""
+  helperText = "",
+  ...props
 }) {
   const defaultId = useId();
   return (
@@ -30,6 +31,7 @@ function Input({
             onChange={(e) =>
               handleValueChange ? handleValueChange(e.target.value) : null
             }
+            {...props}
           />
           <label htmlFor={id ? id : defaultId}>{label}</label>
           {showInfo && (

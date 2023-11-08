@@ -35,7 +35,7 @@ function MainMenu(props) {
                             <nav>
                                 <ul>
                                     <li><Link to="/menu/choix" onMouseEnter={handleHover} onMouseLeave={handleLeave}>Jouer</Link></li>
-                                    <li><Link to="" onMouseEnter={handleHover} onMouseLeave={handleLeave}>Nouveau deck</Link></li>
+                                    <li><Link to="/quiz/create" onMouseEnter={handleHover} onMouseLeave={handleLeave}>Nouveau deck</Link></li>
                                     <li><Link to="/explorer" onMouseEnter={handleHover} onMouseLeave={handleLeave}>Explorer</Link></li>
                                     {/*<li><Link to="" onMouseEnter={handleHover} onMouseLeave={handleLeave}>Duel</Link></li>*/}
                                     <li><Link to="" onMouseEnter={handleHover} onMouseLeave={handleLeave}>Classement</Link></li>
