@@ -14,7 +14,7 @@ export const privateFetch = axios.create({
 })
 
 export const floreFetch = axios.create({
-  baseURL: 'http://127.0.0.1:8001/',
+  baseURL: import.meta.env.VITE_FLORE_API_URL,
 })
 
 export default defaultFetch;

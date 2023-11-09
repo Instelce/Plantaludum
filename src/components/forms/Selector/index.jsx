@@ -6,12 +6,13 @@ import {useEffect, useState} from "react";
 
 
 function Selector({
+  inputId = null,
   choices,
   choiceType,
   multiChoice = false,
   setValue
 }) {
-  const [currentChoice, setCurrentChoice] = useState(null)
+  const [currentChoice, setCurrentChoice] = useState("")
   const [confirmChoice, setConfirmChoice] = useState(false)
 
   useEffect(() => {
@@ -36,7 +37,9 @@ function Selector({
 
   return (
     <div className="selector-container">
+
       {currentChoice === null || !confirmChoice ? <>
+
         <div className={classNames("choices-container", {grid: choiceType === "img"})}>
           {choices?.map((choice, index) => {
             if (choiceType === "text") {
@@ -51,6 +54,7 @@ function Selector({
             }
           })}
         </div>
+
         <div className="selector-buttons">
           <Button
             label="Confirmer"
@@ -67,24 +71,29 @@ function Selector({
         <div className={classNames({grid: choiceType === "img"})}>
           <div className={`select-${choiceType} selected`}>
             {choiceType === "text" ? <p>{currentChoice}</p> : <img src={currentChoice} alt={currentChoice} />}
+            <input id={inputId} name={inputId} className="hidden" value={currentChoice} readOnly={true} />
           </div>
         </div>
+
         <div className="selector-buttons">
           <Button
             label="Rechoisir"
             color="secondary"
             variant="soft"
-            size="big"
+            size="lg"
             disabled={!currentChoice}
             onClick={() => setConfirmChoice(false)}
           />
         </div>
+
       </>}
+
     </div>
   );
 }
 
 Selector.propTypes = {
+  inputId: PropTypes.string,
   choices: PropTypes.array,
   choiceType: PropTypes.oneOf(['text', 'img']),
   multiChoice: PropTypes.bool,

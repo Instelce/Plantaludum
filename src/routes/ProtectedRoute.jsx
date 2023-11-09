@@ -8,8 +8,10 @@ function ProtectedRoute({children, redirectPath = "/connexion"}) {
   const refresh = useRefreshToken()
 
   if (!accessToken) {
-    async () => {
+    const getNewAccessToken = async () => {
       const {newAccessToken} = await refresh()
+
+      console.log(newAccessToken)
 
       if (!newAccessToken) {
         return <Navigate to={redirectPath} replace />;
@@ -17,6 +19,8 @@ function ProtectedRoute({children, redirectPath = "/connexion"}) {
         return children
       }
     }
+
+    getNewAccessToken()
   }
 
   return children;

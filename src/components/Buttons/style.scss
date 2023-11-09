@@ -23,31 +23,34 @@
     }
   }
 
+  // Outline
   &.outlined {
     color: rgb(var(--color-text));
     background: transparent;
     border: 1px solid rgba(var(--color), .6);
 
-    &:hover {
+    &:hover:not(:disabled) {
       border: 1px solid rgba(var(--color), 1);
       //background: rgba(var(--color), .1);
     }
   }
 
+  // Solid
   &.solid {
     background: rgb(var(--color));
     //border: 1px solid rgb(var(--color));
 
-    &:hover {
+    &:hover:not(:disabled) {
       background: rgba(var(--color), .8);
     }
   }
 
+  // Soft
   &.soft {
     background: rgba(var(--color), .6);
     //border: 1px solid rgb(var(--color));
 
-    &:hover {
+    &:hover:not(:disabled) {
       background: rgba(var(--color), .8);
     }
   }

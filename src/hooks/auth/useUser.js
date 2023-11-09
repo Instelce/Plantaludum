@@ -10,6 +10,7 @@ function useUser() {
     try {
       const {data} = await privateFetch.get('auth/user')
       setUser(data)
+      localStorage.setItem("USER-ID", data.id)
     } catch (error) {
       console.log("user", error)
     }

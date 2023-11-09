@@ -13,7 +13,7 @@ function ButtonLink({
     label,
   type = "button",
   color,
-  size = "ld",
+  size = "lg",
   variant = "solid",
   disabled = false,
   fill = false,
@@ -22,7 +22,7 @@ function ButtonLink({
   return (
     <Link to={to}>
       <Button
-          label={label}
+        label={label}
         type={type}
         color={color}
         size={size}

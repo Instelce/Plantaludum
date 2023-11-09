@@ -14,9 +14,9 @@ import PropTypes from "prop-types";
 import {ChevronDown} from "react-feather";
 
 
-function Dropdown({label, size="lg", mb, setValue, defaultValue= undefined, placeholder="Option", children, ...props}) {
+function Dropdown({inputId, label, size="lg", mb, defaultValue= undefined, placeholder="Option", children, ...props}) {
   const [showOptions, setShowOptions] = useState(false)
-  const [currentValue, setCurrentValue] = useState(undefined)
+  const [currentValue, setCurrentValue] = useState("")
   const [buttonFocus, setButtonFocus] = useState(true)
   const [mouseOnOptions, setMouseOnOptions] = useState(false)
   const optionsRef = useRef(null)
@@ -38,10 +38,11 @@ function Dropdown({label, size="lg", mb, setValue, defaultValue= undefined, plac
 
   return (
     <div className={classNames("dropdown")} style={{marginBottom: mb}}>
+      <input id={inputId} name={inputId} className="hidden" value={currentValue} readOnly={true} />
       <label htmlFor={id} className={classNames({up: currentValue !== undefined})}>{label}</label>
       <Button
         id={id}
-        label={currentValue ? currentValue : <span></span>}
+        label={currentValue !== "" ? currentValue : <span></span>}
         color="secondary" variant="outlined" size={size}
         onFocus={() => setButtonFocus(true)}
         onBlur={() => setButtonFocus(false)}
@@ -64,7 +65,6 @@ function Dropdown({label, size="lg", mb, setValue, defaultValue= undefined, plac
                 key: index,
                 onClick: (e) => {
                   e.preventDefault()
-                  setValue(prev => value);
                   setCurrentValue(option.props.value ? option.props.children : value);
                   setShowOptions(false);
               }});
@@ -80,7 +80,6 @@ function Dropdown({label, size="lg", mb, setValue, defaultValue= undefined, plac
 Dropdown.propTypes = {
   label: PropTypes.string,
   size: PropTypes.oneOf(['sm', 'md', 'lg', 'big']),
-  setValue: PropTypes.func,
   defaultValue: PropTypes.string || PropTypes.number,
   placeholder: PropTypes.string,
   children: PropTypes.node

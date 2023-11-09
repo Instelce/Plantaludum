@@ -26,7 +26,7 @@ function AutocompleteInput({
     axios.get(url, {params: {search: debouncedSearchValue}})
       .then(response => {
         console.log("res", response.data)
-          setSuggestions(prev => response.data.results)
+        setSuggestions(prev => response.data.results)
       })
   }, [debouncedSearchValue]);
 
@@ -105,7 +105,7 @@ function Suggestions ({searchValue, fieldName, suggestions, maxSuggestions, setS
 Suggestions.propTypes = {
   searchValue: PropTypes.string,
   fieldName: PropTypes.string,
-  suggestions: PropTypes.object,
+  suggestions: PropTypes.array,
   maxSuggestions: PropTypes.number,
   setSelectedValue: PropTypes.func
 }

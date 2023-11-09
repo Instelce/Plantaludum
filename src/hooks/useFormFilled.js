@@ -1,4 +1,5 @@
 import {useEffect, useRef, useState} from "react";
+import {Form} from "react-router-dom";
 
 function useFormFilled() {
   const form = useRef(null)
@@ -7,27 +8,25 @@ function useFormFilled() {
 
   const handleFormChange = (e) => {
     let countInputFilled = 0;
-    const inputs = form.current.querySelectorAll('input').length
-    let lastFields = fields
-    lastFields[e.id] = e.value
+    const inputs = Array.from(form.current.querySelectorAll('input, textarea')).filter(input => input.type !== "checkbox");
+    const inputsNum = inputs.length;
 
-    setFields({
-      ...fields,
-      [e.id]: e.value
-    })
+    console.log(inputs)
 
-    console.log(fields)
-      for (const value of Object.values(lastFields)) {
-        if (value !== "") {
-          countInputFilled++;
-        }
+    for (const input of inputs) {
+      console.log(input.value)
+      if (input.value !== "" && input.type !== "checkbox") {
+        countInputFilled++;
       }
+    }
 
-      if (countInputFilled === inputs) {
-        setIsFilled(true)
-      } else {
-        setIsFilled(false)
-      }
+    console.log(e.id, countInputFilled, inputsNum)
+
+    if (countInputFilled === inputsNum) {
+      setIsFilled(true)
+    } else {
+      setIsFilled(false)
+    }
   }
 
   return {formRef: form, handleFormChange: handleFormChange, isFilled: isFilled}

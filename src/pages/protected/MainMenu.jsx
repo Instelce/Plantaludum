@@ -4,15 +4,29 @@ import usePrivateFetch from "../../hooks/auth/usePrivateFetch.js";
 import useRefreshToken from "../../hooks/auth/useRefreshToken.js";
 import Button from "../../components/Buttons/Button.jsx";
 import useLogout from "../../hooks/auth/useLogout.js";
+import useUser from "../../hooks/auth/useUser.js";
+import useAuth from "../../hooks/auth/useAuth.js";
 
 export default MainMenu;
 
 function MainMenu(props) {
     const outlet = useOutlet()
+    const {user} = useAuth()
     const hoverSound = useRef(null)
     const privateFetch = usePrivateFetch()
     const refresh = useRefreshToken()
     const logout = useLogout()
+    const getUser = useUser()
+
+    // set user is first login
+    useEffect(() => {
+        console.log(user)
+        if (Object.keys(user).length === 0) {
+            console.log("nice")
+            getUser()
+            console.log(user)
+        }
+    }, [])
 
     const handleHover = () => {
         hoverSound.current.play()

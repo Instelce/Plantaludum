@@ -2,16 +2,17 @@ import React, { useId } from "react";
 import PropTypes from "prop-types";
 import "./style.scss";
 
-function Checkbox({ label, value, handleValueChange = null, disabled }) {
-  const id = useId();
+function Checkbox({ id = null, label, defaultValue, value, handleValueChange = null, disabled }) {
+  const defaultId = useId();
   return (
     <div className="checkbox">
       <input
-        checked={value}
         type="checkbox"
-        name={id}
-        id={id}
+        id={id ? id : defaultId}
+        name={id ? id : defaultId}
         disabled={disabled}
+        value={defaultValue}
+        checked={value}
         onChange={(e) => handleValueChange?.(e.target.checked)}
       />
       <label htmlFor={id}>{label}</label>
@@ -20,7 +21,9 @@ function Checkbox({ label, value, handleValueChange = null, disabled }) {
 }
 
 Checkbox.propTypes = {
+  id: PropTypes.string,
   label: PropTypes.string,
+  defaultValue: PropTypes.string,
   value: PropTypes.bool,
   handleValueChange: PropTypes.func,
   disabled: PropTypes.bool,
