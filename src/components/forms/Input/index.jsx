@@ -1,7 +1,9 @@
-import React, { useId } from "react";
+import React, {useId, useState} from "react";
 
 import "./style.scss";
 import PropTypes from "prop-types";
+import Modal from "../../Modal/index.jsx";
+import {Info} from "react-feather";
 
 function Input({
   id=undefined,
@@ -13,10 +15,12 @@ function Input({
   value,
   handleValueChange = null,
   helperText = null,
+  usageInfoText = null,
   mb= "1rem",
   ...props
 }) {
   const defaultId = useId();
+  const [showInfoModal, setShowInfoModal] = useState(false)
 
   return (
     <>
@@ -35,7 +39,9 @@ function Input({
             }
             {...props}
           />
+
           <label htmlFor={id ? id : defaultId}>{label}</label>
+
           {showInfo && (
             <svg
               className="info"
@@ -52,9 +58,16 @@ function Input({
               />
             </svg>
           )}
+
+          {usageInfoText !== null && (
+            <Info className="info-icon" onClick={() => setShowInfoModal(() => true)} />
+          )}
         </div>
+
         {helperText && <p className="helper-text">{helperText}</p>}
       </div>
+
+      <Modal show={showInfoModal} setShow={setShowInfoModal}>{usageInfoText ? usageInfoText : ""}</Modal>
     </>
   );
 }
@@ -69,6 +82,7 @@ Input.propTypes = {
   value: PropTypes.string,
   handleValueChange: PropTypes.func,
   helperText: PropTypes.string,
+  usageInfoText: PropTypes.string,
   mb: PropTypes.string
 };
 

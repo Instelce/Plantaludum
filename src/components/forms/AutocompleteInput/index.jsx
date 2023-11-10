@@ -16,6 +16,7 @@ function AutocompleteInput({
   maxSuggestions = 10,
   handleValueChange,
   setValidValue = null,
+  usageInfoText = null,
 }) {
   const [searchValue, setSearchValue] = useState("")
   const [suggestions, setSuggestions] = useState(null)
@@ -46,7 +47,7 @@ function AutocompleteInput({
 
   return (
     <div className="autocomplete" style={{marginBottom: "1rem"}}>
-      <Input label={label} size={size} value={searchValue} handleValueChange={setSearchValue} mb="0" />
+      <Input label={label} size={size} value={searchValue} handleValueChange={setSearchValue} mb="0" usageInfoText={usageInfoText} />
       {searchValue !== selectedValue && <Suggestions searchValue={searchValue} fieldName={fieldName} suggestions={suggestions} maxSuggestions={maxSuggestions} setSelectedValue={handleOptionClick} />}
     </div>
   );

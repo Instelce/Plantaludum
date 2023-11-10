@@ -110,8 +110,6 @@ function CreateQuiz(props) {
           <Option>3</Option>
         </Dropdown>
         {imageValue === null && <>
-          <p style={{marginBottom: '.6rem'}}>Cherche le nom d’une plante, puis choisie l’image de la plante qui
-            te semble la mieux. <br/> Choisie la bien car c'est elle qui servira d'image de couverture au quiz.</p>
           <AutocompleteInput
             label="Nom d'une plante"
             size="big"
@@ -120,6 +118,9 @@ function CreateQuiz(props) {
             maxSuggestions={5}
             handleValueChange={setPlantValue}
             setValidValue={setPlantIsValid}
+            usageInfoText="Cherche le nom d’une plante, puis choisie l’image
+            de la plante qui te semble la mieux. Choisie la bien car c'est
+            elle qui servira d'image de couverture au quiz."
           />
         </>
         }
