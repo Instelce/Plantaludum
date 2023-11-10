@@ -12,17 +12,19 @@ import Selector from "../../components/forms/Selector/index.jsx";
 import {floreFetch} from "../../api/axios.js";
 import {deleteDublicates} from "../../utils.js";
 import ButtonLink from "../../components/Buttons/ButtonLink.jsx";
-import {useLocation} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import Button from "../../components/Buttons/Button.jsx";
 import useAuth from "../../hooks/auth/useAuth.js";
 import {useFetch} from "../../hooks/useFetch.js";
 import Loader from "../../components/Loader/index.jsx";
 import error from "../Error.jsx";
+import {navigate} from "@storybook/addon-links";
 
 
 function CreateQuiz(props) {
   const privateFetch = usePrivateFetch()
   const location = useLocation()
+  const navigate = useNavigate()
   const fromLocation = location?.state?.from?.pathname || '/menu'
   const {user} = useAuth()
   const [responseHelper, setResponseHelper] = useState({})
@@ -30,7 +32,7 @@ function CreateQuiz(props) {
     fetchFunc: floreFetch,
     method: "GET",
   })
-  const {launchRequest: createQuiz, data: formResponse, loading: createQuizLoading} = useFetch({
+  const {launchRequest: createQuiz, data: createQuizResponseData, loading: createQuizLoading} = useFetch({
     fetchFunc: privateFetch,
     method: "POST",
     setHelper: setResponseHelper,
@@ -71,6 +73,8 @@ function CreateQuiz(props) {
       private: formData.get('private') ? formData.get('private') : false,
       user: localStorage.getItem("USER-ID"),
     })
+
+    navigate(`/quiz/create/plants/${createQuizResponseData.id}`)
   }
 
   useEffect(() => {

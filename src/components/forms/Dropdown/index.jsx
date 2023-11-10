@@ -12,11 +12,14 @@ import classNames from "classnames";
 import Option from "../Option/index.jsx"
 import PropTypes from "prop-types";
 import {ChevronDown} from "react-feather";
+import {deleteDublicates} from "../../../utils.js";
 
 
 function Dropdown({inputId, label, size="lg", mb, defaultValue= undefined, placeholder="Option", children, ...props}) {
   const [showOptions, setShowOptions] = useState(false)
+  const [options, setOptions] = useState([])
   const [currentValue, setCurrentValue] = useState("")
+  const [selectedOption, setSelectedOption] = useState(0)
   const [buttonFocus, setButtonFocus] = useState(true)
   const [mouseOnOptions, setMouseOnOptions] = useState(false)
   const optionsRef = useRef(null)
@@ -26,6 +29,15 @@ function Dropdown({inputId, label, size="lg", mb, defaultValue= undefined, place
     if (defaultValue) {
       setCurrentValue(defaultValue)
     }
+
+    // get options in array
+    const childrens = Children.toArray(children).filter(child => child.type === Option)
+    const newOptions = []
+    childrens.map(child => {
+      let value = child.props.value ? child.props.value : child.props.children;
+      newOptions.push(value)
+    })
+    setOptions(() => newOptions)
   }, []);
 
   useEffect(() => {
@@ -40,22 +52,24 @@ function Dropdown({inputId, label, size="lg", mb, defaultValue= undefined, place
     const accessibility = (e) => {
       switch (e.key) {
         case 'ArrowDown':
-          setSelectedSuggestion(prev => prev < filteredSuggestions.length - 1 ? prev + 1 : prev); break;
+          setSelectedOption(prev => prev < options.length - 1 ? prev + 1 : prev); break;
         case 'ArrowUp':
-          setSelectedSuggestion(prev => prev > 0 ? prev - 1 : prev); break;
+          setSelectedOption(prev => prev > 0 ? prev - 1 : prev); break;
         case 'Enter':
-          setSelectedValue(filteredSuggestions[selectedSuggestion]);
-          setSelectedSuggestion(prev => 0)
+          setCurrentValue(() => options[selectedOption]);
+          setSelectedOption(() => 0)
           break;
       }
     }
 
-    window.addEventListener("keydown", accessibility)
+    if (showOptions) {
+      window.addEventListener("keydown", accessibility)
+    }
 
     return () => {
       window.removeEventListener("keydown", accessibility)
     }
-  }, [showOptions]);
+  }, [showOptions, selectedOption, options]);
 
 
   return (
@@ -66,8 +80,8 @@ function Dropdown({inputId, label, size="lg", mb, defaultValue= undefined, place
         id={id}
         label={currentValue !== "" ? currentValue : <span></span>}
         color="secondary" variant="outlined" size={size}
-        onFocus={() => setButtonFocus(true)}
-        onBlur={() => setButtonFocus(false)}
+        onFocus={() => setButtonFocus(() => true)}
+        onBlur={() => setButtonFocus(() => false)}
         onClick={() => setShowOptions(!showOptions)}
         icon={<ChevronDown />}
         {...props}
@@ -75,15 +89,15 @@ function Dropdown({inputId, label, size="lg", mb, defaultValue= undefined, place
       <div
         ref={optionsRef}
         className={classNames("options-container", {show: showOptions})}
-        onMouseEnter={() => setMouseOnOptions(prev => true)}
-        onMouseLeave={() => setMouseOnOptions(prev => false)}
+        onMouseEnter={() => setMouseOnOptions(() => true)}
+        onMouseLeave={() => setMouseOnOptions(() => false)}
       >
         {Children.map(children, (option, index) => {
           if (option.type === Option) {
             let value = option.props.value ? option.props.value : option.props.children;
             return React.cloneElement(option, {
                 ...option.props,
-                active: value === currentValue,
+                active: index === selectedOption,
                 key: index,
                 onClick: (e) => {
                   e.preventDefault()
