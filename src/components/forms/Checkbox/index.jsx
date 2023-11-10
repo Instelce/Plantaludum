@@ -2,7 +2,7 @@ import React, { useId } from "react";
 import PropTypes from "prop-types";
 import "./style.scss";
 
-function Checkbox({ id = null, label, defaultValue, value, handleValueChange = null, disabled }) {
+function Checkbox({ id = null, label, takeValue, value, handleValueChange = null, disabled }) {
   const defaultId = useId();
   return (
     <div className="checkbox">
@@ -11,7 +11,7 @@ function Checkbox({ id = null, label, defaultValue, value, handleValueChange = n
         id={id ? id : defaultId}
         name={id ? id : defaultId}
         disabled={disabled}
-        value={defaultValue}
+        value={takeValue}
         checked={value}
         onChange={(e) => handleValueChange?.(e.target.checked)}
       />
@@ -23,7 +23,7 @@ function Checkbox({ id = null, label, defaultValue, value, handleValueChange = n
 Checkbox.propTypes = {
   id: PropTypes.string,
   label: PropTypes.string,
-  defaultValue: PropTypes.string,
+  takeValue: PropTypes.string,
   value: PropTypes.bool,
   handleValueChange: PropTypes.func,
   disabled: PropTypes.bool,

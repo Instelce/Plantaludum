@@ -29,17 +29,39 @@ function Dropdown({inputId, label, size="lg", mb, defaultValue= undefined, place
   }, []);
 
   useEffect(() => {
-    // console.log(children)
-
+    // hide options
     if (!buttonFocus && showOptions && !mouseOnOptions) {
       setShowOptions(false)
     }
   }, [buttonFocus, showOptions]);
 
+  // Accessibility
+  useEffect(() => {
+    const accessibility = (e) => {
+      switch (e.key) {
+        case 'ArrowDown':
+          setSelectedSuggestion(prev => prev < filteredSuggestions.length - 1 ? prev + 1 : prev); break;
+        case 'ArrowUp':
+          setSelectedSuggestion(prev => prev > 0 ? prev - 1 : prev); break;
+        case 'Enter':
+          setSelectedValue(filteredSuggestions[selectedSuggestion]);
+          setSelectedSuggestion(prev => 0)
+          break;
+      }
+    }
+
+    window.addEventListener("keydown", accessibility)
+
+    return () => {
+      window.removeEventListener("keydown", accessibility)
+    }
+  }, [showOptions]);
+
+
   return (
     <div className={classNames("dropdown")} style={{marginBottom: mb}}>
       <input id={inputId} name={inputId} className="hidden" value={currentValue} readOnly={true} />
-      <label htmlFor={id} className={classNames({up: currentValue !== undefined})}>{label}</label>
+      <label htmlFor={id} className={classNames({up: currentValue !== ""})}>{label}</label>
       <Button
         id={id}
         label={currentValue !== "" ? currentValue : <span></span>}
@@ -53,8 +75,8 @@ function Dropdown({inputId, label, size="lg", mb, defaultValue= undefined, place
       <div
         ref={optionsRef}
         className={classNames("options-container", {show: showOptions})}
-        onMouseEnter={() => setMouseOnOptions(() => true)}
-        onMouseLeave={() => setMouseOnOptions(() => false)}
+        onMouseEnter={() => setMouseOnOptions(prev => true)}
+        onMouseLeave={() => setMouseOnOptions(prev => false)}
       >
         {Children.map(children, (option, index) => {
           if (option.type === Option) {

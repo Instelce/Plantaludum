@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 
 import "./style.scss";
 import classNames from "classnames";
+import Loader from "../Loader/index.jsx";
 
 /**
  * Button
@@ -16,20 +17,23 @@ function Button({
   disabled = false,
   fill = false,
   icon = null,
+  loading = false,
   ...props
 }) {
   return (
     <button
       type={type}
-      className={classNames(`button ${variant} ${size}`, {fill: fill}, {icon: icon !== null})}
+      className={classNames(`button ${variant} ${size}}`, {fill: fill}, {icon: icon !== null}, {loading: loading})}
       disabled={disabled}
       style={{ ["--color"]: `var(--color-${color})` }}
       {...props}
     >
-      {label}
-      {icon !== null && <span>
-        {icon}
-      </span>}
+      {!loading ? <>
+        {label}
+        {icon !== null && <span>
+          {icon}
+        </span>}
+      </> : <Loader />}
     </button>
   );
 }
@@ -43,6 +47,7 @@ Button.propTypes = {
   disabled: PropTypes.bool,
   fill: PropTypes.bool,
   icon: PropTypes.node,
+  loading: PropTypes.bool,
 };
 
 export default Button;

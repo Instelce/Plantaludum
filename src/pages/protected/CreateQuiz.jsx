@@ -15,6 +15,9 @@ import ButtonLink from "../../components/Buttons/ButtonLink.jsx";
 import {useLocation} from "react-router-dom";
 import Button from "../../components/Buttons/Button.jsx";
 import useAuth from "../../hooks/auth/useAuth.js";
+import {useFetch} from "../../hooks/useFetch.js";
+import Loader from "../../components/Loader/index.jsx";
+import error from "../Error.jsx";
 
 
 function CreateQuiz(props) {
@@ -22,6 +25,16 @@ function CreateQuiz(props) {
   const location = useLocation()
   const fromLocation = location?.state?.from?.pathname || '/menu'
   const {user} = useAuth()
+  const [responseHelper, setResponseHelper] = useState({})
+  const {launchRequest: launchFloreImageFetch, data: plantImagesData, loading: plantImagesLoading, errors: errors} = useFetch({
+    fetchFunc: floreFetch,
+    method: "GET",
+  })
+  const {launchRequest: createQuiz, data: formResponse, loading: createQuizLoading} = useFetch({
+    fetchFunc: privateFetch,
+    method: "POST",
+    setHelper: setResponseHelper,
+  })
 
   const {formRef, handleFormChange, isFilled} = useFormFilled()
 
@@ -30,15 +43,19 @@ function CreateQuiz(props) {
   const [plantImages, setPlantImages] = useState(null)
   const [imageValue, setImageValue] = useState(null)
 
+  // get all image urls for autocomplete input
   useEffect(() => {
-    // get all image urls for autocomplete input
     if (plantIsValid) {
-      floreFetch.get(`/api/images?plant__french_name=${plantValue}`)
-        .then(r => {
-         setPlantImages(prev => deleteDublicates(r.data.results.map(data => data.url.replace('L', 'CRS'))))
-        })
+      launchFloreImageFetch(`/api/images?plant__french_name=${plantValue}`)
     }
   }, [plantIsValid]);
+
+  // set plant images to an array of images
+  useEffect(() => {
+    if (plantImagesData) {
+      setPlantImages(prev => deleteDublicates(plantImagesData.results.map(data => data.url.replace('L', 'CRS'))))
+    }
+  }, [plantImagesData]);
 
   const handleFormSubmit = (e) => {
     e.preventDefault()
@@ -46,19 +63,19 @@ function CreateQuiz(props) {
 
     console.log(user)
 
-    privateFetch.post('/api/quizzes', {
+    createQuiz('/api/quizzes', {
       name: formData.get('name'),
       description: formData.get('description'),
       difficulty: formData.get('difficulty'),
       preview_image_url: formData.get('preview-image-url'),
       private: formData.get('private') ? formData.get('private') : false,
       user: localStorage.getItem("USER-ID"),
-    }).then(r => {
-
-    }).catch(error => {
-      console.log(error.response.data)
     })
   }
+
+  useEffect(() => {
+    console.log("err", errors)
+  }, [errors]);
 
    return (
     <div className="container center">
@@ -115,12 +132,26 @@ function CreateQuiz(props) {
         <Checkbox
           id="private"
           label="Privé"
-          defaultValue="true"
+          takeValue="true"
           style={{marginBottom: '1rem'}}
         />
         <div className="form-buttons">
-          <ButtonLink to={fromLocation} label="Retour" size="big" color="secondary" variant="soft" fill={true} />
-          <Button label="Continuer" size="big" type="submit" color="primary" disabled={!isFilled} />
+          <ButtonLink
+            to={fromLocation}
+            label="Retour"
+            size="big"
+            color="secondary"
+            variant="soft"
+            fill
+          />
+          <Button
+            label="Continuer"
+            size="big"
+            type="submit"
+            color="primary"
+            disabled={!isFilled}
+            loading={createQuizLoading}
+          />
         </div>
       </form>
     </div>

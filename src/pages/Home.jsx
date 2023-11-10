@@ -29,10 +29,14 @@ function Home(props) {
     const [currentPlant, setCurrentPlant] = useState({})
     const [showQuiz, setShowQuiz] = useState(false)
 
-    const { data: plantsData, loading } = useFetch({fetchFunc: floreFetch.get('/api/plants/random/10')})
+    const {launchRequest: fetchPlants, data: plantsData, loading } = useFetch({fetchFunc: floreFetch, method: "GET"})
 
     useEffect(() => {
-        if (!loading) {
+        fetchPlants('/api/plants/random/10')
+    }, [])
+
+    useEffect(() => {
+        if (!loading && plantsData) {
             // let tempPlants = []
             let col = -1;
             const size = 300;
@@ -116,8 +120,8 @@ function Home(props) {
 
      const handleCardClick = (e, plant) => {
         e.preventDefault()
-        setCurrentPlant(plant)
-        setShowQuiz(!showQuiz)
+        setCurrentPlant(() => plant)
+        setShowQuiz(() => !showQuiz)
     }
 
     const handleQuizSubmit = (plant, value) => {

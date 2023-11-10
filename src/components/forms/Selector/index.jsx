@@ -18,19 +18,19 @@ function Selector({
   useEffect(() => {
     console.log(choices)
     if (!confirmChoice) {
-      console.log("coucou")
-      setValue(prev => null)
+      setValue?.(prev => null)
       setCurrentChoice(prev => null)
     }
   }, [confirmChoice]);
 
-  useEffect(() => {
-    console.log(currentChoice)
-  }, [currentChoice]);
+  // useEffect(() => {
+  //   console.log(choices)
+  //   console.log(currentChoice)
+  // }, [currentChoice]);
 
   const handleConfirmButtonClick = () => {
     if (currentChoice !== null) {
-      setValue(prev => currentChoice)
+      setValue?.(prev => currentChoice)
       setConfirmChoice(prev => true)
     }
   }

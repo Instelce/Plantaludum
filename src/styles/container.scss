@@ -1,0 +1,46 @@
+
+.container {
+  //width: 100%;
+  //min-height: 40vh;
+  //display: block;
+  position: relative;
+
+  &.center {
+    display: grid;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &.fill-window { height: 100vh; }
+}
+
+.fixed-container {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: block;
+  position: relative;
+}
+
+
+@media screen and (min-width: var(--breakpoint-large-desktop)) {
+  .container {
+    width: calc(var(--breakpoint-large-desktop) * 0.6);
+    margin: calc(var(--breakpoint-large-desktop) * 0.2);
+
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-column-gap: 1rem;
+  }
+}
+
+@media screen and (min-width: var(--breakpoint-small-desktop)) {
+  .container {
+    width: calc(var(--breakpoint-small-desktop) * 0.6);
+    margin: calc(var(--breakpoint-small-desktop) * 0.2);
+
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-column-gap: 1rem;
+  }
+}

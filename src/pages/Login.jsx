@@ -39,7 +39,6 @@ function Login({ handleLogin }) {
       setLoading(false)
       setResponseHelper(error?.response.data)
     }
-    
   }
 
   return (

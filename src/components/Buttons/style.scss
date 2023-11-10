@@ -23,6 +23,17 @@
     }
   }
 
+  &.loading {
+    .loader {
+      width: 20px;
+      height: 20px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      translate: -50% -50%;
+    }
+  }
+
   // Outline
   &.outlined {
     color: rgb(var(--color-text));

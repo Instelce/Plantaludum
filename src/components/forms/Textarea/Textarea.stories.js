@@ -2,7 +2,7 @@ import Textarea from "./index.jsx";
 
 
 export default {
-    title: "Form/Textarea",
+    title: "Components/Forms/Textarea",
     component: Textarea,
 }
 

@@ -22,14 +22,15 @@ function AutocompleteInput({
   const debouncedSearchValue = useDebounce(searchValue, 300)
   const [selectedValue, setSelectedValue] = useState("")
 
+  // fetch data from url pass in props
   useEffect(() => {
     axios.get(url, {params: {search: debouncedSearchValue}})
       .then(response => {
-        console.log("res", response.data)
         setSuggestions(prev => response.data.results)
       })
   }, [debouncedSearchValue]);
 
+  // set autocomplete to invalid
   useEffect(() => {
     if (searchValue !== selectedValue) {
       setValidValue?.(prev => false)
@@ -68,12 +69,20 @@ function Suggestions ({searchValue, fieldName, suggestions, maxSuggestions, setS
     if (searchValue.length === 0) {
       return []
     } else {
-      console.log("sug", suggestions?.map(el => el[fieldName]).filter(value => value.toLowerCase().startsWith(searchValue)).slice(0, maxSuggestions))
-      return deleteDublicates(suggestions?.map(el => el[fieldName]).filter(value => value).slice(0, maxSuggestions))
-      // return deleteDublicates(suggestions?.map(el => el[fieldName]).filter(value => value.toLowerCase().startsWith(searchValue)).slice(0, maxSuggestions))
+      // first get only fieldName key values
+      const results = suggestions?.map(el => el[fieldName])
+      // then filter by search value
+      results?.filter(value => value?.toLowerCase().startsWith(searchValue?.toLowerCase()))
+      // and get only keep 0 to maxSuggestions values
+      results?.slice(0, maxSuggestions)
+
+      console.log(results)
+
+      return deleteDublicates(results)
     }
   }, [suggestions])
 
+  // Accessibility
   useEffect(() => {
     const accessibility = (e) => {
       switch (e.key) {
@@ -93,7 +102,7 @@ function Suggestions ({searchValue, fieldName, suggestions, maxSuggestions, setS
     return () => {
       window.removeEventListener("keydown", accessibility)
     }
-  }, [selectedSuggestion]);
+  }, [selectedSuggestion, filteredSuggestions]);
 
   return <div className={classNames("options-container", {show: filteredSuggestions?.length !== 0})}>
     {filteredSuggestions?.map((option, index) => (
