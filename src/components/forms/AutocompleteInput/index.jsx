@@ -16,6 +16,7 @@ function AutocompleteInput({
   maxSuggestions = 10,
   handleValueChange,
   setValidValue = null,
+  setSelectedValueData = null,
   usageInfoText = null,
 }) {
   const [searchValue, setSearchValue] = useState("")
@@ -27,27 +28,38 @@ function AutocompleteInput({
   useEffect(() => {
     axios.get(url, {params: {search: debouncedSearchValue}})
       .then(response => {
-        setSuggestions(prev => response.data.results)
+        setSuggestions(() => response.data.results)
       })
   }, [debouncedSearchValue]);
 
   // set autocomplete to invalid
   useEffect(() => {
     if (searchValue !== selectedValue) {
-      setValidValue?.(prev => false)
+      setValidValue?.(() => false)
     }
   }, [searchValue]);
 
   const handleOptionClick = (value) => {
-    setSelectedValue(prev => value)
-    setSearchValue(prev => value)
-    setValidValue?.(prev => value)
-    handleValueChange(prev => value)
+    setSelectedValue(() => value)
+    setSearchValue(() => value)
+    setValidValue?.(() => value)
+    handleValueChange(() => value)
+    // console.log(value)
+    // console.log("click", Object.values(suggestions).filter(p => {
+    //   // console.log(value, searchValue)
+    //   return p[fieldName] === value
+    // }))
+    setSelectedValueData?.(() => Object.values(suggestions).filter(p => p[fieldName] === value)[0])
+  }
+
+  // remove enter key submit
+  const checkKeyDown = (e) => {
+    if (e.key === 'Enter') e.preventDefault()
   }
 
   return (
     <div className="autocomplete" style={{marginBottom: "1rem"}}>
-      <Input label={label} size={size} value={searchValue} handleValueChange={setSearchValue} mb="0" usageInfoText={usageInfoText} />
+      <Input label={label} size={size} value={searchValue} handleValueChange={setSearchValue} onKeyDown={checkKeyDown} mb="0" usageInfoText={usageInfoText} />
       {searchValue !== selectedValue && <Suggestions searchValue={searchValue} fieldName={fieldName} suggestions={suggestions} maxSuggestions={maxSuggestions} setSelectedValue={handleOptionClick} />}
     </div>
   );
@@ -60,11 +72,18 @@ AutocompleteInput.propTypes = {
   fieldName: PropTypes.string,
   maxSuggestions: PropTypes.number,
   handleValueChange: PropTypes.func,
-  setValidValue: PropTypes.func
+  setValidValue: PropTypes.func,
+  usageInfoText: PropTypes.string,
 }
 
 
-function Suggestions ({searchValue, fieldName, suggestions, maxSuggestions, setSelectedValue}) {
+function Suggestions ({
+  searchValue,
+  fieldName,
+  suggestions,
+  maxSuggestions,
+  setSelectedValue
+}) {
   const [selectedSuggestion, setSelectedSuggestion] = useState(0)
   const filteredSuggestions = useMemo(() => {
     if (searchValue.length === 0) {
@@ -117,7 +136,7 @@ Suggestions.propTypes = {
   fieldName: PropTypes.string,
   suggestions: PropTypes.array,
   maxSuggestions: PropTypes.number,
-  setSelectedValue: PropTypes.func
+  setSelectedValue: PropTypes.func,
 }
 
 export default AutocompleteInput;

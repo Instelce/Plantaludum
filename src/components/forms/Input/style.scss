@@ -132,6 +132,28 @@
   }
 }
 
+
+.input-button {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: 1fr;
+
+  .autocomplete {
+    margin: 0 !important;
+  }
+
+  input {
+    border-radius: 10px 0 0 10px;
+    margin: 0;
+  }
+
+  button {
+    height: auto;
+    border-radius: 0 10px 10px 0;
+  }
+}
+
+
 @keyframes info-slide-left {
   0% {
     opacity: 0;

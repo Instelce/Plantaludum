@@ -65,6 +65,13 @@ button {
   font-family: "DancingScript", serif !important;
 }
 
+.two-buttons {
+  padding-top: 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 1rem;
+}
+
 @import './forms';
 @import './container';
 

@@ -26,6 +26,7 @@ export function useFetch({fetchFunc, method, setHelper}) {
           }).catch((err) => {
             setErrors(err)
             setHelper?.(() => err.response.data)
+            console.log(err.response.data)
           }).finally(() => {
             setLoading(false)
           })
@@ -36,6 +37,7 @@ export function useFetch({fetchFunc, method, setHelper}) {
           }).catch((err) => {
             setErrors(err)
             setHelper?.(() => err.response.data)
+            console.log(err.response.data)
           }).finally(() => {
             setLoading(false)
           })

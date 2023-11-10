@@ -22,11 +22,12 @@ import {navigate} from "@storybook/addon-links";
 
 
 function CreateQuiz(props) {
+  const {user} = useAuth()
   const privateFetch = usePrivateFetch()
   const location = useLocation()
-  const navigate = useNavigate()
   const fromLocation = location?.state?.from?.pathname || '/menu'
-  const {user} = useAuth()
+  const navigate = useNavigate()
+
   const [responseHelper, setResponseHelper] = useState({})
   const {launchRequest: launchFloreImageFetch, data: plantImagesData, loading: plantImagesLoading, errors: errors} = useFetch({
     fetchFunc: floreFetch,
@@ -59,6 +60,13 @@ function CreateQuiz(props) {
     }
   }, [plantImagesData]);
 
+  useEffect(() => {
+    if (!createQuizLoading && createQuizResponseData) {
+      console.log(createQuizResponseData)
+      navigate(`/quiz/create/plants/${createQuizResponseData.id}`, {state: createQuizResponseData })
+    }
+  }, [createQuizLoading]);
+
   const handleFormSubmit = (e) => {
     e.preventDefault()
     const formData = new FormData(e.target);
@@ -74,7 +82,6 @@ function CreateQuiz(props) {
       user: localStorage.getItem("USER-ID"),
     })
 
-    navigate(`/quiz/create/plants/${createQuizResponseData.id}`)
   }
 
   useEffect(() => {
@@ -140,7 +147,7 @@ function CreateQuiz(props) {
           takeValue="true"
           style={{marginBottom: '1rem'}}
         />
-        <div className="form-buttons">
+        <div className="two-buttons">
           <ButtonLink
             to={fromLocation}
             label="Retour"
