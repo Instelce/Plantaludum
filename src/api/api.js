@@ -61,7 +61,6 @@ export function loadRandomPlants(number = 10) {
 
 export function loadPlants({
   search = null,
-  list = null,
   fieldFilters = {
     rank_code: null,
     family__name: null,
@@ -75,10 +74,6 @@ export function loadPlants({
     params.set('search', search)
   }
 
-  if (list) {
-    params.set('list', list)
-  }
-
   if (fieldFilters.length) {
     for (const fieldFilter of fieldFilters) {
       console.log("f", fieldFilter)
@@ -90,6 +85,16 @@ export function loadPlants({
     .then(r => r.data)
 }
 
+export function loadListOfPlants(ids) {
+  const params = new URLSearchParams()
+
+  console.log(ids.join())
+
+  params.set('ids', ids.join(","))
+
+  return apiFlore.get(`api/plants-list?${params.toString()}`)
+    .then(r => r.data)
+}
 
 export function loadImages(fieldFilters = {
   'plant__id': null,

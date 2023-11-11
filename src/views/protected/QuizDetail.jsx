@@ -1,6 +1,11 @@
 import {useMutation, useQueries, useQuery} from "@tanstack/react-query";
 import {useParams} from "react-router-dom";
-import {loadPlants, loadQuiz, loadQuizPlants} from "../../api/api.js";
+import {
+  loadListOfPlants,
+  loadPlants,
+  loadQuiz,
+  loadQuizPlants
+} from "../../api/api.js";
 import Loader from "../../components/Loader/index.jsx";
 import ButtonLink from "../../components/Buttons/ButtonLink.jsx";
 import {ArrowRight, EyeOff, RefreshCcw, Trash2} from "react-feather";
@@ -31,9 +36,9 @@ function QuizDetail(props) {
 
   const {isSuccess: plantsSuccess,mutate: mutatePlants, data: plantsData} = useMutation({
     mutationKey: ['plants'],
-    mutationFn: () => loadPlants({
-      list: Object.values(quizPlantsQuery.data).map(v => v.plant_id)
-    }),
+    mutationFn: () => loadListOfPlants(
+      Object.values(quizPlantsQuery.data).map(v => v.plant_id)
+    ),
     onError: (error) => {
       console.log(error)
     }
@@ -96,7 +101,7 @@ function QuizDetail(props) {
 
             {plantsSuccess && <>
 
-              {plantsData.results.map((plant, index) => (
+              {plantsData.map((plant, index) => (
                 <ListItem key={plant.id} index={index} title={plant.french_name} />
               ))}
 
