@@ -18,6 +18,8 @@
     "@storybook/manager-api": "^7.5.2",
     "@storybook/preview-api": "^7.5.2",
     "@storybook/theming": "^7.5.2",
+    "@tanstack/react-query": "^5.8.1",
+    "@tanstack/react-query-devtools": "^5.8.1",
     "axios": "^1.6.0",
     "body-scroll-lock": "4.0.0-beta.0",
     "classnames": "^2.3.2",

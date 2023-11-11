@@ -1,14 +1,13 @@
 import {useLocation, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import Input from "../../components/forms/Input/index.jsx";
 import Button from "../../components/Buttons/Button.jsx";
 import AutocompleteInput from "../../components/forms/AutocompleteInput/index.jsx";
-import {Trash2} from "react-feather";
 import ListItem from "../../components/ListItem/index.jsx";
 import ButtonLink from "../../components/Buttons/ButtonLink.jsx";
 import {useFetch} from "../../hooks/useFetch.js";
-import {floreFetch} from "../../api/axios.js";
 import usePrivateFetch from "../../hooks/auth/usePrivateFetch.js";
+import {useMutation} from "@tanstack/react-query";
+import {createPlantQuiz} from "../../api/api.js";
 
 
 function CreateQuizPlant(props) {
@@ -24,19 +23,23 @@ function CreateQuizPlant(props) {
   const [plantIsValid, setPlantIsValid] = useState(false)
 
   const [plants, setPlants] = useState([])
+  //
+  // const {launchRequest: createQuizPlant, loading: quizPlantLoading} = useFetch({
+  //   fetchFunc: privateFetch, method: "POST"
+  // })
 
-  const {launchRequest: createQuizPlant, loading: quizPlantLoading} = useFetch({
-    fetchFunc: privateFetch, method: "POST"
+  const {isPending, mutate: mutateCreatePlantQuiz} = useMutation({
+    mutationKey: ['quizzes-plants'],
+    mutationFn: (data) => createPlantQuiz(privateFetch, data)
   })
 
   useEffect(() => {
     console.log(quizData)
   }, []);
 
-  const createQuizPlants = () => {
+  const createQuizPlants = async () => {
     for (const plant of plants) {
-      console.log(plant)
-      createQuizPlant('/api/quizzes-plants', {
+      await mutateCreatePlantQuiz({
         quiz: quizData.id,
         plant_id: plant.id,
       })
@@ -49,6 +52,7 @@ function CreateQuizPlant(props) {
       console.log("plant", plantData)
       setPlants(() => [...plants, { id: plantData.id, name: plantValue }])
     }
+    console.log(e.target.value)
   }
 
   const removePlant = (plant) => {
@@ -108,7 +112,7 @@ function CreateQuizPlant(props) {
           color="primary"
           // disabled={plants.length < 3}
           onClick={createQuizPlants}
-          loading={quizPlantLoading}
+          loading={isPending}
           />
       </div>
     </div>

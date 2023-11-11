@@ -5,8 +5,11 @@ import Input from "../components/forms/Input/index.jsx";
 import Button from "../components/Buttons/Button.jsx";
 import PasswordChecker from "../components/forms/PasswordChecker/index.jsx";
 import ButtonLink from "../components/Buttons/ButtonLink.jsx";
-import defaultFetch from "../api/axios.js";
+import api from "../api/axios.js";
 import useFormFilled from "../hooks/useFormFilled.js";
+import {useMutation} from "@tanstack/react-query";
+import {register} from "../api/api.js";
+import error from "./Error.jsx";
 
 
 function Register(props) {
@@ -15,29 +18,29 @@ function Register(props) {
   const [passwordValue, setPasswordValue] = useState("");
   const {formRef, handleFormChange, isFilled} = useFormFilled()
 
+  const {isPending, mutate: mutateRegister} = useMutation({
+    mutationKey: ['register'],
+    mutationFn: (data) => register(data),
+    onSuccess: () => {
+      setTimeout(() => {
+        navigate('/connexion', {replace: true})
+      }, 2000)
+    },
+    onError: (error) => {
+      setResponseHelper(error.response.data)
+    }
+  })
+
   const handleSubmit = (e) => {
     e.preventDefault()
     let formData = new FormData(e.target)
-    console.log(formData.get('username'))
 
-    defaultFetch.post('/auth/register', {
+    mutateRegister({
       username: formData.get('username'),
       email: formData.get('email'),
       password: formData.get('password'),
       password_confirmation: formData.get('password_confirmation')
     })
-      .then(response => {
-        if (response.status === 201) {
-          console.log(response.data)
-          setTimeout(() => {
-            navigate('/connexion', {replace: true})
-          }, 2000)
-        }
-      })
-      .catch(error => {
-        console.log(error.response.data)
-        setResponseHelper(error.response.data)
-      })
   }
 
   return (
@@ -88,7 +91,15 @@ function Register(props) {
           helperText={responseHelper?.password_confirmation}
         />
         <PasswordChecker password={passwordValue} />
-        <Button label="Créer" type="submit" color="primary" size="big" fill disabled={!isFilled} />
+        <Button
+          label="Créer"
+          type="submit"
+          color="primary"
+          size="big"
+          fill
+          disabled={!isFilled}
+          loading={isPending}
+        />
       </form>
     </div>
   );

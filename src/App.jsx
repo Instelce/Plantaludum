@@ -11,9 +11,9 @@ import QuizPage from "./pages/protected/QuizPage.jsx";
 import QuizResult from "./pages/protected/QuizResultS.jsx";
 import Explorer from "./pages/Explorer.jsx";
 import ProtectedRoute from "./routes/ProtectedRoute.jsx";
-import useAuth from "./hooks/auth/useAuth.js";
 import CreateQuiz from "./pages/protected/CreateQuiz.jsx";
 import CreateQuizPlant from "./pages/protected/CreateQuizPlant.jsx";
+
 
 function App(props) {
   return (
@@ -58,7 +58,7 @@ function App(props) {
             </ProtectedRoute>
           } />
 
-          <Route path="quiz/create/plants/:quizId" element={
+          <Route path="quiz/plants/create/:quizId" element={
             <ProtectedRoute>
               <CreateQuizPlant />
             </ProtectedRoute>

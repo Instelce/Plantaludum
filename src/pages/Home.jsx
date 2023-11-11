@@ -1,6 +1,4 @@
 import React, {useEffect, useRef, useState} from 'react';
-import Navbar from "../components/Navbar/index.jsx";
-import {styled} from "styled-components"
 import {css} from "@emotion/css";
 import FloatingPlantCard from "../components/FloatingPlantCard/index.jsx";
 import {
@@ -10,17 +8,11 @@ import {
     simpleFetch
 } from "../utils.js";
 import PlantQuiz from "../components/PlantQuiz/index.jsx";
-import animate from "../animate.js";
 import ButtonLink from "../components/Buttons/ButtonLink.jsx";
-import defaultFetch, {floreFetch} from "../api/axios.js";
+import api, {apiFlore} from "../api/axios.js";
 import {useFetch} from "../hooks/useFetch.js";
-import {random} from "gsap/gsap-core";
-import {all} from "axios";
-
-
-export async function homeLoader({request, params}) {
-
-}
+import {useMutation, useQuery} from "@tanstack/react-query";
+import {loadImages, loadRandomPlants} from "../api/api.js";
 
 
 function Home(props) {
@@ -29,14 +21,14 @@ function Home(props) {
     const [currentPlant, setCurrentPlant] = useState({})
     const [showQuiz, setShowQuiz] = useState(false)
 
-    const {launchRequest: fetchPlants, data: plantsData, loading } = useFetch({fetchFunc: floreFetch, method: "GET"})
+    const {isLoading, data: plantsData} = useQuery({
+        queryKey: ['plants'],
+        queryFn: async () => loadRandomPlants(10),
+        staleTime: Infinity,
+    })
 
     useEffect(() => {
-        fetchPlants('/api/plants/random/10')
-    }, [])
-
-    useEffect(() => {
-        if (!loading && plantsData) {
+        if (!isLoading && plantsData) {
             // let tempPlants = []
             let col = -1;
             const size = 300;
@@ -48,7 +40,7 @@ function Home(props) {
                 let plant = plantsData[i]
                 // console.log(plant)
 
-                floreFetch.get(`/api/images?plant__id=${plant.id}`)
+                apiFlore.get(`/api/images?plant__id=${plant.id}`)
                   .then(response => {
                     if (response.status === 200) {
                         const allImages = response.data
@@ -80,13 +72,15 @@ function Home(props) {
                                     rightAnswer: true
                                 })
                             } else {
-                                // console.log(i, "rchoice", randomChoices[id])
-                                choices.push({
-                                    title: randomChoices[id].french_name ? randomChoices[id].french_name : randomChoices[id].correct_name,
-                                    subtitle: randomChoices[id].scientific_name,
-                                    rightAnswer: false
-                                })
-                                id++;
+                                console.log("aaa", randomChoices[id].french_name)
+                                if (randomChoices[id].french_name !== plant.french_name) {
+                                    choices.push({
+                                        title: randomChoices[id].french_name ? randomChoices[id].french_name : randomChoices[id].correct_name,
+                                        subtitle: randomChoices[id].scientific_name,
+                                        rightAnswer: false
+                                    })
+                                    id++;
+                                }
                             }
                         }
                         choices = deleteDublicates(choices)
@@ -110,7 +104,7 @@ function Home(props) {
                 })
             }
         }
-    }, [loading]);
+    }, [isLoading]);
 
     useEffect(() => {
         if (tempPlants.length === 10) {
@@ -141,7 +135,7 @@ function Home(props) {
     return (
         <div className="fixed-container">
             <CardWrapper active={!showQuiz}>
-                {!loading &&
+                {!isLoading &&
                     plants.map((plant, index) => (
                         <FloatingPlantCard
                             key={plant.src}

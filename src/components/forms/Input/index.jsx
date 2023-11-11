@@ -67,7 +67,7 @@ function Input({
         {helperText && <p className="helper-text">{helperText}</p>}
       </div>
 
-      {helperText && <Modal show={showInfoModal} setShow={setShowInfoModal}>{usageInfoText ? usageInfoText : ""}</Modal>}
+      {usageInfoText && <Modal show={showInfoModal} setShow={setShowInfoModal}>{usageInfoText ? usageInfoText : ""}</Modal>}
     </>
   );
 }

@@ -9,7 +9,7 @@ import AutocompleteInput
   from "../../components/forms/AutocompleteInput/index.jsx";
 import Option from "../../components/forms/Option/index.jsx";
 import Selector from "../../components/forms/Selector/index.jsx";
-import {floreFetch} from "../../api/axios.js";
+import {apiFlore} from "../../api/axios.js";
 import {deleteDublicates} from "../../utils.js";
 import ButtonLink from "../../components/Buttons/ButtonLink.jsx";
 import {useLocation, useNavigate} from "react-router-dom";
@@ -19,6 +19,8 @@ import {useFetch} from "../../hooks/useFetch.js";
 import Loader from "../../components/Loader/index.jsx";
 import error from "../Error.jsx";
 import {navigate} from "@storybook/addon-links";
+import {useMutation, useQuery} from "@tanstack/react-query";
+import {createQuiz, loadImages, loadPlants} from "../../api/api.js";
 
 
 function CreateQuiz(props) {
@@ -28,16 +30,18 @@ function CreateQuiz(props) {
   const fromLocation = location?.state?.from?.pathname || '/menu'
   const navigate = useNavigate()
 
-  const [responseHelper, setResponseHelper] = useState({})
-  const {launchRequest: launchFloreImageFetch, data: plantImagesData, loading: plantImagesLoading, errors: errors} = useFetch({
-    fetchFunc: floreFetch,
-    method: "GET",
+  const {isFetching: quizFetching, isSuccess, data: quizData, mutate: mutateCreateQuiz} = useMutation({
+    mutationKey: ['quizzes'],
+    mutationFn: (data) => createQuiz(privateFetch, data),
   })
-  const {launchRequest: createQuiz, data: createQuizResponseData, loading: createQuizLoading} = useFetch({
-    fetchFunc: privateFetch,
-    method: "POST",
-    setHelper: setResponseHelper,
+
+  const {isLoading: imagesLoading, data: imagesData, error, refetch: fetchImages} = useQuery({
+    queryKey: ['images'],
+    queryFn: () => loadImages({ "plant__french_name": plantValue}),
+    staleTime: Infinity,
+    enabled: false
   })
+  const plantImagesData = imagesData || null
 
   const {formRef, handleFormChange, isFilled} = useFormFilled()
 
@@ -46,12 +50,14 @@ function CreateQuiz(props) {
   const [plantImages, setPlantImages] = useState(null)
   const [imageValue, setImageValue] = useState(null)
 
+
   // get all image urls for autocomplete input
   useEffect(() => {
     if (plantIsValid) {
-      launchFloreImageFetch(`/api/images?plant__french_name=${plantValue}`)
+      fetchImages()
     }
   }, [plantIsValid]);
+
 
   // set plant images to an array of images
   useEffect(() => {
@@ -60,12 +66,15 @@ function CreateQuiz(props) {
     }
   }, [plantImagesData]);
 
+
+  // Navigate to create quiz plants form if the quiz is successfully created
   useEffect(() => {
-    if (!createQuizLoading && createQuizResponseData) {
-      console.log(createQuizResponseData)
-      navigate(`/quiz/create/plants/${createQuizResponseData.id}`, {state: createQuizResponseData })
+    if (isSuccess) {
+      console.log(quizData)
+      navigate(`/quiz/plants/create/${quizData.id}`, {state: quizData})
     }
-  }, [createQuizLoading]);
+  }, [isSuccess]);
+
 
   const handleFormSubmit = (e) => {
     e.preventDefault()
@@ -73,7 +82,7 @@ function CreateQuiz(props) {
 
     console.log(user)
 
-    createQuiz('/api/quizzes', {
+    mutateCreateQuiz({
       name: formData.get('name'),
       description: formData.get('description'),
       difficulty: formData.get('difficulty'),
@@ -81,12 +90,13 @@ function CreateQuiz(props) {
       private: formData.get('private') ? formData.get('private') : false,
       user: localStorage.getItem("USER-ID"),
     })
-
   }
 
+
   useEffect(() => {
-    console.log("err", errors)
-  }, [errors]);
+    console.log("err", error)
+  }, [error]);
+
 
    return (
     <div className="container center">
@@ -131,7 +141,7 @@ function CreateQuiz(props) {
           />
         </>
         }
-        {plantIsValid && <div>
+        {!imagesLoading && plantValue && <div>
           {plantImages !== null ? <Selector
             inputId="preview-image-url"
             choices={plantImages}
@@ -162,7 +172,7 @@ function CreateQuiz(props) {
             type="submit"
             color="primary"
             disabled={!isFilled}
-            loading={createQuizLoading}
+            loading={quizFetching}
           />
         </div>
       </form>
