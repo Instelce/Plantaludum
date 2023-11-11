@@ -7,13 +7,13 @@ import Register from "./views/Register.jsx";
 import Login from "./views/Login.jsx";
 import MainMenu from "./views/protected/MainMenu.jsx";
 import QuizChoice from "./views/protected/QuizChoice.jsx";
-import QuizPage from "./views/protected/QuizPage.jsx";
+import QuizGame from "./views/protected/QuizGame.jsx";
 import QuizResult from "./views/protected/QuizResultS.jsx";
 import Explorer from "./views/Explorer.jsx";
 import ProtectedRoute from "./routes/ProtectedRoute.jsx";
-import CreateQuiz from "./views/protected/CreateQuiz.jsx";
-import CreateQuizPlant from "./views/protected/CreateQuizPlant.jsx";
-import DetailQuiz from "./views/protected/DetailQuiz.jsx";
+import QuizCreate from "./views/protected/QuizCreate.jsx";
+import QuizPlantCreate from "./views/protected/QuizPlantCreate.jsx";
+import QuizDetail from "./views/protected/QuizDetail.jsx";
 
 
 function App(props) {
@@ -43,13 +43,13 @@ function App(props) {
 
           <Route path="quiz/:quizId" element={
             <ProtectedRoute>
-              <DetailQuiz />
+              <QuizDetail />
             </ProtectedRoute>
           } />
 
           <Route path="quiz/:quizId/game" element={
               <ProtectedRoute>
-                <QuizPage />
+                <QuizGame />
               </ProtectedRoute>
             } />
 
@@ -61,13 +61,13 @@ function App(props) {
 
           <Route path="quiz/create" element={
             <ProtectedRoute>
-              <CreateQuiz />
+              <QuizCreate />
             </ProtectedRoute>
           } />
 
           <Route path="quiz/:quizId/plants/create" element={
             <ProtectedRoute>
-              <CreateQuizPlant />
+              <QuizPlantCreate />
             </ProtectedRoute>
           } />
         </Route>

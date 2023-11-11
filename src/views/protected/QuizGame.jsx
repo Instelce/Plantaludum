@@ -98,7 +98,7 @@ const questions = [
 ]
 
 
-function QuizPage(props) {
+function QuizGame(props) {
     const navigate = useNavigate();
     let { quizId } = useParams()
     const {stringTime, start, reset} = useTimer({startValue:5})
@@ -137,7 +137,7 @@ function QuizPage(props) {
         // redirect to result page if quiz is finished
         if (progress === questions.length) {
             setTimeout(() => {
-                navigate(`/quiz/${quizId}/resultat`);
+                navigate(`/quiz/${quizId}/game/resultat`);
             }, 2000)
         }
     }, [showResult]);
@@ -202,4 +202,4 @@ function QuizPage(props) {
 
 
 
-export default QuizPage;
+export default QuizGame;

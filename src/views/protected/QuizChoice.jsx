@@ -14,28 +14,28 @@ const quizzes = [
     name: "Les plantes sauvages",
     plants: 6,
     difficulty: 2,
-    url: "/quiz/1",
+    url: "/quiz/1/game",
   },
   {
     src: "https://api.tela-botanica.org/img:000192173CRS.jpg",
     name: "Les plantes commestibles",
     plants: 10,
     difficulty: 3,
-    url: "/quiz/2",
+    url: "/quiz/2/game",
   },
   {
     src: "https://api.tela-botanica.org/img:000244988CRS.jpg",
     name: "Les plantes sauvages",
     plants: 6,
     difficulty: 2,
-    url: "/quiz/3",
+    url: "/quiz/3/game",
   },
   {
     src: "https://api.tela-botanica.org/img:000192173CRS.jpg",
     name: "Les plantes commestibles",
     plants: 10,
     difficulty: 3,
-    url: "/quiz/4",
+    url: "/quiz/4/game",
   },
 ];
 

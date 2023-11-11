@@ -1,4 +1,4 @@
-import {useLocation, useParams} from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import Button from "../../components/Buttons/Button.jsx";
 import AutocompleteInput from "../../components/forms/AutocompleteInput/index.jsx";
@@ -7,14 +7,16 @@ import ButtonLink from "../../components/Buttons/ButtonLink.jsx";
 import {useFetch} from "../../hooks/useFetch.js";
 import usePrivateFetch from "../../hooks/auth/usePrivateFetch.js";
 import {useMutation} from "@tanstack/react-query";
-import {createPlantQuiz} from "../../api/api.js";
+import {createQuizPlant} from "../../api/api.js";
+import {navigate} from "@storybook/addon-links";
 
 
-function CreateQuizPlant(props) {
+function QuizPlantCreate(props) {
   const privateFetch = usePrivateFetch()
 
   const location = useLocation()
   const fromLocation = location?.state?.from?.pathname || '/menu'
+  const navigate = useNavigate()
   const {quizId} = useParams()
   const quizData = location.state
 
@@ -23,24 +25,19 @@ function CreateQuizPlant(props) {
   const [plantIsValid, setPlantIsValid] = useState(false)
 
   const [plants, setPlants] = useState([])
-  //
-  // const {launchRequest: createQuizPlant, loading: quizPlantLoading} = useFetch({
-  //   fetchFunc: privateFetch, method: "POST"
-  // })
 
   const {isPending, mutate: mutateCreatePlantQuiz} = useMutation({
     mutationKey: ['quizzes-plants'],
-    mutationFn: (data) => createPlantQuiz(privateFetch, data)
+    mutationFn: (data) => createQuizPlant(privateFetch, data),
+    onSuccess: () => {
+      navigate(`quiz/${quizId}`, {replace: true})
+    }
   })
-
-  useEffect(() => {
-    console.log(quizData)
-  }, []);
 
   const createQuizPlants = async () => {
     for (const plant of plants) {
       await mutateCreatePlantQuiz({
-        quiz: quizData.id,
+        quiz: quizId,
         plant_id: plant.id,
       })
     }
@@ -58,10 +55,6 @@ function CreateQuizPlant(props) {
   const removePlant = (plant) => {
     setPlants(() => [...plants].filter(p => p !== plant))
   }
-
-  useEffect(() => {
-    console.log(plants)
-  }, [plants]);
 
   return (
     <div className="container center">
@@ -120,4 +113,4 @@ function CreateQuizPlant(props) {
 }
 
 
-export default CreateQuizPlant;
+export default QuizPlantCreate;

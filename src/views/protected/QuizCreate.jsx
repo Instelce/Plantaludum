@@ -23,7 +23,7 @@ import {useMutation, useQuery} from "@tanstack/react-query";
 import {createQuiz, loadImages, loadPlants} from "../../api/api.js";
 
 
-function CreateQuiz(props) {
+function QuizCreate(props) {
   const {user} = useAuth()
   const privateFetch = usePrivateFetch()
   const location = useLocation()
@@ -180,4 +180,4 @@ function CreateQuiz(props) {
   );
 }
 
-export default CreateQuiz;
+export default QuizCreate;

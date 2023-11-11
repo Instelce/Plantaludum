@@ -5,7 +5,9 @@ export default function useRefreshToken() {
   const { setAccessToken, setCSRFToken } = useAuth()
 
   const refresh = async () => {
-    const response = await api.post('auth/refresh')
+    const response = await api.post('auth/refresh', {}, {
+      withCredentials: true,
+    })
     setAccessToken(response.data.access)
     setCSRFToken(response.headers["x-csrftoken"])
 

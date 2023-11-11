@@ -3,6 +3,7 @@ import "./style.scss";
 import classNames from "classnames";
 import Button from "../Buttons/Button.jsx";
 import {disableBodyScroll, enableBodyScroll} from "body-scroll-lock";
+import {createPortal} from "react-dom";
 
 function Modal({ show, setShow, children, closeButtonLabel= "Fermer" }) {
 
@@ -14,7 +15,7 @@ function Modal({ show, setShow, children, closeButtonLabel= "Fermer" }) {
     }
   }, [show]);
 
-  return (
+  return createPortal(
     <div className={classNames("modal-container", { show: show })}>
       <div className="modal">
         <div className="modal-content">{children}</div>
@@ -22,7 +23,8 @@ function Modal({ show, setShow, children, closeButtonLabel= "Fermer" }) {
           <Button label={closeButtonLabel} color="secondary" variant="solid" onClick={() => setShow(!show)} />
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 
