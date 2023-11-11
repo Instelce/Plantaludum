@@ -71,7 +71,7 @@ function CreateQuiz(props) {
   useEffect(() => {
     if (isSuccess) {
       console.log(quizData)
-      navigate(`/quiz/plants/create/${quizData.id}`, {state: quizData})
+      navigate(`/quiz/${quizData.id}/plants/create`, {state: quizData})
     }
   }, [isSuccess]);
 

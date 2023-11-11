@@ -9,9 +9,9 @@ function ListItem({title, img = null, removeFunc = null, ...props}) {
 
     <div className="list-title">
       <h3>{title}</h3>
-      {removeFunc && <span onClick={removeFunc}>
+      {removeFunc && <button className="remove-button" onClick={removeFunc}>
         <Trash2 color="rgb(var(--color-danger))" />
-      </span>}
+      </button>}
     </div>
 
   </div>;

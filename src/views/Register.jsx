@@ -1,15 +1,11 @@
-import React, {useMemo, useRef, useState} from "react";
-import { styled } from "styled-components";
-import {Link, Navigate, redirect, useNavigate} from "react-router-dom";
+import {useState} from "react";
+import {Link, useNavigate} from "react-router-dom";
 import Input from "../components/forms/Input/index.jsx";
 import Button from "../components/Buttons/Button.jsx";
 import PasswordChecker from "../components/forms/PasswordChecker/index.jsx";
-import ButtonLink from "../components/Buttons/ButtonLink.jsx";
-import api from "../api/axios.js";
 import useFormFilled from "../hooks/useFormFilled.js";
 import {useMutation} from "@tanstack/react-query";
 import {register} from "../api/api.js";
-import error from "./Error.jsx";
 
 
 function Register(props) {

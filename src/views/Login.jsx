@@ -1,10 +1,9 @@
-import {useEffect, useState} from "react";
+import {useState} from "react";
+import PropTypes from "prop-types";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import Input from "../components/forms/Input/index.jsx";
 import Button from "../components/Buttons/Button.jsx";
-import PropTypes from "prop-types";
 import useAuth from "../hooks/auth/useAuth.js";
-import api, {apiPrivate} from "../api/axios.js";
 import useFormFilled from "../hooks/useFormFilled.js";
 import {useMutation} from "@tanstack/react-query";
 import {login} from "../api/api.js";
