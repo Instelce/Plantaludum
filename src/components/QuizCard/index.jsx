@@ -2,10 +2,10 @@ import React, {useEffect, useRef, useState} from 'react';
 import PropTypes from "prop-types";
 import Stars from "../Stars/index.jsx";
 import './style.scss';
-import {disableBodyScroll, enableBodyScroll} from "body-scroll-lock";
+import {Link} from "react-router-dom";
 
 
-function PlantCard({plant}) {
+function QuizCard({quiz, ...props}) {
   const cardRef = useRef(null);
   const cardNameRef = useRef(null)
   const [currentImage, setCurrentImage] = useState(2)
@@ -49,26 +49,29 @@ function PlantCard({plant}) {
   }, []);
 
   return (
-    <div className="plant-card" ref={cardRef} onMouseLeave={handleMouseLeave} onAuxClick={handleRightClick} onContextMenu={(e) => e.preventDefault()}>
-      <div className="image-wrapper">
-        <div className="image-container">
-          {plant.images.map((src, index) => (
-            <img key={src} src={src} alt={src} className={currentImage == index ? "active" : ""}/>
-          ))}
+    <div className="plant-card" ref={cardRef} onMouseLeave={handleMouseLeave} onAuxClick={handleRightClick} onContextMenu={(e) => e.preventDefault()} {...props}>
+      <Link to={`/quiz/${quiz.id}`}>
+        <div className="image-wrapper">
+          <div className="image-container">
+            <img className="active" src={quiz.preview_image_url} alt="Preview image"/>
+            {/*{quiz.images.map((src, index) => (*/}
+            {/*  <img key={src} src={src} alt={src} className={currentImage == index ? "active" : ""}/>*/}
+            {/*))}*/}
+          </div>
         </div>
-      </div>
-      <div className="card-area"></div>
-      <div className="card-name" ref={cardNameRef}>{plant.name}</div>
+        <div className="card-area"></div>
+        <div className="card-name" ref={cardNameRef}>{quiz.name}</div>
+      </Link>
       <div className="card-content">
-        <Stars count={plant.difficulty} />
-        <p>{plant.description}</p>
+        <Stars count={quiz.difficulty} />
+        <p>{quiz.description}</p>
       </div>
     </div>
   );
 }
 
-PlantCard.propTypes = {
-  plant: PropTypes.shape({
+QuizCard.propTypes = {
+  quiz: PropTypes.shape({
     name: PropTypes.string,
     description: PropTypes.string,
     difficulty: PropTypes.number,
@@ -76,4 +79,4 @@ PlantCard.propTypes = {
   })
 }
 
-export default PlantCard;
+export default QuizCard;

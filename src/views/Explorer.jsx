@@ -1,12 +1,17 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Input from "../components/forms/Input/index.jsx";
-import PlantCard from "../components/PlantCard/index.jsx";
+import QuizCard from "../components/QuizCard/index.jsx";
 import Modal from "../components/Modal/index.jsx";
 import Button from "../components/Buttons/Button.jsx";
 import Dropdown from "../components/forms/Dropdown/index.jsx";
 import classNames from "classnames";
 import Stars from "../components/Stars/index.jsx";
 import Option from "../components/forms/Option/index.jsx"
+import {useQuery} from "@tanstack/react-query";
+import {loadQuiz, loadQuizzes} from "../api/api.js";
+import Loader from "../components/Loader/index.jsx";
+import useAuth from "../hooks/auth/useAuth.js";
+import ButtonLink from "../components/Buttons/ButtonLink.jsx";
 
 
 const sorts = [
@@ -76,10 +81,20 @@ const plants = [
 
 
 function Explorer(props) {
+  const {user} = useAuth()
   const [showModal, setShowModal] = useState(false)
   const [filter, setFilter] = useState("")
   const [showFilter, setShowFilter] = useState(false)
   const [quizzes, setQuizzes] = useState(plants)
+
+  const {isLoading, isSuccess, data: quizzesData, } = useQuery({
+    queryKey: ['quizzes'],
+    queryFn: () => loadQuizzes(),
+  })
+
+  useEffect(() => {
+    console.log(quizzesData)
+  }, [quizzesData]);
 
   return <div className="container explorer">
     <div className="topbar">
@@ -95,43 +110,24 @@ function Explorer(props) {
           size="big"
         />
         <div>
-         <Button
-           label={ showFilter ? "Fermer" : "Filtrer" }
+          {user && <ButtonLink
+            to="/quiz/create"
+           label="Creer un quiz"
            size="big"
-           variant="outlined"
-           color="secondary"
-           onClick={() => setShowFilter(!showFilter)}
-         />
+           color="primary"
+         />}
         </div>
-      </div>
-      <div className={classNames("topbar-filters", {show: showFilter})}>
-        <div>
-          <h3>Filters</h3>
-          <Dropdown label="Difficulté" placeholder="Difficulté" setValue={setFilter}>
-            <Option value={1}><Stars count={1} /></Option>
-            <Option value={2}><Stars count={2} /></Option>
-            <Option value={3}><Stars count={3} /></Option>
-          </Dropdown>
-        </div>
-        <div>
-          <h3>Trier</h3>
-          <Dropdown label="Nom" placeholder="Nom" setValue={setFilter}>
-            <Option>de A à Z</Option>
-            <Option>de Z à A</Option>
-          </Dropdown>
-          <Dropdown label="Difficulté" placeholder="Difficulté" setValue={setFilter}>
-            <Option>Croissant</Option>
-            <Option>Décroissant</Option>
-          </Dropdown>
-        </div>
-        <Button label="Appliquer" size="lg" color="primary" variant="solid" fill />
       </div>
     </div>
-    <div className="grid">
-      {plants.map((plant, index) => (
-        <PlantCard key={plant.name} plant={plant}/>
+
+    {isSuccess && <div className="grid">
+      {quizzesData.map((quiz, index) => (
+        <QuizCard key={quiz.id} index={index} quiz={quiz}/>
       ))}
-    </div>
+    </div>}
+
+    {isLoading && <Loader />}
+
     <Modal show={showModal} setShow={setShowModal} closeButtonLabel="Compris">
       <h3>Conseil</h3>
       <svg width="554" height="333" viewBox="0 0 554 333" fill="none" xmlns="http://www.w3.org/2000/svg">

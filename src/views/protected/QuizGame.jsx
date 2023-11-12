@@ -6,6 +6,7 @@ import {useTimer} from "../../hooks/useTimer.js";
 import {Link, redirect, useNavigate, useParams} from "react-router-dom";
 import Stars from "../../components/Stars/index.jsx";
 import ProgressBar from "../../components/ProrgessBar/index.jsx";
+import useQuiz from "../../hooks/api/useQuiz.js";
 
 const plantsSrc = [
     "https://images.unsplash.com/photo-1670788050449-32d3139a34c5?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDExfEpwZzZLaWRsLUhrfHxlbnwwfHx8fHw%3D",
@@ -101,14 +102,36 @@ const questions = [
 function QuizGame(props) {
     const navigate = useNavigate();
     let { quizId } = useParams()
-    const {stringTime, start, reset} = useTimer({startValue:5})
-    const [stars, setStars] = useState(0)
-    const [progress, setProgress] = useState(0)
+
+    const maxQuiz = 30;
     const [showResult, setShowResult] = useState(false)
-    const [score, setScore] = useState(0)
     const [isRight, setIsRight] = useState(undefined)
+    const {stringTime, start, reset} = useTimer({startValue:5})
     const [userErrors, setUserErrors] = useState(0)
     // const [currentQuestion, setCurrentQuestion] = useState(0)
+
+    // Stats
+    const [score, setScore] = useState(0)
+    const [stars, setStars] = useState(0)
+    const [progress, setProgress] = useState(0)
+
+    const {
+        quizQuery,
+        quizPlantsQuery,
+        quizPlantsImagesQuery
+    } = useQuiz({
+        quizId,
+        fetchPlants: true,
+        fetchImages: true,
+    })
+
+    useEffect(() => {
+        if (quizPlantsImagesQuery.isSuccess) {
+            console.log(quizQuery.data)
+            console.log(quizPlantsQuery.data)
+            console.log(quizPlantsImagesQuery.data)
+        }
+    }, [quizPlantsImagesQuery.isSuccess]);
 
     useEffect(() => {
         console.log("start")
@@ -163,6 +186,7 @@ function QuizGame(props) {
     return (
         <div className="container center quiz-page">
             <div className="quiz-wrapper">
+
                 <div className="quiz-header">
                     <div className="quiz-timer">
                         <span>{stringTime}</span>
@@ -171,15 +195,16 @@ function QuizGame(props) {
                             <X />
                         </Link>
                     </div>
+
                     <div className="quiz-score">
                         {score}
                     </div>
+
                     <Stars count={stars} />
                 </div>
+
                 <ProgressBar value={progress * 100 / questions.length} color="rgb(var(--color-primary))" thickness="large" shape="rounded" />
-                {/*<div className="quiz-progress-bar">*/}
-                {/*    <span style={{ width: `${progress * 100 / questions.length}%` }}></span>*/}
-                {/*</div>*/}
+
                 <div className="quiz-content">
                     <ImageSlider images={questions[progress]?.images} />
                     <div>
@@ -195,6 +220,7 @@ function QuizGame(props) {
                         )}
                     </div>
                 </div>
+
             </div>
         </div>
     );

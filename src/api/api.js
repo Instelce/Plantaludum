@@ -9,6 +9,7 @@ export function login(data) {
     .then(r => r)
 }
 
+
 export function register(data) {
   return api.post('/auth/register', data)
     .then(r => r)
@@ -17,10 +18,18 @@ export function register(data) {
 // -----------------------------------------------------------------------------
 // PLANTALUDUM API
 
+
+export function loadQuizzes() {
+  return api.get(`/api/quizzes`)
+    .then(r => r.data)
+}
+
+
 export function loadQuiz(id) {
   return api.get(`/api/quizzes/${id}`)
     .then(r => r.data)
 }
+
 
 export function loadQuizPlants(fieldFilters = {
   quiz__id: null,
@@ -38,10 +47,12 @@ export function loadQuizPlants(fieldFilters = {
     .then(r => r.data)
 }
 
+
 export function createQuiz(privateFetch, data) {
   return privateFetch.post('/api/quizzes', data)
     .then(r => r.data)
 }
+
 
 export function createQuizPlant(privateFetch, data) {
   return privateFetch.post('/api/quizzes-plants', data)
@@ -85,16 +96,26 @@ export function loadPlants({
     .then(r => r.data)
 }
 
-export function loadListOfPlants(ids) {
-  const params = new URLSearchParams()
 
-  console.log(ids.join())
+export function loadPlantsIdsList(ids) {
+  const params = new URLSearchParams()
 
   params.set('ids', ids.join(","))
 
   return apiFlore.get(`api/plants-list?${params.toString()}`)
     .then(r => r.data)
 }
+
+
+export function loadPlantsIdsListImages(ids) {
+  const params = new URLSearchParams()
+
+  params.set('ids', ids.join(","))
+
+  return apiFlore.get(`api/plants-list/images?${params.toString()}`)
+    .then(r => r.data)
+}
+
 
 export function loadImages(fieldFilters = {
   'plant__id': null,

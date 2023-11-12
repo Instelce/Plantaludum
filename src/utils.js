@@ -1,4 +1,3 @@
-import {random} from "gsap/gsap-core";
 
 
 export function getRandomInt(min, max) {
@@ -20,6 +19,12 @@ export function arrayChoice(array, num= 1) {
 
   return choices
 }
+
+
+export function getObjectKeyValues(object, key) {
+  return Object.values(object).map(v => v[key]) // array of plant id
+}
+
 
 export function deleteDublicates(array) {
   return array.filter((value, index) => {

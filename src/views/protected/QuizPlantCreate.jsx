@@ -30,7 +30,7 @@ function QuizPlantCreate(props) {
     mutationKey: ['quizzes-plants'],
     mutationFn: (data) => createQuizPlant(privateFetch, data),
     onSuccess: () => {
-      navigate(`quiz/${quizId}`, {replace: true})
+      navigate(`/quiz/${quizId}`, {replace: true})
     }
   })
 

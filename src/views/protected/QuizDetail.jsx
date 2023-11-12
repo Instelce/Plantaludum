@@ -1,10 +1,15 @@
-import {useMutation, useQueries, useQuery} from "@tanstack/react-query";
-import {useParams} from "react-router-dom";
 import {
-  loadListOfPlants,
+  useMutation,
+  useQueries,
+  useQuery,
+  useQueryClient
+} from "@tanstack/react-query";
+import {useLocation, useParams} from "react-router-dom";
+import {
+  loadPlantsIdsList,
   loadPlants,
   loadQuiz,
-  loadQuizPlants
+  loadQuizPlants, loadPlantsIdsListImages
 } from "../../api/api.js";
 import Loader from "../../components/Loader/index.jsx";
 import ButtonLink from "../../components/Buttons/ButtonLink.jsx";
@@ -13,42 +18,22 @@ import Button from "../../components/Buttons/Button.jsx";
 import Stars from "../../components/Stars/index.jsx";
 import {useEffect} from "react";
 import ListItem from "../../components/ListItem/index.jsx";
+import useQuiz from "../../hooks/api/useQuiz.js";
+import {getObjectKeyValues} from "../../utils.js";
 
 
 function QuizDetail(props) {
 
   const {quizId} = useParams()
 
-  const [quizQuery, quizPlantsQuery] = useQueries({
-    queries: [
-      {
-        queryKey: ['quizzes', quizId],
-        queryFn: () => loadQuiz(quizId),
-        staleTime: 30_000
-      },
-      {
-        queryKey: ['quizzes-plants'],
-        queryFn: () => loadQuizPlants({quiz__id: quizId}),
-        staleTime: 30_000
-      }
-    ]
+  const {
+    quizQuery,
+    quizPlantsQuery
+  } = useQuiz({
+     quizId,
+    fetchPlants: true,
   })
 
-  const {isSuccess: plantsSuccess,mutate: mutatePlants, data: plantsData} = useMutation({
-    mutationKey: ['plants'],
-    mutationFn: () => loadListOfPlants(
-      Object.values(quizPlantsQuery.data).map(v => v.plant_id)
-    ),
-    onError: (error) => {
-      console.log(error)
-    }
-  })
-
-  useEffect(() => {
-    if (quizPlantsQuery.isSuccess) {
-      mutatePlants()
-    }
-  }, [quizPlantsQuery.isSuccess]);
 
   return (
     <div className="quiz-detail">
@@ -59,7 +44,7 @@ function QuizDetail(props) {
           </div>
 
           <ButtonLink
-            to="quiz/"
+            to={`/quiz/${quizId}/game`}
             label="Jouer"
             color="primary"
             icon={<ArrowRight />}
@@ -67,7 +52,7 @@ function QuizDetail(props) {
           />
 
           <ButtonLink
-            to="quiz/"
+            to={`/quiz/${quizId}/update`}
             label="Mettre à jour"
             color="secondary"
             icon={<RefreshCcw />}
@@ -99,13 +84,15 @@ function QuizDetail(props) {
           <div className="plants-container">
             <h2>Plantes</h2>
 
-            {plantsSuccess && <>
+            {quizPlantsQuery.isSuccess && <>
 
-              {plantsData.map((plant, index) => (
+              {quizPlantsQuery.data.map((plant, index) => (
                 <ListItem key={plant.id} index={index} title={plant.french_name} />
               ))}
 
             </>}
+
+            {quizPlantsQuery.isLoading && <Loader />}
           </div>
         </div>
       </>}

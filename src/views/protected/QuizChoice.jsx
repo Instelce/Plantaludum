@@ -4,9 +4,10 @@ import { Link } from "react-router-dom";
 import LocomotiveScroll from "locomotive-scroll";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import gsap from "gsap";
-
 import "locomotive-scroll/src/locomotive-scroll.scss";
 import Checkbox from "../../components/forms/Checkbox/index.jsx";
+import Stars from "../../components/Stars/index.jsx";
+import {useQuery} from "@tanstack/react-query";
 
 const quizzes = [
   {
@@ -41,8 +42,6 @@ const quizzes = [
 
 function QuizChoice(props) {
   const scrollRef = useRef(null);
-
-  useEffect(() => {}, []);
 
   return (
     <div className="container quiz-choice">
@@ -81,7 +80,7 @@ function Card({ quiz }) {
         <h6>{quiz.name}</h6>
         <div>
           <p>{quiz.plants} plantes</p>
-          <p>{quiz.difficulty}</p>
+          <Stars count={quiz.difficulty} />
         </div>
       </div>
     </Link>

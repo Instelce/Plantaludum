@@ -27,8 +27,8 @@
     left: 0;
     top: 50%;
     transform: translateY(-50%);
-    border-top: 1px dashed rgba(var(--color-secondary), .2);
-    border-bottom: 1px dashed rgba(var(--color-secondary), .2);
+    border-top: 1px solid rgba(var(--color-secondary), .2);
+    border-bottom: 1px solid rgba(var(--color-secondary), .2);
     z-index: -1;
   }
 
