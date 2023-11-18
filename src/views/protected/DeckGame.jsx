@@ -9,6 +9,7 @@ import ProgressBar from "../../components/ProrgessBar/index.jsx";
 import useDeck from "../../hooks/api/useDeck.js";
 import {arrayChoice, deleteDublicates, shuffleArray} from "../../utils.js";
 import {ErrorBoundary} from "react-error-boundary";
+import useCacheImages from "../../hooks/useCacheImages.js";
 
 
 function DeckGame(props) {
@@ -29,6 +30,8 @@ function DeckGame(props) {
     const [plantsData, setPlantsData] = useState(null)
     const [currentPlant, setCurrentPlant] = useState(null)
     const [currentImages, setCurrentImages] = useState(null)
+
+    const {isLoading: imagesLoading, setImagesArray: setImagesArray} = useCacheImages()
 
     const deckContent = useRef(null)
 
@@ -62,6 +65,17 @@ function DeckGame(props) {
     }
     }, [deckPlantsQuery.isSuccess, deckPlantsImagesQuery.isSuccess, currentPlant, plantsData]);
 
+    // load images in cache
+    useEffect(() => {
+       if (deckPlantsImagesQuery.isSuccess) {
+           setImagesArray(() => Object.values(deckPlantsImagesQuery.data)
+               .map(v => v.images)
+               .map(im => im.map(img => img.url))
+               .flat(1)
+           )
+       }
+    }, [deckPlantsImagesQuery.isSuccess]);
+
     // set images
     useEffect(() => {
         console.log("id", currentPlant?.scientific_name)
@@ -92,7 +106,11 @@ function DeckGame(props) {
         if (showResult && progress < maxQuestions) {
            let changeData = setTimeout(() => {
                 // choose another images
-                const currentPlantData = arrayChoice(deckPlantsQuery.data)[0]
+                let lastPlant = currentPlant;
+                let currentPlantData = arrayChoice(deckPlantsQuery.data)[0]
+                if (lastPlant.id === currentPlantData.id) {
+                    currentPlantData = arrayChoice(deckPlantsQuery.data)[0]
+                }
                 setCurrentPlant(() => currentPlantData)
 
                 // shuffle plants
@@ -109,7 +127,7 @@ function DeckGame(props) {
         }
 
         // redirect to result page if deck is finished
-        if (progress === maxQuestions + 1) {
+        if (progress === maxQuestions) {
             setTimeout(() => {
                 navigate(`/decks/${deckId}/game/resultat`);
             }, 2000)
