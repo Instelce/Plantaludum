@@ -36,6 +36,7 @@ function useQuiz ({
     onError: (error) => {
       console.log(error)
     },
+    staleTime: Infinity,
     enabled: false
   })
 
@@ -44,6 +45,7 @@ function useQuiz ({
     queryFn: () => loadPlantsIdsListImages(
       getObjectKeyValues(quizPlantsQuery.data, 'plant_id')
     ),
+    staleTime: Infinity,
     enabled: false
   })
 
@@ -63,8 +65,8 @@ function useQuiz ({
 
   return {
     quizQuery: quizQuery,
-    quizPlantsQuery: plantsQuery | null,
-    quizPlantsImagesQuery: plantsImagesQuery | null,
+    quizPlantsQuery: plantsQuery,
+    quizPlantsImagesQuery: plantsImagesQuery,
   }
 }
 

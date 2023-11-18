@@ -32,6 +32,9 @@ export function deleteDublicates(array) {
   })
 }
 
+export function shuffleArray(array) {
+  return array.sort((a, b) => 0.5 - Math.random())
+}
 
 export async function simpleFetch(url, options={}) {
     let loading = false

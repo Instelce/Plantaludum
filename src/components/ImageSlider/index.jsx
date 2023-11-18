@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import './style.scss'
 import {ArrowLeft, ArrowRight} from "react-feather";
 import PropTypes from "prop-types";
+import classNames from "classnames";
 
 /**
  * Image slider, take an array of image url.
@@ -13,10 +14,12 @@ function ImageSlider({images}) {
 
     // reset images
     const [prevImages, setPrevImages] = useState(images);
-    if (images !== prevImages) {
-        setCurrent(0)
-        setPrevImages(images)
-    }
+    useEffect(() => {
+        if (images !== prevImages) {
+            setCurrent(() => 0)
+            setPrevImages(() => images)
+        }
+    }, [images]);
 
     const next = () => {
         setCurrent((current) => current === length - 1 ? 0 : current + 1)
@@ -33,11 +36,13 @@ function ImageSlider({images}) {
     return (
         <div className="slider">
             <div className="slide-container">
-                {images?.map((src, index) => (
-                    <div key={src} className={index === current ? 'slide active' : 'slide'}>
-                        <img src={src} alt={index} />
-                    </div>
-                ))}
+                {prevImages === images && <>
+                    {images?.map((src, index) => (
+                        <div key={index} className={classNames("slide", {active: index === current})}>
+                            <img src={src} alt={index} />
+                        </div>
+                    ))}
+                </>}
             </div>
             <div className="slider-action">
                 <ArrowLeft onClick={prev} />

@@ -10,6 +10,7 @@ import Button from "./Button.jsx";
  */
 function ButtonLink({
   to,
+  state={},
   label,
   type = "button",
   color,
@@ -21,7 +22,7 @@ function ButtonLink({
   ...props
 }) {
   return (
-    <Link to={to}>
+    <Link to={to} state={state}>
       <Button
         label={label}
         type={type}

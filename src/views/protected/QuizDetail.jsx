@@ -34,7 +34,6 @@ function QuizDetail(props) {
     fetchPlants: true,
   })
 
-
   return (
     <div className="quiz-detail">
       {quizQuery.isSuccess && <>

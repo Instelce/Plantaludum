@@ -4,13 +4,13 @@ import './style.scss'
 import {Check, X} from "react-feather";
 import PropTypes from "prop-types";
 
-function ChoiceBlock({choice, showResult, setShowResult, setIsRight}) {
+function ChoiceBlock({title, subtitle, isRightAnswer, showResult, setShowResult, setIsRight}) {
     const ref = useRef(null)
 
     const handleDoubleClick = (e) => {
         setShowResult(true);
-        setIsRight(choice.rightAnswer);
-        if (!choice.rightAnswer) {
+        setIsRight(isRightAnswer);
+        if (!isRightAnswer) {
             ref.current.style.animation = null;
             ref.current.style.animation = 'shake .2s ease';
         }
@@ -25,15 +25,15 @@ function ChoiceBlock({choice, showResult, setShowResult, setIsRight}) {
              className={
                 `choice-block 
                 ${showResult ? "show-result" : ""} 
-                ${choice.rightAnswer ? "right-answer" : ""}`}
+                ${isRightAnswer ? "right-answer" : ""}`}
              onDoubleClick={handleDoubleClick}
         >
             <div className="choice-text">
-                <p>{choice.title}</p>
-                <p>{choice.subtitle}</p>
+                <p>{title}</p>
+                <p>{subtitle}</p>
             </div>
             <span className={`choice-result`}>
-                {choice.rightAnswer ? <Check /> : <X />}
+                {isRightAnswer ? <Check /> : <X />}
             </span>
         </div>
     );

@@ -27,6 +27,7 @@ function QuizCreate(props) {
   const {user} = useAuth()
   const privateFetch = usePrivateFetch()
   const location = useLocation()
+  console.log(location)
   const fromLocation = location?.state?.from?.pathname || '/menu'
   const navigate = useNavigate()
 

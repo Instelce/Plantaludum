@@ -112,6 +112,7 @@ function Explorer(props) {
         <div>
           {user && <ButtonLink
             to="/quiz/create"
+           state={{from: {pathname: location.pathname}}}
            label="Creer un quiz"
            size="big"
            color="primary"

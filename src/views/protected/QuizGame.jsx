@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import ImageSlider from "../../components/ImageSlider/index.jsx";
 import ChoiceBlock from "../../components/ChoiceBlock/index.jsx";
 import {RefreshCw, Star, X} from "react-feather";
@@ -7,113 +7,30 @@ import {Link, redirect, useNavigate, useParams} from "react-router-dom";
 import Stars from "../../components/Stars/index.jsx";
 import ProgressBar from "../../components/ProrgessBar/index.jsx";
 import useQuiz from "../../hooks/api/useQuiz.js";
-
-const plantsSrc = [
-    "https://images.unsplash.com/photo-1670788050449-32d3139a34c5?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDExfEpwZzZLaWRsLUhrfHxlbnwwfHx8fHw%3D",
-    "https://images.unsplash.com/photo-1697638332466-16f48f835b96?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDh8SnBnNktpZGwtSGt8fGVufDB8fHx8fA%3D%3D",
-    "https://images.unsplash.com/photo-1697273300766-5bbaa53ec2f0?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDM1fEpwZzZLaWRsLUhrfHxlbnwwfHx8fHw%3D",
-    "https://api.tela-botanica.org/img:000243414CRS.jpg",
-    "https://api.tela-botanica.org/img:000208259CRS.jpg",
-    "https://api.tela-botanica.org/img:000244988CRS.jpg",
-    "https://api.tela-botanica.org/img:000073996CRS.jpg",
-    "https://api.tela-botanica.org/img:000192173CRS.jpg",
-    "https://api.tela-botanica.org/img:002479913CRS.jpg",
-    "https://api.tela-botanica.org/img:000116167CRS.jpg",
-    "https://api.tela-botanica.org/img:000092753CRS.jpg",
-    "https://api.tela-botanica.org/img:002251388CRS.jpg",
-    "https://api.tela-botanica.org/img:001118914CRS.jpg",
-]
-
-const questions = [
-    {
-        images: [
-            "https://api.tela-botanica.org/img:000092753CRS.jpg",
-            "https://api.tela-botanica.org/img:002251388CRS.jpg",
-            "https://api.tela-botanica.org/img:001118914CRS.jpg",
-        ],
-        choices: [
-            {title: "1", subtitle: "Lorem a", rightAnswer: false},
-            {title: "2", subtitle: "Lorem b", rightAnswer: true},
-            {title: "3", subtitle: "Lorem b", rightAnswer: false}
-        ]
-    },
-    {
-        images: [
-            "https://api.tela-botanica.org/img:000243414CRS.jpg",
-            "https://api.tela-botanica.org/img:000208259CRS.jpg",
-            "https://api.tela-botanica.org/img:000244988CRS.jpg",
-            "https://api.tela-botanica.org/img:000073996CRS.jpg",
-        ],
-        choices: [
-            {title: "1b", subtitle: "Lorem a", rightAnswer: false},
-            {title: "2b", subtitle: "Lorem b", rightAnswer: false},
-            {title: "3b", subtitle: "Lorem b", rightAnswer: true}
-        ]
-    },
-    {
-        images: [
-            "https://api.tela-botanica.org/img:000244988CRS.jpg",
-            "https://api.tela-botanica.org/img:000073996CRS.jpg",
-            "https://api.tela-botanica.org/img:000192173CRS.jpg",
-            "https://api.tela-botanica.org/img:002479913CRS.jpg",
-            "https://api.tela-botanica.org/img:000116167CRS.jpg",
-            "https://api.tela-botanica.org/img:000092753CRS.jpg",
-        ],
-        choices: [
-            {title: "1", subtitle: "Lorem a", rightAnswer: false},
-            {title: "2", subtitle: "Lorem b", rightAnswer: true},
-            {title: "3", subtitle: "Lorem b", rightAnswer: false},
-            {title: "4", subtitle: "Lorem c", rightAnswer: false}
-        ]
-    },
-    {
-        images: [
-            "https://api.tela-botanica.org/img:000243414CRS.jpg",
-            "https://api.tela-botanica.org/img:000208259CRS.jpg",
-            "https://api.tela-botanica.org/img:000244988CRS.jpg",
-            "https://api.tela-botanica.org/img:000073996CRS.jpg",
-        ],
-        choices: [
-            {title: "1n", subtitle: "Lorem a", rightAnswer: false},
-            {title: "2n", subtitle: "Lorem a", rightAnswer: false},
-            {title: "3n", subtitle: "Lorem a", rightAnswer: false},
-            {title: "4n", subtitle: "Lorem b", rightAnswer: true},
-            {title: "5c", subtitle: "Lorem b", rightAnswer: false}
-        ]
-    },
-    {
-       images: [
-           "https://images.unsplash.com/photo-1670788050449-32d3139a34c5?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDExfEpwZzZLaWRsLUhrfHxlbnwwfHx8fHw%3D",
-           "https://images.unsplash.com/photo-1697638332466-16f48f835b96?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDh8SnBnNktpZGwtSGt8fGVufDB8fHx8fA%3D%3D",
-           "https://images.unsplash.com/photo-1697273300766-5bbaa53ec2f0?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDM1fEpwZzZLaWRsLUhrfHxlbnwwfHx8fHw%3D",
-           "https://api.tela-botanica.org/img:000243414CRS.jpg",
-           "https://api.tela-botanica.org/img:000208259CRS.jpg",
-           "https://api.tela-botanica.org/img:000244988CRS.jpg",
-       ],
-        choices: [
-            {title: "1n", subtitle: "Lorem a", rightAnswer: true},
-            {title: "2n", subtitle: "Lorem b", rightAnswer: false},
-            {title: "3c", subtitle: "Lorem b", rightAnswer: false}
-        ]
-    }
-]
+import {arrayChoice, deleteDublicates, shuffleArray} from "../../utils.js";
+import {ErrorBoundary} from "react-error-boundary";
 
 
 function QuizGame(props) {
     const navigate = useNavigate();
     let { quizId } = useParams()
 
-    const maxQuiz = 30;
+    const maxQuestions = 30;
     const [showResult, setShowResult] = useState(false)
     const [isRight, setIsRight] = useState(undefined)
     const {stringTime, start, reset} = useTimer({startValue:5})
     const [userErrors, setUserErrors] = useState(0)
-    // const [currentQuestion, setCurrentQuestion] = useState(0)
 
     // Stats
     const [score, setScore] = useState(0)
     const [stars, setStars] = useState(0)
     const [progress, setProgress] = useState(0)
+
+    const [plantsData, setPlantsData] = useState(null)
+    const [currentPlant, setCurrentPlant] = useState(null)
+    const [currentImages, setCurrentImages] = useState(null)
+
+    const quizContent = useRef(null)
 
     const {
         quizQuery,
@@ -125,19 +42,51 @@ function QuizGame(props) {
         fetchImages: true,
     })
 
-    useEffect(() => {
-        if (quizPlantsImagesQuery.isSuccess) {
-            console.log(quizQuery.data)
-            console.log(quizPlantsQuery.data)
-            console.log(quizPlantsImagesQuery.data)
-        }
-    }, [quizPlantsImagesQuery.isSuccess]);
+    // useEffect(() => {
+    //     console.log(quizPlantsImagesQuery.isLoading)
+    //     if (quizPlantsImagesQuery.isSuccess) {
+    //         console.log(quizQuery.data)
+    //         console.log(quizPlantsQuery.data)
+    //         console.log(quizPlantsImagesQuery.data)
+    //     }
+    // }, [quizPlantsImagesQuery.isSuccess]);
 
     useEffect(() => {
-        console.log("start")
         start()
     }, []);
 
+    // get new plant on start
+    useEffect(() => {
+        console.log("start p")
+        if (quizPlantsImagesQuery.isSuccess && quizPlantsQuery.isFetched) {
+            setPlantsData(() => quizPlantsQuery.data)
+            console.log("plants data", plantsData)
+            const currentPlantData = arrayChoice(quizPlantsQuery.data)[0]
+            setCurrentPlant(() => currentPlantData)
+
+            console.log(Object.values(quizPlantsImagesQuery.data)
+              .filter(v => v.id === currentPlantData.id)
+              .map(v => v.images)[0]
+              .map(im => im.url))
+    }
+    }, [quizPlantsQuery.isSuccess, quizPlantsImagesQuery.isSuccess, currentPlant, plantsData]);
+
+    // set images
+    useEffect(() => {
+        console.log("id", currentPlant?.scientific_name)
+        if (currentPlant) {
+            let tempImagesData = quizPlantsImagesQuery.data
+            setCurrentImages(() =>
+              shuffleArray(arrayChoice(deleteDublicates(Object.values(tempImagesData)
+                ?.filter(v => v.id === currentPlant.id)
+                ?.map(v => v.images)[0]
+                ?.map(im => im.url)), 5)))
+
+            console.log(currentImages)
+        }
+    }, [currentPlant]);
+
+    // is show results
     useEffect(() => {
         // reset values
         if (progress === 0) {
@@ -149,24 +98,36 @@ function QuizGame(props) {
             setStars(s => s + 1)
         }
 
-        // update progress
-        if (showResult && progress < questions.length) {
-            setTimeout(() => {
+        if (showResult && progress < maxQuestions) {
+           let changeData = setTimeout(() => {
+                // choose another images
+                const currentPlantData = arrayChoice(quizPlantsQuery.data)[0]
+                setCurrentPlant(() => currentPlantData)
+
+                // shuffle plants
+                setPlantsData(data => shuffleArray(data))
+
+                // update progress
                 setProgress(p => p + 1);
                 setShowResult(false);
             }, 1000);
+
+           return () => {
+               clearTimeout(changeData)
+           }
         }
 
         // redirect to result page if quiz is finished
-        if (progress === questions.length) {
+        if (progress === maxQuestions + 1) {
             setTimeout(() => {
                 navigate(`/quiz/${quizId}/game/resultat`);
             }, 2000)
         }
+
     }, [showResult]);
 
+    // update score
     useEffect(() => {
-        // update score
         if (isRight !== undefined) {
             if (isRight) {
                 setScore(s => s + 200)
@@ -203,15 +164,24 @@ function QuizGame(props) {
                     <Stars count={stars} />
                 </div>
 
-                <ProgressBar value={progress * 100 / questions.length} color="rgb(var(--color-primary))" thickness="large" shape="rounded" />
+                <ProgressBar value={progress * 100 / maxQuestions} color="rgb(var(--color-primary))" thickness="large" shape="rounded" />
 
-                <div className="quiz-content">
-                    <ImageSlider images={questions[progress]?.images} />
+                {currentImages && currentPlant && <div className="quiz-content" ref={quizContent}>
+                    {currentImages && <ImageSlider images={currentImages} />}
+
                     <div>
-                        {questions[progress] ? (
+                        {quizPlantsQuery.isSuccess ? (
                             <>
-                                {questions[progress]?.choices.map((choice, index) => (
-                                    <ChoiceBlock key={choice.title} index={index} choice={choice} showResult={showResult} setShowResult={setShowResult} setIsRight={setIsRight} />
+                                {plantsData.map((plant, index) => (
+                                    <ChoiceBlock
+                                      key={plant.id}
+                                      index={index}
+                                      title={plant.french_name}
+                                      subtitle={plant.scientific_name}
+                                      isRightAnswer={plant.id === currentPlant.id}
+                                      showResult={showResult}
+                                      setShowResult={setShowResult}
+                                      setIsRight={setIsRight} />
                                 ))}
                                 <p>Double click sur la réponse de ton choix</p>
                             </>
@@ -219,7 +189,7 @@ function QuizGame(props) {
                            <p>Fini !</p>
                         )}
                     </div>
-                </div>
+                </div>}
 
             </div>
         </div>
