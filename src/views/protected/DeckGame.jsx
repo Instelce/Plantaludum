@@ -6,14 +6,14 @@ import {useTimer} from "../../hooks/useTimer.js";
 import {Link, redirect, useNavigate, useParams} from "react-router-dom";
 import Stars from "../../components/Stars/index.jsx";
 import ProgressBar from "../../components/ProrgessBar/index.jsx";
-import useQuiz from "../../hooks/api/useQuiz.js";
+import useDeck from "../../hooks/api/useDeck.js";
 import {arrayChoice, deleteDublicates, shuffleArray} from "../../utils.js";
 import {ErrorBoundary} from "react-error-boundary";
 
 
-function QuizGame(props) {
+function DeckGame(props) {
     const navigate = useNavigate();
-    let { quizId } = useParams()
+    let { deckId } = useParams()
 
     const maxQuestions = 30;
     const [showResult, setShowResult] = useState(false)
@@ -30,26 +30,17 @@ function QuizGame(props) {
     const [currentPlant, setCurrentPlant] = useState(null)
     const [currentImages, setCurrentImages] = useState(null)
 
-    const quizContent = useRef(null)
+    const deckContent = useRef(null)
 
     const {
-        quizQuery,
-        quizPlantsQuery,
-        quizPlantsImagesQuery
-    } = useQuiz({
-        quizId,
+        deckQuery,
+        deckPlantsQuery,
+        deckPlantsImagesQuery
+    } = useDeck({
+        deckId,
         fetchPlants: true,
         fetchImages: true,
     })
-
-    // useEffect(() => {
-    //     console.log(quizPlantsImagesQuery.isLoading)
-    //     if (quizPlantsImagesQuery.isSuccess) {
-    //         console.log(quizQuery.data)
-    //         console.log(quizPlantsQuery.data)
-    //         console.log(quizPlantsImagesQuery.data)
-    //     }
-    // }, [quizPlantsImagesQuery.isSuccess]);
 
     useEffect(() => {
         start()
@@ -58,24 +49,24 @@ function QuizGame(props) {
     // get new plant on start
     useEffect(() => {
         console.log("start p")
-        if (quizPlantsImagesQuery.isSuccess && quizPlantsQuery.isFetched) {
-            setPlantsData(() => quizPlantsQuery.data)
+        if (deckPlantsImagesQuery.isSuccess && deckPlantsQuery.isFetched) {
+            setPlantsData(() => deckPlantsQuery.data)
             console.log("plants data", plantsData)
-            const currentPlantData = arrayChoice(quizPlantsQuery.data)[0]
+            const currentPlantData = arrayChoice(deckPlantsQuery.data)[0]
             setCurrentPlant(() => currentPlantData)
 
-            console.log(Object.values(quizPlantsImagesQuery.data)
+            console.log(Object.values(deckPlantsImagesQuery.data)
               .filter(v => v.id === currentPlantData.id)
               .map(v => v.images)[0]
               .map(im => im.url))
     }
-    }, [quizPlantsQuery.isSuccess, quizPlantsImagesQuery.isSuccess, currentPlant, plantsData]);
+    }, [deckPlantsQuery.isSuccess, deckPlantsImagesQuery.isSuccess, currentPlant, plantsData]);
 
     // set images
     useEffect(() => {
         console.log("id", currentPlant?.scientific_name)
         if (currentPlant) {
-            let tempImagesData = quizPlantsImagesQuery.data
+            let tempImagesData = deckPlantsImagesQuery.data
             setCurrentImages(() =>
               shuffleArray(arrayChoice(deleteDublicates(Object.values(tempImagesData)
                 ?.filter(v => v.id === currentPlant.id)
@@ -101,7 +92,7 @@ function QuizGame(props) {
         if (showResult && progress < maxQuestions) {
            let changeData = setTimeout(() => {
                 // choose another images
-                const currentPlantData = arrayChoice(quizPlantsQuery.data)[0]
+                const currentPlantData = arrayChoice(deckPlantsQuery.data)[0]
                 setCurrentPlant(() => currentPlantData)
 
                 // shuffle plants
@@ -117,10 +108,10 @@ function QuizGame(props) {
            }
         }
 
-        // redirect to result page if quiz is finished
+        // redirect to result page if deck is finished
         if (progress === maxQuestions + 1) {
             setTimeout(() => {
-                navigate(`/quiz/${quizId}/game/resultat`);
+                navigate(`/decks/${deckId}/game/resultat`);
             }, 2000)
         }
 
@@ -166,11 +157,11 @@ function QuizGame(props) {
 
                 <ProgressBar value={progress * 100 / maxQuestions} color="rgb(var(--color-primary))" thickness="large" shape="rounded" />
 
-                {currentImages && currentPlant && <div className="quiz-content" ref={quizContent}>
+                {currentImages && currentPlant && <div className="quiz-content" ref={deckContent}>
                     {currentImages && <ImageSlider images={currentImages} />}
 
                     <div>
-                        {quizPlantsQuery.isSuccess ? (
+                        {deckPlantsQuery.isSuccess ? (
                             <>
                                 {plantsData.map((plant, index) => (
                                     <ChoiceBlock
@@ -198,4 +189,4 @@ function QuizGame(props) {
 
 
 
-export default QuizGame;
+export default DeckGame;

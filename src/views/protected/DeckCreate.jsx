@@ -20,10 +20,10 @@ import Loader from "../../components/Loader/index.jsx";
 import error from "../Error.jsx";
 import {navigate} from "@storybook/addon-links";
 import {useMutation, useQuery} from "@tanstack/react-query";
-import {createQuiz, loadImages, loadPlants} from "../../api/api.js";
+import {createDeck, loadImages, loadPlants} from "../../api/api.js";
 
 
-function QuizCreate(props) {
+function DeckCreate(props) {
   const {user} = useAuth()
   const privateFetch = usePrivateFetch()
   const location = useLocation()
@@ -31,9 +31,9 @@ function QuizCreate(props) {
   const fromLocation = location?.state?.from?.pathname || '/menu'
   const navigate = useNavigate()
 
-  const {isFetching: quizFetching, isSuccess, data: quizData, mutate: mutateCreateQuiz} = useMutation({
-    mutationKey: ['quizzes'],
-    mutationFn: (data) => createQuiz(privateFetch, data),
+  const {isFetching: deckFetching, isSuccess, data: deckData, mutate: mutateCreateDeck} = useMutation({
+    mutationKey: ['decks'],
+    mutationFn: (data) => createDeck(privateFetch, data),
   })
 
   const {isLoading: imagesLoading, data: imagesData, error, refetch: fetchImages} = useQuery({
@@ -68,11 +68,11 @@ function QuizCreate(props) {
   }, [plantImagesData]);
 
 
-  // Navigate to create quiz plants form if the quiz is successfully created
+  // Navigate to create deck plants form if the deck is successfully created
   useEffect(() => {
     if (isSuccess) {
-      console.log(quizData)
-      navigate(`/quiz/${quizData.id}/plants/create`, {state: quizData})
+      console.log(deckData)
+      navigate(`/decks/${deckData.id}/plants/create`, {state: {data: deckData, from: {pathname: location.pathname}}})
     }
   }, [isSuccess]);
 
@@ -83,7 +83,7 @@ function QuizCreate(props) {
 
     console.log(user)
 
-    mutateCreateQuiz({
+    mutateCreateDeck({
       name: formData.get('name'),
       description: formData.get('description'),
       difficulty: formData.get('difficulty'),
@@ -103,7 +103,7 @@ function QuizCreate(props) {
     <div className="container center">
       <form ref={formRef} className="form-page" onSubmit={handleFormSubmit} onChange={(e) => handleFormChange(e.target)}>
         <div className="form-header">
-          <h1>Creation d'un quiz</h1>
+          <h1>Creation d'un deck</h1>
         </div>
         <Input
           id="name"
@@ -138,7 +138,7 @@ function QuizCreate(props) {
             setValidValue={setPlantIsValid}
             usageInfoText="Cherche le nom d’une plante, puis choisie l’image
             de la plante qui te semble la mieux. Choisie la bien car c'est
-            elle qui servira d'image de couverture au quiz."
+            elle qui servira d'image de couverture au decks."
           />
         </>
         }
@@ -173,7 +173,7 @@ function QuizCreate(props) {
             type="submit"
             color="primary"
             disabled={!isFilled}
-            loading={quizFetching}
+            loading={deckFetching}
           />
         </div>
       </form>
@@ -181,4 +181,4 @@ function QuizCreate(props) {
   );
 }
 
-export default QuizCreate;
+export default DeckCreate;

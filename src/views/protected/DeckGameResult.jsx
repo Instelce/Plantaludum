@@ -3,7 +3,7 @@ import Button from "../../components/Buttons/Button.jsx";
 import ButtonLink from "../../components/Buttons/ButtonLink.jsx";
 import {useParams} from "react-router-dom";
 
-function QuizResults(props) {
+function DeckGameResult(props) {
     const { quizId } = useParams()
     return (
         <div className="quiz-results">
@@ -33,4 +33,4 @@ function QuizResults(props) {
     );
 }
 
-export default QuizResults;
+export default DeckGameResult;

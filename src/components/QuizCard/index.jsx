@@ -5,7 +5,7 @@ import './style.scss';
 import {Link} from "react-router-dom";
 
 
-function QuizCard({quiz, ...props}) {
+function QuizCard({deck, ...props}) {
   const cardRef = useRef(null);
   const cardNameRef = useRef(null)
   const [currentImage, setCurrentImage] = useState(2)
@@ -50,28 +50,28 @@ function QuizCard({quiz, ...props}) {
 
   return (
     <div className="plant-card" ref={cardRef} onMouseLeave={handleMouseLeave} onAuxClick={handleRightClick} onContextMenu={(e) => e.preventDefault()} {...props}>
-      <Link to={`/quiz/${quiz.id}`}>
+      <Link to={`/decks/${deck.id}`}>
         <div className="image-wrapper">
           <div className="image-container">
-            <img className="active" src={quiz.preview_image_url} alt="Preview image"/>
+            <img className="active" src={deck.preview_image_url} alt="Preview image"/>
             {/*{quiz.images.map((src, index) => (*/}
             {/*  <img key={src} src={src} alt={src} className={currentImage == index ? "active" : ""}/>*/}
             {/*))}*/}
           </div>
         </div>
         <div className="card-area"></div>
-        <div className="card-name" ref={cardNameRef}>{quiz.name}</div>
+        <div className="card-name" ref={cardNameRef}>{deck.name}</div>
       </Link>
       <div className="card-content">
-        <Stars count={quiz.difficulty} />
-        <p>{quiz.description}</p>
+        <Stars count={deck.difficulty} />
+        <p>{deck.description}</p>
       </div>
     </div>
   );
 }
 
 QuizCard.propTypes = {
-  quiz: PropTypes.shape({
+  deck: PropTypes.shape({
     name: PropTypes.string,
     description: PropTypes.string,
     difficulty: PropTypes.number,

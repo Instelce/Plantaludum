@@ -1,4 +1,4 @@
-import api, {apiFlore, apiPrivate} from "./axios.js";
+import api, {apiFlore} from "./axios.js";
 
 
 // -----------------------------------------------------------------------------
@@ -19,20 +19,20 @@ export function register(data) {
 // PLANTALUDUM API
 
 
-export function loadQuizzes() {
-  return api.get(`/api/quizzes`)
+export function loadDecks() {
+  return api.get(`/api/decks`)
     .then(r => r.data)
 }
 
 
-export function loadQuiz(id) {
-  return api.get(`/api/quizzes/${id}`)
+export function loadDeck(id) {
+  return api.get(`/api/decks/${id}`)
     .then(r => r.data)
 }
 
 
-export function loadQuizPlants(fieldFilters = {
-  quiz__id: null,
+export function loadDeckPlants(fieldFilters = {
+  deck__id: null,
   plant_id: null
 }) {
   const params = new URLSearchParams()
@@ -43,19 +43,19 @@ export function loadQuizPlants(fieldFilters = {
     }
   }
 
-  return api.get(`/api/quizzes-plants?${params}`)
+  return api.get(`/api/decks-plants?${params}`)
     .then(r => r.data)
 }
 
 
-export function createQuiz(privateFetch, data) {
-  return privateFetch.post('/api/quizzes', data)
+export function createDeck(privateFetch, data) {
+  return privateFetch.post('/api/decks', data)
     .then(r => r.data)
 }
 
 
-export function createQuizPlant(privateFetch, data) {
-  return privateFetch.post('/api/quizzes-plants', data)
+export function createDeckPlant(privateFetch, data) {
+  return privateFetch.post('/api/decks-plants', data)
     .then(r => r.data)
 }
 

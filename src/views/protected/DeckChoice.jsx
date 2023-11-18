@@ -40,7 +40,7 @@ const quizzes = [
   },
 ];
 
-function QuizChoice(props) {
+function DeckChoice(props) {
   const scrollRef = useRef(null);
 
   return (
@@ -87,4 +87,4 @@ function Card({ quiz }) {
   );
 }
 
-export default QuizChoice;
+export default DeckChoice;

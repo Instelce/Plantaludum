@@ -8,76 +8,10 @@ import classNames from "classnames";
 import Stars from "../components/Stars/index.jsx";
 import Option from "../components/forms/Option/index.jsx"
 import {useQuery} from "@tanstack/react-query";
-import {loadQuiz, loadQuizzes} from "../api/api.js";
+import {loadDeck, loadDecks} from "../api/api.js";
 import Loader from "../components/Loader/index.jsx";
 import useAuth from "../hooks/auth/useAuth.js";
 import ButtonLink from "../components/Buttons/ButtonLink.jsx";
-
-
-const sorts = [
-  {
-    name: "name",
-    defaultValue: "ascending"
-  },
-  {
-    name: "difficulty",
-    defaultValue: "ascending"
-  }
-]
-
-const filters = [
-  {
-    name: "difficulty",
-    defaultValue: undefined,
-    minValue: 1,
-    maxValue: 3,
-  }
-]
-
-const plants = [
-  {
-    name: "Arbres fruitiers",
-    description: "Lorem ipsum dolor sit amet consectetur. Erat amet porta netus mauris accumsan tellus massa in justo. Et tellus tempor lorem in sed. Lorem vel sit rhoncus vitae quis feugiat. Fringilla rutrum ac viverra odio ultrices risus nunc nunc.",
-    difficulty: 2,
-    images: [
-      "https://api.tela-botanica.org/img:000116167CRS.jpg",
-      "https://api.tela-botanica.org/img:000092753CRS.jpg",
-      "https://api.tela-botanica.org/img:002251388CRS.jpg",
-      "https://api.tela-botanica.org/img:000023106CRS.jpg",
-    ],
-  },
-  {
-    name: "Verveines et ses confusions",
-    description: "Lorem ipsum dolor sit amet consectetur. Erat amet porta netus mauris accumsan tellus massa in justo. Et tellus tempor lorem in sed. Lorem vel sit rhoncus vitae quis feugiat.",
-    difficulty: 1,
-    images: [
-      "https://api.tela-botanica.org/img:000092753CRS.jpg",
-      "https://api.tela-botanica.org/img:002251388CRS.jpg",
-      "https://api.tela-botanica.org/img:000116167CRS.jpg",
-    ],
-  },
-  {
-    name: "Arbres fruitiers ++",
-    description: "Lorem ipsum dolor sit amet consectetur. Erat amet porta netus mauris accumsan tellus massa in justo. Et tellus tempor lorem in sed. Lorem vel sit rhoncus vitae quis feugiat. Fringilla rutrum ac viverra odio ultrices risus nunc nunc.",
-    difficulty: 2,
-    images: [
-      "https://api.tela-botanica.org/img:002251388CRS.jpg",
-      "https://api.tela-botanica.org/img:000116167CRS.jpg",
-      "https://api.tela-botanica.org/img:000092753CRS.jpg",
-      "https://api.tela-botanica.org/img:000023106CRS.jpg",
-    ],
-  },
-  {
-    name: "Verveines et ses confusions +",
-    description: "Lorem ipsum dolor sit amet consectetur. Erat amet porta netus mauris accumsan tellus massa in justo. Et tellus tempor lorem in sed. Lorem vel sit rhoncus vitae quis feugiat.",
-    difficulty: 3,
-    images: [
-      "https://api.tela-botanica.org/img:000116167CRS.jpg",
-      "https://api.tela-botanica.org/img:000092753CRS.jpg",
-      "https://api.tela-botanica.org/img:002251388CRS.jpg",
-    ],
-  },
-]
 
 
 function Explorer(props) {
@@ -85,16 +19,15 @@ function Explorer(props) {
   const [showModal, setShowModal] = useState(false)
   const [filter, setFilter] = useState("")
   const [showFilter, setShowFilter] = useState(false)
-  const [quizzes, setQuizzes] = useState(plants)
 
-  const {isLoading, isSuccess, data: quizzesData, } = useQuery({
-    queryKey: ['quizzes'],
-    queryFn: () => loadQuizzes(),
+  const {isLoading, isSuccess, data: decksData, } = useQuery({
+    queryKey: ['decks'],
+    queryFn: () => loadDecks(),
   })
 
   useEffect(() => {
-    console.log(quizzesData)
-  }, [quizzesData]);
+    console.log(decksData)
+  }, [decksData]);
 
   return <div className="container explorer">
     <div className="topbar">
@@ -111,7 +44,7 @@ function Explorer(props) {
         />
         <div>
           {user && <ButtonLink
-            to="/quiz/create"
+            to="/decks/create"
            state={{from: {pathname: location.pathname}}}
            label="Creer un quiz"
            size="big"
@@ -122,8 +55,8 @@ function Explorer(props) {
     </div>
 
     {isSuccess && <div className="grid">
-      {quizzesData.map((quiz, index) => (
-        <QuizCard key={quiz.id} index={index} quiz={quiz}/>
+      {decksData.map((deck, index) => (
+        <QuizCard key={deck.id} index={index} deck={deck}/>
       ))}
     </div>}
 

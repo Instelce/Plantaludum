@@ -2,36 +2,36 @@ import {useQueries, useQuery} from "@tanstack/react-query";
 import {
   loadPlantsIdsList,
   loadPlantsIdsListImages,
-  loadQuiz,
-  loadQuizPlants
+  loadDeck,
+  loadDeckPlants
 } from "../../api/api.js";
 import {useEffect} from "react";
 import {getObjectKeyValues} from "../../utils.js";
 
 
-function useQuiz ({
-  quizId,
+function useDeck ({
+  deckId,
   fetchPlants = false,
   fetchImages = false
 }) {
-  const [quizQuery, quizPlantsQuery] = useQueries({
+  const [deckQuery, deckPlantsQuery] = useQueries({
     queries: [
       {
-        queryKey: ['quizzes', quizId],
-        queryFn: () => loadQuiz(quizId),
+        queryKey: ['decks', deckId],
+        queryFn: () => loadDeck(deckId),
         staleTime: 30_000
       },
       {
-        queryKey: ['quizzes-plants', quizId],
-        queryFn: () => loadQuizPlants({quiz__id: quizId}),
+        queryKey: ['decks-plants', deckId],
+        queryFn: () => loadDeckPlants({deck__id: deckId}),
       }
     ]
   })
 
   const plantsQuery = useQuery({
-    queryKey: ['plants', quizId],
+    queryKey: ['plants', deckId],
     queryFn: () => loadPlantsIdsList(
-      getObjectKeyValues(quizPlantsQuery.data, 'plant_id') // array of plant id
+      getObjectKeyValues(deckPlantsQuery.data, 'plant_id') // array of plant id
     ),
     onError: (error) => {
       console.log(error)
@@ -41,9 +41,9 @@ function useQuiz ({
   })
 
   const plantsImagesQuery = useQuery({
-    queryKey: ['plants-images', quizId],
+    queryKey: ['plants-images', deckId],
     queryFn: () => loadPlantsIdsListImages(
-      getObjectKeyValues(quizPlantsQuery.data, 'plant_id')
+      getObjectKeyValues(deckPlantsQuery.data, 'plant_id')
     ),
     staleTime: Infinity,
     enabled: false
@@ -51,10 +51,10 @@ function useQuiz ({
 
   // fetch quiz plants
   useEffect(() => {
-    if (quizPlantsQuery.isSuccess && fetchPlants) {
+    if (deckPlantsQuery.isSuccess && fetchPlants) {
       plantsQuery.refetch()
     }
-  }, [quizPlantsQuery.isSuccess]);
+  }, [deckPlantsQuery.isSuccess]);
 
   // fetch plants images
   useEffect(() => {
@@ -64,11 +64,11 @@ function useQuiz ({
   }, [plantsQuery.isSuccess]);
 
   return {
-    quizQuery: quizQuery,
-    quizPlantsQuery: plantsQuery,
-    quizPlantsImagesQuery: plantsImagesQuery,
+    deckQuery: deckQuery,
+    deckPlantsQuery: plantsQuery,
+    deckPlantsImagesQuery: plantsImagesQuery,
   }
 }
 
 
-export default useQuiz;
+export default useDeck;

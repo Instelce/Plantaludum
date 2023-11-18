@@ -7,18 +7,18 @@ import ButtonLink from "../../components/Buttons/ButtonLink.jsx";
 import {useFetch} from "../../hooks/useFetch.js";
 import usePrivateFetch from "../../hooks/auth/usePrivateFetch.js";
 import {useMutation} from "@tanstack/react-query";
-import {createQuizPlant} from "../../api/api.js";
+import {createDeckPlant} from "../../api/api.js";
 import {navigate} from "@storybook/addon-links";
 
 
-function QuizPlantCreate(props) {
+function DeckCreatePlant(props) {
   const privateFetch = usePrivateFetch()
 
   const location = useLocation()
   const fromLocation = location?.state?.from?.pathname || '/menu'
   const navigate = useNavigate()
-  const {quizId} = useParams()
-  const quizData = location.state
+  const {deckId} = useParams()
+  const quizData = location.state.data
 
   const [plantValue, setPlantValue] = useState(null)
   const [plantData, setPlantData] = useState({})
@@ -27,17 +27,17 @@ function QuizPlantCreate(props) {
   const [plants, setPlants] = useState([])
 
   const {isPending, mutate: mutateCreatePlantQuiz} = useMutation({
-    mutationKey: ['quizzes-plants'],
-    mutationFn: (data) => createQuizPlant(privateFetch, data),
+    mutationKey: ['decks-plants', deckId],
+    mutationFn: (data) => createDeckPlant(privateFetch, data),
     onSuccess: () => {
-      navigate(`/quiz/${quizId}`, {replace: true})
+      navigate(`/decks/${deckId}`, {replace: true})
     }
   })
 
-  const createQuizPlants = async () => {
+  const createDeckPlants = async () => {
     for (const plant of plants) {
       await mutateCreatePlantQuiz({
-        quiz: quizId,
+        deck: deckId,
         plant_id: plant.id,
       })
     }
@@ -104,7 +104,7 @@ function QuizPlantCreate(props) {
           size="big"
           color="primary"
           // disabled={plants.length < 3}
-          onClick={createQuizPlants}
+          onClick={createDeckPlants}
           loading={isPending}
           />
       </div>
@@ -113,4 +113,4 @@ function QuizPlantCreate(props) {
 }
 
 
-export default QuizPlantCreate;
+export default DeckCreatePlant;

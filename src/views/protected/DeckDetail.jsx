@@ -8,8 +8,8 @@ import {useLocation, useParams} from "react-router-dom";
 import {
   loadPlantsIdsList,
   loadPlants,
-  loadQuiz,
-  loadQuizPlants, loadPlantsIdsListImages
+  loadDeck,
+  loadDeckPlants, loadPlantsIdsListImages
 } from "../../api/api.js";
 import Loader from "../../components/Loader/index.jsx";
 import ButtonLink from "../../components/Buttons/ButtonLink.jsx";
@@ -18,32 +18,32 @@ import Button from "../../components/Buttons/Button.jsx";
 import Stars from "../../components/Stars/index.jsx";
 import {useEffect} from "react";
 import ListItem from "../../components/ListItem/index.jsx";
-import useQuiz from "../../hooks/api/useQuiz.js";
+import useDeck from "../../hooks/api/useDeck.js";
 import {getObjectKeyValues} from "../../utils.js";
 
 
-function QuizDetail(props) {
+function DeckDetail(props) {
 
-  const {quizId} = useParams()
+  const {deckId} = useParams()
 
   const {
-    quizQuery,
-    quizPlantsQuery
-  } = useQuiz({
-     quizId,
+    deckQuery,
+    deckPlantsQuery
+  } = useDeck({
+     deckId,
     fetchPlants: true,
   })
 
   return (
     <div className="quiz-detail">
-      {quizQuery.isSuccess && <>
+      {deckQuery.isSuccess && <>
         <div>
           <div className="img-container">
-            <img src={quizQuery.data.preview_image_url} alt="Preview image"/>
+            <img src={deckQuery.data.preview_image_url} alt="Preview image"/>
           </div>
 
           <ButtonLink
-            to={`/quiz/${quizId}/game`}
+            to={`/decks/${deckId}/game`}
             label="Jouer"
             color="primary"
             icon={<ArrowRight />}
@@ -51,7 +51,7 @@ function QuizDetail(props) {
           />
 
           <ButtonLink
-            to={`/quiz/${quizId}/update`}
+            to={`/decks/${deckId}/update`}
             label="Mettre à jour"
             color="secondary"
             icon={<RefreshCcw />}
@@ -69,36 +69,36 @@ function QuizDetail(props) {
         <div>
           <div className="header">
             <div className="title">
-              <h1>{quizQuery.data.name}</h1>
-              {quizQuery.data.private && <EyeOff />}
+              <h1>{deckQuery.data.name}</h1>
+              {deckQuery.data.private && <EyeOff />}
             </div>
 
-            <Stars count={quizQuery.data.difficulty} />
+            <Stars count={deckQuery.data.difficulty} />
 
             <p>
-              {quizQuery.data.description}
+              {deckQuery.data.description}
             </p>
           </div>
 
           <div className="plants-container">
             <h2>Plantes</h2>
 
-            {quizPlantsQuery.isSuccess && <>
+            {deckPlantsQuery.isSuccess && <>
 
-              {quizPlantsQuery.data.map((plant, index) => (
+              {deckPlantsQuery.data.map((plant, index) => (
                 <ListItem key={plant.id} index={index} title={plant.french_name} />
               ))}
 
             </>}
 
-            {quizPlantsQuery.isLoading && <Loader />}
+            {deckPlantsQuery.isLoading && <Loader />}
           </div>
         </div>
       </>}
 
-      {quizQuery.isLoading && <Loader />}
+      {deckQuery.isLoading && <Loader />}
     </div>
   );
 }
 
-export default QuizDetail;
+export default DeckDetail;
