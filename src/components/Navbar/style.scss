@@ -1,52 +1,44 @@
-@import '../../styles/typescale';
+@import '../../styles/abstracts/typescale';
 
 .navbar {
-  width: 100vw;
+  width: 100%;
+  padding: 1.5em 2.5rem;
+  position: relative;
+  z-index: 20;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1em 16vw;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  z-index: 20;
 
-  .gradient {
-    width: 100vw;
-    height: 20vh;
+  background: rgb(var(--color-gray-2));
+  border-bottom: 1px solid rgb(var(--color-gray-3));
 
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    overflow: hidden;
-    background: linear-gradient(0deg, rgb(var(--color-background)) 0%, transparent 100%);
-    pointer-events: none;
-    z-index: -1;
-  }
-
-  .navbar-left {
+  .right,
+  .left {
     display: flex;
     align-items: center;
   }
 
-  .title {
-    display: flex;
-    align-items: center;
+  .left {
+    & > a {
+      margin-right: 1.5rem;
+    }
+  }
+
+  .right {
+    & > * {
+      margin-left: 2rem;
+    }
   }
 
   .logo {
-    margin-right: 1em;
-    transition: transform 10s cubic-bezier(.12,.5,.56,.97);
-  }
+    align-self: center;
+    margin-right: 2.5em;
+    transition: transform .3s cubic-bezier(.12,.5,.56,.97);
+    transform-origin: center center;
 
-  h1 {
-    @extend %h5;
-    font-family: "DancingScript", sans-serif;
-    margin-right: 2em;
-
-  }
-
-  nav a {
-    margin-right: 2em;
+    &:hover {
+      transform: rotate(360deg);
+    }
   }
 }

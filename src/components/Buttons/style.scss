@@ -1,15 +1,100 @@
 
 
 .button {
-  border-radius: 10px;
-  padding: 1em 2em;
   position: relative;
   font-size: inherit;
   cursor: pointer;
-  transition: background .2s, box-shadow .3s ease, border .3s ease;
+  transition: transform .3s ease;
+  background: transparent;
+  display: inline-block;
 
-  &:focus {
-    box-shadow: 0 0 0 2px rgb(var(--color-background)), 0 0 0 4px rgba(var(--color-secondary), .2);
+  &:not(:disabled) {
+    &:active {
+      animation: bounce .3s ease forwards;
+      filter: drop-shadow(0 0 4px rgba(var(--color-gray-4), .4));
+
+      &::after {
+        animation: after-bounce .3s ease forwards;
+      }
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+      &::after {
+        transform: translateY(4px);
+      }
+    }
+  }
+
+  &:disabled {
+    opacity: .8;
+    cursor: not-allowed;
+  }
+
+  // Colors
+  &.primary {
+    --color-text: rgb(var(--color-gray-4));
+    --color-background: rgb(var(--color-primary-light));
+    --color-border: rgb(var(--color-primary-dark))
+  }
+
+  &.gray {
+    --color-text: rgb(var(--color-white));
+    --color-background: rgb(var(--color-gray-4));
+    --color-border: rgb(var(--color-gray-3))
+  }
+
+  &.dark-gray {
+    --color-text: rgb(var(--color-white));
+    --color-background: rgb(var(--color-gray-2));
+    --color-border: rgb(var(--color-gray-3))
+  }
+
+  &.danger {
+    --color-text: rgb(var(--color-gray-4));
+    --color-background: rgb(var(--color-danger-light));
+    --color-border: rgb(var(--color-danger-dark))
+  }
+
+  &.success {
+    --color-text: rgb(var(--color-gray-4));
+    --color-background: rgb(var(--color-success-light));
+    --color-border: rgb(var(--color-success-dark))
+  }
+
+  .label {
+    position: relative;
+    z-index: 2;
+    color: var(--color-text);
+  }
+
+  &::before,
+  &::after {
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: var(--radius);
+    //background: paint(squircle);
+    transition: transform .3s ease, background .3s ease;
+  }
+
+  &::before {
+    background: var(--color-background);
+    //--squircle-fill: var(--color-background);
+    //--squircle-radius: var(--radius);
+    //--squircle-smooth: 1;
+    z-index: 2;
+  }
+
+  &::after {
+    background: var(--color-border);
+    transform: translateY(2px);
+    //--squircle-fill: var(--color-border);
+    //--squircle-radius: var(--radius);
+    //--squircle-smooth: 1;
   }
 
   &.icon {
@@ -17,9 +102,20 @@
     align-items: center;
     justify-content: space-between;
 
-    span {
+    &:not(&.only-icon) > span:nth-child(2) {
       display: flex;
       margin-left: 1rem;
+    }
+
+    span:nth-child(2){
+      display: flex;
+      width: 20px;
+      height: 20px;
+
+      svg {
+        z-index: 3;
+        stroke: var(--color-text);
+      }
     }
   }
 
@@ -34,49 +130,52 @@
     }
   }
 
-  // Outline
-  &.outlined {
-    color: rgb(var(--color-text));
-    background: transparent;
-    border: 1px solid rgba(var(--color), .6);
-
-    &:hover:not(:disabled) {
-      border: 1px solid rgba(var(--color), 1);
-      //background: rgba(var(--color), .1);
-    }
-  }
-
-  // Solid
-  &.solid {
-    background: rgb(var(--color));
-    //border: 1px solid rgb(var(--color));
-
-    &:hover:not(:disabled) {
-      background: rgba(var(--color), .8);
-    }
-  }
-
-  // Soft
-  &.soft {
-    background: rgba(var(--color), .6);
-    //border: 1px solid rgb(var(--color));
-
-    &:hover:not(:disabled) {
-      background: rgba(var(--color), .8);
-    }
-  }
-
   &.fill {
     width: 100%;
   }
 
-  &:disabled {
-    opacity: .8;
-    cursor: not-allowed;
+  &.small {
+    padding: .375em 1em;
+    --padding-horizontal: .375em;
+
+    &.only-icon { padding: .375em; }
+  }
+  &.medium {
+    --padding-horizontal: .5em;
+    padding: .5em 1.5em;
+
+    &.only-icon { padding: .5em; }
+  }
+  &.large {
+    padding: 1em 2em;
+    --padding-horizontal: 1em;
+
+    &.only-icon { padding: 1em; }
+  }
+}
+
+.button-link {
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  position: relative;
+}
+
+@keyframes bounce {
+  0% {
+    transform: translateY(0);
   }
 
-  &.sm { padding: .25em .75em; --padding-horizontal: .25em; }
-  &.md { padding: .375em 1em;  --padding-horizontal: .375em;}
-  &.lg { padding: .5em 1.5em; --padding-horizontal: .5em;}
-  &.big { padding: 1em 2em; --padding-horizontal: 1em;}
+  100% {
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes after-bounce {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(4px);
+  }
 }

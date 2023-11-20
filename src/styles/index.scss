@@ -1,28 +1,14 @@
 
-// Reset
-@import url('./reset.css');
+// Imports
+@import "base/reset.css";
+@import "abstracts/variables";
+@import "abstracts/colors";
+@import "utilities/mixins";
+@import "abstracts/typescale";
+@import './fonts/dancing-script.css';
+@import './fonts/satoshi.css';
+@import './fonts/switzer.css';
 
-// Fonts
-@import './typescale';
-@import url('./fonts/dancing-script.css');
-@import url('./fonts/switzer.css');
-
-// Variables
-:root {
-  --color-text: 211, 210, 210;
-  --color-background: 31, 31, 31;
-  --color-primary: 157, 193, 110;
-  --color-secondary: 224, 224, 224;
-  --color-accent: 0, 159, 4;
-  --color-success: 52, 199, 89;
-  --color-danger: 255, 147, 48;
-
-  --breakpoint-large-desktop: 1920px;
-  --breakpoint-small-decktop: 1440px;
-  --breakpoint-tablet-landscape: 1440px;
-  --breakpoint-tablet-portrait: 834px;
-  --breakpoint-phone: 360px;
-}
 
 * { box-sizing: border-box }
 
@@ -30,14 +16,26 @@
   background: rgba(var(--color-primary), .2);
 }
 
+*::-webkit-scrollbar {
+  width: 4px;
+}
+*::-webkit-scrollbar-track {
+  background: rgba(var(--color-gray-2), 0) !important;
+}
+*::-webkit-scrollbar-thumb {
+  background: rgb(var(--color-gray-3)) !important;
+  border-radius: 3px !important;
+}
+
+
 html {font-size: 100%;} /*16px*/
 
 body {
   margin: 0;
-  background-color: rgb(var(--color-background));
+  background-color: rgb(var(--color-gray-1));
   font-family: 'Switzer', Roboto, sans-serif;
   line-height: 1.75;
-  color: rgb(var(--color-text));
+  color: rgb(var(--color-white));
 }
 
 a {
@@ -64,15 +62,10 @@ button {
   font-family: "DancingScript", serif !important;
 }
 
-.two-buttons {
-  padding-top: 2rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-column-gap: 1rem;
-}
 
-@import './forms';
-@import './container';
+// Layout imports
+@import 'layout/forms';
+@import 'layout/container';
 
 // Page imports
 @import "pages/main-menu";

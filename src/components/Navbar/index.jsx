@@ -1,28 +1,28 @@
-import React from 'react';
+import React, {Children, useEffect} from 'react';
 
 import './style.scss'
 import ButtonLink from "../Buttons/ButtonLink.jsx";
 import PropTypes from "prop-types";
 
-function Navbar({childrenLeft, childrenRight}) {
+function Navbar({children}) {
+    const childrens = Children.toArray(children)
+
+  useEffect(() => {
+    childrens.map(child => {
+      console.log(child?.props?.children)
+    })
+    console.log("cou", childrens.filter(child => child?.props?.className === 'left'))
+  }, []);
+
     return (
         <div className="navbar">
-            <span className="gradient"></span>
-            <div className="navbar-left">
-                <div className="title">
-                    <h1>Plantaludum</h1>
-                </div>
+            <div className="left">
+                <img className="logo" src="/public/icon.svg" alt="Plantaludum icon"/>
 
-                <nav>
-                    <ul>
-                        <li>Classement</li>
-                    </ul>
-                </nav>
+                {childrens.filter(child => child?.props?.className === 'left')?.[0]?.props?.children}
             </div>
-            
-            <div className="navbar-right">
-                <ButtonLink to="/inscription" color="primary" size="ld" variant="solid">Jouer</ButtonLink>
-            </div>
+
+            {childrens.filter(child => child?.props?.className === 'right')}
         </div>
     );
 }

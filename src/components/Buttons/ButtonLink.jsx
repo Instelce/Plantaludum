@@ -1,9 +1,10 @@
-import React from "react";
 import PropTypes from "prop-types";
 
+import Button from "./Button.jsx";
 import { Link } from "react-router-dom";
 import "./style.scss";
-import Button from "./Button.jsx";
+import classNames from "classnames";
+import Loader from "../Loader/index.jsx";
 
 /**
  * React router dom Link styled as a button
@@ -11,44 +12,38 @@ import Button from "./Button.jsx";
 function ButtonLink({
   to,
   state={},
-  label,
-  type = "button",
-  color,
-  size = "lg",
-  variant = "solid",
+  label= "",
+  color = "primary",
+  size = "large",
   disabled = false,
   fill = false,
-  children,
+  icon = null,
+  loading = false,
   ...props
 }) {
   return (
-    <Link to={to} state={state}>
+    <Link to={to} state={state} title={label}>
       <Button
         label={label}
-        type={type}
         color={color}
         size={size}
-        variant={variant}
         disabled={disabled}
         fill={fill}
-        {...props}
-      >
-        {label}
-      </Button>
+        icon={icon}
+        loading={loading}
+      />
     </Link>
   );
 }
 
 ButtonLink.propTypes = {
   to: PropTypes.string,
+  state: PropTypes.object,
   label: PropTypes.string,
-  type: PropTypes.string,
   color: PropTypes.string,
   size: PropTypes.string,
-  variant: PropTypes.string,
   disabled: PropTypes.bool,
   fill: PropTypes.bool,
-  children: PropTypes.node,
 };
 
 export default ButtonLink;

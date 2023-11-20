@@ -31,6 +31,9 @@ dependencies:
   classnames:
     specifier: ^2.3.2
     version: 2.3.2
+  css-houdini-squircle:
+    specifier: ^0.3.0
+    version: 0.3.0
   gsap:
     specifier: ^3.12.2
     version: 3.12.2
@@ -4859,6 +4862,10 @@ packages:
   /css-color-keywords@1.0.0:
     resolution: {integrity: sha512-FyyrDHZKEjXDpNJYvVsV960FiqQyXc/LlYmsxl2BcdMb2WPx0OGRVgTg55rPSyLSNMqP52R9r8geSp7apN3Ofg==}
     engines: {node: '>=4'}
+    dev: false
+
+  /css-houdini-squircle@0.3.0:
+    resolution: {integrity: sha512-n2chEz56BlfBVuPD1PkdXQPIxP0Uys0vC4jIgaxCjFu8rkt0KVRDKyy41t1EDg2ZWEQkdX8AGKW3Vk7f3PgxZA==}
     dev: false
 
   /css-to-react-native@3.2.0:

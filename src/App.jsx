@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Root from "./views/Root.jsx";
 import Error from "./views/Error.jsx";
@@ -14,7 +14,7 @@ import ProtectedRoute from "./routes/ProtectedRoute.jsx";
 import DeckCreate from "./views/protected/DeckCreate.jsx";
 import DeckCreatePlant from "./views/protected/DeckCreatePlant.jsx";
 import DeckDetail from "./views/protected/DeckDetail.jsx";
-
+import Test from "./views/Test.jsx";
 
 function App(props) {
   return (
@@ -22,6 +22,8 @@ function App(props) {
       <Routes>
         <Route path="/" element={<Root />} errorElement={<Error />}>
           <Route index path="/" element={<Home />} />
+
+          <Route path="test" element={<Test />} />
 
           <Route path="inscription" element={<Register />} />
 
