@@ -6,6 +6,7 @@ import {Link} from "react-router-dom";
 import Button from "../Buttons/Button.jsx";
 import {Zap} from "react-feather";
 import Flower from "../Icons.jsx";
+import ButtonLink from "../Buttons/ButtonLink.jsx";
 
 
 function DeckCard({deck, ...props}) {
@@ -43,7 +44,7 @@ function DeckCard({deck, ...props}) {
   }, []);
 
   return (
-    <div className="plant-card" ref={cardRef} onMouseLeave={handleMouseLeave} onAuxClick={handleRightClick} onContextMenu={(e) => e.preventDefault()} {...props}>
+    <div className="deck-card" ref={cardRef} onMouseLeave={handleMouseLeave} onAuxClick={handleRightClick} onContextMenu={(e) => e.preventDefault()} {...props}>
       <div className="card-header">
         <img className="active" src={deck.preview_image_url} alt="Preview image"/>
         <div className="card-content">
@@ -52,7 +53,8 @@ function DeckCard({deck, ...props}) {
         </div>
       </div>
       <div className="card-button">
-        <Button
+        <ButtonLink
+          to={`/decks/${deck.id}`}
           label="Découvrir"
         />
         <Button

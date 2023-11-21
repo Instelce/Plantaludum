@@ -33,6 +33,7 @@ function MainMenu(props) {
                 </div>
                 <div className="right">
                     <ButtonLink
+                      to="/decks/create"
                       label="Nouveau deck"
                       color="gray"
                     />

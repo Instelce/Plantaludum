@@ -22,15 +22,27 @@ form {
     display: flex;
     justify-content: center;
   }
-
 }
 
 .form-buttons {
-  margin: auto;
   margin-top: 1rem;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   column-gap: 1rem;
+}
+
+.form-buttons-container {
+  margin-top: 2rem;
+  margin-bottom: 4rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+
+  .form-buttons-wrapper {
+    grid-column: 2 / 4;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 1rem;
+  }
 }
 
 input.hidden {

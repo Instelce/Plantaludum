@@ -33,6 +33,13 @@
       }
     }
 
+    &:focus {
+      &::before {
+        border: 1px solid rgba(var(--color-gray-5), .2);
+        box-shadow: 0 0 0 2px rgb(var(--color-gray-4)), 0 0 0 2px rgb(var(--color-gray-4));
+      }
+    }
+
     & ~ label {
       --padding-left: var(--padding-horizontal);
     }

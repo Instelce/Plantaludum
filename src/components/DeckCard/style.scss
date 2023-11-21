@@ -1,6 +1,6 @@
 
 
-.plant-card {
+.deck-card {
   width: 100%;
   padding: 1rem;
   position: relative;
@@ -46,8 +46,12 @@
     display: flex;
     gap: 1rem;
 
-    button:nth-child(1) {
+    a:nth-child(1) {
       flex-grow: 2;
+
+      button {
+        width: 100%;
+      }
     }
   }
 }

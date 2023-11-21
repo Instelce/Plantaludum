@@ -9,18 +9,13 @@ import AutocompleteInput
   from "../../components/forms/AutocompleteInput/index.jsx";
 import Option from "../../components/forms/Option/index.jsx";
 import Selector from "../../components/forms/Selector/index.jsx";
-import {apiFlore} from "../../api/axios.js";
 import {deleteDublicates} from "../../utils.js";
 import ButtonLink from "../../components/Buttons/ButtonLink.jsx";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import Button from "../../components/Buttons/Button.jsx";
 import useAuth from "../../hooks/auth/useAuth.js";
-import {useFetch} from "../../hooks/useFetch.js";
-import Loader from "../../components/Loader/index.jsx";
-import error from "../Error.jsx";
-import {navigate} from "@storybook/addon-links";
 import {useMutation, useQuery} from "@tanstack/react-query";
-import {createDeck, loadImages, loadPlants} from "../../api/api.js";
+import {createDeck, loadImages} from "../../api/api.js";
 import Navbar from "../../components/Navbar/index.jsx";
 import {ErrorBoundary} from "react-error-boundary";
 
@@ -30,7 +25,7 @@ function DeckCreate(props) {
   const privateFetch = usePrivateFetch()
   const location = useLocation()
   console.log(location)
-  const fromLocation = location?.state?.from?.pathname || '/menu'
+  const fromLocation = location?.state?.from?.pathname || '/mon-jardin'
   const navigate = useNavigate()
 
   const {isFetching: deckFetching, isSuccess, data: deckData, mutate: mutateCreateDeck} = useMutation({

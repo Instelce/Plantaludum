@@ -22,6 +22,11 @@
   .left {
     & > a {
       margin-right: 1.5rem;
+      transition: color .3s ease;
+
+      &:hover {
+        color: rgb(var(--color-primary-light));
+      }
     }
   }
 

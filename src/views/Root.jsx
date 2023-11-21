@@ -8,7 +8,7 @@ function ButtonsMenu() {
           <ButtonLink to="/info" icon={<HelpCircle/>} color="dark-gray" size="medium"></ButtonLink>
           <ButtonLink to="/settings" icon={<Settings/>} color="dark-gray" size="medium"></ButtonLink>
           <ButtonLink to="/profile" icon={<User />} color="dark-gray" size="medium"></ButtonLink>
-          <ButtonLink to="/logout" icon={<LogOut />} color="dark-gray" size="medium"></ButtonLink>
+          <ButtonLink to="/logout" icon={<LogOut color="rgb(var(--color-danger))" />} color="dark-gray" size="medium"></ButtonLink>
       </div>
     );
 }
