@@ -1,28 +1,30 @@
 
 .option {
-  font-size: inherit;
-  //background: rgba(var(--color-secondary), .2);
-  border-bottom: 1px solid rgba(var(--color-secondary), .2);
-  background: transparent;
-  color: rgb(var(--color-text));
-  padding: .5rem 1rem;
   width: 100%;
+  padding: .5rem 1rem;
+
+  border-bottom: 1px solid rgba(var(--color-gray-5), .2);
+  background: transparent;
+
+  font-size: inherit;
+  color: rgb(var(--color-white));
   text-align: left;
+
   cursor: pointer;
   display: block;
+
+  transition: background 100ms;
 
   svg {
     height: 1rem;
   }
 
-  //transition: background .3s;
-
   &.active {
-    background: rgba(var(--color-secondary), .2);
+    background: rgba(var(--color-gray-5), .2);
   }
 
   &:hover {
-    background: rgba(var(--color-secondary), .2);
+    background: rgba(var(--color-gray-5), .2);
   }
 }
 
@@ -42,8 +44,8 @@
   display: flex;
   flex-direction: column;
 
-  border: 1px solid rgba(var(--color-secondary), .2);
-  background: rgb(var(--color-background));
+  border: 1px solid rgba(var(--color-gray-5), .2);
+  background: rgb(var(--color-gray-3));
   transition: transform .3s, opacity .3s;
 
   &.show {

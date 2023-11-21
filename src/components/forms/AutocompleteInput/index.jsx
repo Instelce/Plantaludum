@@ -90,11 +90,11 @@ function Suggestions ({
       return []
     } else {
       // first get only fieldName key values
-      const results = suggestions?.map(el => el[fieldName])
+      let results = suggestions.map(el => el[fieldName])
       // then filter by search value
-      results?.filter(value => value?.toLowerCase().startsWith(searchValue?.toLowerCase()))
+      results = results.filter(value => value?.toLowerCase().startsWith(searchValue?.toLowerCase()))
       // and get only keep 0 to maxSuggestions values
-      results?.slice(0, maxSuggestions)
+      results = results.slice(0, maxSuggestions)
 
       console.log(results)
 

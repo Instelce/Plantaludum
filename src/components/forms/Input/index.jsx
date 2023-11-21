@@ -8,15 +8,15 @@ import {Info} from "react-feather";
 function Input({
   id=undefined,
   label,
-  type,
-  size = "lg",
+  icon = null,
+  type = "text",
+  size = "large",
   disabled = false,
   showInfo = false,
   value,
   handleValueChange = null,
   helperText = null,
   usageInfoText = null,
-  mb= "1rem",
   ...props
 }) {
   const defaultId = useId();
@@ -24,7 +24,7 @@ function Input({
 
   return (
     <>
-      <div className="input-container" style={ !helperText ? {marginBottom: mb} : {}}>
+      <div className="input-container">
         <div className="input-wrapper">
           <input
             className={size}
@@ -62,6 +62,8 @@ function Input({
           {usageInfoText !== null && (
             <Info className="info-icon" onClick={() => setShowInfoModal(() => true)} />
           )}
+
+          {icon ? <span className="icon">{icon}</span> : null}
         </div>
 
         {helperText && <p className="helper-text">{helperText}</p>}
@@ -75,8 +77,9 @@ function Input({
 Input.propTypes = {
   id: PropTypes.string,
   label: PropTypes.string,
-  type: PropTypes.oneOf(["text", "email", "password"]),
-  size: PropTypes.oneOf(["sm", "md", "lg", "big"]),
+  icon: PropTypes.node,
+  type: PropTypes.oneOf(["text", "email", "password", "search"]),
+  size: PropTypes.oneOf(["small", "medium", "large"]),
   showInfo: PropTypes.bool,
   disabled: PropTypes.bool,
   value: PropTypes.string,

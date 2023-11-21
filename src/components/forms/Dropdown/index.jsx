@@ -79,11 +79,12 @@ function Dropdown({inputId, label, size="lg", mb, defaultValue= undefined, place
       <Button
         id={id}
         label={currentValue !== "" ? currentValue : <span></span>}
-        color="secondary" variant="outlined" size={size}
+        icon={<ChevronDown color="rgb(var(--color-primary-light))" />}
+        color="gray"
+        size={size}
         onFocus={() => setButtonFocus(() => true)}
         onBlur={() => setButtonFocus(() => false)}
         onClick={() => setShowOptions(!showOptions)}
-        icon={<ChevronDown />}
         {...props}
       />
       <div

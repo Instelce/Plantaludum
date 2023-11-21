@@ -50,7 +50,7 @@ function Button ({
 Button.propTypes = {
   label: PropTypes.string || PropTypes.number,
   type: PropTypes.oneOf(['button', 'submit']),
-  color: PropTypes.oneOf(['primary', 'gray', 'dark-gray', 'success', 'danger']),
+  color: PropTypes.oneOf(['primary', 'gray', 'dark-gray', 'yellow', 'success', 'danger']),
   size: PropTypes.oneOf(['small', 'medium', 'large']),
   disabled: PropTypes.bool,
   fill: PropTypes.bool,

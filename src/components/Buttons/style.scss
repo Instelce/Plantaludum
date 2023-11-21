@@ -2,11 +2,13 @@
 
 .button {
   position: relative;
-  font-size: inherit;
-  cursor: pointer;
-  transition: transform .3s ease;
-  background: transparent;
   display: inline-block;
+
+  background: transparent;
+  font-size: inherit;
+
+  transition: transform .3s ease;
+  cursor: pointer;
 
   &:not(:disabled) {
     &:active {
@@ -20,6 +22,7 @@
 
     &:hover {
       transform: translateY(-2px);
+
       &::after {
         transform: translateY(4px);
       }
@@ -33,7 +36,7 @@
 
   // Colors
   &.primary {
-    --color-text: rgb(var(--color-gray-4));
+    --color-text: rgb(var(--color-gray-2));
     --color-background: rgb(var(--color-primary-light));
     --color-border: rgb(var(--color-primary-dark))
   }
@@ -48,6 +51,12 @@
     --color-text: rgb(var(--color-white));
     --color-background: rgb(var(--color-gray-2));
     --color-border: rgb(var(--color-gray-3))
+  }
+
+  &.yellow {
+    --color-text: rgb(var(--color-yellow-dark));
+    --color-background: rgb(var(--color-yellow-light));
+    --color-border: rgb(var(--color-yellow-dark))
   }
 
   &.danger {
@@ -66,6 +75,7 @@
     position: relative;
     z-index: 2;
     color: var(--color-text);
+    font-weight: 500;
   }
 
   &::before,
@@ -108,9 +118,11 @@
     }
 
     span:nth-child(2){
-      display: flex;
       width: 20px;
       height: 20px;
+
+      display: flex;
+      align-items: center;
 
       svg {
         z-index: 3;

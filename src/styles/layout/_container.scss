@@ -36,7 +36,7 @@
 
 .scroller {
   width: 100%;
-  height: 200vh;
+  min-height: 100%;
   padding: 0;
   overflow: hidden;
   position: relative;

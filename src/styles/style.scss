@@ -10,10 +10,10 @@
 @import './fonts/switzer.css';
 
 
-* { box-sizing: border-box }
+*, *:before, *:after { box-sizing: border-box }
 
 *::selection {
-  background: rgba(var(--color-primary), .2);
+  background: rgba(var(--color-primary-light), .2);
 }
 
 *::-webkit-scrollbar {
@@ -49,23 +49,18 @@ button {
 }
 
 .link {
-  color: rgb(var(--color-primary));
+  color: rgb(var(--color-primary-light));
   transition: color .2s;
 
   &:hover {
-    color: rgba(var(--color-primary), .8);
+    color: rgba(var(--color-primary-dark), .8);
   }
 }
 
-.main-title {
-  @extend %h2;
-  font-family: "DancingScript", serif !important;
-}
-
-
 // Layout imports
-@import 'layout/forms';
-@import 'layout/container';
+@import "layout/forms";
+@import "layout/container";
+@import "layout/header";
 
 // Page imports
 @import "pages/main-menu";

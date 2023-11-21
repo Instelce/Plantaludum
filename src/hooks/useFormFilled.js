@@ -12,7 +12,7 @@ function useFormFilled() {
 
     // loop all inputs and check their value
     for (const input of inputs) {
-      console.log(input.value)
+      // console.log(input.value)
       if (input.value !== "" && input.type !== "checkbox") {
         countInputFilled++;
       }

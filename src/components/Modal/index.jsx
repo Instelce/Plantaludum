@@ -20,7 +20,7 @@ function Modal({ show, setShow, children, closeButtonLabel= "Fermer" }) {
       <div className="modal">
         <div className="modal-content">{children}</div>
         <div className="modal-button">
-          <Button label={closeButtonLabel} color="secondary" variant="solid" onClick={() => setShow(!show)} />
+          <Button label={closeButtonLabel} color="gray" onClick={() => setShow(!show)} />
         </div>
       </div>
     </div>,

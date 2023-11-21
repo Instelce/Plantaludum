@@ -1,27 +1,35 @@
 import {Star} from "react-feather";
-import React from "react";
 import PropTypes from "prop-types";
 import './style.scss'
+import {cloneElement} from "react";
 
-export default function Stars ({count}) {
-    let starsElem = []
+export default function Stars ({count, icon = null}) {
+    // let Icon = icon != null ? cloneElement(icon) : Star
+
+    let starsElements = []
     let key = 0;
+
     for (let i = 0; i < count; i++) {
-        starsElem.push(<Star key={key} color="#FFCC00" fill="#FFCC00" />)
+        starsElements.push(
+          <Star key={key} color="rgb(var(--color-yellow-light))" fill="rgb(var(--color-yellow-light))" />
+        )
         key++;
     }
     for (let i = 0; i < 3 - count; i++) {
-        starsElem.push(<Star key={key} color="rgba(var(--color-secondary), .2)" fill="rgba(var(--color-secondary), .2)" />)
+        starsElements.push(
+          <Star key={key} color="rgb(var(--color-yellow-dark))" />
+        )
         key++;
     }
 
     return <>
         <div className="row-stars">
-            {starsElem}
+            {starsElements}
         </div>
     </>
 }
 
 Stars.propTypes = {
     count: PropTypes.number,
+    icon: PropTypes.node
 }

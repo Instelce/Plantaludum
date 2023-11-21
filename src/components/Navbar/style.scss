@@ -2,7 +2,7 @@
 
 .navbar {
   width: 100%;
-  padding: 1.5em 2.5rem;
+  padding: 1.5em var(--page-horizontal-padding);
   position: relative;
   z-index: 20;
 

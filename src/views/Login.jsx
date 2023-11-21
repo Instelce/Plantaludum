@@ -7,6 +7,8 @@ import useAuth from "../hooks/auth/useAuth.js";
 import useFormFilled from "../hooks/useFormFilled.js";
 import {useMutation} from "@tanstack/react-query";
 import {login} from "../api/api.js";
+import Navbar from "../components/Navbar/index.jsx";
+import {ArrowRight} from "react-feather";
 
 function Login({ handleLogin }) {
   const {setAccessToken, setCSRFToken} = useAuth()
@@ -14,7 +16,7 @@ function Login({ handleLogin }) {
   const [responseHelper, setResponseHelper] = useState({})
   const navigate = useNavigate()
   const location = useLocation()
-  const fromLocation = location?.state?.from?.pathname || '/menu'
+  const fromLocation = location?.state?.from?.pathname || '/mon-jardin'
   const [loading, setLoading] = useState(false)
   const {formRef, handleFormChange, isFilled} = useFormFilled()
 
@@ -44,46 +46,58 @@ function Login({ handleLogin }) {
   }
 
   return (
-    <div className="container center">
-      <form ref={formRef} className="form-page" onSubmit={handleSubmit} onChange={(e) => handleFormChange(e.target)}>
-        <div className="form-header">
-          <h1>Content de te revoir !</h1>
-          <p>
-            Si tu n’as pas de compte, inscrit toi{" "}
-            <Link to="/inscription" className="link">
-              ici
-            </Link>
-            .
-          </p>
+    <>
+      <Navbar >
+        <div className="left">
+          <Link to="/explorer">Explorer</Link>
         </div>
-        <Input
-          id="email"
-          label="Email"
-          type="text"
-          size="big"
-          showInfo
-          helperText={responseHelper?.email}/>
-        <Input
-          id="password"
-          label="Mot de passe"
-          type="password"
-          showInfo
-          size="big"
-          value={passwordValue}
-          handleValueChange={setPasswordValue}
-          helperText={responseHelper?.password}
-        />
-        <p style={{marginBottom: "1rem"}}>{responseHelper?.detail}</p>
-        <Button
-          label="Connexion"
-          type="submit"
-          color="primary"
-          size="big"
-          disabled={!isFilled}
-          loading={isPending}
-        />
-      </form>
-    </div>
+      </Navbar>
+
+      <header className="page-header center">
+        <h1>Connexion</h1>
+      </header>
+
+      <div className="form-page">
+        <form ref={formRef} onSubmit={handleSubmit} onChange={(e) => handleFormChange(e.target)}>
+          <Input
+            id="email"
+            label="Email"
+            type="text"
+            size="large"
+            showInfo
+            helperText={responseHelper?.email}/>
+          <Input
+            id="password"
+            label="Mot de passe"
+            type="password"
+            showInfo
+            size="large"
+            value={passwordValue}
+            handleValueChange={setPasswordValue}
+            helperText={responseHelper?.password}
+          />
+          <p style={{marginBottom: "1rem"}}>{responseHelper?.detail}</p>
+          <Button
+            label="Goo"
+            icon={<ArrowRight />}
+            type="submit"
+            color="primary"
+            size="large"
+            disabled={!isFilled}
+            loading={isPending}
+          />
+          <footer>
+            <p>
+              Si tu n’as pas de compte, inscrit toi {" "}
+              <Link to="/inscription" className="link">
+                ici
+              </Link>
+              .
+            </p>
+          </footer>
+        </form>
+      </div>
+    </>
   );
 }
 

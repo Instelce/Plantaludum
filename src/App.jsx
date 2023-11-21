@@ -31,7 +31,7 @@ function App(props) {
 
           <Route path="explorer" element={<Explorer />} />
 
-          <Route path="menu" element={
+          <Route path="mon-jardin" element={
               <ProtectedRoute>
                 <MainMenu />
               </ProtectedRoute>

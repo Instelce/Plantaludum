@@ -30,11 +30,11 @@
     &:hover {
       //&:not(&.selected) {
         cursor: pointer;
-        box-shadow: 0 0 0 4px rgb(var(--color-primary));
+        box-shadow: 0 0 0 4px rgb(var(--color-primary-light));
       //}
 
       span {
-        background: rgba(var(--color-background), .8);
+        background: rgba(var(--color-gray-3), .8);
 
         &::after {
           opacity: .4;
@@ -43,7 +43,7 @@
     }
 
     &.selected {
-      box-shadow: 0 0 0 1px rgb(var(--color-primary));
+      box-shadow: 0 0 0 1px rgb(var(--color-primary-light));
 
       span::after {
         opacity: 1;
@@ -80,7 +80,7 @@
         transform: translate(-50%, -50%);
 
         border-radius: 100px;
-        background: rgb(var(--color-primary));
+        background: rgb(var(--color-primary-light));
         opacity: 0;
       }
     }

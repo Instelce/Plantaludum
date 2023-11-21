@@ -1,9 +1,9 @@
-import QuizCard from "./index.jsx";
+import DeckCard from "./index.jsx";
 import './style.scss'
 
 
 export default {
-    component: QuizCard,
+    component: DeckCard,
     parameters: {
         layout: "centered"
     },

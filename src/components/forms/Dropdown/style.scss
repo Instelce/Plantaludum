@@ -6,7 +6,32 @@
   flex-direction: column;
 
   .button {
-    border: 1px solid rgba(var(--color-secondary), .2);
+
+    &::before {
+      border: 1px solid rgba(var(--color-gray-5), .2);
+      background: rgb(var(--color-gray-3));
+      transition: border .3s ease;
+    }
+    &::after {
+      background: rgb(var(--color-gray-2));
+    }
+
+    &:active {
+      animation: none;
+      &::after {
+        animation: none;
+      }
+    }
+
+    &:hover {
+      transform: translateY(0);
+      &::before {
+        border: 1px solid rgba(var(--color-gray-5), .8);
+      }
+      &::after {
+        transform: translateY(0);
+      }
+    }
 
     & ~ label {
       --padding-left: var(--padding-horizontal);
@@ -19,7 +44,7 @@
     left: 2em;
     cursor: text;
     transition: transform .2s ease, top .2s ease;
-    z-index: 2;
+    z-index: 4;
 
     &.up {
       top: 0;

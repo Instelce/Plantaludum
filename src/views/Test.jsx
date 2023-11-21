@@ -9,8 +9,8 @@ function Test(props) {
     <>
       <Navbar>
         <div className="left">
-          <a href="#">Explorer</a>
-          <a href="#">Mon jardin</a>
+          <Link to="/explorer">Explorer</Link>
+          <Link to="/mon-jardin">Mon jardin</Link>
         </div>
         <div className="right">
           <Button

@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import Button from "../../Buttons/Button.jsx";
 import classNames from "classnames";
 import {useEffect, useState} from "react";
+import {Check, RefreshCcw} from "react-feather";
 
 
 function Selector({
@@ -57,10 +58,10 @@ function Selector({
 
         <div className="selector-buttons">
           <Button
-            label="Confirmer"
+            label="Confirmer la photo"
+            icon={<Check />}
             color="primary"
-            variant="solid"
-            size="big"
+            size="medium"
             disabled={currentChoice === null}
             onClick={handleConfirmButtonClick}
           />
@@ -78,9 +79,9 @@ function Selector({
         <div className="selector-buttons">
           <Button
             label="Rechoisir"
-            color="secondary"
-            variant="soft"
-            size="lg"
+            color="gray"
+            icon={<RefreshCcw />}
+            size="medium"
             disabled={!currentChoice}
             onClick={() => setConfirmChoice(false)}
           />

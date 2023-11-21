@@ -7,13 +7,6 @@ import PropTypes from "prop-types";
 function Navbar({children}) {
     const childrens = Children.toArray(children)
 
-  useEffect(() => {
-    childrens.map(child => {
-      console.log(child?.props?.children)
-    })
-    console.log("cou", childrens.filter(child => child?.props?.className === 'left'))
-  }, []);
-
     return (
         <div className="navbar">
             <div className="left">
