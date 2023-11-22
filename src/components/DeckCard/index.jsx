@@ -57,7 +57,8 @@ function DeckCard({deck, ...props}) {
           to={`/decks/${deck.id}`}
           label="Découvrir"
         />
-        <Button
+        <ButtonLink
+          to={`/decks/${deck.id}/game`}
           icon={<Zap />}
           color="yellow"
         />

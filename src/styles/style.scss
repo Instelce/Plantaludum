@@ -1,6 +1,7 @@
 
 // Imports
 @import "base/reset.css";
+@import "base/exeptions";
 @import "abstracts/variables";
 @import "abstracts/colors";
 @import "utilities/mixins";
@@ -46,6 +47,9 @@ a {
 button {
   border: 0;
   outline: none;
+  font-size: inherit;
+  background: transparent;
+  cursor: pointer;
 }
 
 .link {

@@ -13,7 +13,14 @@ import {
 } from "../../api/api.js";
 import Loader from "../../components/Loader/index.jsx";
 import ButtonLink from "../../components/Buttons/ButtonLink.jsx";
-import {ArrowRight, EyeOff, RefreshCcw, Trash2} from "react-feather";
+import {
+  ArrowRight,
+  EyeOff,
+  RefreshCcw,
+  RefreshCw,
+  Share, Trash,
+  Trash2
+} from "react-feather";
 import Button from "../../components/Buttons/Button.jsx";
 import Stars from "../../components/Stars/index.jsx";
 import React, {useEffect} from "react";
@@ -22,6 +29,8 @@ import useDeck from "../../hooks/api/useDeck.js";
 import {getObjectKeyValues} from "../../utils.js";
 import Navbar from "../../components/Navbar/index.jsx";
 import useAuth from "../../hooks/auth/useAuth.js";
+import Tabs from "../../components/Tabs/index.jsx";
+import PlantCard from "../../components/PlantCard/index.jsx";
 
 
 function DeckDetail(props) {
@@ -31,13 +40,15 @@ function DeckDetail(props) {
 
   const {
     deckQuery,
-    deckPlantsQuery
+    deckPlantsQuery,
+    deckPlantsImagesQuery
   } = useDeck({
      deckId,
     fetchPlants: true,
+    fetchImages: true
   })
 
-  return <>
+  return <div className="deck-detail">
       <Navbar >
         <div className="left">
           <Link to="/mon-jardin">Mon jardin</Link>
@@ -57,70 +68,75 @@ function DeckDetail(props) {
       {deckQuery.isSuccess && <>
 
         <header className="page-header center">
-          <h1>{deckQuery.data.name}</h1>
-          {deckQuery.data.private && <EyeOff />}
-        </header>
-
-        <div>
-          <div className="img-container">
+          <div className="header-img">
             <img src={deckQuery.data.preview_image_url} alt="Preview image"/>
           </div>
 
-          <ButtonLink
-            to={`/decks/${deckId}/game`}
-            label="Jouer"
-            color="primary"
-            icon={<ArrowRight />}
-            fill
-          />
+          <h1>{deckQuery.data.name}{deckQuery.data.private && <EyeOff />}</h1>
+          <p>par <Link to={`/users/${deckQuery.data.user}`} className="link">{deckQuery.data.user}</Link></p>
+          <Stars count={deckQuery.data.difficulty} />
 
-          <ButtonLink
-            to={`/decks/${deckId}/update`}
-            label="Mettre à jour"
-            color="secondary"
-            icon={<RefreshCcw />}
-            fill
-          />
+          <div>
+            <ButtonLink
+              to={`/decks/${deckId}/game`}
+              label="Jouer"
+            />
+            <Button icon={<Share />} color="gray" />
+            {deckId === user.id && <>
+              <ButtonLink
+                to={`/decks/${deckId}/update`}
+                icon={<RefreshCw />}
+                color="yellow"
+              />
+              <Button icon={<Trash />} color="danger" />
+            </>}
+          </div>
 
-          <Button
-            label="Supprimer"
-            color="danger"
-            icon={<Trash2 />}
-            fill
-          />
-        </div>
+          <div>
+          </div>
+        </header>
 
-        <div>
-          <div className="header">
-            <div className="title">
-              <h1>{deckQuery.data.name}</h1>
-              {deckQuery.data.private && <EyeOff />}
+        <Tabs.Root defaultValue="actions">
+          <div className="fill-horizontal center sep-bottom">
+            <Tabs.List>
+              <Tabs.Trigger value="actions">Actions</Tabs.Trigger>
+              <Tabs.Trigger value="plantes">Plantes</Tabs.Trigger>
+              <Tabs.Trigger value="plus-infos">Plus d'info</Tabs.Trigger>
+            </Tabs.List>
+          </div>
+
+          <Tabs.Content value="actions">
+            <p>actions</p>
+          </Tabs.Content>
+
+          <Tabs.Content value="plantes">
+            <p>plantes</p>
+            <div className="list-container">
+              <div className="list-wrapper">
+                {deckPlantsQuery.isSuccess && <>
+                  {deckPlantsQuery.data.map((plant, index) => (
+                    <PlantCard key={plant.id} index={index} plant={plant}
+                      images={deckPlantsImagesQuery.data?.filter(p => p.id === plant.id)?.[0]?.images?.map(img => img.url).slice(0, 5)}
+                    />
+                  ))}
+                </>}
+              </div>
             </div>
 
-            <Stars count={deckQuery.data.difficulty} />
+            {deckPlantsQuery.isLoading && <Loader />}
+          </Tabs.Content>
 
+          <Tabs.Content value="plus-infos">
             <p>
               {deckQuery.data.description}
             </p>
-          </div>
+          </Tabs.Content>
+        </Tabs.Root>
 
-          <div className="plants-container">
-            <h2>Plantes</h2>
-
-            {deckPlantsQuery.isSuccess && <>
-
-              {deckPlantsQuery.data.map((plant, index) => (
-                <ListItem key={plant.id} index={index} title={plant.french_name} />
-              ))}
-
-            </>}
-
-            {deckPlantsQuery.isLoading && <Loader />}
-          </div>
-        </div>
       </>}
+
       {deckQuery.isLoading && <Loader />}
-    </>
+    </div>
 }
 
 export default DeckDetail;

@@ -53,7 +53,7 @@ function DeckCreatePlant(props) {
     e.preventDefault()
     if (plantValue && plantIsValid && !Object.values(plants).map(plant => plant.id).includes(plantData.id)) {
       console.log("plant", plantData)
-      setPlants(() => [...plants, { id: plantData.id, name: plantValue, image: plantData.preview_image_url }])
+      setPlants(() => [...plants, plantData])
     }
   }
 
@@ -63,6 +63,7 @@ function DeckCreatePlant(props) {
 
   // load plants images
   useEffect(() => {
+    console.log(plants)
     console.log("plants", [...plants].map(plant => plant.id))
     if (plants.length > 0) {
       plantImagesMutation.mutate([...plants].map(plant => plant.id))

@@ -10,7 +10,7 @@ function PlantCard({plant, images, ...props}) {
         ))}
       </div>
       <div className="card-content">
-        <p>{plant.name}</p>
+        <p>{plant.french_name}</p>
       </div>
     </div>
   );

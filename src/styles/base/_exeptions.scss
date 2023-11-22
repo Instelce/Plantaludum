@@ -1,0 +1,14 @@
+
+.fill-horizontal {
+  width: 100%;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sep-bottom {
+  border-bottom: 1px solid rgb(var(--color-gray-3));
+}
