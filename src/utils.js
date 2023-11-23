@@ -58,3 +58,21 @@ export async function simpleFetch(url, options={}) {
 
     return {loading: loading, data: data, error: error}
 }
+
+export function mergeClasses(classes) {
+  return classes.join(' ')
+}
+
+export async function downloadImage(imageSrc, imageName) {
+  const imageBlob = await fetch(imageSrc)
+    .then(r => r.arrayBuffer())
+    .then(buffer => new Blob([buffer], {type: "image/jpeg"}))
+  console.log(imageBlob, URL.createObjectURL(imageBlob))
+
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(imageBlob);
+  link.download = imageName + '.jpeg';
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+}

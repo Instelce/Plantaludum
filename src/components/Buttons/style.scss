@@ -71,7 +71,8 @@
     --color-border: rgb(var(--color-success-dark))
   }
 
-  .label {
+  & > div {
+    width: 100%;
     position: relative;
     z-index: 2;
     color: var(--color-text);

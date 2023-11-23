@@ -1,0 +1,29 @@
+
+
+.slider {
+
+  .images-info {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: rgba(var(--color-gray-3), .6);
+  }
+
+  .show-info {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    opacity: 0;
+
+    transition: opacity .2s ease;
+  }
+
+  &:hover {
+
+    .show-info {
+      opacity: 1;
+    }
+  }
+}

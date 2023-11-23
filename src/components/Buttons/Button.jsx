@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import "./style.scss";
 import classNames from "classnames";
 import Loader from "../Loader/index.jsx";
+import {mergeClasses} from "../../utils.js";
 
 /**
  * Button
@@ -16,6 +17,8 @@ function Button ({
   fill = false,
   icon = null,
   loading = false,
+  children,
+  className,
   ...props
 }) {
   return <button
@@ -23,6 +26,7 @@ function Button ({
       title={label}
 
       className={classNames(
+        className,
         `button ${color} ${size}`,
         {fill: fill},
         {icon: icon !== null},
@@ -34,9 +38,9 @@ function Button ({
       {...props}
     >
       {!loading ? <>
-        <span className="label">
-          {label}
-        </span>
+        <div>
+          {children ? children : label}
+        </div>
 
         {icon !== null &&
           <span>

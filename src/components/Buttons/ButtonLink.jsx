@@ -12,6 +12,7 @@ import Loader from "../Loader/index.jsx";
 function ButtonLink({
   to,
   state={},
+  target,
   label= "",
   color = "primary",
   size = "large",
@@ -22,7 +23,7 @@ function ButtonLink({
   ...props
 }) {
   return (
-    <Link to={to} state={state} title={label}>
+    <Link target={target} to={to} state={state} title={label} {...props}>
       <Button
         label={label}
         color={color}

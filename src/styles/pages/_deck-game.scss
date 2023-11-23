@@ -1,7 +1,7 @@
 
 @import "../abstracts/typescale";
 
-.quiz-page {
+.deck-game-page {
   .quiz-wrapper {
     min-width: 60vw;
     height: 80vh;
@@ -15,47 +15,24 @@
     justify-content: space-between;
   }
 
-  .quiz-timer {
-    display: flex;
-    align-items: center;
-
-    span {
-      @extend %h5;
-    }
-
-    svg {
-      cursor: pointer;
-    }
-
-    & > * {
-      margin-right: 1em;
-    }
-
-    a {
-      display: flex;
-      align-items: center;
-    }
-  }
-
-  .quiz-score {
-    @extend %h3;
-    font-weight: 700;
-  }
-
   .progress-bar {
     margin-bottom: 2em;
   }
 
-  .quiz-content {
+  .game-grid {
+    height: auto;
+    padding: 0 var(--page-horizontal-padding);
+
     display: grid;
-    grid-template-columns: 50% auto;
-    grid-column-gap: 2em;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 2rem;
+    //place-content: center;
+    //place-items: center;
 
-    &.hide {
-      opacity: 0;
+    .slider {
+      width: 60%;
+      height: 100%;
+      justify-self: center;
     }
-
-    transition: opacity .3s ease;
   }
-
 }

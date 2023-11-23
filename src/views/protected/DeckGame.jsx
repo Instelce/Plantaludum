@@ -10,6 +10,9 @@ import useDeck from "../../hooks/api/useDeck.js";
 import {arrayChoice, deleteDublicates, shuffleArray} from "../../utils.js";
 import {ErrorBoundary} from "react-error-boundary";
 import useCacheImages from "../../hooks/useCacheImages.js";
+import Navbar from "../../components/Navbar/index.jsx";
+import ButtonLink from "../../components/Buttons/ButtonLink.jsx";
+import PlantImageSlider from "../../components/PlantImageSlider/index.jsx";
 
 
 function DeckGame(props) {
@@ -54,14 +57,14 @@ function DeckGame(props) {
         console.log("start p")
         if (deckPlantsImagesQuery.isSuccess && deckPlantsQuery.isFetched) {
             setPlantsData(() => deckPlantsQuery.data)
-            console.log("plants data", plantsData)
+            // console.log("plants data", plantsData)
             const currentPlantData = arrayChoice(deckPlantsQuery.data)[0]
             setCurrentPlant(() => currentPlantData)
-
-            console.log(Object.values(deckPlantsImagesQuery.data)
-              .filter(v => v.id === currentPlantData.id)
-              .map(v => v.images)[0]
-              .map(im => im.url))
+            //
+            // console.log(Object.values(deckPlantsImagesQuery.data)
+            //   .filter(v => v.id === currentPlantData.id)
+            //   .map(v => v.images)[0]
+            //   .map(im => im))
     }
     }, [deckPlantsQuery.isSuccess, deckPlantsImagesQuery.isSuccess, currentPlant, plantsData]);
 
@@ -78,14 +81,15 @@ function DeckGame(props) {
 
     // set images
     useEffect(() => {
-        console.log("id", currentPlant?.scientific_name)
+        // console.log("id", currentPlant?.scientific_name)
         if (currentPlant) {
             let tempImagesData = deckPlantsImagesQuery.data
             setCurrentImages(() =>
               shuffleArray(arrayChoice(deleteDublicates(Object.values(tempImagesData)
                 ?.filter(v => v.id === currentPlant.id)
                 ?.map(v => v.images)[0]
-                ?.map(im => im.url)), 5)))
+                ?.map(img => img)), 5)))
+            // console.log(currentImages)
 
             console.log(currentImages)
         }
@@ -154,53 +158,52 @@ function DeckGame(props) {
     }
 
     return (
-        <div className="container center quiz-page">
-            <div className="quiz-wrapper">
+        <div className="deck-game-page">
 
-                <div className="quiz-header">
-                    <div className="quiz-timer">
-                        <span>{stringTime}</span>
-                        <RefreshCw onClick={() => resetQuiz()} />
-                        <Link to="/menu/choix">
-                            <X />
-                        </Link>
-                    </div>
+            {/*<Navbar >*/}
+            {/*  <div className="left">*/}
+            {/*    <Link to="/mon-jardin">Mon jardin</Link>*/}
+            {/*    <Link to="/explorer">Explorer</Link>*/}
+            {/*  </div>*/}
+            {/*  <div className="right">*/}
+            {/*  </div>*/}
+            {/*</Navbar>*/}
 
-                    <div className="quiz-score">
-                        {score}
-                    </div>
-
-                    <Stars count={stars} />
+            <header className="page-header">
+                <div className="center">
+                    <span>{stringTime}</span>
+                    <RefreshCw onClick={() => resetQuiz()} />
                 </div>
+                <h1>{score}</h1>
+                <Stars count={stars} />
+            </header>
 
-                <ProgressBar value={progress * 100 / maxQuestions} color="rgb(var(--color-primary))" thickness="large" shape="rounded" />
+            <ProgressBar value={progress * 100 / maxQuestions} color="rgb(var(--color-primary-light))" thickness="large" shape="square" />
 
-                {currentImages && currentPlant && <div className="quiz-content" ref={deckContent}>
-                    {currentImages && <ImageSlider images={currentImages} />}
+            {currentImages && currentPlant && <div className="game-grid" ref={deckContent}>
+                {currentImages && <PlantImageSlider imagesData={currentImages} />}
 
-                    <div>
-                        {deckPlantsQuery.isSuccess ? (
-                            <>
-                                {plantsData.map((plant, index) => (
-                                    <ChoiceBlock
-                                      key={plant.id}
-                                      index={index}
-                                      title={plant.french_name}
-                                      subtitle={plant.scientific_name}
-                                      isRightAnswer={plant.id === currentPlant.id}
-                                      showResult={showResult}
-                                      setShowResult={setShowResult}
-                                      setIsRight={setIsRight} />
-                                ))}
-                                <p>Double click sur la réponse de ton choix</p>
-                            </>
-                        ) : (
-                           <p>Fini !</p>
-                        )}
-                    </div>
-                </div>}
-
-            </div>
+                <div>
+                    {deckPlantsQuery.isSuccess ? (
+                        <>
+                            {plantsData.map((plant, index) => (
+                                <ChoiceBlock
+                                  key={plant.id}
+                                  index={index}
+                                  title={plant.french_name}
+                                  subtitle={plant.scientific_name}
+                                  isRightAnswer={plant.id === currentPlant.id}
+                                  showResult={showResult}
+                                  setShowResult={setShowResult}
+                                  setIsRight={setIsRight} />
+                            ))}
+                            <p>Double click sur la réponse de ton choix</p>
+                        </>
+                    ) : (
+                       <p>Fini !</p>
+                    )}
+                </div>
+            </div>}
         </div>
     );
 }

@@ -1,8 +1,9 @@
-import React, {useEffect, useRef, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 
 import './style.scss'
 import {Check, X} from "react-feather";
 import PropTypes from "prop-types";
+import Button from "../Buttons/Button.jsx";
 
 function ChoiceBlock({title, subtitle, isRightAnswer, showResult, setShowResult, setIsRight}) {
     const ref = useRef(null)
@@ -21,12 +22,16 @@ function ChoiceBlock({title, subtitle, isRightAnswer, showResult, setShowResult,
     }, [showResult]);
 
     return (
-        <div ref={ref}
-             className={
-                `choice-block 
-                ${showResult ? "show-result" : ""} 
-                ${isRightAnswer ? "right-answer" : ""}`}
-             onDoubleClick={handleDoubleClick}
+        <Button
+          color="gray"
+          ref={ref}
+          className={
+            `choice-block
+            ${showResult ? "show-result" : ""} 
+            ${isRightAnswer ? "right-answer" : ""}`
+          }
+          onDoubleClick={handleDoubleClick}
+          fill
         >
             <div className="choice-text">
                 <p>{title}</p>
@@ -35,7 +40,7 @@ function ChoiceBlock({title, subtitle, isRightAnswer, showResult, setShowResult,
             <span className={`choice-result`}>
                 {isRightAnswer ? <Check /> : <X />}
             </span>
-        </div>
+        </Button>
     );
 }
 

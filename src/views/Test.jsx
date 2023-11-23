@@ -29,6 +29,12 @@ function Test(props) {
         icon={<Settings />}
         color="gray"
         />
+      <Button color="gray">
+        <div style={{display: "flex", flexDirection: "column"}}>
+          Super
+          <span>cool</span>
+        </div>
+      </Button>
     </>
   );
 }
