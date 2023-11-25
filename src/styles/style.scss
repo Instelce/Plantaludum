@@ -1,4 +1,3 @@
-
 // Imports
 @import "base/reset.css";
 @import "base/exeptions";
@@ -6,15 +5,18 @@
 @import "abstracts/colors";
 @import "utilities/mixins";
 @import "abstracts/typescale";
-@import './fonts/dancing-script.css';
-@import './fonts/satoshi.css';
-@import './fonts/switzer.css';
+@import "./fonts/dancing-script.css";
+@import "./fonts/satoshi.css";
+@import "./fonts/switzer.css";
 
-
-*, *:before, *:after { box-sizing: border-box }
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
 
 *::selection {
-  background: rgba(var(--color-primary-light), .2);
+  background: rgba(var(--color-primary-light), 0.2);
 }
 
 *::-webkit-scrollbar {
@@ -28,13 +30,14 @@
   border-radius: 3px !important;
 }
 
-
-html {font-size: 100%;} /*16px*/
+html {
+  font-size: 100%;
+} /*16px*/
 
 body {
   margin: 0;
   background-color: rgb(var(--color-gray-1));
-  font-family: 'Switzer', Roboto, sans-serif;
+  font-family: "Switzer", Roboto, sans-serif;
   line-height: 1.75;
   color: rgb(var(--color-white));
 }
@@ -54,10 +57,10 @@ button {
 
 .link {
   color: rgb(var(--color-primary-light));
-  transition: color .2s;
+  transition: color 0.2s;
 
   &:hover {
-    color: rgba(var(--color-primary-dark), .8);
+    color: rgba(var(--color-primary-dark), 0.8);
   }
 }
 

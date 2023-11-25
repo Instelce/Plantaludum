@@ -1,31 +1,49 @@
-import {useEffect, useRef, useState} from "react";
-import {Form} from "react-router-dom";
+import { MutableRefObject, useRef, useState } from "react";
 
-function useFormFilled() {
-  const form = useRef(null)
-  const [isFilled, setIsFilled] = useState(false)
+type UseFormFilledReturnType = {
+  formRef: MutableRefObject<HTMLFormElement | null>;
+  handleFormChange: () => void;
+  isFilled: boolean;
+};
 
-  const handleFormChange = (e) => {
+function useFormFilled(): UseFormFilledReturnType {
+  const form = useRef<HTMLFormElement>(null);
+  const [isFilled, setIsFilled] = useState(true);
+
+  const handleFormChange = () => {
     let countInputFilled = 0;
-    const inputs = Array.from(form.current.querySelectorAll('input, textarea')).filter(input => input.type !== "checkbox");
-    const inputsNum = inputs.length;
+    const inputsElements = form.current?.querySelectorAll("input, textarea");
 
-    // loop all inputs and check their value
-    for (const input of inputs) {
-      // console.log(input.value)
-      if (input.value !== "" && input.type !== "checkbox") {
-        countInputFilled++;
+    if (inputsElements) {
+      // remove checkbox from inputs
+      const inputs = Array.from(inputsElements).filter(
+        (input: Element) =>
+          input instanceof HTMLInputElement && input.type !== "checkbox",
+      );
+      const inputsCount = inputs.length;
+
+      // loop all inputs and check their value
+      inputs.forEach((input: Element) => {
+        const inputElement = input as HTMLInputElement;
+
+        if (inputElement.value !== "" && inputElement.type !== "checkbox") {
+          countInputFilled++;
+        }
+      });
+
+      if (countInputFilled === inputsCount) {
+        setIsFilled(true);
+      } else {
+        setIsFilled(false);
       }
     }
+  };
 
-    if (countInputFilled === inputsNum) {
-      setIsFilled(true)
-    } else {
-      setIsFilled(false)
-    }
-  }
-
-  return {formRef: form, handleFormChange: handleFormChange, isFilled: isFilled}
+  return {
+    formRef: form,
+    handleFormChange: handleFormChange,
+    isFilled: isFilled,
+  };
 }
 
 export default useFormFilled;

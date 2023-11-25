@@ -1,5 +1,4 @@
-import React, {useEffect, useState} from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Root from "./views/Root.jsx";
 import Error from "./views/Error.jsx";
 import Home from "./views/Home.jsx";
@@ -27,51 +26,72 @@ function App(props) {
 
           <Route path="inscription" element={<Register />} />
 
-          <Route path="connexion" element={<Login/>} />
+          <Route path="connexion" element={<Login />} />
 
           <Route path="explorer" element={<Explorer />} />
 
-          <Route path="mon-jardin" element={
+          <Route
+            path="mon-jardin"
+            element={
               <ProtectedRoute>
                 <MainMenu />
               </ProtectedRoute>
-            }>
-            <Route path="choix" element={
+            }
+          >
+            <Route
+              path="choix"
+              element={
                 <ProtectedRoute>
                   <DeckChoice />
                 </ProtectedRoute>
-              } />
+              }
+            />
           </Route>
 
-          <Route path="decks/:deckId" element={
-            <ProtectedRoute>
-              <DeckDetail />
-            </ProtectedRoute>
-          } />
+          <Route
+            path="decks/:deckId"
+            element={
+              <ProtectedRoute>
+                <DeckDetail />
+              </ProtectedRoute>
+            }
+          />
 
-          <Route path="decks/:deckId/game" element={
+          <Route
+            path="decks/:deckId/game"
+            element={
               <ProtectedRoute>
                 <DeckGame />
               </ProtectedRoute>
-            } />
+            }
+          />
 
-          <Route path="decks/:deckId/game/resultat" element={
+          <Route
+            path="decks/:deckId/game/resultat"
+            element={
               <ProtectedRoute>
                 <QuizResult />
               </ProtectedRoute>
-          } />
+            }
+          />
 
-          <Route path="decks/create" element={
-            <ProtectedRoute>
-              <DeckCreate />
-            </ProtectedRoute>
-          } />
+          <Route
+            path="decks/create"
+            element={
+              <ProtectedRoute>
+                <DeckCreate />
+              </ProtectedRoute>
+            }
+          />
 
-          <Route path="decks/:deckId/plants/create" element={
-            <ProtectedRoute>
-              <DeckCreatePlant />
-            </ProtectedRoute>
-          } />
+          <Route
+            path="decks/:deckId/plants/create"
+            element={
+              <ProtectedRoute>
+                <DeckCreatePlant />
+              </ProtectedRoute>
+            }
+          />
         </Route>
       </Routes>
     </>

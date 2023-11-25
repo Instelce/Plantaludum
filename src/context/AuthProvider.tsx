@@ -1,40 +1,59 @@
-import {createContext, useState} from "react";
-import PropTypes from "prop-types";
+import React, {
+  createContext,
+  PropsWithChildren,
+  useContext,
+  useState,
+} from "react";
+import { User } from "../services/api/types/users";
 
+type AuthContextType = {
+  user: User | {};
+  setUser: React.Dispatch<React.SetStateAction<User | {}>>;
+  accessToken: string | null;
+  setAccessToken: React.Dispatch<React.SetStateAction<string | null>>;
+  refreshToken: string | null;
+  setRefreshToken: React.Dispatch<React.SetStateAction<string | null>>;
+  CSRFToken: string | null;
+  setCSRFToken: React.Dispatch<React.SetStateAction<string | null>>;
+};
 
-const AuthContext = createContext({
+const AuthContext = createContext<AuthContextType>({
   user: {},
   setUser: () => {},
   accessToken: null,
-  refreshToken: null,
-  csrftoken: null,
   setAccessToken: () => null,
+  refreshToken: null,
   setRefreshToken: () => null,
-  setCSRFToken: () => null
-})
+  CSRFToken: null,
+  setCSRFToken: () => null,
+});
 
-
-export function AuthProvider ({children}) {
-
-  const [user, setUser] = useState({})
-  const [accessToken, setAccessToken] = useState(null)
-  const [refreshToken, setRefreshToken] = useState(null)
-  const [CSRFToken, setCSRFToken] = useState(null)
-
-  return (
-    <AuthContext.Provider value={{
-      user, setUser,
-      accessToken, setAccessToken,
-      refreshToken, setRefreshToken,
-      CSRFToken: CSRFToken, setCSRFToken: setCSRFToken
-    }}>
-      {children}
-    </AuthContext.Provider>
-  )
+export function useAuth(): AuthContextType {
+  return useContext(AuthContext);
 }
 
-AuthProvider.propTypes = {
-  children: PropTypes.node
+export function AuthProvider({ children }: PropsWithChildren) {
+  const [user, setUser] = useState({});
+  const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [refreshToken, setRefreshToken] = useState<string | null>(null);
+  const [CSRFToken, setCSRFToken] = useState<string | null>(null);
+
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        setUser,
+        accessToken,
+        setAccessToken,
+        refreshToken,
+        setRefreshToken,
+        CSRFToken: CSRFToken,
+        setCSRFToken: setCSRFToken,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
 export default AuthContext;

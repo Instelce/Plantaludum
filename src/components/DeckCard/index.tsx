@@ -1,62 +1,71 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
-import Stars from "../Stars/index.jsx";
-import './style.scss';
-import {Link} from "react-router-dom";
-import Button from "../Buttons/Button.jsx";
-import {Zap} from "react-feather";
-import Flower from "../Icons.jsx";
-import ButtonLink from "../Buttons/ButtonLink.jsx";
+import Stars from "../ui/Stars/index.jsx";
+import "./style.scss";
+import { Link } from "react-router-dom";
+import Button from "../ui/Buttons/Button.jsx";
+import { Zap } from "react-feather";
+import Flower from "../ui/Icons";
+import ButtonLink from "../ui/Buttons/ButtonLink.jsx";
 
-
-function DeckCard({deck, ...props}) {
+function DeckCard({ deck, ...props }) {
   const cardRef = useRef(null);
-  const [currentImage, setCurrentImage] = useState(2)
+  const [currentImage, setCurrentImage] = useState(2);
 
   const handleRightClick = (e) => {
-    e.preventDefault()
-    cardRef.current?.classList.toggle("show-content")
-  }
+    e.preventDefault();
+    cardRef.current?.classList.toggle("show-content");
+  };
 
   const handleMouseLeave = () => {
-    cardRef.current?.classList.remove("show-content")
-    cardRef.current.style.transform = `translate(0, 0)`
-  }
+    cardRef.current?.classList.remove("show-content");
+    cardRef.current.style.transform = `translate(0, 0)`;
+  };
 
   useEffect(() => {
-      const cardRect = cardRef.current?.getBoundingClientRect()
-      let x, y;
+    const cardRect = cardRef.current?.getBoundingClientRect();
+    let x, y;
 
-      const handleMoveSlide = (e) => {
+    const handleMoveSlide = (e) => {
+      // console.log(e, cardRect, nameRect)
+      x = e.pageX - cardRect.left - cardRect.width / 2;
+      y = e.pageY - cardRect.top - cardRect.height / 2;
 
-        // console.log(e, cardRect, nameRect)
-        x = e.pageX - cardRect.left - cardRect.width / 2
-        y = e.pageY - cardRect.top - cardRect.height / 2
+      // console.log(pos > (cardRect.left + cardRect.right) / 2 ? "right" : "left", (cardRect.left + cardRect.right) / 2, pos)
 
-        // console.log(pos > (cardRect.left + cardRect.right) / 2 ? "right" : "left", (cardRect.left + cardRect.right) / 2, pos)
+      cardRef.current.style.transform = `translate(${x * 0.02}px, ${
+        y * 0.02
+      }px) scale(1.02)`;
+    };
 
-        cardRef.current.style.transform = `translate(${x * 0.02}px, ${y * 0.02}px) scale(1.02)`
-      }
+    cardRef.current?.addEventListener("mousemove", handleMoveSlide);
 
-      cardRef.current?.addEventListener("mousemove", handleMoveSlide)
-
-      return () => cardRef.current?.removeEventListener("mousemove", handleMoveSlide)
+    return () =>
+      cardRef.current?.removeEventListener("mousemove", handleMoveSlide);
   }, []);
 
   return (
-    <div className="deck-card" ref={cardRef} onMouseLeave={handleMouseLeave} onAuxClick={handleRightClick} onContextMenu={(e) => e.preventDefault()} {...props}>
+    <div
+      className="deck-card"
+      ref={cardRef}
+      onMouseLeave={handleMouseLeave}
+      onAuxClick={handleRightClick}
+      onContextMenu={(e) => e.preventDefault()}
+      {...props}
+    >
       <div className="card-header">
-        <img className="active" src={deck.preview_image_url} alt="Preview image"/>
+        <img
+          className="active"
+          src={deck.preview_image_url}
+          alt="Preview image"
+        />
         <div className="card-content">
           <h3>{deck.name}</h3>
           <Stars count={deck.difficulty} icon={<Flower />} />
         </div>
       </div>
       <div className="card-button">
-        <ButtonLink
-          to={`/decks/${deck.id}`}
-          label="Découvrir"
-        />
+        <ButtonLink to={`/decks/${deck.id}`} label="Découvrir" />
         <ButtonLink
           to={`/decks/${deck.id}/game`}
           icon={<Zap />}
@@ -72,8 +81,8 @@ DeckCard.propTypes = {
     name: PropTypes.string,
     description: PropTypes.string,
     difficulty: PropTypes.number,
-    images: PropTypes.arrayOf(PropTypes.string)
-  })
-}
+    images: PropTypes.arrayOf(PropTypes.string),
+  }),
+};
 
 export default DeckCard;

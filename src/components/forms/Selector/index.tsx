@@ -1,26 +1,25 @@
-import "./style.scss"
+import "./style.scss";
 import PropTypes from "prop-types";
-import Button from "../../Buttons/Button.jsx";
+import Button from "../../ui/Buttons/Button.jsx";
 import classNames from "classnames";
-import {useEffect, useState} from "react";
-import {Check, RefreshCcw} from "react-feather";
-
+import { useEffect, useState } from "react";
+import { Check, RefreshCcw } from "react-feather";
 
 function Selector({
   inputId = null,
   choices,
   choiceType,
   multiChoice = false,
-  setValue
+  setValue,
 }) {
-  const [currentChoice, setCurrentChoice] = useState("")
-  const [confirmChoice, setConfirmChoice] = useState(false)
+  const [currentChoice, setCurrentChoice] = useState("");
+  const [confirmChoice, setConfirmChoice] = useState(false);
 
   useEffect(() => {
-    console.log(choices)
+    console.log(choices);
     if (!confirmChoice) {
-      setValue?.(prev => null)
-      setCurrentChoice(prev => null)
+      setValue?.((prev) => null);
+      setCurrentChoice((prev) => null);
     }
   }, [confirmChoice]);
 
@@ -31,64 +30,90 @@ function Selector({
 
   const handleConfirmButtonClick = () => {
     if (currentChoice !== null) {
-      setValue?.(prev => currentChoice)
-      setConfirmChoice(prev => true)
+      setValue?.((prev) => currentChoice);
+      setConfirmChoice((prev) => true);
     }
-  }
+  };
 
   return (
     <div className="selector-container">
-
-      {currentChoice === null || !confirmChoice ? <>
-
-        <div className={classNames("choices-container", {grid: choiceType === "img"})}>
-          {choices?.map((choice, index) => {
-            if (choiceType === "text") {
-              return <div className="select-text" key={choice} onClick={() => setCurrentChoice(prev => choice)}>
-                <p>{choice}</p>
-              </div>
-            } else if (choiceType === "img") {
-              return <div className={classNames("select-img", {selected: choice === currentChoice})} key={choice} onClick={() => setCurrentChoice(prev => choice)}>
-                <img src={choice} alt="image"/>
-                <span></span>
-              </div>
-            }
-          })}
-        </div>
-
-        <div className="selector-buttons">
-          <Button
-            label="Confirmer la photo"
-            icon={<Check />}
-            color="primary"
-            size="medium"
-            disabled={currentChoice === null}
-            onClick={handleConfirmButtonClick}
-          />
-        </div>
-
-      </> : <>
-
-        <div className={classNames({grid: choiceType === "img"})}>
-          <div className={`select-${choiceType} selected`}>
-            {choiceType === "text" ? <p>{currentChoice}</p> : <img src={currentChoice} alt={currentChoice} />}
-            <input id={inputId} name={inputId} className="hidden" value={currentChoice} readOnly={true} />
+      {currentChoice === null || !confirmChoice ? (
+        <>
+          <div
+            className={classNames("choices-container", {
+              grid: choiceType === "img",
+            })}
+          >
+            {choices?.map((choice, index) => {
+              if (choiceType === "text") {
+                return (
+                  <div
+                    className="select-text"
+                    key={choice}
+                    onClick={() => setCurrentChoice((prev) => choice)}
+                  >
+                    <p>{choice}</p>
+                  </div>
+                );
+              } else if (choiceType === "img") {
+                return (
+                  <div
+                    className={classNames("select-img", {
+                      selected: choice === currentChoice,
+                    })}
+                    key={choice}
+                    onClick={() => setCurrentChoice((prev) => choice)}
+                  >
+                    <img src={choice} alt="image" />
+                    <span></span>
+                  </div>
+                );
+              }
+            })}
           </div>
-        </div>
 
-        <div className="selector-buttons">
-          <Button
-            label="Rechoisir"
-            color="gray"
-            icon={<RefreshCcw />}
-            size="medium"
-            disabled={!currentChoice}
-            onClick={() => setConfirmChoice(false)}
-          />
-        </div>
+          <div className="selector-buttons">
+            <Button
+              label="Confirmer la photo"
+              icon={<Check />}
+              color="primary"
+              size="medium"
+              disabled={currentChoice === null}
+              onClick={handleConfirmButtonClick}
+            />
+          </div>
+        </>
+      ) : (
+        <>
+          <div className={classNames({ grid: choiceType === "img" })}>
+            <div className={`select-${choiceType} selected`}>
+              {choiceType === "text" ? (
+                <p>{currentChoice}</p>
+              ) : (
+                <img src={currentChoice} alt={currentChoice} />
+              )}
+              <input
+                id={inputId}
+                name={inputId}
+                className="hidden"
+                value={currentChoice}
+                readOnly={true}
+              />
+            </div>
+          </div>
 
-      </>}
-
+          <div className="selector-buttons">
+            <Button
+              label="Rechoisir"
+              color="gray"
+              icon={<RefreshCcw />}
+              size="medium"
+              disabled={!currentChoice}
+              onClick={() => setConfirmChoice(false)}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 }
@@ -96,13 +121,11 @@ function Selector({
 Selector.propTypes = {
   inputId: PropTypes.string,
   choices: PropTypes.array,
-  choiceType: PropTypes.oneOf(['text', 'img']),
+  choiceType: PropTypes.oneOf(["text", "img"]),
   multiChoice: PropTypes.bool,
-  setValue: PropTypes.func
-}
+  setValue: PropTypes.func,
+};
 
-function SelectorChoice () {
-
-}
+function SelectorChoice() {}
 
 export default Selector;

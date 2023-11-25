@@ -1,53 +1,53 @@
-import {useState} from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
-import {Link, useLocation, useNavigate} from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Input from "../components/forms/Input/index.jsx";
-import Button from "../components/Buttons/Button.jsx";
+import Button from "../components/ui/Buttons/Button.jsx";
 import useAuth from "../hooks/auth/useAuth.js";
 import useFormFilled from "../hooks/useFormFilled.js";
-import {useMutation} from "@tanstack/react-query";
-import {login} from "../api/api.js";
+import { useMutation } from "@tanstack/react-query";
+import { login } from "../services/api/api.js";
 import Navbar from "../components/Navbar/index.jsx";
-import {ArrowRight} from "react-feather";
+import { ArrowRight } from "react-feather";
 
 function Login({ handleLogin }) {
-  const {setAccessToken, setCSRFToken} = useAuth()
+  const { setAccessToken, setCSRFToken } = useAuth();
   const [passwordValue, setPasswordValue] = useState("");
-  const [responseHelper, setResponseHelper] = useState({})
-  const navigate = useNavigate()
-  const location = useLocation()
-  const fromLocation = location?.state?.from?.pathname || '/mon-jardin'
-  const [loading, setLoading] = useState(false)
-  const {formRef, handleFormChange, isFilled} = useFormFilled()
+  const [responseHelper, setResponseHelper] = useState({});
+  const navigate = useNavigate();
+  const location = useLocation();
+  const fromLocation = location?.state?.from?.pathname || "/mon-jardin";
+  const [loading, setLoading] = useState(false);
+  const { formRef, handleFormChange, isFilled } = useFormFilled();
 
-  const {isPending, mutate: mutateLogin} = useMutation({
-    mutationKey: ['login'],
+  const { isPending, mutate: mutateLogin } = useMutation({
+    mutationKey: ["login"],
     mutationFn: (data) => login(data),
     onSuccess: (response) => {
-      setAccessToken(response.data?.access_token)
-      setCSRFToken(response.headers["x-csrftoken"])
-      setLoading(false)
+      setAccessToken(response.data?.access_token);
+      setCSRFToken(response.headers["x-csrftoken"]);
+      setLoading(false);
 
-      navigate(fromLocation, {replace: true})
+      navigate(fromLocation, { replace: true });
     },
     onError: (error) => {
-      setResponseHelper(error?.response.data)
-    }
-  })
+      setResponseHelper(error?.response.data);
+    },
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const formData = new FormData(e.target)
+    const formData = new FormData(e.target);
 
     mutateLogin({
-      email: formData.get('email'),
-      password: formData.get('password')
-    })
-  }
+      email: formData.get("email"),
+      password: formData.get("password"),
+    });
+  };
 
   return (
     <>
-      <Navbar >
+      <Navbar>
         <div className="left">
           <Link to="/explorer">Explorer</Link>
         </div>
@@ -58,14 +58,19 @@ function Login({ handleLogin }) {
       </header>
 
       <div className="form-page">
-        <form ref={formRef} onSubmit={handleSubmit} onChange={(e) => handleFormChange(e.target)}>
+        <form
+          ref={formRef}
+          onSubmit={handleSubmit}
+          onChange={(e) => handleFormChange(e.target)}
+        >
           <Input
             id="email"
             label="Email"
             type="text"
             size="large"
             showInfo
-            helperText={responseHelper?.email}/>
+            helperText={responseHelper?.email}
+          />
           <Input
             id="password"
             label="Mot de passe"
@@ -76,7 +81,7 @@ function Login({ handleLogin }) {
             handleValueChange={setPasswordValue}
             helperText={responseHelper?.password}
           />
-          <p style={{marginBottom: "1rem"}}>{responseHelper?.detail}</p>
+          <p style={{ marginBottom: "1rem" }}>{responseHelper?.detail}</p>
           <Button
             label="Goo"
             icon={<ArrowRight />}
@@ -88,7 +93,7 @@ function Login({ handleLogin }) {
           />
           <footer>
             <p>
-              Si tu n’as pas de compte, inscrit toi {" "}
+              Si tu n’as pas de compte, inscrit toi{" "}
               <Link to="/inscription" className="link">
                 ici
               </Link>

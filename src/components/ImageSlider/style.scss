@@ -1,5 +1,3 @@
-
-
 .slider {
   width: 100%;
   position: relative;
@@ -21,7 +19,7 @@
     top: 0;
     left: 0;
     opacity: 0;
-    transition: opacity .3s;
+    transition: opacity 0.3s;
     float: left;
 
     &.active {
@@ -37,7 +35,7 @@
       border-radius: var(--radius);
     }
   }
-  
+
   .slider-action {
     width: 100%;
     padding: 1em 1em;
@@ -49,23 +47,22 @@
     left: 0;
     opacity: 0;
 
-    transition: opacity .2s ease;
+    transition: opacity 0.2s ease;
 
     svg {
       cursor: pointer;
       border-radius: var(--radius);
-      transition: stroke .3s;
+      transition: stroke 0.3s;
 
       &:hover {
         background: rgba(var(--color-primary-light), 2);
         stroke: rgb(var(--color-primary-dark));
       }
     }
-    
   }
 
   .slider-info {
-    padding: .5rem;
+    padding: 0.5rem;
     display: flex;
     align-items: center;
     line-height: 1px;
@@ -74,9 +71,9 @@
     border-radius: 100px;
 
     span {
-      width: .5em;
-      height: .5em;
-      margin: 0 .5em;
+      width: 0.5em;
+      height: 0.5em;
+      margin: 0 0.5em;
 
       display: inline-block;
 
@@ -84,8 +81,10 @@
       border-radius: 10px;
       cursor: pointer;
 
-      transition: transform .3s ease, background-color .3s ease;
-      
+      transition:
+        transform 0.3s ease,
+        background-color 0.3s ease;
+
       &.active {
         background: rgb(var(--color-primary-light));
         transform: scale(1.2);
@@ -94,7 +93,6 @@
   }
 
   &:hover {
-
     .slider-action {
       opacity: 1;
     }

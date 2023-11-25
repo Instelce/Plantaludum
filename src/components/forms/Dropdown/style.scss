@@ -1,16 +1,13 @@
-
-
 .dropdown {
   position: relative;
   display: flex;
   flex-direction: column;
 
   .button {
-
     &::before {
-      border: 1px solid rgba(var(--color-gray-5), .2);
+      border: 1px solid rgba(var(--color-gray-5), 0.2);
       background: rgb(var(--color-gray-3));
-      transition: border .3s ease;
+      transition: border 0.3s ease;
     }
     &::after {
       background: rgb(var(--color-gray-2));
@@ -26,7 +23,7 @@
     &:hover {
       transform: translateY(0);
       &::before {
-        border: 1px solid rgba(var(--color-gray-5), .8);
+        border: 1px solid rgba(var(--color-gray-5), 0.8);
       }
       &::after {
         transform: translateY(0);
@@ -35,8 +32,10 @@
 
     &:focus {
       &::before {
-        border: 1px solid rgba(var(--color-gray-5), .2);
-        box-shadow: 0 0 0 2px rgb(var(--color-gray-4)), 0 0 0 2px rgb(var(--color-gray-4));
+        border: 1px solid rgba(var(--color-gray-5), 0.2);
+        box-shadow:
+          0 0 0 2px rgb(var(--color-gray-4)),
+          0 0 0 2px rgb(var(--color-gray-4));
       }
     }
 
@@ -47,10 +46,12 @@
 
   label {
     position: absolute;
-    top: .6rem;
+    top: 0.6rem;
     left: 2em;
     cursor: text;
-    transition: transform .2s ease, top .2s ease;
+    transition:
+      transform 0.2s ease,
+      top 0.2s ease;
     z-index: 4;
 
     &.up {
@@ -71,5 +72,8 @@
     }
   }
 
-  svg { height: 1rem; width: 1rem}
+  svg {
+    height: 1rem;
+    width: 1rem;
+  }
 }

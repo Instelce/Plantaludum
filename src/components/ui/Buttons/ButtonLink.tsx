@@ -1,19 +1,19 @@
 import PropTypes from "prop-types";
 
-import Button from "./Button.jsx";
+import Button from "./Button";
 import { Link } from "react-router-dom";
 import "./style.scss";
 import classNames from "classnames";
-import Loader from "../Loader/index.jsx";
+import Loader from "../../Loader";
 
 /**
  * React router dom Link styled as a button
  */
 function ButtonLink({
   to,
-  state={},
+  state = {},
   target,
-  label= "",
+  label = "",
   color = "primary",
   size = "large",
   disabled = false,

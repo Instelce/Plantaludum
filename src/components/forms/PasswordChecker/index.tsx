@@ -10,7 +10,12 @@ function PasswordChecker({ password }) {
   }, [password]);
   return (
     <div className="password-checker">
-      <ProgressBar value={status[0]} color={status[1]} thickness="medium" shape="rounded" />
+      <ProgressBar
+        value={status[0]}
+        color={status[1]}
+        thickness="medium"
+        shape="rounded"
+      />
       <p>{status[2]}</p>
     </div>
   );
@@ -42,6 +47,6 @@ function checkPassword(password) {
 
 PasswordChecker.propTypes = {
   password: PropTypes.string,
-}
+};
 
 export default PasswordChecker;

@@ -1,5 +1,3 @@
-
-
 .button {
   position: relative;
   display: inline-block;
@@ -7,16 +5,16 @@
   background: transparent;
   font-size: inherit;
 
-  transition: transform .3s ease;
+  transition: transform 0.3s ease;
   cursor: pointer;
 
   &:not(:disabled) {
     &:active {
-      animation: bounce .3s ease forwards;
-      filter: drop-shadow(0 0 4px rgba(var(--color-gray-4), .4));
+      animation: bounce 0.3s ease forwards;
+      filter: drop-shadow(0 0 4px rgba(var(--color-gray-4), 0.4));
 
       &::after {
-        animation: after-bounce .3s ease forwards;
+        animation: after-bounce 0.3s ease forwards;
       }
     }
 
@@ -30,7 +28,7 @@
   }
 
   &:disabled {
-    opacity: .6;
+    opacity: 0.6;
     cursor: not-allowed;
   }
 
@@ -38,37 +36,37 @@
   &.primary {
     --color-text: rgb(var(--color-gray-2));
     --color-background: rgb(var(--color-primary-light));
-    --color-border: rgb(var(--color-primary-dark))
+    --color-border: rgb(var(--color-primary-dark));
   }
 
   &.gray {
     --color-text: rgb(var(--color-white));
     --color-background: rgb(var(--color-gray-4));
-    --color-border: rgb(var(--color-gray-3))
+    --color-border: rgb(var(--color-gray-3));
   }
 
   &.dark-gray {
     --color-text: rgb(var(--color-white));
     --color-background: rgb(var(--color-gray-2));
-    --color-border: rgb(var(--color-gray-3))
+    --color-border: rgb(var(--color-gray-3));
   }
 
   &.yellow {
     --color-text: rgb(var(--color-yellow-dark));
     --color-background: rgb(var(--color-yellow-light));
-    --color-border: rgb(var(--color-yellow-dark))
+    --color-border: rgb(var(--color-yellow-dark));
   }
 
   &.danger {
     --color-text: rgb(var(--color-gray-4));
     --color-background: rgb(var(--color-danger-light));
-    --color-border: rgb(var(--color-danger-dark))
+    --color-border: rgb(var(--color-danger-dark));
   }
 
   &.success {
     --color-text: rgb(var(--color-gray-4));
     --color-background: rgb(var(--color-success-light));
-    --color-border: rgb(var(--color-success-dark))
+    --color-border: rgb(var(--color-success-dark));
   }
 
   & > div {
@@ -89,7 +87,9 @@
     left: 0;
     border-radius: var(--radius);
     //background: paint(squircle);
-    transition: transform .3s ease, background .3s ease;
+    transition:
+      transform 0.3s ease,
+      background 0.3s ease;
   }
 
   &::before {
@@ -118,7 +118,7 @@
       margin-left: 1rem;
     }
 
-    span:nth-child(2){
+    span:nth-child(2) {
       width: 20px;
       height: 20px;
 
@@ -148,22 +148,28 @@
   }
 
   &.small {
-    padding: .375em 1em;
-    --padding-horizontal: .375em;
+    padding: 0.375em 1em;
+    --padding-horizontal: 0.375em;
 
-    &.only-icon { padding: .375em; }
+    &.only-icon {
+      padding: 0.375em;
+    }
   }
   &.medium {
-    --padding-horizontal: .5em;
-    padding: .5em 1.5em;
+    --padding-horizontal: 0.5em;
+    padding: 0.5em 1.5em;
 
-    &.only-icon { padding: .5em; }
+    &.only-icon {
+      padding: 0.5em;
+    }
   }
   &.large {
     padding: 1em 2em;
     --padding-horizontal: 1em;
 
-    &.only-icon { padding: 1em; }
+    &.only-icon {
+      padding: 1em;
+    }
   }
 }
 

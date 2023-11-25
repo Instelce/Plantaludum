@@ -1,217 +1,247 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {css} from "@emotion/css";
+import React, { useEffect, useRef, useState } from "react";
+import { css } from "@emotion/css";
 import FloatingPlantCard from "../components/FloatingPlantCard/index.jsx";
 import {
-    arrayChoice,
-    deleteDublicates,
-    getRandomInt,
-    simpleFetch
-} from "../utils.js";
+  arrayChoice,
+  deleteDublicates,
+  getRandomInt,
+  simpleFetch,
+} from "../utils/helpers";
 import PlantQuiz from "../components/PlantQuiz/index.jsx";
-import ButtonLink from "../components/Buttons/ButtonLink.jsx";
-import api, {apiFlore} from "../api/axios.js";
-import {useFetch} from "../hooks/useFetch.js";
-import {useMutation, useQuery} from "@tanstack/react-query";
-import {loadImages, loadRandomPlants} from "../api/api.js";
-
+import ButtonLink from "../components/ui/Buttons/ButtonLink.jsx";
+import api, { apiFlore } from "../services/api/axios.js";
+import { useFetch } from "../hooks/useFetch.js";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { loadImages, loadRandomPlants } from "../services/api/api.js";
 
 function Home(props) {
-    let tempPlants = []
-    const [plants, setPlants] = useState([])
-    const [currentPlant, setCurrentPlant] = useState({})
-    const [showQuiz, setShowQuiz] = useState(false)
+  let tempPlants = [];
+  const [plants, setPlants] = useState([]);
+  const [currentPlant, setCurrentPlant] = useState({});
+  const [showQuiz, setShowQuiz] = useState(false);
 
-    const {isLoading, data: plantsData} = useQuery({
-        queryKey: ['plants'],
-        queryFn: async () => loadRandomPlants(10),
-        staleTime: Infinity,
-    })
+  const { isLoading, data: plantsData } = useQuery({
+    queryKey: ["plants"],
+    queryFn: async () => loadRandomPlants(10),
+    staleTime: Infinity,
+  });
 
-    useEffect(() => {
-        if (!isLoading && plantsData) {
-            // let tempPlants = []
-            let col = -1;
-            const size = 300;
+  useEffect(() => {
+    if (!isLoading && plantsData) {
+      // let tempPlants = []
+      let col = -1;
+      const size = 300;
 
-            // loop 10 plants
-            for (let i = 0; i < 10; i++) {
-                let choices = []
-                let images = []
-                let plant = plantsData[i]
-                // console.log(plant)
+      // loop 10 plants
+      for (let i = 0; i < 10; i++) {
+        let choices = [];
+        let images = [];
+        let plant = plantsData[i];
+        // console.log(plant)
 
-                apiFlore.get(`/api/images?plant__id=${plant.id}`)
-                  .then(response => {
-                    if (response.status === 200) {
-                        const allImages = response.data
-                        // console.log(i, plant.id, allImages)
-                        // console.log(plant)
+        apiFlore.get(`/api/images?plant__id=${plant.id}`).then((response) => {
+          if (response.status === 200) {
+            const allImages = response.data;
+            // console.log(i, plant.id, allImages)
+            // console.log(plant)
 
-                        // get images
-                        let randomImages = arrayChoice(allImages.results, allImages.count >= 8 ? 8 : allImages.count)
-                        for (let id in randomImages) {
-                            if (randomImages[id]?.url) {
-                                images.push(randomImages[id].url)
-                            }
-                        }
-                        images = deleteDublicates(images)
-
-                        // console.log(images)
-
-                        // get choices
-                        let randomChoices = arrayChoice(plantsData, 2)
-
-                        let randomPlace = getRandomInt(0, randomChoices.length + 1);
-                        let id = 0;
-                        for (let i = 0; i < randomChoices.length + 1; i++) {
-                            if (i === randomPlace) {
-                                // console.log(i)
-                                choices.push({
-                                    title: plant.french_name ? plant.french_name : plant.correct_name,
-                                    subtitle: plant.scientific_name,
-                                    rightAnswer: true
-                                })
-                            } else {
-                                console.log("aaa", randomChoices[id].french_name)
-                                if (randomChoices[id].french_name !== plant.french_name) {
-                                    choices.push({
-                                        title: randomChoices[id].french_name ? randomChoices[id].french_name : randomChoices[id].correct_name,
-                                        subtitle: randomChoices[id].scientific_name,
-                                        rightAnswer: false
-                                    })
-                                    id++;
-                                }
-                            }
-                        }
-                        choices = deleteDublicates(choices)
-                        console.log(plant.french_name, choices)
-
-                        tempPlants.push({
-                              src: allImages.results[getRandomInt(0, allImages.results.length - 1)]?.url,
-                              size: size,
-                              name: plant.french_name ? plant.french_name : plant.scientific_name,
-                              found: false,
-                              x: 20*(i%5)+3,
-                              y: (col === Math.ceil(10/2/2-1) ? (i%2 === 0 ? getRandomInt(10, 15) : getRandomInt(60, 70)) : (i%2 === 0 ? getRandomInt(10, 20) : getRandomInt(50, 60))),
-                              images: images,
-                              choices: choices
-                        })
-
-                        if (tempPlants.length === 10) {
-                            setPlants(tempPlants)
-                        }
-                    }
-                })
+            // get images
+            let randomImages = arrayChoice(
+              allImages.results,
+              allImages.count >= 8 ? 8 : allImages.count,
+            );
+            for (let id in randomImages) {
+              if (randomImages[id]?.url) {
+                images.push(randomImages[id].url);
+              }
             }
-        }
-    }, [isLoading]);
+            images = deleteDublicates(images);
 
-    useEffect(() => {
-        if (tempPlants.length === 10) {
-            setPlants(tempPlants)
-        }
-    }, [tempPlants]);
+            // console.log(images)
 
-     const handleCardClick = (e, plant) => {
-        e.preventDefault()
-        setCurrentPlant(() => plant)
-        setShowQuiz(() => !showQuiz)
-    }
+            // get choices
+            let randomChoices = arrayChoice(plantsData, 2);
 
-    const handleQuizSubmit = (plant, value) => {
-        let updatePlants = plants.map(p => {
-            if (p.name === plant.name && !plant.found) {
-                return {
-                    ...p,
-                    found: value
+            let randomPlace = getRandomInt(0, randomChoices.length + 1);
+            let id = 0;
+            for (let i = 0; i < randomChoices.length + 1; i++) {
+              if (i === randomPlace) {
+                // console.log(i)
+                choices.push({
+                  title: plant.french_name
+                    ? plant.french_name
+                    : plant.correct_name,
+                  subtitle: plant.scientific_name,
+                  rightAnswer: true,
+                });
+              } else {
+                console.log("aaa", randomChoices[id].french_name);
+                if (randomChoices[id].french_name !== plant.french_name) {
+                  choices.push({
+                    title: randomChoices[id].french_name
+                      ? randomChoices[id].french_name
+                      : randomChoices[id].correct_name,
+                    subtitle: randomChoices[id].scientific_name,
+                    rightAnswer: false,
+                  });
+                  id++;
                 }
-            } else {
-                return p;
+              }
             }
-        })
-        setPlants(updatePlants)
+            choices = deleteDublicates(choices);
+            console.log(plant.french_name, choices);
+
+            tempPlants.push({
+              src: allImages.results[
+                getRandomInt(0, allImages.results.length - 1)
+              ]?.url,
+              size: size,
+              name: plant.french_name
+                ? plant.french_name
+                : plant.scientific_name,
+              found: false,
+              x: 20 * (i % 5) + 3,
+              y:
+                col === Math.ceil(10 / 2 / 2 - 1)
+                  ? i % 2 === 0
+                    ? getRandomInt(10, 15)
+                    : getRandomInt(60, 70)
+                  : i % 2 === 0
+                    ? getRandomInt(10, 20)
+                    : getRandomInt(50, 60),
+              images: images,
+              choices: choices,
+            });
+
+            if (tempPlants.length === 10) {
+              setPlants(tempPlants);
+            }
+          }
+        });
+      }
     }
+  }, [isLoading]);
 
-    return (
-        <div className="fixed-container">
-            <CardWrapper active={!showQuiz}>
-                {!isLoading &&
-                    plants.map((plant, index) => (
-                        <FloatingPlantCard
-                            key={plant.src}
-                            index={index}
-                            plant={plant}
-                            handleClick={handleCardClick}
-                        />
-                    )
-                )}
-                <div
-                    className={css`
-                      position: absolute;
-                      top: 50%;
-                      left: 50%;
-                      transform: translate(-50%, -50%);
-                      display: block;
-                    `}
-                >
-                    <h1 className="main-title">Plantaludum</h1>
-                    <ButtonLink label="Jouer" to="/connexion" size="big" color="primary" fill={true}></ButtonLink>
-                </div>
-            </CardWrapper>
-            <PlantQuiz show={showQuiz} setShow={setShowQuiz} plant={currentPlant} handleQuizSubmit={handleQuizSubmit} />
+  useEffect(() => {
+    if (tempPlants.length === 10) {
+      setPlants(tempPlants);
+    }
+  }, [tempPlants]);
+
+  const handleCardClick = (e, plant) => {
+    e.preventDefault();
+    setCurrentPlant(() => plant);
+    setShowQuiz(() => !showQuiz);
+  };
+
+  const handleQuizSubmit = (plant, value) => {
+    let updatePlants = plants.map((p) => {
+      if (p.name === plant.name && !plant.found) {
+        return {
+          ...p,
+          found: value,
+        };
+      } else {
+        return p;
+      }
+    });
+    setPlants(updatePlants);
+  };
+
+  return (
+    <div className="fixed-container">
+      <CardWrapper active={!showQuiz}>
+        {!isLoading &&
+          plants.map((plant, index) => (
+            <FloatingPlantCard
+              key={plant.src}
+              index={index}
+              plant={plant}
+              handleClick={handleCardClick}
+            />
+          ))}
+        <div
+          className={css`
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: block;
+          `}
+        >
+          <h1 className="main-title">Plantaludum</h1>
+          <ButtonLink
+            label="Jouer"
+            to="/connexion"
+            size="big"
+            color="primary"
+            fill={true}
+          ></ButtonLink>
         </div>
-    );
+      </CardWrapper>
+      <PlantQuiz
+        show={showQuiz}
+        setShow={setShowQuiz}
+        plant={currentPlant}
+        handleQuizSubmit={handleQuizSubmit}
+      />
+    </div>
+  );
 }
 
+export function CardWrapper({ children, active }) {
+  const ref = useRef(null);
 
-export function CardWrapper({children, active}) {
-    const ref = useRef(null)
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      const x = e.clientX;
+      const y = e.clientY;
 
-    useEffect(() => {
-        const handleMouseMove = (e) => {
-            const x = e.clientX;
-            const y = e.clientY;
+      const xDecimal = x / window.innerWidth;
+      const yDecimal = y / window.innerHeight;
 
-            const xDecimal = x / window.innerWidth;
-            const yDecimal = y / window.innerHeight;
+      const maxX = ref.current?.offsetWidth - window.innerWidth;
+      const maxY = ref.current?.offsetHeight - window.innerHeight;
 
-            const maxX = ref.current?.offsetWidth - window.innerWidth;
-            const maxY = ref.current?.offsetHeight - window.innerHeight;
+      const panX = maxX * xDecimal * -1;
+      const panY = maxY * yDecimal * -1;
 
-            const panX = maxX * xDecimal * -1;
-            const panY = maxY * yDecimal * -1;
+      if (active) {
+        ref.current.animate(
+          {
+            transform: `translate(${panX}px, ${panY}px)`,
+          },
+          {
+            duration: 4000,
+            fill: "forwards",
+            easing: "ease",
+          },
+        );
+      }
+    };
 
-            if (active) {
-                ref.current.animate({
-                    transform: `translate(${panX}px, ${panY}px)`
-                }, {
-                    duration: 4000,
-                    fill: "forwards",
-                    easing: "ease"
-                })
-            }
-        }
+    window.addEventListener("mousemove", handleMouseMove);
 
-        window.addEventListener('mousemove', handleMouseMove)
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, [active]);
 
-        return () => {
-            window.removeEventListener('mousemove', handleMouseMove)
-        }
-    }, [active])
-
-    return (
-       <div ref={ref} style={{
-           width: "140vw",
-           height: "160vh",
-           top: 0,
-           left: 0,
-           position: "absolute",
-           transition: "transform .3s cubic-bezier(.23,.74,.83,.83)"
-       }}>
-           {children}
-       </div>
-    );
+  return (
+    <div
+      ref={ref}
+      style={{
+        width: "140vw",
+        height: "160vh",
+        top: 0,
+        left: 0,
+        position: "absolute",
+        transition: "transform .3s cubic-bezier(.23,.74,.83,.83)",
+      }}
+    >
+      {children}
+    </div>
+  );
 }
-
 
 export default Home;

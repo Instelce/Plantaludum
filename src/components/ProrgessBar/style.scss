@@ -1,9 +1,8 @@
-
 .progress-bar {
   width: 100%;
   min-width: 100px;
   display: inline-block;
-  border: 1px solid rgba(var(--color-secondary), .2);
+  border: 1px solid rgba(var(--color-secondary), 0.2);
   overflow: hidden;
 
   &.rounded {
@@ -21,6 +20,6 @@
   span {
     height: 100%;
     display: block;
-    transition: width .3s cubic-bezier(.62,1,.6,.86);
+    transition: width 0.3s cubic-bezier(0.62, 1, 0.6, 0.86);
   }
 }

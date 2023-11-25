@@ -1,10 +1,7 @@
-
-
 .selector-container {
   margin: 1rem 0;
 
   .choices-container {
-
   }
 
   .grid {
@@ -15,7 +12,8 @@
   }
 
   // Selector
-  .select-text {}
+  .select-text {
+  }
 
   .select-img {
     height: 0;
@@ -25,19 +23,19 @@
 
     border-radius: 10px;
 
-    transition: box-shadow .3s ease;
+    transition: box-shadow 0.3s ease;
 
     &:hover {
       //&:not(&.selected) {
-        cursor: pointer;
-        box-shadow: 0 0 0 4px rgb(var(--color-primary-light));
+      cursor: pointer;
+      box-shadow: 0 0 0 4px rgb(var(--color-primary-light));
       //}
 
       span {
-        background: rgba(var(--color-gray-3), .8);
+        background: rgba(var(--color-gray-3), 0.8);
 
         &::after {
-          opacity: .4;
+          opacity: 0.4;
         }
       }
     }
@@ -50,7 +48,6 @@
       }
     }
 
-
     img {
       width: 100%;
       aspect-ratio: 1;
@@ -61,14 +58,14 @@
       width: 1.5rem;
       height: 1.5rem;
       position: absolute;
-      bottom: .5rem;
-      right: .5rem;
+      bottom: 0.5rem;
+      right: 0.5rem;
 
       border-radius: 100px;
-      border: 1px solid rgba(var(--color-secondary), .2);
+      border: 1px solid rgba(var(--color-secondary), 0.2);
       background: rgb(var(--color-background));
 
-      transition: background .3s ease;
+      transition: background 0.3s ease;
 
       &::after {
         content: "";

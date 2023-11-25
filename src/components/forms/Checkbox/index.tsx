@@ -2,7 +2,14 @@ import React, { useId } from "react";
 import PropTypes from "prop-types";
 import "./style.scss";
 
-function Checkbox({ id = null, label, takeValue, value, handleValueChange = null, disabled }) {
+function Checkbox({
+  id = null,
+  label,
+  takeValue,
+  value,
+  handleValueChange = null,
+  disabled,
+}) {
   const defaultId = useId();
   return (
     <div className="checkbox">

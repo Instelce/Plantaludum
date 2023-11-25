@@ -1,46 +1,54 @@
 import "./style.scss";
 import PropTypes from "prop-types";
-import {useEffect, useId, useState} from "react";
+import { useEffect, useId, useState } from "react";
 import classNames from "classnames";
 
 function Textarea({
-  id=undefined,
+  id = undefined,
   label,
-  maxLenght=null,
-  showActionBar= false,
+  maxLenght = null,
+  showActionBar = false,
   disabled = false,
   value,
   handleValueChange = null,
   helperText = "",
-  mb
+  mb,
 }) {
-  const defaultId = useId()
-  const [valueLenght, setValueLenght] = useState(0)
+  const defaultId = useId();
+  const [valueLenght, setValueLenght] = useState(0);
 
   const handleChange = (value) => {
-    setValueLenght(prev => value.toString().length)
+    setValueLenght((prev) => value.toString().length);
 
-    handleValueChange ? handleValueChange(value) : null
-  }
+    handleValueChange ? handleValueChange(value) : null;
+  };
 
-  return <div className="textarea-container" style={{marginBottom: mb}}>
-    {showActionBar && <div className="action-bar">
-
-    </div>}
-    <div className="textarea-wrapper">
-      <textarea
-        id={id ? id : defaultId}
-        name={id ? id : defaultId}
-        disabled={disabled}
-        placeholder=" "
-        value={value ? value : undefined}
-        onChange={(e) => handleChange(e.target.value)}
-      ></textarea>
-      <label htmlFor={id ? id : defaultId}>{label}</label>
-      {maxLenght && <span className={classNames("world-counter", {'text-overflow': valueLenght > maxLenght})}>{maxLenght-valueLenght}</span>}
+  return (
+    <div className="textarea-container" style={{ marginBottom: mb }}>
+      {showActionBar && <div className="action-bar"></div>}
+      <div className="textarea-wrapper">
+        <textarea
+          id={id ? id : defaultId}
+          name={id ? id : defaultId}
+          disabled={disabled}
+          placeholder=" "
+          value={value ? value : undefined}
+          onChange={(e) => handleChange(e.target.value)}
+        ></textarea>
+        <label htmlFor={id ? id : defaultId}>{label}</label>
+        {maxLenght && (
+          <span
+            className={classNames("world-counter", {
+              "text-overflow": valueLenght > maxLenght,
+            })}
+          >
+            {maxLenght - valueLenght}
+          </span>
+        )}
+      </div>
+      <p className="helper-text">{helperText}</p>
     </div>
-    <p className="helper-text">{helperText}</p>
-  </div>
+  );
 }
 
 Textarea.propTypes = {
@@ -51,8 +59,7 @@ Textarea.propTypes = {
   disabled: PropTypes.bool,
   value: PropTypes.string,
   handleValueChange: PropTypes.func,
-  helperText: PropTypes.string
+  helperText: PropTypes.string,
 };
-
 
 export default Textarea;

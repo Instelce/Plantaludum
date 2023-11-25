@@ -1,16 +1,13 @@
-
-
 .tabs {
-  
   .tabs-list {
     display: flex;
-    
+
     button {
       padding: 1rem 2rem;
       position: relative;
       color: rgb(var(--color-white));
 
-      transition: background .3s ease;
+      transition: background 0.3s ease;
 
       &::after {
         content: "";
@@ -22,22 +19,20 @@
         background: rgb(var(--color-primary-light));
         opacity: 0;
 
-        transition: opacity .3s ease;
+        transition: opacity 0.3s ease;
       }
 
       &.active {
-
         &::after {
           opacity: 1;
         }
       }
-      
+
       &:hover {
         background: rgb(var(--color-gray-3));
       }
     }
   }
-  
 
   .tabs-content {
     display: none;
@@ -46,5 +41,4 @@
       display: block;
     }
   }
-  
 }

@@ -1,15 +1,17 @@
-
-@import '../../styles/abstracts/typescale';
+@import "../../styles/abstracts/typescale";
 
 .choice-block {
-  padding: .8em 1.5em;
+  padding: 0.8em 1.5em;
   margin-bottom: 1em;
 
   border-radius: var(--radius);
   cursor: pointer;
   user-select: none;
 
-  transition: transform .3s ease, border .2s, color 0s;
+  transition:
+    transform 0.3s ease,
+    border 0.2s,
+    color 0s;
 
   &:hover {
     --color-background: rgb(var(--color-primary-light));
@@ -37,7 +39,7 @@
   &.show-result {
     transform: translateX(0);
     cursor: auto;
-    border: 1px solid rgba(var(--color-secondary), .2);
+    border: 1px solid rgba(var(--color-secondary), 0.2);
 
     &:hover {
       transform: translateX(0);
@@ -59,12 +61,11 @@
   }
 
   &.wrong-clicked {
-    animation: shake .3s ease;
+    animation: shake 0.3s ease;
     border: 1px solid rgb(var(--color-danger-light));
   }
 
   &:not(.show-result) {
-
   }
 
   .choice-result {
@@ -79,7 +80,7 @@
     align-items: center;
     justify-content: center;
 
-    transition: opacity .3s ease;
+    transition: opacity 0.3s ease;
 
     svg {
       stroke: rgb(var(--color-gray-3));

@@ -1,38 +1,34 @@
-
-import "./index.jsx"
+import "./index.jsx";
 import ChoiceBlock from "./index.jsx";
 
-
 export default {
-    title: 'Components/ChoiceBlock',
-    component: ChoiceBlock,
-    parameters: {
-    },
-    argTypes: {
-        onDoubleClick: {action: 'showResult'},
-    },
-    tags: ['autodocs'],
-}
-
+  title: "Components/ChoiceBlock",
+  component: ChoiceBlock,
+  parameters: {},
+  argTypes: {
+    onDoubleClick: { action: "showResult" },
+  },
+  tags: ["autodocs"],
+};
 
 export const Right = {
-    args: {
-        choice: {
-            title: "Title",
-            subtitle: "Sub",
-            rightAnswer: true
-        },
-        showResult: false,
-    }
-}
+  args: {
+    choice: {
+      title: "Title",
+      subtitle: "Sub",
+      rightAnswer: true,
+    },
+    showResult: false,
+  },
+};
 
 export const Wrong = {
-    args: {
-        choice: {
-            title: "Title",
-            subtitle: "Sub",
-            rightAnswer: false
-        },
-        showResult: false,
-    }
-}
+  args: {
+    choice: {
+      title: "Title",
+      subtitle: "Sub",
+      rightAnswer: false,
+    },
+    showResult: false,
+  },
+};

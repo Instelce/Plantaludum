@@ -1,6 +1,5 @@
 import Option from "./index.jsx";
 
-
 export default {
   title: "Components/Forms/Dropdown/Option",
   component: Option,

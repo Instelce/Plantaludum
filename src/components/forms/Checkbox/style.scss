@@ -1,9 +1,7 @@
-
-
 .checkbox {
   display: grid;
   grid-template-columns: 1rem auto;
-  column-gap: .5rem;
+  column-gap: 0.5rem;
   align-items: center;
 
   label {
@@ -18,9 +16,9 @@
     background: transparent;
     margin: 0;
     padding: 0;
-    border: 1px solid rgba(var(--color-gray-5), .2);
+    border: 1px solid rgba(var(--color-gray-5), 0.2);
     border-radius: 5px;
-    transition: box-shadow .3s;
+    transition: box-shadow 0.3s;
     cursor: pointer;
 
     display: flex;
@@ -48,7 +46,7 @@
       display: block;
       transform: scale(0);
       opacity: 0;
-      transition: transform .2s cubic-bezier(.56,1.07,.76,1.1);
+      transition: transform 0.2s cubic-bezier(0.56, 1.07, 0.76, 1.1);
       background: rgb(var(--color-primary-light));
       border-radius: 3px;
     }
@@ -62,20 +60,20 @@
     }
 
     &:focus {
-      box-shadow: 0 0 0 2px rgba(var(--color-secondary), .2);
+      box-shadow: 0 0 0 2px rgba(var(--color-secondary), 0.2);
     }
 
     &:disabled {
-      opacity: .8;
+      opacity: 0.8;
       cursor: not-allowed;
 
       &::before {
-        opacity: .6;
+        opacity: 0.6;
       }
 
       ~ label {
         cursor: not-allowed;
-        opacity: .8;
+        opacity: 0.8;
       }
     }
   }

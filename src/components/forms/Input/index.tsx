@@ -1,12 +1,12 @@
-import React, {useId, useState} from "react";
+import React, { useId, useState } from "react";
 
 import "./style.scss";
 import PropTypes from "prop-types";
-import Modal from "../../Modal/index.jsx";
-import {Info} from "react-feather";
+import Modal from "../../ui/Modal/index.jsx";
+import { Info } from "react-feather";
 
 function Input({
-  id=undefined,
+  id = undefined,
   label,
   icon = null,
   type = "text",
@@ -20,7 +20,7 @@ function Input({
   ...props
 }) {
   const defaultId = useId();
-  const [showInfoModal, setShowInfoModal] = useState(false)
+  const [showInfoModal, setShowInfoModal] = useState(false);
 
   return (
     <>
@@ -60,7 +60,10 @@ function Input({
           )}
 
           {usageInfoText !== null && (
-            <Info className="info-icon" onClick={() => setShowInfoModal(() => true)} />
+            <Info
+              className="info-icon"
+              onClick={() => setShowInfoModal(() => true)}
+            />
           )}
 
           {icon ? <span className="icon">{icon}</span> : null}
@@ -69,7 +72,11 @@ function Input({
         {helperText && <p className="helper-text">{helperText}</p>}
       </div>
 
-      {usageInfoText && <Modal show={showInfoModal} setShow={setShowInfoModal}>{usageInfoText ? usageInfoText : ""}</Modal>}
+      {usageInfoText && (
+        <Modal show={showInfoModal} setShow={setShowInfoModal}>
+          {usageInfoText ? usageInfoText : ""}
+        </Modal>
+      )}
     </>
   );
 }
@@ -86,7 +93,7 @@ Input.propTypes = {
   handleValueChange: PropTypes.func,
   helperText: PropTypes.string,
   usageInfoText: PropTypes.string,
-  mb: PropTypes.string
+  mb: PropTypes.string,
 };
 
 export default Input;

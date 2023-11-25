@@ -1,30 +1,43 @@
-import {useEffect, useState} from "react";
-
+import { useEffect, useState } from "react";
 
 function useCacheImages() {
-  const [isLoading, setIsLoading] = useState(false)
-  const [imagesArray, setImagesArray] = useState(null)
-
-  const promises = imagesArray?.map(src => {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-
-      img.src = src;
-      img.onload = resolve();
-      img.onerror = reject();
-    })
-  })
+  const [isLoading, setIsLoading] = useState(false);
+  const [imagesArray, setImagesArray] = useState<string[] | null>(null);
 
   useEffect(() => {
-    console.log(imagesArray)
-    if (imagesArray) {
-      setIsLoading(() => true)
+    let isMounted = true;
 
-      Promise.all(promises)
-        .then(() => {
-          setIsLoading(() => false)
-        })
+    const loadImages = async () => {
+      if (imagesArray && imagesArray.length > 0) {
+        setIsLoading(true);
+
+        try {
+          await Promise.all(
+            imagesArray.map((src: string) => {
+              new Promise((resolve, reject) => {
+                const image = new Image();
+
+                image.src = src;
+                image.onload = resolve;
+                image.onerror = reject;
+              });
+            }),
+          );
+        } catch (error) {
+          console.error("Error loading images: ", error);
+        }
+      }
+    };
+
+    loadImages();
+
+    if (isMounted) {
+      setIsLoading(false);
     }
+
+    return () => {
+      isMounted = false;
+    };
   }, [imagesArray]);
 
   return { isLoading: isLoading, setImagesArray: setImagesArray };

@@ -13,7 +13,6 @@
  *
 */
 
-
 /**
 * This is a variable font
 * You can controll variable axes as shown below:
@@ -26,34 +25,43 @@
 */
 
 @font-face {
-  font-family: 'DancingScript';
-  src: url('../../assets/fonts/dancing-script/DancingScript-Variable.woff2') format('woff2'),
-       url('../../assets/fonts/dancing-script/DancingScript-Variable.woff') format('woff'),
-       url('../../assets/fonts/dancing-script/DancingScript-Variable.ttf') format('truetype');
-       font-weight: 400 700;
-       font-display: swap;
-       font-style: normal;
+  font-family: "DancingScript";
+  src:
+    url("../../assets/fonts/dancing-script/DancingScript-Variable.woff2")
+      format("woff2"),
+    url("../../assets/fonts/dancing-script/DancingScript-Variable.woff")
+      format("woff"),
+    url("../../assets/fonts/dancing-script/DancingScript-Variable.ttf")
+      format("truetype");
+  font-weight: 400 700;
+  font-display: swap;
+  font-style: normal;
 }
-
 
 @font-face {
-  font-family: 'DancingScript-Regular';
-  src: url('../../assets/fonts/dancing-script/DancingScript-Regular.woff2') format('woff2'),
-       url('../../assets/fonts/dancing-script/DancingScript-Regular.woff') format('woff'),
-       url('../../assets/fonts/dancing-script/DancingScript-Regular.ttf') format('truetype');
-       font-weight: 400;
-       font-display: swap;
-       font-style: normal;
+  font-family: "DancingScript-Regular";
+  src:
+    url("../../assets/fonts/dancing-script/DancingScript-Regular.woff2")
+      format("woff2"),
+    url("../../assets/fonts/dancing-script/DancingScript-Regular.woff")
+      format("woff"),
+    url("../../assets/fonts/dancing-script/DancingScript-Regular.ttf")
+      format("truetype");
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
 }
-
 
 @font-face {
-  font-family: 'DancingScript-Bold';
-  src: url('../../assets/fonts/dancing-script/DancingScript-Bold.woff2') format('woff2'),
-       url('../../assets/fonts/dancing-script/DancingScript-Bold.woff') format('woff'),
-       url('../../assets/fonts/dancing-script/DancingScript-Bold.ttf') format('truetype');
-       font-weight: 700;
-       font-display: swap;
-       font-style: normal;
+  font-family: "DancingScript-Bold";
+  src:
+    url("../../assets/fonts/dancing-script/DancingScript-Bold.woff2")
+      format("woff2"),
+    url("../../assets/fonts/dancing-script/DancingScript-Bold.woff")
+      format("woff"),
+    url("../../assets/fonts/dancing-script/DancingScript-Bold.ttf")
+      format("truetype");
+  font-weight: 700;
+  font-display: swap;
+  font-style: normal;
 }
-

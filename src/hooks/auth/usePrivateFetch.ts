@@ -1,46 +1,50 @@
-import {apiPrivate} from "../../api/axios.js";
-import { useEffect } from 'react'
-import useAuth from "./useAuth.js";
+import { apiPrivate } from "../../services/api/axios.js";
+import { useEffect } from "react";
 import useRefreshToken from "./useRefreshToken.js";
+import { useAuth } from "../../context/AuthProvider";
 
 export default function usePrivateFetch() {
-
-  const { accessToken, setAccessToken, csrftoken, user } = useAuth()
-  const refresh = useRefreshToken()
+  const { accessToken, setAccessToken, CSRFToken, user } = useAuth();
+  const refresh = useRefreshToken();
 
   useEffect(() => {
     const requestIntercept = apiPrivate.interceptors.request.use(
       (config) => {
         if (!config.headers["Authorization"]) {
-          config.headers['Authorization'] = `Bearer ${accessToken}`;
-          config.headers['X-CSRFToken'] = csrftoken
+          config.headers["Authorization"] = `Bearer ${accessToken}`;
+          config.headers["X-CSRFToken"] = CSRFToken;
         }
-        return config
+        return config;
       },
-      (error) => Promise.reject(error)
-    )
+      (error) => Promise.reject(error),
+    );
 
     const responseIntercept = apiPrivate.interceptors.response.use(
-      response => response,
+      (response) => response,
       async (error) => {
         const prevRequest = error?.config;
-        if ((error?.response?.status === 403 || error?.response?.status === 401) && !prevRequest?.sent) {
+        if (
+          (error?.response?.status === 403 ||
+            error?.response?.status === 401) &&
+          !prevRequest?.sent
+        ) {
           prevRequest.sent = true;
-          const { csrfToken: newCSRFToken, accessToken: newAccessToken } = await refresh();
-          setAccessToken(newAccessToken)
-          prevRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
-          prevRequest.headers['X-CSRFToken'] = newCSRFToken
-          return apiPrivate(prevRequest)
+          const { csrfToken: newCSRFToken, accessToken: newAccessToken } =
+            await refresh();
+          setAccessToken(newAccessToken);
+          prevRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
+          prevRequest.headers["X-CSRFToken"] = newCSRFToken;
+          return apiPrivate(prevRequest);
         }
         return Promise.reject(error);
-      }
-    )
+      },
+    );
 
     return () => {
-      apiPrivate.interceptors.request.eject(requestIntercept)
-      apiPrivate.interceptors.response.eject(responseIntercept)
-    }
-  }, [accessToken, user])
+      apiPrivate.interceptors.request.eject(requestIntercept);
+      apiPrivate.interceptors.response.eject(responseIntercept);
+    };
+  }, [accessToken, user]);
 
-  return apiPrivate
+  return apiPrivate;
 }

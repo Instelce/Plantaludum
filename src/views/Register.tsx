@@ -1,47 +1,51 @@
-import {useState} from "react";
-import {Link, useNavigate} from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Input from "../components/forms/Input/index.jsx";
-import Button from "../components/Buttons/Button.jsx";
+import Button from "../components/ui/Buttons/Button.jsx";
 import PasswordChecker from "../components/forms/PasswordChecker/index.jsx";
 import useFormFilled from "../hooks/useFormFilled.js";
-import {useMutation} from "@tanstack/react-query";
-import {register} from "../api/api.js";
-
+import { useMutation } from "@tanstack/react-query";
+import { register } from "../services/api/api.js";
 
 function Register(props) {
-  const navigate = useNavigate()
-  const [responseHelper, setResponseHelper] = useState({})
+  const navigate = useNavigate();
+  const [responseHelper, setResponseHelper] = useState({});
   const [passwordValue, setPasswordValue] = useState("");
-  const {formRef, handleFormChange, isFilled} = useFormFilled()
+  const { formRef, handleFormChange, isFilled } = useFormFilled();
 
-  const {isPending, mutate: mutateRegister} = useMutation({
-    mutationKey: ['register'],
+  const { isPending, mutate: mutateRegister } = useMutation({
+    mutationKey: ["register"],
     mutationFn: (data) => register(data),
     onSuccess: () => {
       setTimeout(() => {
-        navigate('/connexion', {replace: true})
-      }, 2000)
+        navigate("/connexion", { replace: true });
+      }, 2000);
     },
     onError: (error) => {
-      setResponseHelper(error.response.data)
-    }
-  })
+      setResponseHelper(error.response.data);
+    },
+  });
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    let formData = new FormData(e.target)
+    e.preventDefault();
+    let formData = new FormData(e.target);
 
     mutateRegister({
-      username: formData.get('username'),
-      email: formData.get('email'),
-      password: formData.get('password'),
-      password_confirmation: formData.get('password_confirmation')
-    })
-  }
+      username: formData.get("username"),
+      email: formData.get("email"),
+      password: formData.get("password"),
+      password_confirmation: formData.get("password_confirmation"),
+    });
+  };
 
   return (
     <div className="container center">
-      <form ref={formRef} className="form-page" onSubmit={handleSubmit} onChange={(e) => handleFormChange(e.target)}>
+      <form
+        ref={formRef}
+        className="form-page"
+        onSubmit={handleSubmit}
+        onChange={(e) => handleFormChange(e.target)}
+      >
         <div className="form-header">
           <h1>Bienvenu</h1>
           <p>
