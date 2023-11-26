@@ -5,6 +5,7 @@ import {
   CreateDeckPlantFormDataType,
   DeckType,
 } from "./types/decks";
+import { AxiosInstance, AxiosRequestConfig } from "axios";
 
 // -----------------------------------------------------------------------------
 // AUTH PLANTALUDUM API
@@ -23,25 +24,32 @@ export const auth = {
 // -----------------------------------------------------------------------------
 
 export const decks = {
-  list: () => apiRequest.get("/api/decks"),
+  list: () => apiRequest.get("/api/decks").then((r) => r.data),
   //
-  details: (deckId: number) => apiRequest.get(`/api/decks/${deckId}`),
+  details: (deckId: number) =>
+    apiRequest.get(`/api/decks/${deckId}`).then((r) => r.data),
   //
-  listPlants: (deckId: number) => apiRequest.get(`/api/decks/${deckId}/plants`),
+  listPlants: (deckId: number) =>
+    apiRequest.get(`/api/decks/${deckId}/plants`).then((r) => r.data),
 
-  create: (data: CreateDeckFormDataType) =>
-    apiPrivateRequest.post("/api/decks", data),
+  create: (privateFetch: AxiosInstance, data: CreateDeckFormDataType) =>
+    privateFetch.post("/api/decks", data).then((r) => r.data),
   //
-  update: (deckId: number, data: DeckType) =>
-    apiPrivateRequest.patch(`/api/decks/${deckId}`, data),
+  update: (privateFetch: AxiosInstance, deckId: number, data: DeckType) =>
+    privateFetch.patch(`/api/decks/${deckId}`, data).then((r) => r.data),
   //
-  delete: (deckId: number) => apiPrivateRequest.delete(`/api/decks/${deckId}`),
+  delete: (privateFetch: AxiosInstance, deckId: number) =>
+    privateFetch.delete(`/api/decks/${deckId}`).then((r) => r.data),
   //
-  createPlant: (data: CreateDeckPlantFormDataType) =>
-    apiPrivateRequest.post(`/api/decks/create-plant`, data),
+  createPlant: (
+    privateFetch: AxiosInstance,
+    data: CreateDeckPlantFormDataType,
+  ) => privateFetch.post(`/api/decks-plants`, data).then((r) => r.data),
   //
-  deletePlant: (deckId: number, plantId: number) =>
-    apiPrivateRequest.delete(`/api/decks/${deckId}/plants/${plantId}`),
+  deletePlant: (privateFetch: AxiosInstance, deckId: number, plantId: number) =>
+    privateFetch
+      .delete(`/api/decks/${deckId}/plants/${plantId}`)
+      .then((r) => r.data),
 };
 
 // -----------------------------------------------------------------------------

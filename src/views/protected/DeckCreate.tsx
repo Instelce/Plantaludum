@@ -5,18 +5,18 @@ import Textarea from "../../components/forms/Textarea/index.jsx";
 import Dropdown from "../../components/forms/Dropdown/index.jsx";
 import { useEffect, useState } from "react";
 import Checkbox from "../../components/forms/Checkbox/index.jsx";
-import AutocompleteInput from "../../components/forms/AutocompleteInput/index.jsx";
+import AutocompleteInput from "../../components/forms/AutocompleteInput/Autocomplete";
 import Option from "../../components/forms/Option/index.jsx";
 import Selector from "../../components/forms/Selector/index.jsx";
 import { deleteDublicates } from "../../utils/helpers";
-import ButtonLink from "../../components/ui/Buttons/ButtonLink.jsx";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Button from "../../components/ui/Buttons/Button.jsx";
-import useAuth from "../../hooks/auth/useAuth.js";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { createDeck, loadImages } from "../../services/api/api.js";
+import { decks, loadImages } from "../../services/api";
 import Navbar from "../../components/Navbar/index.jsx";
 import { ErrorBoundary } from "react-error-boundary";
+import { useAuth } from "../../context/AuthProvider";
+import { CreateDeckFormDataType } from "../../services/api/types/decks";
 
 function DeckCreate(props) {
   const { user } = useAuth();
@@ -33,7 +33,8 @@ function DeckCreate(props) {
     mutate: mutateCreateDeck,
   } = useMutation({
     mutationKey: ["decks"],
-    mutationFn: (data) => createDeck(privateFetch, data),
+    mutationFn: (data: CreateDeckFormDataType) =>
+      decks.create(privateFetch, data),
   });
 
   const {
@@ -126,7 +127,7 @@ function DeckCreate(props) {
         <form
           ref={formRef}
           onSubmit={handleFormSubmit}
-          onChange={(e) => handleFormChange(e.target)}
+          onChange={handleFormChange}
         >
           <Input id="name" label="Nom" type="text" size="large" />
           <Textarea
@@ -186,15 +187,14 @@ function DeckCreate(props) {
             style={{ marginBottom: "1rem" }}
           />
           <div className="form-buttons">
-            <ButtonLink
-              to={fromLocation}
-              state={{ from: { pathname: location.pathname } }}
-              label="Retour"
-              size="large"
-              color="gray"
-              variant="soft"
-              fill
-            />
+            <Button asChild label="Retour" size="large" color="gray" fill>
+              <Link
+                to={fromLocation}
+                state={{ from: { pathname: location.pathname } }}
+              >
+                Retour
+              </Link>
+            </Button>
             <Button
               label="Continuer"
               size="large"
@@ -202,7 +202,9 @@ function DeckCreate(props) {
               color="primary"
               disabled={!isFilled}
               loading={deckFetching}
-            />
+            >
+              Continuer
+            </Button>
           </div>
         </form>
       </div>

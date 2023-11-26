@@ -1,38 +1,14 @@
-import {
-  useMutation,
-  useQueries,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import React, { useEffect } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
-import {
-  loadPlantsIdsList,
-  loadPlants,
-  loadDeck,
-  loadDeckPlants,
-  loadPlantsIdsListImages,
-} from "../../services/api/api.js";
 import Loader from "../../components/Loader/index.jsx";
-import ButtonLink from "../../components/ui/Buttons/ButtonLink.jsx";
-import {
-  ArrowRight,
-  EyeOff,
-  RefreshCcw,
-  RefreshCw,
-  Share,
-  Trash,
-  Trash2,
-} from "react-feather";
+import { EyeOff, RefreshCw, Share, Trash } from "react-feather";
 import Button from "../../components/ui/Buttons/Button.jsx";
 import Stars from "../../components/ui/Stars/index.jsx";
-import React, { useEffect } from "react";
-import ListItem from "../../components/ListItem/index.jsx";
 import useDeck from "../../hooks/api/useDeck.js";
-import { getObjectKeyValues } from "../../utils/helpers";
 import Navbar from "../../components/Navbar/index.jsx";
-import useAuth from "../../hooks/auth/useAuth.js";
 import Tabs from "../../components/ui/Tabs/index.jsx";
 import PlantCard from "../../components/PlantCard/index.jsx";
+import { useAuth } from "../../context/AuthProvider";
 
 function DeckDetail(props) {
   const { deckId } = useParams();
@@ -53,13 +29,14 @@ function DeckDetail(props) {
         </div>
         <div className="right">
           {user && (
-            <ButtonLink
-              to="/decks/create"
-              state={{ from: { pathname: location.pathname } }}
-              label="Nouveau deck"
-              size="large"
-              color="gray"
-            />
+            <Button asChild label="Nouveau deck" size="large" color="gray">
+              <Link
+                to="/decks/create"
+                state={{ from: { pathname: location.pathname } }}
+              >
+                Nouveau deck
+              </Link>
+            </Button>
           )}
         </div>
       </Navbar>
@@ -84,21 +61,25 @@ function DeckDetail(props) {
             <Stars count={deckQuery.data.difficulty} />
 
             <div>
-              <ButtonLink to={`/decks/${deckId}/game`} label="Jouer" />
-              <Button icon={<Share />} color="gray" />
+              <Button asChild>
+                <Link to={`/decks/${deckId}/game`}>Jouer</Link>
+              </Button>
+              <Button color="gray" onlyIcon>
+                <Share />
+              </Button>
               {deckId === user.id && (
                 <>
-                  <ButtonLink
-                    to={`/decks/${deckId}/update`}
-                    icon={<RefreshCw />}
-                    color="yellow"
-                  />
-                  <Button icon={<Trash />} color="danger" />
+                  <Button asChild color="yellow" onlyIcon>
+                    <Link to={`/decks/${deckId}/update`}>
+                      <RefreshCw />
+                    </Link>
+                  </Button>
+                  <Button color="danger" onlyIcon>
+                    <Trash />
+                  </Button>
                 </>
               )}
             </div>
-
-            <div></div>
           </header>
 
           <Tabs.Root defaultValue="actions">

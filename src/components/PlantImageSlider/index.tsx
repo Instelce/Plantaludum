@@ -7,10 +7,8 @@ import {
   Info,
   X,
 } from "react-feather";
-import PropTypes from "prop-types";
 import Button from "../ui/Buttons/Button.jsx";
 import "./style.scss";
-import ButtonLink from "../ui/Buttons/ButtonLink.jsx";
 import { downloadImage } from "../../utils/helpers";
 
 function PlantImageSlider({ imagesData }) {
@@ -55,56 +53,64 @@ function PlantImageSlider({ imagesData }) {
                   active: index === current,
                 })}
               >
-                <img src={img.url} alt={index} />
+                <img src={img.url} alt={index.toString()} />
               </div>
             ))}
           </>
         )}
-      </div>
 
-      {!showImageInfo && (
-        <>
-          <div className="slider-action">
-            <Button icon={<ChevronLeft />} onClick={prev} />
-            <p className="slider-info">
-              {Array.from(Array(imagesData.length), (e, i) => (
-                <span
-                  key={i}
-                  tabIndex={i}
-                  className={classNames({
-                    active: i === current,
-                  })}
-                  onClick={() => setCurrent(() => i)}
-                ></span>
-              ))}
-            </p>
-            <Button icon={<ChevronRight />} onClick={next} />
-          </div>
-          <Button
-            icon={<Info />}
-            color="gray"
-            size="small"
-            className="show-info"
-            onClick={() => setShowImageInfo((show) => !show)}
-          />
-        </>
-      )}
+        {!showImageInfo && (
+          <>
+            <div className="slider-action">
+              <Button onlyIcon onClick={prev}>
+                <ChevronLeft />
+              </Button>
+              <p className="slider-info">
+                {Array.from(Array(imagesData.length), (e, i) => (
+                  <span
+                    key={i}
+                    tabIndex={i}
+                    className={classNames({
+                      active: i === current,
+                    })}
+                    onClick={() => setCurrent(() => i)}
+                  ></span>
+                ))}
+              </p>
+              <Button onlyIcon onClick={next}>
+                <ChevronRight />
+              </Button>
+            </div>
+            <Button
+              onlyIcon
+              color="gray"
+              size="small"
+              className="show-info"
+              onClick={() => setShowImageInfo((show) => !show)}
+            >
+              <Info />
+            </Button>
+          </>
+        )}
+      </div>
 
       {showImageInfo && (
         <div className="images-info">
           <Button
-            icon={<X />}
+            onlyIcon
             color="gray"
             size="small"
             className="show-info"
             onClick={() => setShowImageInfo((show) => !show)}
-          />
+          >
+            <X />
+          </Button>
           @{imagesData[current].author}
           {imagesData[current].location}
           {imagesData[current].publ_date}
           <Button
+            className="sb"
             label="Télécharger"
-            icon={<ArrowUpRight />}
             fill
             onClick={() =>
               downloadImage(
@@ -112,15 +118,14 @@ function PlantImageSlider({ imagesData }) {
                 imagesData[current].id.toString(),
               )
             }
-          />
+          >
+            Télécharger
+            <ArrowUpRight />
+          </Button>
         </div>
       )}
     </div>
   );
 }
-
-PlantImageSlider.propTypes = {
-  imagesData: PropTypes.arrayOf(PropTypes.object),
-};
 
 export default PlantImageSlider;

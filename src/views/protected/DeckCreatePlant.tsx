@@ -1,14 +1,10 @@
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import Button from "../../components/ui/Buttons/Button.jsx";
-import AutocompleteInput from "../../components/forms/AutocompleteInput/index.jsx";
-import ButtonLink from "../../components/ui/Buttons/ButtonLink.jsx";
+import AutocompleteInput from "../../components/forms/AutocompleteInput/Autocomplete";
 import usePrivateFetch from "../../hooks/auth/usePrivateFetch.js";
 import { useMutation } from "@tanstack/react-query";
-import {
-  createDeckPlant,
-  loadPlantsIdsListImages,
-} from "../../services/api/api.js";
+import { decks, loadPlantsIdsListImages } from "../../services/api";
 import Navbar from "../../components/Navbar/index.jsx";
 import { ErrorBoundary } from "react-error-boundary";
 import PlantCard from "../../components/PlantCard/index.jsx";
@@ -30,7 +26,7 @@ function DeckCreatePlant(props) {
 
   const { isPending, mutate: mutateCreatePlantQuiz } = useMutation({
     mutationKey: ["decks-plants", deckId],
-    mutationFn: (data) => createDeckPlant(privateFetch, data),
+    mutationFn: (data) => decks.createPlant(privateFetch, data),
     onSuccess: () => {
       navigate(`/decks/${deckId}`, { replace: true });
     },
@@ -38,7 +34,7 @@ function DeckCreatePlant(props) {
 
   const plantImagesMutation = useMutation({
     mutationKey: ["decks-plants", deckId],
-    mutationFn: (ids) => loadPlantsIdsListImages(ids),
+    mutationFn: (ids: number[]) => loadPlantsIdsListImages(ids),
   });
 
   const createDeckPlants = async () => {
@@ -50,7 +46,7 @@ function DeckCreatePlant(props) {
     }
   };
 
-  const addPlant = (e) => {
+  const addPlant = (e: FormEvent) => {
     console.log("submit", e.target);
     e.preventDefault();
     if (
@@ -88,9 +84,6 @@ function DeckCreatePlant(props) {
           <Link to="/mon-jardin">Mon jardin</Link>
           <Link to="/explorer">Explorer</Link>
         </div>
-        <div className="right">
-          <ButtonLink label="Nouveau deck" color="gray" />
-        </div>
       </Navbar>
 
       <header className="page-header center">
@@ -124,7 +117,9 @@ function DeckCreatePlant(props) {
               type="submit"
               color="primary"
               size="large"
-            />
+            >
+              Ajouter
+            </Button>
           </div>
         </form>
       </div>
@@ -151,14 +146,9 @@ function DeckCreatePlant(props) {
 
       <div className="form-buttons-container">
         <div className="form-buttons-wrapper">
-          <ButtonLink
-            to={fromLocation}
-            label="Retour"
-            size="large"
-            color="gray"
-            variant="soft"
-            fill
-          />
+          <Button asChild label="Retour" size="large" color="gray" fill>
+            <Link to={fromLocation}>Retour</Link>
+          </Button>
           <Button
             label="Continuer"
             size="large"
@@ -166,7 +156,9 @@ function DeckCreatePlant(props) {
             // disabled={plants.length < 3}
             onClick={createDeckPlants}
             loading={isPending}
-          />
+          >
+            Continuer
+          </Button>
         </div>
       </div>
     </>

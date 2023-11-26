@@ -17,7 +17,7 @@ import { deleteDublicates } from "../../../utils/helpers";
 function Dropdown({
   inputId,
   label,
-  size = "lg",
+  size = "large",
   mb,
   defaultValue = undefined,
   placeholder = "Option",
@@ -98,16 +98,25 @@ function Dropdown({
         {label}
       </label>
       <Button
+        className="sb"
         id={id}
-        label={currentValue !== "" ? currentValue : <span></span>}
-        icon={<ChevronDown color="rgb(var(--color-primary-light))" />}
+        label={label}
         color="gray"
         size={size}
         onFocus={() => setButtonFocus(() => true)}
         onBlur={() => setButtonFocus(() => false)}
         onClick={() => setShowOptions(!showOptions)}
         {...props}
-      />
+      >
+        {currentValue != "" ? currentValue : <span> </span>}
+        <ChevronDown
+          color="rgb(var(--color-primary-light))"
+          style={{
+            rotate: `${showOptions ? 180 : 0}deg`,
+            transition: "rotate .3s ease",
+          }}
+        />
+      </Button>
       <div
         ref={optionsRef}
         className={classNames("options-container", {

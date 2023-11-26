@@ -1,8 +1,14 @@
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import "./style.scss";
+import {ButtonHTMLAttributes, PropsWithChildren} from "react";
 
-function Option({ value = null, active, children, ...props }) {
+type OptionProps = {
+  value: string,
+  active: boolean,
+} & PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement>>
+
+function Option({ value = null, active, children, ...props }: OptionProps) {
   return (
     <button
       type="button"
@@ -13,11 +19,5 @@ function Option({ value = null, active, children, ...props }) {
     </button>
   );
 }
-
-Option.propTypes = {
-  value: PropTypes.string || PropTypes.number,
-  active: PropTypes.bool,
-  children: PropTypes.node,
-};
 
 export default Option;

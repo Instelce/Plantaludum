@@ -1,16 +1,38 @@
-import React, { useId, useState } from "react";
+import React, {
+  HTMLInputTypeAttribute,
+  InputHTMLAttributes,
+  ReactNode,
+  useId,
+  useState
+} from "react";
 
 import "./style.scss";
-import PropTypes from "prop-types";
 import Modal from "../../ui/Modal/index.jsx";
 import { Info } from "react-feather";
 
+type SizeProp = "small" | "medium" | "large";
+
+type InputProps = {
+  id?: string | null;
+  label: string;
+  icon?: ReactNode | null;
+  type?: "text" | "email" | "password" | "search";
+  size?: SizeProp;
+  disabled?: boolean;
+  showInfo?: boolean;
+  value?: string;
+  handleValueChange?: React.Dispatch<React.SetStateAction<string>> | null;
+  helperText?: string | null;
+  usageInfoText?: string | null;
+} & InputHTMLAttributes<HTMLInputElement>;
+
+
 function Input({
-  id = undefined,
+  id,
   label,
   icon = null,
   type = "text",
-  size = "large",
+  size = "large" as SizeProp,
   disabled = false,
   showInfo = false,
   value,
@@ -18,7 +40,7 @@ function Input({
   helperText = null,
   usageInfoText = null,
   ...props
-}) {
+}: InputProps) {
   const defaultId = useId();
   const [showInfoModal, setShowInfoModal] = useState(false);
 
@@ -81,19 +103,5 @@ function Input({
   );
 }
 
-Input.propTypes = {
-  id: PropTypes.string,
-  label: PropTypes.string,
-  icon: PropTypes.node,
-  type: PropTypes.oneOf(["text", "email", "password", "search"]),
-  size: PropTypes.oneOf(["small", "medium", "large"]),
-  showInfo: PropTypes.bool,
-  disabled: PropTypes.bool,
-  value: PropTypes.string,
-  handleValueChange: PropTypes.func,
-  helperText: PropTypes.string,
-  usageInfoText: PropTypes.string,
-  mb: PropTypes.string,
-};
 
 export default Input;

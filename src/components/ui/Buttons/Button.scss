@@ -1,9 +1,15 @@
 .button {
   position: relative;
-  display: inline-block;
+  z-index: 0;
 
   background: transparent;
+  color: var(--color-text);
   font-size: inherit;
+  line-height: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   transition: transform 0.3s ease;
   cursor: pointer;
@@ -69,14 +75,6 @@
     --color-border: rgb(var(--color-success-dark));
   }
 
-  & > div {
-    width: 100%;
-    position: relative;
-    z-index: 2;
-    color: var(--color-text);
-    font-weight: 500;
-  }
-
   &::before,
   &::after {
     content: "";
@@ -85,8 +83,9 @@
     position: absolute;
     top: 0;
     left: 0;
+    z-index: -1;
+
     border-radius: var(--radius);
-    //background: paint(squircle);
     transition:
       transform 0.3s ease,
       background 0.3s ease;
@@ -94,42 +93,26 @@
 
   &::before {
     background: var(--color-background);
-    //--squircle-fill: var(--color-background);
-    //--squircle-radius: var(--radius);
-    //--squircle-smooth: 1;
-    z-index: 2;
   }
 
   &::after {
     background: var(--color-border);
     transform: translateY(2px);
-    //--squircle-fill: var(--color-border);
-    //--squircle-radius: var(--radius);
-    //--squircle-smooth: 1;
+    z-index: -2;
   }
 
-  &.icon {
+  &.only-icon {
     display: flex;
     align-items: center;
     justify-content: space-between;
+  }
 
-    &:not(&.only-icon) > span:nth-child(2) {
-      display: flex;
-      margin-left: 1rem;
-    }
+  svg {
+    width: 20px;
+    height: 20px;
 
-    span:nth-child(2) {
-      width: 20px;
-      height: 20px;
-
-      display: flex;
-      align-items: center;
-
-      svg {
-        z-index: 3;
-        stroke: var(--color-text);
-      }
-    }
+    z-index: 3;
+    stroke: var(--color-text);
   }
 
   &.loading {
@@ -145,6 +128,10 @@
 
   &.fill {
     width: 100%;
+  }
+
+  &.sb {
+    justify-content: space-between;
   }
 
   &.small {

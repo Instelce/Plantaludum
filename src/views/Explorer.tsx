@@ -8,13 +8,12 @@ import classNames from "classnames";
 import Stars from "../components/ui/Stars/index.jsx";
 import Option from "../components/forms/Option/index.jsx";
 import { useQuery } from "@tanstack/react-query";
-import { loadDeck, loadDecks } from "../services/api/api.js";
+import { decks } from "../services/api";
 import Loader from "../components/Loader/index.jsx";
-import useAuth from "../hooks/auth/useAuth.js";
-import ButtonLink from "../components/ui/Buttons/ButtonLink.jsx";
 import Navbar from "../components/Navbar/index.jsx";
 import { Link } from "react-router-dom";
 import { Plus, Search } from "react-feather";
+import { useAuth } from "../context/AuthProvider";
 
 function Explorer(props) {
   const { user } = useAuth();
@@ -28,7 +27,7 @@ function Explorer(props) {
     data: decksData,
   } = useQuery({
     queryKey: ["decks"],
-    queryFn: () => loadDecks(),
+    queryFn: () => decks.list(),
   });
 
   useEffect(() => {
@@ -43,13 +42,14 @@ function Explorer(props) {
         </div>
         <div className="right">
           {user && (
-            <ButtonLink
-              to="/decks/create"
-              state={{ from: { pathname: location.pathname } }}
-              label="Nouveau deck"
-              size="large"
-              color="gray"
-            />
+            <Button asChild label="Nouveau deck" size="large" color="gray">
+              <Link
+                to="/decks/create"
+                state={{ from: { pathname: location.pathname } }}
+              >
+                Nouveau deck
+              </Link>
+            </Button>
           )}
         </div>
       </Navbar>
@@ -65,7 +65,7 @@ function Explorer(props) {
             size="large"
             icon={<Search />}
           />
-          <Button label="Filtrer" color="gray" />
+          <Button color="gray">Filtrer</Button>
         </div>
       </header>
 

@@ -1,34 +1,30 @@
-import { Outlet } from "react-router-dom";
-import ButtonLink from "../components/ui/Buttons/ButtonLink.jsx";
+import { Link, Outlet } from "react-router-dom";
 import { HelpCircle, LogOut, Settings, User } from "react-feather";
+import Button from "../components/ui/Buttons/Button";
 
 function ButtonsMenu() {
   return (
     <div className="buttons-menu">
-      <ButtonLink
-        to="/info"
-        icon={<HelpCircle />}
-        color="dark-gray"
-        size="medium"
-      ></ButtonLink>
-      <ButtonLink
-        to="/settings"
-        icon={<Settings />}
-        color="dark-gray"
-        size="medium"
-      ></ButtonLink>
-      <ButtonLink
-        to="/profile"
-        icon={<User />}
-        color="dark-gray"
-        size="medium"
-      ></ButtonLink>
-      <ButtonLink
-        to="/logout"
-        icon={<LogOut color="rgb(var(--color-danger))" />}
-        color="dark-gray"
-        size="medium"
-      ></ButtonLink>
+      <Button asChild color="dark-gray" size="medium" onlyIcon>
+        <Link to="">
+          <HelpCircle />
+        </Link>
+      </Button>
+      <Button asChild color="dark-gray" size="medium" onlyIcon>
+        <Link to="">
+          <Settings />
+        </Link>
+      </Button>
+      <Button asChild color="dark-gray" size="medium" onlyIcon>
+        <Link to="">
+          <User />
+        </Link>
+      </Button>
+      <Button asChild color="dark-gray" size="medium" onlyIcon>
+        <Link to="">
+          <LogOut />
+        </Link>
+      </Button>
     </div>
   );
 }

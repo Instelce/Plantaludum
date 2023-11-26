@@ -1,6 +1,5 @@
 import React from "react";
 import Button from "../../components/ui/Buttons/Button.jsx";
-import ButtonLink from "../../components/ui/Buttons/ButtonLink.jsx";
 import { useParams } from "react-router-dom";
 
 function DeckGameResult(props) {
@@ -28,7 +27,7 @@ function DeckGameResult(props) {
             size="big"
             color="secondary"
           />
-          <ButtonLink
+          <Button
             label="Recommencer"
             to={`/quiz/${quizId}`}
             fill
@@ -36,7 +35,7 @@ function DeckGameResult(props) {
             size="big"
             color="secondary"
           />
-          <ButtonLink
+          <Button
             label="Retour"
             to="/menu"
             fill

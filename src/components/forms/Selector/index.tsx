@@ -74,13 +74,17 @@ function Selector({
 
           <div className="selector-buttons">
             <Button
+              type="button"
               label="Confirmer la photo"
-              icon={<Check />}
               color="primary"
               size="medium"
+              className="sb"
               disabled={currentChoice === null}
               onClick={handleConfirmButtonClick}
-            />
+            >
+              Confirmer la photo
+              <Check />
+            </Button>
           </div>
         </>
       ) : (
@@ -106,11 +110,14 @@ function Selector({
             <Button
               label="Rechoisir"
               color="gray"
-              icon={<RefreshCcw />}
               size="medium"
+              className="sb"
               disabled={!currentChoice}
               onClick={() => setConfirmChoice(false)}
-            />
+            >
+              Rechoisir
+              <RefreshCcw />
+            </Button>
           </div>
         </>
       )}

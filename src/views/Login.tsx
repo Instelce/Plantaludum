@@ -1,16 +1,16 @@
-import { useState } from "react";
-import PropTypes from "prop-types";
+import { FormEvent, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Input from "../components/forms/Input/index.jsx";
 import Button from "../components/ui/Buttons/Button.jsx";
-import useAuth from "../hooks/auth/useAuth.js";
 import useFormFilled from "../hooks/useFormFilled.js";
 import { useMutation } from "@tanstack/react-query";
-import { login } from "../services/api/api.js";
+import { auth } from "../services/api";
 import Navbar from "../components/Navbar/index.jsx";
 import { ArrowRight } from "react-feather";
+import { useAuth } from "../context/AuthProvider";
+import { LoginFormDataType } from "../services/api/types/users";
 
-function Login({ handleLogin }) {
+function Login(props) {
   const { setAccessToken, setCSRFToken } = useAuth();
   const [passwordValue, setPasswordValue] = useState("");
   const [responseHelper, setResponseHelper] = useState({});
@@ -22,7 +22,7 @@ function Login({ handleLogin }) {
 
   const { isPending, mutate: mutateLogin } = useMutation({
     mutationKey: ["login"],
-    mutationFn: (data) => login(data),
+    mutationFn: (data: LoginFormDataType) => auth.login(data),
     onSuccess: (response) => {
       setAccessToken(response.data?.access_token);
       setCSRFToken(response.headers["x-csrftoken"]);
@@ -35,13 +35,13 @@ function Login({ handleLogin }) {
     },
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
+    const formData = new FormData(e.target as HTMLFormElement);
 
     mutateLogin({
-      email: formData.get("email"),
-      password: formData.get("password"),
+      email: formData.get("email") as string,
+      password: formData.get("password") as string,
     });
   };
 
@@ -58,11 +58,7 @@ function Login({ handleLogin }) {
       </header>
 
       <div className="form-page">
-        <form
-          ref={formRef}
-          onSubmit={handleSubmit}
-          onChange={(e) => handleFormChange(e.target)}
-        >
+        <form ref={formRef} onSubmit={handleSubmit} onChange={handleFormChange}>
           <Input
             id="email"
             label="Email"
@@ -83,14 +79,16 @@ function Login({ handleLogin }) {
           />
           <p style={{ marginBottom: "1rem" }}>{responseHelper?.detail}</p>
           <Button
-            label="Goo"
-            icon={<ArrowRight />}
+            className="sb"
             type="submit"
             color="primary"
             size="large"
             disabled={!isFilled}
             loading={isPending}
-          />
+          >
+            Goo
+            <ArrowRight />
+          </Button>
           <footer>
             <p>
               Si tu n’as pas de compte, inscrit toi{" "}
@@ -105,9 +103,5 @@ function Login({ handleLogin }) {
     </>
   );
 }
-
-Login.propTypes = {
-  handleLogin: PropTypes.func,
-};
 
 export default Login;

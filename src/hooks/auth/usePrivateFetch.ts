@@ -2,8 +2,9 @@ import { apiPrivate } from "../../services/api/axios.js";
 import { useEffect } from "react";
 import useRefreshToken from "./useRefreshToken.js";
 import { useAuth } from "../../context/AuthProvider";
+import { AxiosInstance } from "axios";
 
-export default function usePrivateFetch() {
+export default function usePrivateFetch(): AxiosInstance {
   const { accessToken, setAccessToken, CSRFToken, user } = useAuth();
   const refresh = useRefreshToken();
 

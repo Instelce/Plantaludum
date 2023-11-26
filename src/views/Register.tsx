@@ -1,21 +1,25 @@
-import { useState } from "react";
+import { ChangeEvent, FormEvent, FormEventHandler, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Input from "../components/forms/Input/index.jsx";
 import Button from "../components/ui/Buttons/Button.jsx";
 import PasswordChecker from "../components/forms/PasswordChecker/index.jsx";
 import useFormFilled from "../hooks/useFormFilled.js";
 import { useMutation } from "@tanstack/react-query";
-import { register } from "../services/api/api.js";
+import { auth } from "../services/api";
+import { RegisterFormDataType } from "../services/api/types/users";
+import { AxiosError } from "axios";
 
 function Register(props) {
   const navigate = useNavigate();
-  const [responseHelper, setResponseHelper] = useState({});
+  const [responseHelper, setResponseHelper] = useState<RegisterFormDataType>(
+    {},
+  );
   const [passwordValue, setPasswordValue] = useState("");
   const { formRef, handleFormChange, isFilled } = useFormFilled();
 
   const { isPending, mutate: mutateRegister } = useMutation({
     mutationKey: ["register"],
-    mutationFn: (data) => register(data),
+    mutationFn: (data: RegisterFormDataType) => auth.register(data),
     onSuccess: () => {
       setTimeout(() => {
         navigate("/connexion", { replace: true });
@@ -26,9 +30,9 @@ function Register(props) {
     },
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    let formData = new FormData(e.target);
+    let formData = new FormData(e.target as HTMLFormElement);
 
     mutateRegister({
       username: formData.get("username"),
@@ -44,7 +48,7 @@ function Register(props) {
         ref={formRef}
         className="form-page"
         onSubmit={handleSubmit}
-        onChange={(e) => handleFormChange(e.target)}
+        onChange={handleFormChange}
       >
         <div className="form-header">
           <h1>Bienvenu</h1>

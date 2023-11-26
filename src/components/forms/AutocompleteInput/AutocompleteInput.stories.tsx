@@ -1,4 +1,4 @@
-import AutocompleteInput from "./index.jsx";
+import AutocompleteInput from "./Autocomplete";
 import PropTypes from "prop-types";
 
 export default {

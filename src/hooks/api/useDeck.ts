@@ -1,24 +1,33 @@
 import { useQueries, useQuery } from "@tanstack/react-query";
 import {
+  decks,
   loadPlantsIdsList,
   loadPlantsIdsListImages,
-  loadDeck,
-  loadDeckPlants,
-} from "../../services/api/api.js";
+} from "../../services/api";
 import { useEffect } from "react";
 import { getObjectKeyValues } from "../../utils/helpers";
 
-function useDeck({ deckId, fetchPlants = false, fetchImages = false }) {
+type UseDeckArgs = {
+  deckId: string;
+  fetchPlants?: boolean;
+  fetchImages?: boolean;
+};
+
+function useDeck({
+  deckId,
+  fetchPlants = false,
+  fetchImages = false,
+}: UseDeckArgs) {
   const [deckQuery, deckPlantsQuery] = useQueries({
     queries: [
       {
         queryKey: ["decks", deckId],
-        queryFn: () => loadDeck(deckId),
+        queryFn: () => decks.details(deckId),
         staleTime: 30_000,
       },
       {
         queryKey: ["decks-plants", deckId],
-        queryFn: () => loadDeckPlants({ deck__id: deckId }),
+        queryFn: () => decks.listPlants(deckId),
       },
     ],
   });
@@ -29,9 +38,6 @@ function useDeck({ deckId, fetchPlants = false, fetchImages = false }) {
       loadPlantsIdsList(
         getObjectKeyValues(deckPlantsQuery.data, "plant_id"), // array of plant id
       ),
-    onError: (error) => {
-      console.log(error);
-    },
     staleTime: Infinity,
     enabled: false,
   });

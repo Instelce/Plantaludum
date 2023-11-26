@@ -1,12 +1,30 @@
-import "./style.scss";
+import "./Autocomplete.scss";
 import Input from "../Input/index.jsx";
-import { useEffect, useMemo, useState } from "react";
+import React, {
+  ReactNode,
+  SetStateAction,
+  useEffect,
+  useMemo,
+  useState
+} from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import Option from "../Option/index.jsx";
 import useDebounce from "../../../hooks/useDebounce.js";
 import axios from "axios";
 import { deleteDublicates } from "../../../utils/helpers";
+
+type AutocompleteInputProps = {
+  label: string;
+  size: "small" | "medium" | "large"; // Define the available sizes
+  url: string;
+  fieldName: string;
+  maxSuggestions?: number;
+  handleValueChange: React.Dispatch<React.SetStateAction<string>> | null;
+  setValidValue?: React.Dispatch<SetStateAction<boolean>> | null; // Adjust the type to match expected values
+  setSelectedValueData?: (value: any) => void | null; // Adjust the type to match expected values
+  usageInfoText?: string | null;
+};
 
 function AutocompleteInput({
   label,
@@ -18,7 +36,7 @@ function AutocompleteInput({
   setValidValue = null,
   setSelectedValueData = null,
   usageInfoText = null,
-}) {
+}: AutocompleteInputProps) {
   const [searchValue, setSearchValue] = useState("");
   const [suggestions, setSuggestions] = useState(null);
   const debouncedSearchValue = useDebounce(searchValue, 300);
@@ -95,13 +113,21 @@ AutocompleteInput.propTypes = {
   usageInfoText: PropTypes.string,
 };
 
+type SuggestionsProps = {
+  searchValue: string;
+  fieldName: string;
+  suggestions: any;
+  maxSuggestions: number;
+  setSelectedValue: React.Dispatch<React.SetStateAction<string>>;
+}
+
 function Suggestions({
   searchValue,
   fieldName,
   suggestions,
   maxSuggestions,
   setSelectedValue,
-}) {
+}: SuggestionsProps) {
   const [selectedSuggestion, setSelectedSuggestion] = useState(0);
   const filteredSuggestions = useMemo(() => {
     if (searchValue.length === 0) {
@@ -124,7 +150,7 @@ function Suggestions({
 
   // Accessibility
   useEffect(() => {
-    const accessibility = (e) => {
+    const accessibility = (e: KeyboardEvent) => {
       switch (e.key) {
         case "ArrowDown":
           setSelectedSuggestion((prev) =>
@@ -136,7 +162,7 @@ function Suggestions({
           break;
         case "Enter":
           setSelectedValue(filteredSuggestions[selectedSuggestion]);
-          setSelectedSuggestion((prev) => 0);
+          setSelectedSuggestion(() => 0);
           break;
       }
     };
@@ -154,13 +180,13 @@ function Suggestions({
         show: filteredSuggestions?.length !== 0,
       })}
     >
-      {filteredSuggestions?.map((option, index) => (
+      {filteredSuggestions?.map((option: string, index: number) => (
         <Option
           key={option}
           index={index}
           value={option}
           active={selectedSuggestion === index}
-          onClick={(e) => setSelectedValue(option)}
+          onClick={() => setSelectedValue(option)}
         >
           {option}
         </Option>
@@ -169,12 +195,12 @@ function Suggestions({
   );
 }
 
-Suggestions.propTypes = {
-  searchValue: PropTypes.string,
-  fieldName: PropTypes.string,
-  suggestions: PropTypes.array,
-  maxSuggestions: PropTypes.number,
-  setSelectedValue: PropTypes.func,
-};
+
+
+
+
+
+
+
 
 export default AutocompleteInput;

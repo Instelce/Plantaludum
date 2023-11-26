@@ -6,7 +6,7 @@ export default function useRefreshToken() {
 
   const refresh = async () => {
     const response = await api.post(
-      "auth/refresh",
+      "api/auth/refresh",
       {},
       {
         withCredentials: true,

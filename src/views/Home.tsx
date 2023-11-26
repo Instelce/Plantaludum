@@ -1,21 +1,17 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { css } from "@emotion/css";
 import FloatingPlantCard from "../components/FloatingPlantCard/index.jsx";
-import {
-  arrayChoice,
-  deleteDublicates,
-  getRandomInt,
-  simpleFetch,
-} from "../utils/helpers";
+import { arrayChoice, deleteDublicates, getRandomInt } from "../utils/helpers";
 import PlantQuiz from "../components/PlantQuiz/index.jsx";
-import ButtonLink from "../components/ui/Buttons/ButtonLink.jsx";
-import api, { apiFlore } from "../services/api/axios.js";
-import { useFetch } from "../hooks/useFetch.js";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { loadImages, loadRandomPlants } from "../services/api/api.js";
+import { apiFlore } from "../services/api/axios.js";
+import { useQuery } from "@tanstack/react-query";
+import { loadRandomPlants } from "../services/api";
+import { PlantType } from "../services/api/types/plants";
+import Button from "../components/ui/Buttons/Button";
+import { Link } from "react-router-dom";
 
 function Home(props) {
-  let tempPlants = [];
+  let tempPlants: PlantType[] = [];
   const [plants, setPlants] = useState([]);
   const [currentPlant, setCurrentPlant] = useState({});
   const [showQuiz, setShowQuiz] = useState(false);
@@ -170,13 +166,15 @@ function Home(props) {
           `}
         >
           <h1 className="main-title">Plantaludum</h1>
-          <ButtonLink
+          <Button
+            asChild
             label="Jouer"
-            to="/connexion"
-            size="big"
+            size="large"
             color="primary"
             fill={true}
-          ></ButtonLink>
+          >
+            <Link to="/connexion">Jouer</Link>
+          </Button>
         </div>
       </CardWrapper>
       <PlantQuiz

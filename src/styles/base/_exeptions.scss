@@ -11,3 +11,15 @@
 .sep-bottom {
   border-bottom: 1px solid rgb(var(--color-gray-3));
 }
+
+.list-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.list-wrapper {
+  grid-column: 2 / 4;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 1rem;
+}

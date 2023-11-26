@@ -23,12 +23,14 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
   }
 
   .choice-text {
+    width: 100%;
     text-align: left;
     margin-right: 2rem;
+    display: flex;
+    flex-direction: column;
   }
 
   p:nth-child(1) {

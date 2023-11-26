@@ -5,9 +5,9 @@ const api = axios.create({
 });
 
 export const apiRequest = {
-  get: <T>(url: string) => api.get<T>(url).then((r) => r),
+  get: <T>(url: string) => api.get<T>(url),
   post: <T>(url: string, data?: {}, config?: AxiosRequestConfig) =>
-    api.post<T>(url, data, config).then((r) => r),
+    api.post<T>(url, data, config),
 };
 
 export const apiPrivate = axios.create({
@@ -17,15 +17,15 @@ export const apiPrivate = axios.create({
 });
 
 export const apiPrivateRequest = {
-  get: <T>(url: string) => apiPrivate.get<T>(url).then((r) => r),
+  get: <T>(url: string) => apiPrivate.get<T>(url),
   post: <T>(url: string, data?: {}, config?: AxiosRequestConfig) =>
-    apiPrivate.post<T>(url, data, config).then((r) => r),
+    apiPrivate.post<T>(url, data, config),
   put: <T>(url: string, data?: {}, config?: AxiosRequestConfig) =>
-    apiPrivate.put<T>(url, data, config).then((r) => r),
+    apiPrivate.put<T>(url, data, config),
   patch: <T>(url: string, data?: {}, config?: AxiosRequestConfig) =>
-    apiPrivate.patch<T>(url, data, config).then((r) => r),
+    apiPrivate.patch<T>(url, data, config),
   delete: <T>(url: string, config?: AxiosRequestConfig) =>
-    apiPrivate.delete<T>(url, config).then((r) => r),
+    apiPrivate.delete<T>(url, config),
 };
 
 export const apiFlore = axios.create({
@@ -33,9 +33,8 @@ export const apiFlore = axios.create({
 });
 
 export const apiFloreRequest = {
-  get: <T>(url: string) => apiFlore.get<T>(url).then((r) => r),
-  post: <T>(url: string, data: {}) =>
-    apiFlore.post<T>(url, data).then((r) => r),
+  get: <T>(url: string) => apiFlore.get<T>(url),
+  post: <T>(url: string, data: {}) => apiFlore.post<T>(url, data),
 };
 
 export default api;

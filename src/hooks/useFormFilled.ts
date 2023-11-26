@@ -1,4 +1,4 @@
-import { MutableRefObject, useRef, useState } from "react";
+import { FormEventHandler, MutableRefObject, useRef, useState } from "react";
 
 type UseFormFilledReturnType = {
   formRef: MutableRefObject<HTMLFormElement | null>;
@@ -8,7 +8,7 @@ type UseFormFilledReturnType = {
 
 function useFormFilled(): UseFormFilledReturnType {
   const form = useRef<HTMLFormElement>(null);
-  const [isFilled, setIsFilled] = useState(true);
+  const [isFilled, setIsFilled] = useState(false);
 
   const handleFormChange = () => {
     let countInputFilled = 0;

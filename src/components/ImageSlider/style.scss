@@ -1,5 +1,6 @@
 .slider {
   width: 100%;
+  height: auto;
   position: relative;
   display: inline-block;
 
@@ -40,7 +41,7 @@
     width: 100%;
     padding: 1em 1em;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: space-between;
     position: absolute;
     bottom: 0;
@@ -53,11 +54,6 @@
       cursor: pointer;
       border-radius: var(--radius);
       transition: stroke 0.3s;
-
-      &:hover {
-        background: rgba(var(--color-primary-light), 2);
-        stroke: rgb(var(--color-primary-dark));
-      }
     }
   }
 

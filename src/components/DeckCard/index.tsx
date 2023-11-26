@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 import Button from "../ui/Buttons/Button.jsx";
 import { Zap } from "react-feather";
 import Flower from "../ui/Icons";
-import ButtonLink from "../ui/Buttons/ButtonLink.jsx";
 
 function DeckCard({ deck, ...props }) {
   const cardRef = useRef(null);
@@ -65,12 +64,14 @@ function DeckCard({ deck, ...props }) {
         </div>
       </div>
       <div className="card-button">
-        <ButtonLink to={`/decks/${deck.id}`} label="Découvrir" />
-        <ButtonLink
-          to={`/decks/${deck.id}/game`}
-          icon={<Zap />}
-          color="yellow"
-        />
+        <Button asChild label="Découvrir">
+          <Link to={`/decks/${deck.id}`}>Découvrir</Link>
+        </Button>
+        <Button asChild color="yellow" onlyIcon>
+          <Link to={`/decks/${deck.id}/game`}>
+            <Zap />
+          </Link>
+        </Button>
       </div>
     </div>
   );

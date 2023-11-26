@@ -1,6 +1,14 @@
 import React, { useId } from "react";
-import PropTypes from "prop-types";
 import "./style.scss";
+
+type CheckboxProps = {
+  id?: string | null;
+  label: string;
+  takeValue: string;
+  value: boolean;
+  handleValueChange?: React.Dispatch<React.SetStateAction<boolean>> | null;
+  disabled?: boolean;
+};
 
 function Checkbox({
   id = null,
@@ -9,7 +17,7 @@ function Checkbox({
   value,
   handleValueChange = null,
   disabled,
-}) {
+}: CheckboxProps) {
   const defaultId = useId();
   return (
     <div className="checkbox">
@@ -22,18 +30,9 @@ function Checkbox({
         checked={value}
         onChange={(e) => handleValueChange?.(e.target.checked)}
       />
-      <label htmlFor={id}>{label}</label>
+      <label htmlFor={id ? id : defaultId}>{label}</label>
     </div>
   );
 }
-
-Checkbox.propTypes = {
-  id: PropTypes.string,
-  label: PropTypes.string,
-  takeValue: PropTypes.string,
-  value: PropTypes.bool,
-  handleValueChange: PropTypes.func,
-  disabled: PropTypes.bool,
-};
 
 export default Checkbox;

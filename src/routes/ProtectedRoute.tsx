@@ -1,15 +1,23 @@
 import { Navigate } from "react-router-dom";
-import PropTypes from "prop-types";
-import useAuth from "../hooks/auth/useAuth.js";
 import useRefreshToken from "../hooks/auth/useRefreshToken.js";
+import { useAuth } from "../context/AuthProvider";
+import React from "react";
 
-function ProtectedRoute({ children, redirectPath = "/connexion" }) {
+type ProtectedRouteProps = {
+  children: React.ReactNode;
+  redirectPath?: string;
+};
+
+function ProtectedRoute({
+  children,
+  redirectPath = "/connexion",
+}: ProtectedRouteProps) {
   const { accessToken } = useAuth();
   const refresh = useRefreshToken();
 
   if (!accessToken) {
     const getNewAccessToken = async () => {
-      const { newAccessToken } = await refresh();
+      const { accessToken: newAccessToken } = await refresh();
 
       console.log(newAccessToken);
 
@@ -25,10 +33,5 @@ function ProtectedRoute({ children, redirectPath = "/connexion" }) {
 
   return children;
 }
-
-ProtectedRoute.propTypes = {
-  redirectPath: PropTypes.string,
-  children: PropTypes.node,
-};
 
 export default ProtectedRoute;

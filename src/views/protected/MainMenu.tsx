@@ -1,13 +1,12 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import usePrivateFetch from "../../hooks/auth/usePrivateFetch.js";
 import useRefreshToken from "../../hooks/auth/useRefreshToken.js";
 import useLogout from "../../hooks/auth/useLogout.js";
 import useUser from "../../hooks/auth/useUser.js";
-import useAuth from "../../hooks/auth/useAuth.js";
 import Navbar from "../../components/Navbar/index.jsx";
-import ButtonLink from "../../components/ui/Buttons/ButtonLink.jsx";
-import { Plus } from "react-feather";
+import { useAuth } from "../../context/AuthProvider";
+import Button from "../../components/ui/Buttons/Button";
 
 function MainMenu(props) {
   const { user } = useAuth();
@@ -31,7 +30,14 @@ function MainMenu(props) {
           <Link to="/explorer">Explorer</Link>
         </div>
         <div className="right">
-          <ButtonLink to="/decks/create" label="Nouveau deck" color="gray" />
+          <Button asChild label="Nouveau deck" size="large" color="gray">
+            <Link
+              to="/decks/create"
+              state={{ from: { pathname: location.pathname } }}
+            >
+              Nouveau deck
+            </Link>
+          </Button>
         </div>
       </Navbar>
 

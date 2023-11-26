@@ -1,24 +1,14 @@
-import "./style.scss";
+import "./Button.scss";
 import classNames from "classnames";
-import Loader from "../../Loader";
-import { ButtonHTMLAttributes, FC, PropsWithChildren, ReactNode } from "react";
+import { ForwardedRef, forwardRef } from "react";
+import { ButtonProps } from "./ButtonProps";
+import Slot from "../../Slot";
 
-type ButtonProps = {
-  label?: string | null;
-  icon?: ReactNode | null;
-  color?: "primary" | "gray" | "dark-gray" | "yellow" | "success" | "danger";
-  size?: "small" | "medium" | "large";
-  fill?: boolean;
-  loading?: boolean;
-  disabled?: boolean;
-  children?: ReactNode;
-  className?: string;
-} & ButtonHTMLAttributes<HTMLButtonElement>;
-
-const Button: FC = (props: ButtonProps) => {
+const Button = forwardRef<HTMLElement, ButtonProps>((props, forwardedRef) => {
   const {
+    asChild = false,
     label = null,
-    icon = null,
+    onlyIcon = false,
     color = "primary",
     size = "large",
     disabled = false,
@@ -28,34 +18,29 @@ const Button: FC = (props: ButtonProps) => {
     className,
     ...otherProps
   } = props;
+  const Comp = asChild ? Slot : "button";
 
   return (
-    <button
+    <Comp
       title={label ? label : ""}
       className={classNames(
         "button",
         className,
         color,
         size,
+        { "only-icon": onlyIcon },
         { fill: fill },
-        { icon: icon !== null },
-        { "only-icon": label === "" && icon != null },
         { loading: loading },
       )}
       disabled={disabled}
       {...otherProps}
+      ref={forwardedRef as ForwardedRef<HTMLButtonElement>}
     >
-      {!loading ? (
-        <>
-          <div>{children ? children : label}</div>
-
-          {icon !== null && <span>{icon}</span>}
-        </>
-      ) : (
-        <Loader />
-      )}
-    </button>
+      {children}
+    </Comp>
   );
-};
+});
+
+Button.displayName = "Button";
 
 export default Button;
