@@ -1,6 +1,6 @@
 // PasswordChecker.stories.js
 
-import PasswordChecker from "./index.jsx";
+import PasswordChecker from "./PasswordChecker";
 
 export default {
   title: "Components/PasswordChecker",

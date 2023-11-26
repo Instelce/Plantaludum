@@ -4,7 +4,7 @@ import usePrivateFetch from "../../hooks/auth/usePrivateFetch.js";
 import useRefreshToken from "../../hooks/auth/useRefreshToken.js";
 import useLogout from "../../hooks/auth/useLogout.js";
 import useUser from "../../hooks/auth/useUser.js";
-import Navbar from "../../components/Navbar/index.jsx";
+import Navbar from "../../components/Navbar/Navbar";
 import { useAuth } from "../../context/AuthProvider";
 import Button from "../../components/ui/Buttons/Button";
 

@@ -6,10 +6,10 @@ import React, {
   useRef,
   useState,
 } from "react";
-import "./style.scss";
+import "./Dropdown.scss";
 import Button from "../../ui/Buttons/Button.jsx";
 import classNames from "classnames";
-import Option from "../Option/index.jsx";
+import Option from "../Option/Option";
 import PropTypes from "prop-types";
 import { ChevronDown } from "react-feather";
 import { deleteDublicates } from "../../../utils/helpers";

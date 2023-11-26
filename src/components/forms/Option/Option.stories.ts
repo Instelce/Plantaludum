@@ -1,4 +1,4 @@
-import Option from "./index.jsx";
+import Option from "./Option";
 
 export default {
   title: "Components/Forms/Dropdown/Option",

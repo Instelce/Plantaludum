@@ -1,12 +1,11 @@
 import React, {
-  HTMLInputTypeAttribute,
   InputHTMLAttributes,
   ReactNode,
   useId,
   useState
 } from "react";
 
-import "./style.scss";
+import "./Input.scss";
 import Modal from "../../ui/Modal/index.jsx";
 import { Info } from "react-feather";
 
@@ -32,7 +31,7 @@ function Input({
   label,
   icon = null,
   type = "text",
-  size = "large" as SizeProp,
+  size,
   disabled = false,
   showInfo = false,
   value,

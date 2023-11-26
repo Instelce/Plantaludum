@@ -5,7 +5,7 @@ import { EyeOff, RefreshCw, Share, Trash } from "react-feather";
 import Button from "../../components/ui/Buttons/Button.jsx";
 import Stars from "../../components/ui/Stars/index.jsx";
 import useDeck from "../../hooks/api/useDeck.js";
-import Navbar from "../../components/Navbar/index.jsx";
+import Navbar from "../../components/Navbar/Navbar";
 import Tabs from "../../components/ui/Tabs/index.jsx";
 import PlantCard from "../../components/PlantCard/index.jsx";
 import { useAuth } from "../../context/AuthProvider";

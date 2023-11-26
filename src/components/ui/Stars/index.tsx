@@ -1,9 +1,14 @@
 import { Star } from "react-feather";
 import PropTypes from "prop-types";
 import "./style.scss";
-import { cloneElement } from "react";
+import {cloneElement, ReactNode} from "react";
 
-export default function Stars({ count, icon = null }) {
+type StarsProps = {
+  count: number;
+  icon: ReactNode | null;
+}
+
+export default function Stars({ count, icon = null }: StarsProps) {
   // let Icon = icon != null ? cloneElement(icon) : Star
 
   let starsElements = [];

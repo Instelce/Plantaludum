@@ -1,10 +1,13 @@
 import React, { useMemo } from "react";
-import PropTypes from "prop-types";
 
-import "./style.scss";
+import "./PasswordChecker.scss";
 import ProgressBar from "../../ProrgessBar/index.jsx";
 
-function PasswordChecker({ password }) {
+type PasswordCheckerType = {
+  password: string;
+}
+
+function PasswordChecker({ password }: PasswordCheckerType) {
   const status = useMemo(() => {
     return checkPassword(password);
   }, [password]);
@@ -21,7 +24,7 @@ function PasswordChecker({ password }) {
   );
 }
 
-function checkPassword(password) {
+function checkPassword(password: string) {
   if (password.length >= 16) {
     return [
       100,
@@ -44,9 +47,5 @@ function checkPassword(password) {
     "Mettez plus de caractère/symbole/chiffre, sinon même une plante pourra le cracker.",
   ];
 }
-
-PasswordChecker.propTypes = {
-  password: PropTypes.string,
-};
 
 export default PasswordChecker;

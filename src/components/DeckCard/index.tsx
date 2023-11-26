@@ -1,40 +1,48 @@
-import React, { useEffect, useRef, useState } from "react";
-import PropTypes from "prop-types";
+import React, { useEffect, useRef } from "react";
 import Stars from "../ui/Stars/index.jsx";
 import "./style.scss";
 import { Link } from "react-router-dom";
 import Button from "../ui/Buttons/Button.jsx";
 import { Zap } from "react-feather";
 import Flower from "../ui/Icons";
+import {DeckType} from "../../services/api/types/decks";
 
-function DeckCard({ deck, ...props }) {
-  const cardRef = useRef(null);
-  const [currentImage, setCurrentImage] = useState(2);
+type DeckCardProps = {
+  deck: DeckType;
+}
 
-  const handleRightClick = (e) => {
+function DeckCard({ deck, ...props }: DeckCardProps) {
+  const cardRef = useRef<HTMLDivElement | null>(null);
+  // const [currentImage, setCurrentImage] = useState<number>(2);
+
+  const handleRightClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.preventDefault();
     cardRef.current?.classList.toggle("show-content");
   };
 
   const handleMouseLeave = () => {
-    cardRef.current?.classList.remove("show-content");
-    cardRef.current.style.transform = `translate(0, 0)`;
+    if (cardRef.current) {
+      cardRef.current.classList.remove("show-content");
+      cardRef.current.style.transform = `translate(0, 0)`;
+    }
   };
 
   useEffect(() => {
     const cardRect = cardRef.current?.getBoundingClientRect();
-    let x, y;
+    let x: number, y: number;
 
-    const handleMoveSlide = (e) => {
+    const handleMoveSlide = (e: MouseEvent) => {
       // console.log(e, cardRect, nameRect)
-      x = e.pageX - cardRect.left - cardRect.width / 2;
-      y = e.pageY - cardRect.top - cardRect.height / 2;
+      if (cardRect) {
+        x = e.pageX - cardRect.left - cardRect.width / 2;
+        y = e.pageY - cardRect.top - cardRect.height / 2;
 
-      // console.log(pos > (cardRect.left + cardRect.right) / 2 ? "right" : "left", (cardRect.left + cardRect.right) / 2, pos)
-
-      cardRef.current.style.transform = `translate(${x * 0.02}px, ${
-        y * 0.02
-      }px) scale(1.02)`;
+        if (cardRef.current) {
+          cardRef.current.style.transform = `translate(${x * 0.02}px, ${
+            y * 0.02
+          }px) scale(1.02)`;
+        }
+      }
     };
 
     cardRef.current?.addEventListener("mousemove", handleMoveSlide);
@@ -60,7 +68,7 @@ function DeckCard({ deck, ...props }) {
         />
         <div className="card-content">
           <h3>{deck.name}</h3>
-          <Stars count={deck.difficulty} icon={<Flower />} />
+          <Stars count={parseInt(deck.difficulty)} icon={<Flower />} />
         </div>
       </div>
       <div className="card-button">
@@ -76,14 +84,5 @@ function DeckCard({ deck, ...props }) {
     </div>
   );
 }
-
-DeckCard.propTypes = {
-  deck: PropTypes.shape({
-    name: PropTypes.string,
-    description: PropTypes.string,
-    difficulty: PropTypes.number,
-    images: PropTypes.arrayOf(PropTypes.string),
-  }),
-};
 
 export default DeckCard;

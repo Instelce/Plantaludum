@@ -27,6 +27,6 @@ export interface CreateDeckFormDataType {
 }
 
 export interface CreateDeckPlantFormDataType {
+  deck: number;
   plant_id: number;
-  deck_id: number;
 }

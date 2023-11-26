@@ -14,7 +14,7 @@ import {
 } from "../../utils/helpers";
 import { ErrorBoundary } from "react-error-boundary";
 import useCacheImages from "../../hooks/useCacheImages.js";
-import Navbar from "../../components/Navbar/index.jsx";
+import Navbar from "../../components/Navbar/Navbar";
 import ButtonLink from "../../components/ui/Buttons/ButtonLink.jsx";
 import PlantImageSlider from "../../components/PlantImageSlider/index.jsx";
 

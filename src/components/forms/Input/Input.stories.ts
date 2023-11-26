@@ -1,6 +1,6 @@
 // Input.stories.js
 
-import Input from "./index.jsx";
+import Input from "./Input";
 import { useArgs } from "@storybook/preview-api";
 
 /*function Component(Story, ctx) {

@@ -1,11 +1,11 @@
 import { FormEvent, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import Input from "../components/forms/Input/index.jsx";
+import Input from "../components/forms/Input/Input";
 import Button from "../components/ui/Buttons/Button.jsx";
 import useFormFilled from "../hooks/useFormFilled.js";
 import { useMutation } from "@tanstack/react-query";
 import { auth } from "../services/api";
-import Navbar from "../components/Navbar/index.jsx";
+import Navbar from "../components/Navbar/Navbar";
 import { ArrowRight } from "react-feather";
 import { useAuth } from "../context/AuthProvider";
 import { LoginFormDataType } from "../services/api/types/users";

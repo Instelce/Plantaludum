@@ -1,6 +1,6 @@
 import Button from "../components/ui/Buttons/Button.jsx";
 import { Settings } from "react-feather";
-import Navbar from "../components/Navbar/index.jsx";
+import Navbar from "../components/Navbar/Navbar";
 import ButtonLink from "../components/ui/Buttons/ButtonLink.jsx";
 import { Link } from "react-router-dom";
 

@@ -1,32 +1,18 @@
 import "./Autocomplete.scss";
-import Input from "../Input/index.jsx";
-import React, {
-  ReactNode,
-  SetStateAction,
-  useEffect,
-  useMemo,
-  useState
-} from "react";
-import PropTypes from "prop-types";
+import Input from "../Input/Input";
+import React, {KeyboardEvent, useEffect, useMemo, useState} from "react";
 import classNames from "classnames";
-import Option from "../Option/index.jsx";
+import Option from "../Option/Option";
 import useDebounce from "../../../hooks/useDebounce.js";
 import axios from "axios";
-import { deleteDublicates } from "../../../utils/helpers";
-
-type AutocompleteInputProps = {
-  label: string;
-  size: "small" | "medium" | "large"; // Define the available sizes
-  url: string;
-  fieldName: string;
-  maxSuggestions?: number;
-  handleValueChange: React.Dispatch<React.SetStateAction<string>> | null;
-  setValidValue?: React.Dispatch<SetStateAction<boolean>> | null; // Adjust the type to match expected values
-  setSelectedValueData?: (value: any) => void | null; // Adjust the type to match expected values
-  usageInfoText?: string | null;
-};
+import {deleteDublicates} from "../../../utils/helpers";
+import {
+  AutocompleteInputProps,
+  SuggestionsProps
+} from "./AutocompleteInputProps";
 
 function AutocompleteInput({
+  id,
   label,
   size,
   url,
@@ -38,7 +24,7 @@ function AutocompleteInput({
   usageInfoText = null,
 }: AutocompleteInputProps) {
   const [searchValue, setSearchValue] = useState("");
-  const [suggestions, setSuggestions] = useState(null);
+  const [suggestions, setSuggestions] = useState<object | null>(null);
   const debouncedSearchValue = useDebounce(searchValue, 300);
   const [selectedValue, setSelectedValue] = useState("");
 
@@ -51,7 +37,7 @@ function AutocompleteInput({
       });
   }, [debouncedSearchValue]);
 
-  // set autocomplete to invalid
+  // set autocomplete to invalid if search value is different to selected value
   useEffect(() => {
     if (searchValue !== selectedValue) {
       setValidValue?.(() => false);
@@ -62,19 +48,20 @@ function AutocompleteInput({
     setSelectedValue(() => value);
     setSearchValue(() => value);
     setValidValue?.(() => value);
-    handleValueChange(() => value);
+    handleValueChange?.(() => value);
     // console.log(value)
     // console.log("click", Object.values(suggestions).filter(p => {
     //   // console.log(value, searchValue)
     //   return p[fieldName] === value
     // }))
+    console.log(suggestions)
     setSelectedValueData?.(
       () => Object.values(suggestions).filter((p) => p[fieldName] === value)[0],
     );
   };
 
   // remove enter key submit
-  const checkKeyDown = (e) => {
+  const checkKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") e.preventDefault();
   };
 
@@ -102,25 +89,6 @@ function AutocompleteInput({
   );
 }
 
-AutocompleteInput.propTypes = {
-  label: PropTypes.string,
-  size: PropTypes.oneOf(["sm", "md", "lg", "big"]),
-  url: PropTypes.string,
-  fieldName: PropTypes.string,
-  maxSuggestions: PropTypes.number,
-  handleValueChange: PropTypes.func,
-  setValidValue: PropTypes.func,
-  usageInfoText: PropTypes.string,
-};
-
-type SuggestionsProps = {
-  searchValue: string;
-  fieldName: string;
-  suggestions: any;
-  maxSuggestions: number;
-  setSelectedValue: React.Dispatch<React.SetStateAction<string>>;
-}
-
 function Suggestions({
   searchValue,
   fieldName,
@@ -134,10 +102,10 @@ function Suggestions({
       return [];
     } else {
       // first get only fieldName key values
-      let results = suggestions.map((el) => el[fieldName]);
+      let results = suggestions.map((el: any[]) => el[fieldName]);
       // then filter by search value
       results = results.filter(
-        (value) => value?.toLowerCase().startsWith(searchValue?.toLowerCase()),
+        (value: string) => value?.toLowerCase().startsWith(searchValue?.toLowerCase()),
       );
       // and get only keep 0 to maxSuggestions values
       results = results.slice(0, maxSuggestions);
@@ -194,13 +162,5 @@ function Suggestions({
     </div>
   );
 }
-
-
-
-
-
-
-
-
 
 export default AutocompleteInput;

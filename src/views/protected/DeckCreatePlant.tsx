@@ -5,11 +5,14 @@ import AutocompleteInput from "../../components/forms/AutocompleteInput/Autocomp
 import usePrivateFetch from "../../hooks/auth/usePrivateFetch.js";
 import { useMutation } from "@tanstack/react-query";
 import { decks, loadPlantsIdsListImages } from "../../services/api";
-import Navbar from "../../components/Navbar/index.jsx";
+import Navbar from "../../components/Navbar/Navbar";
 import { ErrorBoundary } from "react-error-boundary";
 import PlantCard from "../../components/PlantCard/index.jsx";
+import {PlantType} from "../../services/api/types/plants";
+import {ImageType} from "../../services/api/types/images";
+import {CreateDeckPlantFormDataType} from "../../services/api/types/decks";
 
-function DeckCreatePlant(props) {
+function DeckCreatePlant() {
   const privateFetch = usePrivateFetch();
 
   const location = useLocation();
@@ -18,15 +21,15 @@ function DeckCreatePlant(props) {
   const { deckId } = useParams();
   const quizData = location.state.data;
 
-  const [plantValue, setPlantValue] = useState(null);
-  const [plantData, setPlantData] = useState({});
+  const [plantValue, setPlantValue] = useState<string>("");
+  const [plantData, setPlantData] = useState<PlantType | null>(null);
   const [plantIsValid, setPlantIsValid] = useState(false);
 
-  const [plants, setPlants] = useState([]);
+  const [plants, setPlants] = useState<PlantType[]>([]);
 
   const { isPending, mutate: mutateCreatePlantQuiz } = useMutation({
     mutationKey: ["decks-plants", deckId],
-    mutationFn: (data) => decks.createPlant(privateFetch, data),
+    mutationFn: (data: CreateDeckPlantFormDataType) => decks.createPlant(privateFetch, data),
     onSuccess: () => {
       navigate(`/decks/${deckId}`, { replace: true });
     },
@@ -39,8 +42,8 @@ function DeckCreatePlant(props) {
 
   const createDeckPlants = async () => {
     for (const plant of plants) {
-      await mutateCreatePlantQuiz({
-        deck: deckId,
+      mutateCreatePlantQuiz({
+        deck: parseInt(deckId as string, 10),
         plant_id: plant.id,
       });
     }
@@ -49,19 +52,22 @@ function DeckCreatePlant(props) {
   const addPlant = (e: FormEvent) => {
     console.log("submit", e.target);
     e.preventDefault();
+
+    const plantExists = plantData && Object.values(plants)
+      .map((plant) => plant.id)
+      .includes(plantData.id)
+
     if (
       plantValue &&
       plantIsValid &&
-      !Object.values(plants)
-        .map((plant) => plant.id)
-        .includes(plantData.id)
+      !plantExists
     ) {
       console.log("plant", plantData);
-      setPlants(() => [...plants, plantData]);
+      setPlants([...plants, plantData as PlantType]);
     }
   };
 
-  const removePlant = (plant) => {
+  const removePlant = (plant: PlantType) => {
     setPlants(() => [...plants].filter((p) => p !== plant));
   };
 
@@ -132,11 +138,10 @@ function DeckCreatePlant(props) {
             {plants.map((plant, index) => (
               <PlantCard
                 key={index}
-                index={index}
                 plant={plant}
                 images={plantImagesMutation.data
-                  ?.filter((p) => p.id === plant.id)?.[0]
-                  ?.images?.map((img) => img.url)
+                  ?.filter((p: PlantType) => p.id === plant.id)?.[0]
+                  ?.images?.map((img: ImageType) => img.url)
                   .slice(0, 5)}
               />
             ))}
@@ -153,7 +158,7 @@ function DeckCreatePlant(props) {
             label="Continuer"
             size="large"
             color="primary"
-            // disabled={plants.length < 3}
+            disabled={plants.length < 4}
             onClick={createDeckPlants}
             loading={isPending}
           >

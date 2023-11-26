@@ -1,8 +1,8 @@
 import { ChangeEvent, FormEvent, FormEventHandler, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Input from "../components/forms/Input/index.jsx";
+import Input from "../components/forms/Input/Input";
 import Button from "../components/ui/Buttons/Button.jsx";
-import PasswordChecker from "../components/forms/PasswordChecker/index.jsx";
+import PasswordChecker from "../components/forms/PasswordChecker/PasswordChecker";
 import useFormFilled from "../hooks/useFormFilled.js";
 import { useMutation } from "@tanstack/react-query";
 import { auth } from "../services/api";

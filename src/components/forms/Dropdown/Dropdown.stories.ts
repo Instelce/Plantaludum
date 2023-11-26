@@ -1,5 +1,5 @@
-import Dropdown from "./index.jsx";
-import "./style.scss";
+import Dropdown from "./Dropdown";
+import "./Dropdown.scss";
 
 export default {
   title: "Components/Forms/Dropdown",

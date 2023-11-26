@@ -1,24 +1,35 @@
-import "./style.scss";
-import PropTypes from "prop-types";
-import { useEffect, useId, useState } from "react";
+import "./Textarea.scss";
+import React, { useEffect, useId, useState } from "react";
 import classNames from "classnames";
 
+type TextareaProps = {
+  id?: string;
+  label: string;
+  maxLength?: number;
+  showActionBar?: boolean;
+  disabled?: boolean;
+  value?: string;
+  handleValueChange?: React.Dispatch<React.SetStateAction<string>> | null;
+  helperText?: string;
+  mb?: number;
+}
+
 function Textarea({
-  id = undefined,
+  id,
   label,
-  maxLenght = null,
+  maxLength,
   showActionBar = false,
   disabled = false,
   value,
   handleValueChange = null,
-  helperText = "",
+  helperText,
   mb,
-}) {
+}: TextareaProps) {
   const defaultId = useId();
   const [valueLenght, setValueLenght] = useState(0);
 
-  const handleChange = (value) => {
-    setValueLenght((prev) => value.toString().length);
+  const handleChange = (value: string) => {
+    setValueLenght(() => value.toString().length);
 
     handleValueChange ? handleValueChange(value) : null;
   };
@@ -36,30 +47,20 @@ function Textarea({
           onChange={(e) => handleChange(e.target.value)}
         ></textarea>
         <label htmlFor={id ? id : defaultId}>{label}</label>
-        {maxLenght && (
+        {maxLength && (
           <span
             className={classNames("world-counter", {
-              "text-overflow": valueLenght > maxLenght,
+              "text-overflow": valueLenght > maxLength,
             })}
           >
-            {maxLenght - valueLenght}
+            {maxLength - valueLenght}
           </span>
         )}
       </div>
-      <p className="helper-text">{helperText}</p>
+      {helperText && <p className="helper-text">{helperText}</p>}
     </div>
   );
 }
 
-Textarea.propTypes = {
-  id: PropTypes.string,
-  label: PropTypes.string,
-  maxLenght: PropTypes.number,
-  showActionBar: PropTypes.bool,
-  disabled: PropTypes.bool,
-  value: PropTypes.string,
-  handleValueChange: PropTypes.func,
-  helperText: PropTypes.string,
-};
 
 export default Textarea;

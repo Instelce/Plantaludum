@@ -1,5 +1,5 @@
 import React, { useId } from "react";
-import "./style.scss";
+import "./Checkbox.scss";
 
 type CheckboxProps = {
   id?: string | null;

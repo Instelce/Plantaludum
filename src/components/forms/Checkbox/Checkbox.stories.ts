@@ -1,6 +1,6 @@
 // Checkbox.stories.js
 
-import Checkbox from "./index.jsx";
+import Checkbox from "./Checkbox";
 
 export default {
   title: "Components/Forms/Checkbox",
