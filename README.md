@@ -1,6 +1,6 @@
 # Plantaludum
 
-Les technos utilisé pour le site sont : React, Vite, React Router Dom, React Query, Axios, Storybook, Sass.
+Les technos utilisé sont : React, Vite, React Router Dom, React Query, Axios, Storybook, Sass.
 
 ## Pour commencer
 
@@ -23,10 +23,10 @@ mkdir WebApp
 cd WebApp
 ```
 
-2. Cloner le repo su la branche `webapp`
+2. Cloner le repo
 
 ```shell
-git clone -b webapp https://github.com/<Votre-Pseudo>/Plantaludum.git .
+git clone https://github.com/<Votre-Pseudo>/Plantaludum.git
 ```
 
 4. Installer les dépendances
@@ -35,7 +35,7 @@ git clone -b webapp https://github.com/<Votre-Pseudo>/Plantaludum.git .
 pnpm i
 ```
 
-5. Enfin lancer le serveur de développement et storybook
+5. Enfin lancer le serveur de développement et le storybook
 
 ```shell
 pnpm run dev
