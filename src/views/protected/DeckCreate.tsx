@@ -3,7 +3,7 @@ import useFormFilled from "../../hooks/useFormFilled.js";
 import Input from "../../components/forms/Input/Input";
 import Textarea from "../../components/forms/Textarea/Textarea";
 import Dropdown from "../../components/forms/Dropdown/Dropdown";
-import { useEffect, useState } from "react";
+import {FormEvent, useEffect, useState} from "react";
 import Checkbox from "../../components/forms/Checkbox/Checkbox";
 import AutocompleteInput from "../../components/forms/AutocompleteInput/Autocomplete";
 import Option from "../../components/forms/Option/Option";
@@ -17,8 +17,9 @@ import Navbar from "../../components/Navbar/Navbar";
 import { ErrorBoundary } from "react-error-boundary";
 import { useAuth } from "../../context/AuthProvider";
 import { CreateDeckFormDataType } from "../../services/api/types/decks";
+import {ImageType} from "../../services/api/types/images";
 
-function DeckCreate(props) {
+function DeckCreate() {
   const { user } = useAuth();
   const privateFetch = usePrivateFetch();
   const location = useLocation();
@@ -52,10 +53,10 @@ function DeckCreate(props) {
 
   const { formRef, handleFormChange, isFilled } = useFormFilled();
 
-  const [plantValue, setPlantValue] = useState(null);
+  const [plantValue, setPlantValue] = useState<string | null>(null);
   const [plantIsValid, setPlantIsValid] = useState(false);
   const [plantImages, setPlantImages] = useState(null);
-  const [imageValue, setImageValue] = useState(null);
+  const [imageValue, setImageValue] = useState<string | null>(null);
 
   // get all image urls for autocomplete input
   useEffect(() => {
@@ -67,9 +68,9 @@ function DeckCreate(props) {
   // set plant images to an array of images
   useEffect(() => {
     if (plantImagesData) {
-      setPlantImages((prev) =>
+      setPlantImages(() =>
         deleteDublicates(
-          plantImagesData.results.map((data) => data.url.replace("L", "CRS")),
+          plantImagesData.results.map((data: ImageType) => data.url.replace("L", "CRS")),
         ),
       );
     }
@@ -88,18 +89,18 @@ function DeckCreate(props) {
     }
   }, [isSuccess]);
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = (e: FormEvent) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
+    const formData = new FormData(e.target as HTMLFormElement);
 
     console.log(user);
 
     mutateCreateDeck({
-      name: formData.get("name"),
-      description: formData.get("description"),
-      difficulty: formData.get("difficulty"),
-      preview_image_url: formData.get("preview-image-url"),
-      private: formData.get("private") ? formData.get("private") : false,
+      name: formData.get("name") as string,
+      description: formData.get("description") as string,
+      difficulty: formData.get("difficulty") as string,
+      preview_image_url: formData.get("preview-image-url") as string,
+      private: !!formData.get("private"),
       user: localStorage.getItem("USER-ID"),
     });
   };

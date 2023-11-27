@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 
 import "./PasswordChecker.scss";
-import ProgressBar from "../../ProrgessBar/index.jsx";
+import ProgressBar from "../../ProrgessBar/ProgressBar";
 
 type PasswordCheckerType = {
   password: string;

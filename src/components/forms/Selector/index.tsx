@@ -1,37 +1,38 @@
 import "./style.scss";
-import PropTypes from "prop-types";
 import Button from "../../ui/Buttons/Button.jsx";
 import classNames from "classnames";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Check, RefreshCcw } from "react-feather";
 
+type SelectorProps = {
+  inputId?: string;
+  choices: string[];
+  choiceType: "text" | "img";
+  multipleChoice?: boolean;
+  setValue: React.Dispatch<React.SetStateAction<string | null>>;
+}
+
 function Selector({
-  inputId = null,
+  inputId,
   choices,
   choiceType,
-  multiChoice = false,
   setValue,
-}) {
-  const [currentChoice, setCurrentChoice] = useState("");
+}: SelectorProps) {
+  const [currentChoice, setCurrentChoice] = useState<string | null>("");
   const [confirmChoice, setConfirmChoice] = useState(false);
 
   useEffect(() => {
     console.log(choices);
     if (!confirmChoice) {
-      setValue?.((prev) => null);
-      setCurrentChoice((prev) => null);
+      setValue?.(() => null);
+      setCurrentChoice(() => null);
     }
   }, [confirmChoice]);
 
-  // useEffect(() => {
-  //   console.log(choices)
-  //   console.log(currentChoice)
-  // }, [currentChoice]);
-
   const handleConfirmButtonClick = () => {
     if (currentChoice !== null) {
-      setValue?.((prev) => currentChoice);
-      setConfirmChoice((prev) => true);
+      setValue?.(() => currentChoice);
+      setConfirmChoice(() => true);
     }
   };
 
@@ -49,8 +50,8 @@ function Selector({
                 return (
                   <div
                     className="select-text"
-                    key={choice}
-                    onClick={() => setCurrentChoice((prev) => choice)}
+                    key={index}
+                    onClick={() => setCurrentChoice(() => choice)}
                   >
                     <p>{choice}</p>
                   </div>
@@ -62,7 +63,7 @@ function Selector({
                       selected: choice === currentChoice,
                     })}
                     key={choice}
-                    onClick={() => setCurrentChoice((prev) => choice)}
+                    onClick={() => setCurrentChoice(() => choice)}
                   >
                     <img src={choice} alt="image" />
                     <span></span>
@@ -124,15 +125,5 @@ function Selector({
     </div>
   );
 }
-
-Selector.propTypes = {
-  inputId: PropTypes.string,
-  choices: PropTypes.array,
-  choiceType: PropTypes.oneOf(["text", "img"]),
-  multiChoice: PropTypes.bool,
-  setValue: PropTypes.func,
-};
-
-function SelectorChoice() {}
 
 export default Selector;

@@ -3,11 +3,11 @@ import { Link, useLocation, useParams } from "react-router-dom";
 import Loader from "../../components/Loader/index.jsx";
 import { EyeOff, RefreshCw, Share, Trash } from "react-feather";
 import Button from "../../components/ui/Buttons/Button.jsx";
-import Stars from "../../components/ui/Stars/index.jsx";
+import Stars from "../../components/ui/Stars/Stars";
 import useDeck from "../../hooks/api/useDeck.js";
 import Navbar from "../../components/Navbar/Navbar";
 import Tabs from "../../components/ui/Tabs/index.jsx";
-import PlantCard from "../../components/PlantCard/index.jsx";
+import PlantCard from "../../components/PlantCard/PlantCard";
 import { useAuth } from "../../context/AuthProvider";
 
 function DeckDetail(props) {

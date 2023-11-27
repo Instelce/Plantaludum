@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import ImageSlider from "../../components/ImageSlider/index.jsx";
-import ChoiceBlock from "../../components/ChoiceBlock/index.jsx";
+import ChoiceBlock from "../../components/ChoiceBlock/ChoiceBlock";
 import { RefreshCw, Star, X } from "react-feather";
 import { useTimer } from "../../hooks/useTimer.js";
 import { Link, redirect, useNavigate, useParams } from "react-router-dom";
-import Stars from "../../components/ui/Stars/index.jsx";
-import ProgressBar from "../../components/ProrgessBar/index.jsx";
+import Stars from "../../components/ui/Stars/Stars";
+import ProgressBar from "../../components/ProrgessBar/ProgressBar";
 import useDeck from "../../hooks/api/useDeck.js";
 import {
   arrayChoice,
@@ -16,7 +16,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import useCacheImages from "../../hooks/useCacheImages.js";
 import Navbar from "../../components/Navbar/Navbar";
 import ButtonLink from "../../components/ui/Buttons/ButtonLink.jsx";
-import PlantImageSlider from "../../components/PlantImageSlider/index.jsx";
+import PlantImageSlider from "../../components/PlantImageSlider/PlantImageSlider";
 
 function DeckGame(props) {
   const navigate = useNavigate();

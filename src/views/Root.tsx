@@ -29,7 +29,7 @@ function ButtonsMenu() {
   );
 }
 
-function Root(props) {
+function Root() {
   return (
     <>
       <div className="page-container">

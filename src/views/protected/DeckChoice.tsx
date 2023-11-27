@@ -6,7 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import gsap from "gsap";
 import "locomotive-scroll/src/locomotive-scroll.scss";
 import Checkbox from "../../components/forms/Checkbox/Checkbox";
-import Stars from "../../components/ui/Stars/index.jsx";
+import Stars from "../../components/ui/Stars/Stars";
 import { useQuery } from "@tanstack/react-query";
 
 const quizzes = [

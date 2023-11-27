@@ -1,7 +1,7 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import "./style.scss";
-import ChoiceBlock from "../ChoiceBlock/index.jsx";
+import ChoiceBlock from "../ChoiceBlock/ChoiceBlock";
 import ImageSlider from "../ImageSlider/index.jsx";
 import { X } from "react-feather";
 import PropTypes from "prop-types";

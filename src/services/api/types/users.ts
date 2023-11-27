@@ -25,3 +25,18 @@ export type LoginFormDataType = {
   email: string | null;
   password: string | null;
 };
+
+// Response
+export type HelperLoginType = {
+  detail?: string;
+  email?: string;
+  password?: string;
+}
+
+export type HelperRegisterType = {
+  detail?: string;
+  username?: string;
+  email?: string;
+  password?: string;
+  password_confirmation?: string;
+};

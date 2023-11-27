@@ -8,7 +8,7 @@ import Navbar from "../../components/Navbar/Navbar";
 import { useAuth } from "../../context/AuthProvider";
 import Button from "../../components/ui/Buttons/Button";
 
-function MainMenu(props) {
+function MainMenu() {
   const { user } = useAuth();
   const privateFetch = usePrivateFetch();
   const refresh = useRefreshToken();

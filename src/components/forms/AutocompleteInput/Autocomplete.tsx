@@ -14,7 +14,7 @@ import {
 function AutocompleteInput({
   id,
   label,
-  size,
+  size = "large",
   url,
   fieldName,
   maxSuggestions = 10,
@@ -44,10 +44,10 @@ function AutocompleteInput({
     }
   }, [searchValue]);
 
-  const handleOptionClick = (value) => {
+  const handleOptionClick = (value: string) => {
     setSelectedValue(() => value);
     setSearchValue(() => value);
-    setValidValue?.(() => value);
+    setValidValue?.(() => true);
     handleValueChange?.(() => value);
     // console.log(value)
     // console.log("click", Object.values(suggestions).filter(p => {
@@ -68,6 +68,7 @@ function AutocompleteInput({
   return (
     <div className="autocomplete" style={{ marginBottom: "1rem" }}>
       <Input
+        id={id}
         label={label}
         size={size}
         value={searchValue}
@@ -151,7 +152,6 @@ function Suggestions({
       {filteredSuggestions?.map((option: string, index: number) => (
         <Option
           key={option}
-          index={index}
           value={option}
           active={selectedSuggestion === index}
           onClick={() => setSelectedValue(option)}

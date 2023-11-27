@@ -1,22 +1,23 @@
-import React, { useId } from "react";
+import React, {InputHTMLAttributes, useId} from "react";
 import "./Checkbox.scss";
 
 type CheckboxProps = {
-  id?: string | null;
+  id?: string;
   label: string;
   takeValue: string;
-  value: boolean;
+  value?: boolean;
   handleValueChange?: React.Dispatch<React.SetStateAction<boolean>> | null;
   disabled?: boolean;
-};
+} & InputHTMLAttributes<HTMLInputElement>;
 
 function Checkbox({
-  id = null,
+  id,
   label,
   takeValue,
   value,
   handleValueChange = null,
   disabled,
+  ...props
 }: CheckboxProps) {
   const defaultId = useId();
   return (
@@ -29,6 +30,7 @@ function Checkbox({
         value={takeValue}
         checked={value}
         onChange={(e) => handleValueChange?.(e.target.checked)}
+        {...props}
       />
       <label htmlFor={id ? id : defaultId}>{label}</label>
     </div>

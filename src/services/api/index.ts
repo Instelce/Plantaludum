@@ -104,18 +104,24 @@ export function loadPlantsIdsListImages(ids: number[]) {
     .then((r) => r.data);
 }
 
+type LoadImagesArgs = {
+    plant__id?: number | null;
+    plant__french_name?: string | null;
+    organ?: string | null;
+}
+
 export function loadImages(
-  fieldFilters = {
+  fieldFilters: LoadImagesArgs = {
     plant__id: null,
     plant__french_name: null,
     organ: null,
-  },
+  }
 ) {
   const params = new URLSearchParams();
 
   for (const [key, value] of Object.entries(fieldFilters)) {
     if (value !== null) {
-      params.set(key, value);
+      params.set(key, value as string);
     }
   }
 

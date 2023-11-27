@@ -1,6 +1,6 @@
 // Stars.stories.js
 
-import Stars from "./index";
+import Stars from "./Stars";
 
 export default {
   title: "Components/Stars",

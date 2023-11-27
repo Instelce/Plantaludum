@@ -1,6 +1,6 @@
 // .stories.js
 
-import ProgressBar from "./index.jsx";
+import ProgressBar from "./ProgressBar";
 
 export default {
   title: "Components/ProgressBar",

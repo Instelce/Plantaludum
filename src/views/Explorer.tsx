@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Input from "../components/forms/Input/Input";
-import DeckCard from "../components/DeckCard/index.jsx";
+import DeckCard from "../components/DeckCard/DeckCard";
 import Modal from "../components/ui/Modal/index.jsx";
 import Button from "../components/ui/Buttons/Button.jsx";
 import Dropdown from "../components/forms/Dropdown/Dropdown";
 import classNames from "classnames";
-import Stars from "../components/ui/Stars/index.jsx";
+import Stars from "../components/ui/Stars/Stars";
 import Option from "../components/forms/Option/Option";
 import { useQuery } from "@tanstack/react-query";
 import { decks } from "../services/api";

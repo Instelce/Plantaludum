@@ -8,10 +8,15 @@ import {
   X,
 } from "react-feather";
 import Button from "../ui/Buttons/Button.jsx";
-import "./style.scss";
+import "./PlantImageSlider.scss";
 import { downloadImage } from "../../utils/helpers";
+import {ImageType} from "../../services/api/types/images";
 
-function PlantImageSlider({ imagesData }) {
+type PlantImageSliderProps = {
+  imagesData: ImageType[]
+}
+
+function PlantImageSlider({ imagesData }: PlantImageSliderProps) {
   const [current, setCurrent] = useState(0);
   const [showImageInfo, setShowImageInfo] = useState(false);
   const length = imagesData?.length;

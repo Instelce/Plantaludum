@@ -1,5 +1,5 @@
-import "./index.jsx";
-import ChoiceBlock from "./index.jsx";
+import "./ChoiceBlock";
+import ChoiceBlock from "./ChoiceBlock";
 
 export default {
   title: "Components/ChoiceBlock",

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
-import Stars from "../ui/Stars/index.jsx";
-import "./style.scss";
+import Stars from "../ui/Stars/Stars";
+import "./DeckCard.scss";
 import { Link } from "react-router-dom";
 import Button from "../ui/Buttons/Button.jsx";
 import { Zap } from "react-feather";

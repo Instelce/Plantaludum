@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, FormEventHandler, useState } from "react";
+import { FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Input from "../components/forms/Input/Input";
 import Button from "../components/ui/Buttons/Button.jsx";
@@ -6,12 +6,15 @@ import PasswordChecker from "../components/forms/PasswordChecker/PasswordChecker
 import useFormFilled from "../hooks/useFormFilled.js";
 import { useMutation } from "@tanstack/react-query";
 import { auth } from "../services/api";
-import { RegisterFormDataType } from "../services/api/types/users";
+import {
+  HelperRegisterType,
+  RegisterFormDataType
+} from "../services/api/types/users";
 import { AxiosError } from "axios";
 
-function Register(props) {
+function Register() {
   const navigate = useNavigate();
-  const [responseHelper, setResponseHelper] = useState<RegisterFormDataType>(
+  const [responseHelper, setResponseHelper] = useState<HelperRegisterType>(
     {},
   );
   const [passwordValue, setPasswordValue] = useState("");
@@ -25,7 +28,7 @@ function Register(props) {
         navigate("/connexion", { replace: true });
       }, 2000);
     },
-    onError: (error) => {
+    onError: (error: AxiosError) => {
       setResponseHelper(error.response.data);
     },
   });
@@ -35,10 +38,10 @@ function Register(props) {
     let formData = new FormData(e.target as HTMLFormElement);
 
     mutateRegister({
-      username: formData.get("username"),
-      email: formData.get("email"),
-      password: formData.get("password"),
-      password_confirmation: formData.get("password_confirmation"),
+      username: formData.get("username") as string,
+      email: formData.get("email") as string,
+      password: formData.get("password") as string,
+      password_confirmation: formData.get("password_confirmation") as string,
     });
   };
 

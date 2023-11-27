@@ -1,6 +1,10 @@
-import React from "react";
 
-function Flower({ fill = "#fff", color = "#fff", ...props }) {
+type IconProps = {
+  fill: string;
+  color: string;
+}
+
+function Flower({ fill = "#fff", color = "#fff", ...props }: IconProps) {
   return (
     <svg
       {...props}

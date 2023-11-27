@@ -8,12 +8,13 @@ import { auth } from "../services/api";
 import Navbar from "../components/Navbar/Navbar";
 import { ArrowRight } from "react-feather";
 import { useAuth } from "../context/AuthProvider";
-import { LoginFormDataType } from "../services/api/types/users";
+import {HelperLoginType, LoginFormDataType} from "../services/api/types/users";
+import {AxiosError, AxiosResponse} from "axios";
 
 function Login(props) {
   const { setAccessToken, setCSRFToken } = useAuth();
   const [passwordValue, setPasswordValue] = useState("");
-  const [responseHelper, setResponseHelper] = useState({});
+  const [responseHelper, setResponseHelper] = useState<HelperLoginType>({});
   const navigate = useNavigate();
   const location = useLocation();
   const fromLocation = location?.state?.from?.pathname || "/mon-jardin";
@@ -23,14 +24,14 @@ function Login(props) {
   const { isPending, mutate: mutateLogin } = useMutation({
     mutationKey: ["login"],
     mutationFn: (data: LoginFormDataType) => auth.login(data),
-    onSuccess: (response) => {
+    onSuccess: (response: AxiosResponse) => {
       setAccessToken(response.data?.access_token);
       setCSRFToken(response.headers["x-csrftoken"]);
       setLoading(false);
 
       navigate(fromLocation, { replace: true });
     },
-    onError: (error) => {
+    onError: (error: AxiosError) => {
       setResponseHelper(error?.response.data);
     },
   });

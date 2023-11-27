@@ -1,5 +1,5 @@
-import DeckCard from "./index.jsx";
-import "./style.scss";
+import DeckCard from "./DeckCard";
+import "./DeckCard.scss";
 
 export default {
   component: DeckCard,

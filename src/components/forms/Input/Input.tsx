@@ -9,7 +9,7 @@ import "./Input.scss";
 import Modal from "../../ui/Modal/index.jsx";
 import { Info } from "react-feather";
 
-type SizeProp = "small" | "medium" | "large";
+type SizeProp = "small" | "medium" | "large" | string;
 
 type InputProps = {
   id?: string | null;
@@ -101,6 +101,5 @@ function Input({
     </>
   );
 }
-
 
 export default Input;

@@ -1,4 +1,4 @@
-import "./style.scss";
+import "./PlantCard.scss";
 import {PlantType} from "../../services/api/types/plants";
 
 type PlantCardProps = {

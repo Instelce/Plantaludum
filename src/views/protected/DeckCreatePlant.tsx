@@ -7,7 +7,7 @@ import { useMutation } from "@tanstack/react-query";
 import { decks, loadPlantsIdsListImages } from "../../services/api";
 import Navbar from "../../components/Navbar/Navbar";
 import { ErrorBoundary } from "react-error-boundary";
-import PlantCard from "../../components/PlantCard/index.jsx";
+import PlantCard from "../../components/PlantCard/PlantCard";
 import {PlantType} from "../../services/api/types/plants";
 import {ImageType} from "../../services/api/types/images";
 import {CreateDeckPlantFormDataType} from "../../services/api/types/decks";
