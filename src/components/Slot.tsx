@@ -55,7 +55,6 @@ function mergeProps(slotProps: AnyProps, childProps: AnyProps) {
   for (const propName in childProps) {
     const slotPropValue = slotProps[propName];
     const childPropValue = childProps[propName];
-    console.log(slotPropValue, childPropValue);
 
     const isHandler = /^on[A-Z]/.test(propName);
     if (isHandler) {

@@ -1,13 +1,12 @@
 import React from "react";
 import "./ProgressBar.scss";
 
-
 type ProgressBarProps = {
   value: number;
   color: string;
   shape: "rounded" | "square";
   thickness: "medium" | "large";
-}
+};
 
 function ProgressBar({
   value,

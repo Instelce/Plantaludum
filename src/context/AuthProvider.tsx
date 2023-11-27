@@ -5,16 +5,17 @@ import React, {
   useState,
 } from "react";
 import { User } from "../services/api/types/users";
+import set = gsap.set;
 
 type AuthContextType = {
   user: User | {};
   setUser: React.Dispatch<React.SetStateAction<User | {}>>;
   accessToken: string | null;
   setAccessToken: React.Dispatch<React.SetStateAction<string | null>>;
-  refreshToken: string | null;
-  setRefreshToken: React.Dispatch<React.SetStateAction<string | null>>;
   CSRFToken: string | null;
   setCSRFToken: React.Dispatch<React.SetStateAction<string | null>>;
+  persist: boolean;
+  setPersist: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const AuthContext = createContext<AuthContextType>({
@@ -22,10 +23,10 @@ const AuthContext = createContext<AuthContextType>({
   setUser: () => {},
   accessToken: null,
   setAccessToken: () => null,
-  refreshToken: null,
-  setRefreshToken: () => null,
   CSRFToken: null,
   setCSRFToken: () => null,
+  persist: false,
+  setPersist: () => false,
 });
 
 export function useAuth(): AuthContextType {
@@ -35,8 +36,10 @@ export function useAuth(): AuthContextType {
 export function AuthProvider({ children }: PropsWithChildren) {
   const [user, setUser] = useState({});
   const [accessToken, setAccessToken] = useState<string | null>(null);
-  const [refreshToken, setRefreshToken] = useState<string | null>(null);
   const [CSRFToken, setCSRFToken] = useState<string | null>(null);
+  const [persist, setPersist] = useState<boolean>(
+    JSON.parse(localStorage.getItem("persist")) || false,
+  );
 
   return (
     <AuthContext.Provider
@@ -45,10 +48,10 @@ export function AuthProvider({ children }: PropsWithChildren) {
         setUser,
         accessToken,
         setAccessToken,
-        refreshToken,
-        setRefreshToken,
         CSRFToken: CSRFToken,
         setCSRFToken: setCSRFToken,
+        persist: persist,
+        setPersist: setPersist,
       }}
     >
       {children}

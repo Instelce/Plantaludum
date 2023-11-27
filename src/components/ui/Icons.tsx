@@ -1,8 +1,7 @@
-
 type IconProps = {
-  fill: string;
-  color: string;
-}
+  fill?: string;
+  color?: string;
+};
 
 function Flower({ fill = "#fff", color = "#fff", ...props }: IconProps) {
   return (

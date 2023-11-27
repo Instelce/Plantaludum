@@ -1,14 +1,14 @@
 import "./Autocomplete.scss";
 import Input from "../Input/Input";
-import React, {KeyboardEvent, useEffect, useMemo, useState} from "react";
+import React, { KeyboardEvent, useEffect, useMemo, useState } from "react";
 import classNames from "classnames";
 import Option from "../Option/Option";
 import useDebounce from "../../../hooks/useDebounce.js";
 import axios from "axios";
-import {deleteDublicates} from "../../../utils/helpers";
+import { deleteDublicates } from "../../../utils/helpers";
 import {
   AutocompleteInputProps,
-  SuggestionsProps
+  SuggestionsProps,
 } from "./AutocompleteInputProps";
 
 function AutocompleteInput({
@@ -54,7 +54,7 @@ function AutocompleteInput({
     //   // console.log(value, searchValue)
     //   return p[fieldName] === value
     // }))
-    console.log(suggestions)
+    console.log(suggestions);
     setSelectedValueData?.(
       () => Object.values(suggestions).filter((p) => p[fieldName] === value)[0],
     );
@@ -106,7 +106,8 @@ function Suggestions({
       let results = suggestions.map((el: any[]) => el[fieldName]);
       // then filter by search value
       results = results.filter(
-        (value: string) => value?.toLowerCase().startsWith(searchValue?.toLowerCase()),
+        (value: string) =>
+          value?.toLowerCase().startsWith(searchValue?.toLowerCase()),
       );
       // and get only keep 0 to maxSuggestions values
       results = results.slice(0, maxSuggestions);

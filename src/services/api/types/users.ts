@@ -31,7 +31,7 @@ export type HelperLoginType = {
   detail?: string;
   email?: string;
   password?: string;
-}
+};
 
 export type HelperRegisterType = {
   detail?: string;

@@ -8,9 +8,9 @@ import { decks, loadPlantsIdsListImages } from "../../services/api";
 import Navbar from "../../components/Navbar/Navbar";
 import { ErrorBoundary } from "react-error-boundary";
 import PlantCard from "../../components/PlantCard/PlantCard";
-import {PlantType} from "../../services/api/types/plants";
-import {ImageType} from "../../services/api/types/images";
-import {CreateDeckPlantFormDataType} from "../../services/api/types/decks";
+import { PlantType } from "../../services/api/types/plants";
+import { ImageType } from "../../services/api/types/images";
+import { CreateDeckPlantFormDataType } from "../../services/api/types/decks";
 
 function DeckCreatePlant() {
   const privateFetch = usePrivateFetch();
@@ -29,7 +29,8 @@ function DeckCreatePlant() {
 
   const { isPending, mutate: mutateCreatePlantQuiz } = useMutation({
     mutationKey: ["decks-plants", deckId],
-    mutationFn: (data: CreateDeckPlantFormDataType) => decks.createPlant(privateFetch, data),
+    mutationFn: (data: CreateDeckPlantFormDataType) =>
+      decks.createPlant(privateFetch, data),
     onSuccess: () => {
       navigate(`/decks/${deckId}`, { replace: true });
     },
@@ -53,15 +54,13 @@ function DeckCreatePlant() {
     console.log("submit", e.target);
     e.preventDefault();
 
-    const plantExists = plantData && Object.values(plants)
-      .map((plant) => plant.id)
-      .includes(plantData.id)
+    const plantExists =
+      plantData &&
+      Object.values(plants)
+        .map((plant) => plant.id)
+        .includes(plantData.id);
 
-    if (
-      plantValue &&
-      plantIsValid &&
-      !plantExists
-    ) {
+    if (plantValue && plantIsValid && !plantExists) {
       console.log("plant", plantData);
       setPlants([...plants, plantData as PlantType]);
     }

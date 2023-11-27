@@ -1,4 +1,4 @@
-import React, {InputHTMLAttributes, useId} from "react";
+import React, { InputHTMLAttributes, useId } from "react";
 import "./Checkbox.scss";
 
 type CheckboxProps = {

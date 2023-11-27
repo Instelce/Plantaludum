@@ -12,7 +12,7 @@ type TextareaProps = {
   handleValueChange?: React.Dispatch<React.SetStateAction<string>> | null;
   helperText?: string;
   mb?: number;
-}
+};
 
 function Textarea({
   id,
@@ -61,6 +61,5 @@ function Textarea({
     </div>
   );
 }
-
 
 export default Textarea;

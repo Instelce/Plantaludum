@@ -8,15 +8,13 @@ import { useMutation } from "@tanstack/react-query";
 import { auth } from "../services/api";
 import {
   HelperRegisterType,
-  RegisterFormDataType
+  RegisterFormDataType,
 } from "../services/api/types/users";
 import { AxiosError } from "axios";
 
 function Register() {
   const navigate = useNavigate();
-  const [responseHelper, setResponseHelper] = useState<HelperRegisterType>(
-    {},
-  );
+  const [responseHelper, setResponseHelper] = useState<HelperRegisterType>({});
   const [passwordValue, setPasswordValue] = useState("");
   const { formRef, handleFormChange, isFilled } = useFormFilled();
 

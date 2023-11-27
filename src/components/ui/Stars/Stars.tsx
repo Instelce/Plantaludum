@@ -1,11 +1,11 @@
 import { Star } from "react-feather";
 import "./Stars.scss";
-import React, {createElement, JSX, ReactNode} from "react";
+import React, { cloneElement, createElement, JSX, ReactNode } from "react";
 
 type StarsProps = {
   count: number;
   icon: ReactNode | null;
-}
+};
 
 function Stars({ count, icon }: StarsProps) {
   const Icon = icon || Star;
@@ -14,15 +14,20 @@ function Stars({ count, icon }: StarsProps) {
 
   for (let i = 0; i < count; i++) {
     starsElements.push(
-        createElement(Icon as React.ElementType, {
-          key: {key}, color: "rgb(var(--color-yellow-light))", fill: "rgb(var(--color-yellow-light))"})
+      cloneElement(Icon, {
+        key: { key },
+        color: "rgb(var(--color-yellow-light))",
+        fill: "rgb(var(--color-yellow-light))",
+      }),
     );
     key++;
   }
   for (let i = 0; i < 3 - count; i++) {
     starsElements.push(
-      createElement(Icon as React.ElementType, {
-        key: {key}, color: "rgb(var(--color-yellow-dark))"})
+      cloneElement(Icon, {
+        key: { key },
+        color: "rgb(var(--color-yellow-dark))",
+      }),
     );
     key++;
   }

@@ -1,4 +1,4 @@
-import React, {ButtonHTMLAttributes, useEffect, useRef} from "react";
+import React, { ButtonHTMLAttributes, useEffect, useRef } from "react";
 
 import "./ChoiceBlock.scss";
 import { Check, X } from "react-feather";

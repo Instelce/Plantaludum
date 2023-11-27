@@ -1,8 +1,11 @@
 import { Link, Outlet } from "react-router-dom";
 import { HelpCircle, LogOut, Settings, User } from "react-feather";
 import Button from "../components/ui/Buttons/Button";
+import useLogout from "../hooks/auth/useLogout";
 
 function ButtonsMenu() {
+  const logout = useLogout();
+
   return (
     <div className="buttons-menu">
       <Button asChild color="dark-gray" size="medium" onlyIcon>
@@ -20,10 +23,8 @@ function ButtonsMenu() {
           <User />
         </Link>
       </Button>
-      <Button asChild color="dark-gray" size="medium" onlyIcon>
-        <Link to="">
-          <LogOut />
-        </Link>
+      <Button color="dark-gray" size="medium" onlyIcon onClick={logout}>
+        <LogOut />
       </Button>
     </div>
   );

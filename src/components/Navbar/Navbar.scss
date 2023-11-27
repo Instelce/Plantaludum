@@ -19,8 +19,9 @@
     align-items: center;
   }
 
+  .right,
   .left {
-    & > a {
+    & > a:not(.button) {
       margin-right: 1.5rem;
       transition: color 0.3s ease;
 

@@ -105,17 +105,17 @@ export function loadPlantsIdsListImages(ids: number[]) {
 }
 
 type LoadImagesArgs = {
-    plant__id?: number | null;
-    plant__french_name?: string | null;
-    organ?: string | null;
-}
+  plant__id?: number | null;
+  plant__french_name?: string | null;
+  organ?: string | null;
+};
 
 export function loadImages(
   fieldFilters: LoadImagesArgs = {
     plant__id: null,
     plant__french_name: null,
     organ: null,
-  }
+  },
 ) {
   const params = new URLSearchParams();
 

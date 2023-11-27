@@ -7,7 +7,7 @@ export default function useLogout() {
 
   const logout = async () => {
     try {
-      const response = await privateFetch.post("auth/logout");
+      const response = await privateFetch.post("api/auth/logout");
 
       setAccessToken(null);
       setCSRFToken(null);

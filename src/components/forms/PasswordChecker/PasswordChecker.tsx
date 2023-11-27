@@ -5,7 +5,7 @@ import ProgressBar from "../../ProrgessBar/ProgressBar";
 
 type PasswordCheckerType = {
   password: string;
-}
+};
 
 function PasswordChecker({ password }: PasswordCheckerType) {
   const status = useMemo(() => {

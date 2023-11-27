@@ -14,9 +14,10 @@ import Navbar from "../components/Navbar/Navbar";
 import { Link } from "react-router-dom";
 import { Plus, Search } from "react-feather";
 import { useAuth } from "../context/AuthProvider";
+import { DeckType } from "../services/api/types/decks";
 
-function Explorer(props) {
-  const { user } = useAuth();
+function Explorer() {
+  const { accessToken } = useAuth();
   const [showModal, setShowModal] = useState(false);
   const [filter, setFilter] = useState("");
   const [showFilter, setShowFilter] = useState(false);
@@ -38,10 +39,14 @@ function Explorer(props) {
     <>
       <Navbar>
         <div className="left">
-          <Link to="/mon-jardin">Mon jardin</Link>
+          {accessToken ? (
+            <Link to="/mon-jardin">Mon jardin</Link>
+          ) : (
+            <Link to="/">Acceuil</Link>
+          )}
         </div>
         <div className="right">
-          {user && (
+          {accessToken ? (
             <Button asChild label="Nouveau deck" size="large" color="gray">
               <Link
                 to="/decks/create"
@@ -50,6 +55,18 @@ function Explorer(props) {
                 Nouveau deck
               </Link>
             </Button>
+          ) : (
+            <>
+              <Link to="/connexion">Connexion</Link>
+              <Button asChild label="Inscription" size="large" color="gray">
+                <Link
+                  to="/inscription"
+                  state={{ from: { pathname: location.pathname } }}
+                >
+                  S'inscrire
+                </Link>
+              </Button>
+            </>
           )}
         </div>
       </Navbar>
@@ -71,8 +88,8 @@ function Explorer(props) {
 
       {isSuccess && (
         <div className="card-grid">
-          {decksData.map((deck, index) => (
-            <DeckCard key={deck.id} index={index} deck={deck} />
+          {decksData.map((deck: DeckType) => (
+            <DeckCard key={deck.id} deck={deck} />
           ))}
         </div>
       )}

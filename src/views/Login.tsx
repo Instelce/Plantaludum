@@ -8,11 +8,15 @@ import { auth } from "../services/api";
 import Navbar from "../components/Navbar/Navbar";
 import { ArrowRight } from "react-feather";
 import { useAuth } from "../context/AuthProvider";
-import {HelperLoginType, LoginFormDataType} from "../services/api/types/users";
-import {AxiosError, AxiosResponse} from "axios";
+import {
+  HelperLoginType,
+  LoginFormDataType,
+} from "../services/api/types/users";
+import { AxiosError, AxiosResponse } from "axios";
+import Checkbox from "../components/forms/Checkbox/Checkbox";
 
 function Login(props) {
-  const { setAccessToken, setCSRFToken } = useAuth();
+  const { setAccessToken, setCSRFToken, persist, setPersist } = useAuth();
   const [passwordValue, setPasswordValue] = useState("");
   const [responseHelper, setResponseHelper] = useState<HelperLoginType>({});
   const navigate = useNavigate();
@@ -46,6 +50,11 @@ function Login(props) {
     });
   };
 
+  const togglePersist = () => {
+    setPersist(() => !persist);
+    localStorage.setItem("persist", JSON.stringify(!persist));
+  }
+
   return (
     <>
       <Navbar>
@@ -78,7 +87,15 @@ function Login(props) {
             handleValueChange={setPasswordValue}
             helperText={responseHelper?.password}
           />
+          <Checkbox
+            label="Se souvenir de moi"
+            takeValue="true"
+            value={persist}
+            handleValueChange={togglePersist}
+            data-not-count
+          />
           <p style={{ marginBottom: "1rem" }}>{responseHelper?.detail}</p>
+
           <Button
             className="sb"
             type="submit"
@@ -90,6 +107,7 @@ function Login(props) {
             Goo
             <ArrowRight />
           </Button>
+
           <footer>
             <p>
               Si tu n’as pas de compte, inscrit toi{" "}

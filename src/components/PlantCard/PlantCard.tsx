@@ -1,10 +1,10 @@
 import "./PlantCard.scss";
-import {PlantType} from "../../services/api/types/plants";
+import { PlantType } from "../../services/api/types/plants";
 
 type PlantCardProps = {
   plant: PlantType;
   images: Array<string>;
-}
+};
 
 function PlantCard({ plant, images, ...props }: PlantCardProps) {
   return (

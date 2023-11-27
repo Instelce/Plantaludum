@@ -5,17 +5,19 @@ import { Link } from "react-router-dom";
 import Button from "../ui/Buttons/Button.jsx";
 import { Zap } from "react-feather";
 import Flower from "../ui/Icons";
-import {DeckType} from "../../services/api/types/decks";
+import { DeckType } from "../../services/api/types/decks";
 
 type DeckCardProps = {
   deck: DeckType;
-}
+};
 
 function DeckCard({ deck, ...props }: DeckCardProps) {
   const cardRef = useRef<HTMLDivElement | null>(null);
   // const [currentImage, setCurrentImage] = useState<number>(2);
 
-  const handleRightClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const handleRightClick = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+  ) => {
     e.preventDefault();
     cardRef.current?.classList.toggle("show-content");
   };

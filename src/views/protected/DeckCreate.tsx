@@ -3,7 +3,7 @@ import useFormFilled from "../../hooks/useFormFilled.js";
 import Input from "../../components/forms/Input/Input";
 import Textarea from "../../components/forms/Textarea/Textarea";
 import Dropdown from "../../components/forms/Dropdown/Dropdown";
-import {FormEvent, useEffect, useState} from "react";
+import { FormEvent, useEffect, useState } from "react";
 import Checkbox from "../../components/forms/Checkbox/Checkbox";
 import AutocompleteInput from "../../components/forms/AutocompleteInput/Autocomplete";
 import Option from "../../components/forms/Option/Option";
@@ -17,7 +17,7 @@ import Navbar from "../../components/Navbar/Navbar";
 import { ErrorBoundary } from "react-error-boundary";
 import { useAuth } from "../../context/AuthProvider";
 import { CreateDeckFormDataType } from "../../services/api/types/decks";
-import {ImageType} from "../../services/api/types/images";
+import { ImageType } from "../../services/api/types/images";
 
 function DeckCreate() {
   const { user } = useAuth();
@@ -70,7 +70,9 @@ function DeckCreate() {
     if (plantImagesData) {
       setPlantImages(() =>
         deleteDublicates(
-          plantImagesData.results.map((data: ImageType) => data.url.replace("L", "CRS")),
+          plantImagesData.results.map((data: ImageType) =>
+            data.url.replace("L", "CRS"),
+          ),
         ),
       );
     }
@@ -186,6 +188,7 @@ function DeckCreate() {
             label="Privé"
             takeValue="true"
             style={{ marginBottom: "1rem" }}
+            data-not-count
           />
           <div className="form-buttons">
             <Button asChild label="Retour" size="large" color="gray" fill>

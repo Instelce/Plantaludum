@@ -10,14 +10,9 @@ type SelectorProps = {
   choiceType: "text" | "img";
   multipleChoice?: boolean;
   setValue: React.Dispatch<React.SetStateAction<string | null>>;
-}
+};
 
-function Selector({
-  inputId,
-  choices,
-  choiceType,
-  setValue,
-}: SelectorProps) {
+function Selector({ inputId, choices, choiceType, setValue }: SelectorProps) {
   const [currentChoice, setCurrentChoice] = useState<string | null>("");
   const [confirmChoice, setConfirmChoice] = useState(false);
 

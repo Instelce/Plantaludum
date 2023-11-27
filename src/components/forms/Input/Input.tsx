@@ -1,9 +1,4 @@
-import React, {
-  InputHTMLAttributes,
-  ReactNode,
-  useId,
-  useState
-} from "react";
+import React, { InputHTMLAttributes, ReactNode, useId, useState } from "react";
 
 import "./Input.scss";
 import Modal from "../../ui/Modal/index.jsx";
@@ -24,7 +19,6 @@ type InputProps = {
   helperText?: string | null;
   usageInfoText?: string | null;
 } & InputHTMLAttributes<HTMLInputElement>;
-
 
 function Input({
   id,

@@ -7,7 +7,7 @@ function useUser() {
 
   const getUser = async () => {
     try {
-      const { data } = await privateFetch.get("auth/user");
+      const { data } = await privateFetch.get("api/auth/user");
       setUser(data);
       localStorage.setItem("USER-ID", data.id);
     } catch (error) {

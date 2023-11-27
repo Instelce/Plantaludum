@@ -10,11 +10,11 @@ import {
 import Button from "../ui/Buttons/Button.jsx";
 import "./PlantImageSlider.scss";
 import { downloadImage } from "../../utils/helpers";
-import {ImageType} from "../../services/api/types/images";
+import { ImageType } from "../../services/api/types/images";
 
 type PlantImageSliderProps = {
-  imagesData: ImageType[]
-}
+  imagesData: ImageType[];
+};
 
 function PlantImageSlider({ imagesData }: PlantImageSliderProps) {
   const [current, setCurrent] = useState(0);
