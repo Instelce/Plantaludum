@@ -6,6 +6,7 @@ import {
 } from "../../services/api";
 import { useEffect } from "react";
 import { getObjectKeyValues } from "../../utils/helpers";
+import { PlantType } from "../../services/api/types/plants";
 
 type UseDeckArgs = {
   deckId: string;
@@ -22,12 +23,12 @@ function useDeck({
     queries: [
       {
         queryKey: ["decks", deckId],
-        queryFn: () => decks.details(deckId),
+        queryFn: () => decks.details(parseInt(deckId)),
         staleTime: 30_000,
       },
       {
         queryKey: ["decks-plants", deckId],
-        queryFn: () => decks.listPlants(deckId),
+        queryFn: () => decks.listPlants(parseInt(deckId)),
       },
     ],
   });
@@ -67,9 +68,9 @@ function useDeck({
   }, [plantsQuery.isSuccess]);
 
   return {
-    deckQuery: deckQuery,
-    deckPlantsQuery: plantsQuery,
-    deckPlantsImagesQuery: plantsImagesQuery,
+    deckQuery: deckQuery || {},
+    deckPlantsQuery: plantsQuery || {},
+    deckPlantsImagesQuery: plantsImagesQuery || {},
   };
 }
 

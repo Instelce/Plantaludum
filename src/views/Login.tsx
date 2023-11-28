@@ -53,7 +53,7 @@ function Login(props) {
   const togglePersist = () => {
     setPersist(() => !persist);
     localStorage.setItem("persist", JSON.stringify(!persist));
-  }
+  };
 
   return (
     <>

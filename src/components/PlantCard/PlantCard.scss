@@ -1,6 +1,33 @@
 .plant-card {
   position: relative;
 
+  .focus {
+    width: 100%;
+    height: 100%;
+  }
+
+  .focus:focus .dragger {
+    box-shadow: 0 0 0 2px rgb(var(--color-primary-light));
+  }
+
+  .dragger {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    cursor: grab;
+    pointer-events: auto;
+
+    border-radius: var(--radius);
+    transition: box-shadow 0.3s ease;
+
+    &.drag {
+      cursor: grabbing;
+    }
+  }
+
   .img-container {
     width: 100%;
     height: 0;
@@ -15,11 +42,25 @@
       aspect-ratio: 1;
       object-fit: cover;
       position: absolute;
-      //opacity: 0;
+
+      opacity: 0;
+      transform: scale(0.95);
+      border-radius: var(--radius);
+
+      pointer-events: none;
+
+      transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
 
       &.active {
+        transform: scale(1);
         opacity: 1;
       }
+    }
+
+    &.drag {
+      opacity: 0;
     }
   }
 
@@ -52,4 +93,11 @@
       transform: translateY(0);
     }
   }
+}
+
+.grabbing * {
+  cursor: grabbing !important;
+  cursor: -webkit-grabbing !important;
+  cursor: -moz-grabbing !important;
+  cursor: grabbing !important;
 }

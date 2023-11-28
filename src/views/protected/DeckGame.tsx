@@ -17,6 +17,7 @@ import useCacheImages from "../../hooks/useCacheImages.js";
 import Navbar from "../../components/Navbar/Navbar";
 import ButtonLink from "../../components/ui/Buttons/ButtonLink.jsx";
 import PlantImageSlider from "../../components/PlantImageSlider/PlantImageSlider";
+import Button from "../../components/ui/Buttons/Button";
 
 function DeckGame(props) {
   const navigate = useNavigate();
@@ -182,12 +183,19 @@ function DeckGame(props) {
       {/*</Navbar>*/}
 
       <header className="page-header">
-        <div className="center">
+        <div className="timer">
           <span>{stringTime}</span>
           <RefreshCw onClick={() => resetQuiz()} />
         </div>
-        <h1>{score}</h1>
-        <Stars count={stars} />
+        <div className="stats">
+          <h1>{score}</h1>
+          <Stars count={stars} />
+        </div>
+        <Button asChild onlyIcon color="gray">
+          <Link to={`/decks/${deckId}`}>
+            <X />
+          </Link>
+        </Button>
       </header>
 
       <ProgressBar
@@ -197,33 +205,35 @@ function DeckGame(props) {
         shape="square"
       />
 
-      {currentImages && currentPlant && (
-        <div className="game-grid" ref={deckContent}>
-          {currentImages && <PlantImageSlider imagesData={currentImages} />}
+      <div className="game-content">
+        {currentImages && currentPlant && (
+          <div className="game-grid" ref={deckContent}>
+            {currentImages && <PlantImageSlider imagesData={currentImages} />}
 
-          <div>
-            {deckPlantsQuery.isSuccess ? (
-              <>
-                {plantsData.map((plant, index) => (
-                  <ChoiceBlock
-                    key={plant.id}
-                    index={index}
-                    title={plant.french_name}
-                    subtitle={plant.scientific_name}
-                    isRightAnswer={plant.id === currentPlant.id}
-                    showResult={showResult}
-                    setShowResult={setShowResult}
-                    setIsRight={setIsRight}
-                  />
-                ))}
-                <p>Double click sur la réponse de ton choix</p>
-              </>
-            ) : (
-              <p>Fini !</p>
-            )}
+            <div>
+              {deckPlantsQuery.isSuccess ? (
+                <>
+                  {plantsData.map((plant, index) => (
+                    <ChoiceBlock
+                      key={plant.id}
+                      index={index}
+                      title={plant.french_name}
+                      subtitle={plant.scientific_name}
+                      isRightAnswer={plant.id === currentPlant.id}
+                      showResult={showResult}
+                      setShowResult={setShowResult}
+                      setIsRight={setIsRight}
+                    />
+                  ))}
+                  <p>Double click sur la réponse de ton choix</p>
+                </>
+              ) : (
+                <p>Fini !</p>
+              )}
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

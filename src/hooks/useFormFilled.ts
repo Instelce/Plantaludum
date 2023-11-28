@@ -18,7 +18,8 @@ function useFormFilled(): UseFormFilledReturnType {
       // remove checkbox from inputs
       const inputs = Array.from(inputsElements).filter(
         (input: Element) =>
-          input instanceof HTMLInputElement && !input.attributes.getNamedItem("data-not-count"),
+          input instanceof HTMLInputElement &&
+          !input.attributes.getNamedItem("data-not-count"),
       );
       const inputsCount = inputs.length;
 
