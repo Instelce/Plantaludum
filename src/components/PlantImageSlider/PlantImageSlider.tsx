@@ -12,12 +12,15 @@ import "./PlantImageSlider.scss";
 import { downloadImage } from "../../utils/helpers";
 import { ImageType } from "../../services/api/types/images";
 import BoxListGroup, { BoxListItem } from "../BoxListGroup/BoxListGroup";
+import { Link } from "react-router-dom";
+import { PlantType } from "../../services/api/types/plants";
 
 type PlantImageSliderProps = {
   imagesData: ImageType[];
+  plantData: PlantType;
 };
 
-function PlantImageSlider({ imagesData }: PlantImageSliderProps) {
+function PlantImageSlider({ imagesData, plantData }: PlantImageSliderProps) {
   const [current, setCurrent] = useState(0);
   const [showImageInfo, setShowImageInfo] = useState(false);
   const length = imagesData?.length;
@@ -116,19 +119,11 @@ function PlantImageSlider({ imagesData }: PlantImageSliderProps) {
               <BoxListItem>{imagesData[current].publ_date}</BoxListItem>
             </BoxListGroup>
 
-            <Button
-              className="sb"
-              label="Télécharger"
-              fill
-              onClick={() =>
-                downloadImage(
-                  imagesData[current].url,
-                  imagesData[current].id.toString(),
-                )
-              }
-            >
-              Télécharger
-              <ArrowUpRight />
+            <Button asChild className="sb" label="Télécharger" fill>
+              <Link to={plantData?.eflore_url} target="_blank">
+                Voir plus
+                <ArrowUpRight />
+              </Link>
             </Button>
           </div>
         )}

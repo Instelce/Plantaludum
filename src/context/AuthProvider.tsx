@@ -38,7 +38,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [CSRFToken, setCSRFToken] = useState<string | null>(null);
   const [persist, setPersist] = useState<boolean>(
-    JSON.parse(localStorage.getItem("persist")) || false,
+    JSON.parse(localStorage.getItem("persist") as string) || false,
   );
 
   return (

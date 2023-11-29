@@ -18,6 +18,7 @@ import Navbar from "../../components/Navbar/Navbar";
 import ButtonLink from "../../components/ui/Buttons/ButtonLink.jsx";
 import PlantImageSlider from "../../components/PlantImageSlider/PlantImageSlider";
 import Button from "../../components/ui/Buttons/Button";
+import { PlantType } from "../../services/api/types/plants";
 
 function DeckGame(props) {
   const navigate = useNavigate();
@@ -88,6 +89,7 @@ function DeckGame(props) {
 
   // set images
   useEffect(() => {
+    console.log(currentPlant);
     // console.log("id", currentPlant?.scientific_name)
     if (currentPlant) {
       let tempImagesData = deckPlantsImagesQuery.data;
@@ -208,7 +210,12 @@ function DeckGame(props) {
       <div className="game-content">
         {currentImages && currentPlant && (
           <div className="game-grid" ref={deckContent}>
-            {currentImages && <PlantImageSlider imagesData={currentImages} />}
+            {currentImages && (
+              <PlantImageSlider
+                imagesData={currentImages}
+                plantData={currentPlant}
+              />
+            )}
 
             <div>
               {deckPlantsQuery.isSuccess ? (

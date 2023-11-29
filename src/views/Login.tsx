@@ -14,6 +14,7 @@ import {
 } from "../services/api/types/users";
 import { AxiosError, AxiosResponse } from "axios";
 import Checkbox from "../components/forms/Checkbox/Checkbox";
+import { useNotification } from "../context/NotificationsProvider";
 
 function Login(props) {
   const { setAccessToken, setCSRFToken, persist, setPersist } = useAuth();
@@ -24,6 +25,7 @@ function Login(props) {
   const fromLocation = location?.state?.from?.pathname || "/mon-jardin";
   const [loading, setLoading] = useState(false);
   const { formRef, handleFormChange, isFilled } = useFormFilled();
+  const { addNotification } = useNotification();
 
   const { isPending, mutate: mutateLogin } = useMutation({
     mutationKey: ["login"],
@@ -34,6 +36,12 @@ function Login(props) {
       setLoading(false);
 
       navigate(fromLocation, { replace: true });
+      addNotification({
+        id: "login",
+        message: "Connexion réussie",
+        status: "success",
+        duration: 3000,
+      });
     },
     onError: (error: AxiosError) => {
       setResponseHelper(error?.response.data);
@@ -43,6 +51,13 @@ function Login(props) {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
+
+    addNotification({
+      id: "check-login",
+      message: "En cours de connexion...",
+      status: "loading",
+      duration: 3000,
+    });
 
     mutateLogin({
       email: formData.get("email") as string,
@@ -66,6 +81,19 @@ function Login(props) {
       <header className="page-header center">
         <h1>Connexion</h1>
       </header>
+
+      <Button
+        onClick={() =>
+          addNotification({
+            id: "notif",
+            message: "Notification",
+            status: "success",
+            duration: 3000,
+          })
+        }
+      >
+        Add new notification
+      </Button>
 
       <div className="form-page">
         <form ref={formRef} onSubmit={handleSubmit} onChange={handleFormChange}>

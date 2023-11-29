@@ -59,16 +59,27 @@ export function mergeClasses(classes) {
   return classes.join(" ");
 }
 
-export async function downloadImage(imageSrc, imageName) {
-  const imageBlob = await fetch(imageSrc)
-    .then((r) => r.arrayBuffer())
-    .then((buffer) => new Blob([buffer], { type: "image/jpeg" }));
-  console.log(imageBlob, URL.createObjectURL(imageBlob));
-
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(imageBlob);
-  link.download = imageName + ".jpeg";
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+export async function downloadImage(imageSrc: string, imageName: string) {
+  const imageResponse = await fetch(imageSrc, {
+    mode: "no-cors",
+    headers: {
+      "Cross-Origin": "Resource Sharing",
+      "Access-Control-Allow-Origin": "*",
+    },
+  });
+  console.log(imageResponse);
+  const imageBlob = await imageResponse.blob();
+  console.log(imageBlob);
+  const image = new Image();
+  image.src = URL.createObjectURL(imageBlob);
+  image.onload = () => {
+    const canvas = document.createElement("canvas");
+    canvas.width = image.width;
+    canvas.height = image.height;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(image, 0, 0);
+    console.log(image);
+    const img = canvas.toDataURL("image/jpg");
+    document.write('<img src="' + img + '" />');
+  };
 }

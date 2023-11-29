@@ -32,12 +32,14 @@ function DeckCard({ deck, ...props }: DeckCardProps) {
   useEffect(() => {
     const cardRect = cardRef.current?.getBoundingClientRect();
     let x: number, y: number;
+    let currentScrollTop: number;
+    const container = document.querySelector(".container") as HTMLDivElement;
 
     const handleMoveSlide = (e: MouseEvent) => {
       // console.log(e, cardRect, nameRect)
       if (cardRect) {
         x = e.pageX - cardRect.left - cardRect.width / 2;
-        y = e.pageY - cardRect.top - cardRect.height / 2;
+        y = e.pageY - cardRect.top - cardRect.height / 2 + currentScrollTop;
 
         if (cardRef.current) {
           cardRef.current.style.transform = `translate(${x * 0.02}px, ${
@@ -47,10 +49,17 @@ function DeckCard({ deck, ...props }: DeckCardProps) {
       }
     };
 
-    cardRef.current?.addEventListener("mousemove", handleMoveSlide);
+    const handleScroll = (e: MouseEvent) => {
+      currentScrollTop = container.scrollTop;
+    };
 
-    return () =>
+    cardRef.current?.addEventListener("mousemove", handleMoveSlide);
+    container.addEventListener("scroll", handleScroll);
+
+    return () => {
       cardRef.current?.removeEventListener("mousemove", handleMoveSlide);
+      container.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   return (

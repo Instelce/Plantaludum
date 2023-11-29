@@ -1,0 +1,30 @@
+@mixin spacing-utilities() {
+  $spacing-settings: (
+    "spaces": (
+      "margin": "m",
+      "padding": "p",
+    ),
+    "positions": (
+      "top": "t",
+      "bottom": "b",
+      "right": "r",
+      "left": "l",
+    ),
+  );
+
+  @each $space-key, $space in map_get($spacing-settings, "spaces") {
+    @each $position-key, $position in map_get($spacing-settings, "positions") {
+      $ctr: 1;
+
+      @while $ctr <= 12 {
+        .#{$space}#{$position}-#{$ctr} {
+          #{$space-key}-#{$position-key}: #{$ctr}rem;
+        }
+
+        $ctr: $ctr + 1;
+      }
+    }
+  }
+}
+
+@include spacing-utilities();
