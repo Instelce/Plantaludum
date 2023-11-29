@@ -1,6 +1,6 @@
 import usePrivateFetch from "./usePrivateFetch.js";
 import { useAuth } from "../../context/AuthProvider";
-import {useEffect} from "react";
+import { useEffect } from "react";
 
 function useUser() {
   const { user, setUser } = useAuth();
@@ -16,7 +16,9 @@ function useUser() {
   };
 
   useEffect(() => {
-    getUser()
+    if (Object.values(user).length === 0) {
+      getUser();
+    }
   }, []);
 
   return user;

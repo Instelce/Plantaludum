@@ -21,7 +21,7 @@ import { ImageType } from "../../services/api/types/images";
 import useUser from "../../hooks/auth/useUser";
 
 function DeckCreate() {
-  const user = useUser()
+  const user = useUser();
   const privateFetch = usePrivateFetch();
   const location = useLocation();
   console.log(location);

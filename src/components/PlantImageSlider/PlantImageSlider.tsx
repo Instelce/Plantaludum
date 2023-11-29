@@ -11,6 +11,7 @@ import Button from "../ui/Buttons/Button.jsx";
 import "./PlantImageSlider.scss";
 import { downloadImage } from "../../utils/helpers";
 import { ImageType } from "../../services/api/types/images";
+import BoxListGroup, { BoxListItem } from "../BoxListGroup/BoxListGroup";
 
 type PlantImageSliderProps = {
   imagesData: ImageType[];
@@ -97,38 +98,41 @@ function PlantImageSlider({ imagesData }: PlantImageSliderProps) {
             </Button>
           </>
         )}
-      </div>
+        {showImageInfo && (
+          <div className="images-info">
+            <Button
+              onlyIcon
+              color="gray"
+              size="small"
+              className="show-info"
+              onClick={() => setShowImageInfo((show) => !show)}
+            >
+              <X />
+            </Button>
 
-      {showImageInfo && (
-        <div className="images-info">
-          <Button
-            onlyIcon
-            color="gray"
-            size="small"
-            className="show-info"
-            onClick={() => setShowImageInfo((show) => !show)}
-          >
-            <X />
-          </Button>
-          @{imagesData[current].author}
-          {imagesData[current].location}
-          {imagesData[current].publ_date}
-          <Button
-            className="sb"
-            label="Télécharger"
-            fill
-            onClick={() =>
-              downloadImage(
-                imagesData[current].url,
-                imagesData[current].id.toString(),
-              )
-            }
-          >
-            Télécharger
-            <ArrowUpRight />
-          </Button>
-        </div>
-      )}
+            <BoxListGroup size="large" rounded={true}>
+              <BoxListItem>@{imagesData[current].author}</BoxListItem>
+              <BoxListItem>{imagesData[current].location}</BoxListItem>
+              <BoxListItem>{imagesData[current].publ_date}</BoxListItem>
+            </BoxListGroup>
+
+            <Button
+              className="sb"
+              label="Télécharger"
+              fill
+              onClick={() =>
+                downloadImage(
+                  imagesData[current].url,
+                  imagesData[current].id.toString(),
+                )
+              }
+            >
+              Télécharger
+              <ArrowUpRight />
+            </Button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

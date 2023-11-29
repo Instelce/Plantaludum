@@ -2,7 +2,7 @@ export interface DeckType {
   id: number;
   name: string;
   description: string;
-  difficulty: string;
+  difficulty: number;
   preview_image_url: string;
   created_at: Date;
   times_played: number;

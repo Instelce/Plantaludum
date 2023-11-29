@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Input from "../components/forms/Input/Input";
 import DeckCard from "../components/DeckCard/DeckCard";
 import Modal from "../components/ui/Modal/index.jsx";
@@ -20,9 +20,9 @@ import useObjectSearch from "../hooks/useObjectSearch";
 function Explorer() {
   const { accessToken } = useAuth();
   const [showModal, setShowModal] = useState(false);
-  const [searchInput, setSearchInput] = useState("")
-  const [filter, setFilter] = useState("");
-  const [showFilter, setShowFilter] = useState(true);
+  const [searchInput, setSearchInput] = useState("");
+  const [showFilter, setShowFilter] = useState(false);
+  const [filteredDecks, setFilteredDecks] = useState<DeckType[]>([]);
 
   const {
     isLoading,
@@ -32,12 +32,22 @@ function Explorer() {
     queryKey: ["decks"],
     queryFn: () => decks.list(),
   });
-  const filteredDecks = useObjectSearch<DeckType>({ data: decksData, fieldName: "name", searchInput: searchInput })
+  const searchFilteredDecks = useObjectSearch<DeckType>({
+    data: decksData as DeckType[],
+    fieldName: "name",
+    searchInput: searchInput,
+  });
 
   useEffect(() => {
-    console.log(decksData, filteredDecks);
-
+    console.log(filteredDecks);
+    console.log(searchFilteredDecks);
   }, [filteredDecks]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      setFilteredDecks(decksData as DeckType[]);
+    }
+  }, [isSuccess]);
 
   return (
     <>
@@ -89,11 +99,17 @@ function Explorer() {
               onChange={(e) => setSearchInput(e.target.value)}
               icon={<Search />}
             />
-            <Button color="gray" onClick={() => setShowFilter(prev => !prev)}>Filtrer</Button>
+            <Button color="gray" onClick={() => setShowFilter((prev) => !prev)}>
+              Filtrer
+            </Button>
           </div>
         </header>
 
-        <FilterPanel show={showFilter} />
+        <DeckFilterPanel
+          show={showFilter}
+          decksData={searchFilteredDecks}
+          setFilteredDecks={setFilteredDecks}
+        />
       </div>
 
       {isSuccess && (
@@ -137,23 +153,52 @@ function Explorer() {
   );
 }
 
-
-type FilterPanelProps = {
+type DeckFilterPanelProps = {
   show: boolean;
-}
+  decksData: DeckType[];
+  setFilteredDecks: React.Dispatch<React.SetStateAction<DeckType[]>>;
+};
 
-function FilterPanel({show}: FilterPanelProps) {
+function DeckFilterPanel({
+  show,
+  decksData,
+  setFilteredDecks,
+}: DeckFilterPanelProps) {
   const panelRef = useRef<HTMLDivElement>(null);
+  const [difficultyFilter, setDifficultyFilter] = useState(-1);
+  const filteredDecks = useMemo(() => {
+    return decksData?.filter((deck) => {
+      if (!isNaN(difficultyFilter)) {
+        console.log(difficultyFilter, deck.difficulty);
+        return deck.difficulty === difficultyFilter;
+      }
+      return deck;
+    });
+  }, [decksData, difficultyFilter]);
 
-  console.log(show, panelRef.current?.offsetHeight)
+  useEffect(() => {
+    console.log(decksData);
+    console.log("difficulty", difficultyFilter);
+  }, [difficultyFilter]);
 
-  return <div ref={panelRef} className={classNames("filter-panel", {show: show})}>
-      <Dropdown label="Difficulté">
+  useEffect(() => {
+    setFilteredDecks(filteredDecks);
+  }, [filteredDecks]);
+
+  return (
+    <div ref={panelRef} className={classNames("filter-panel", { show: show })}>
+      <Dropdown
+        label="Difficulté"
+        defaultValue="Toutes"
+        handleValueChange={(value) => setDifficultyFilter(parseInt(value))}
+      >
+        <Option>Toutes</Option>
         <Option>1</Option>
         <Option>2</Option>
         <Option>3</Option>
       </Dropdown>
     </div>
+  );
 }
 
 export default Explorer;

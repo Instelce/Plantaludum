@@ -3,8 +3,7 @@ import React, { InputHTMLAttributes, ReactNode, useId, useState } from "react";
 import "./Input.scss";
 import Modal from "../../ui/Modal/index.jsx";
 import { Info } from "react-feather";
-import {SizeProp} from "../../../types/helpers";
-
+import { SizeProp } from "../../../types/helpers";
 
 type InputProps = {
   id?: string | null;

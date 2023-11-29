@@ -9,19 +9,10 @@ import { useAuth } from "../../context/AuthProvider";
 import Button from "../../components/ui/Buttons/Button";
 
 function MainMenu() {
-  const { user } = useAuth();
   const privateFetch = usePrivateFetch();
   const refresh = useRefreshToken();
   const logout = useLogout();
-  const getUser = useUser();
-
-  // set user is first login
-  useEffect(() => {
-    if (Object.keys(user).length === 0) {
-      getUser();
-      console.log(user);
-    }
-  }, []);
+  const user = useUser();
 
   return (
     <>
@@ -42,7 +33,10 @@ function MainMenu() {
       </Navbar>
 
       <header className="page-header">
-        <h1>Mon jardin</h1>
+        <h1>
+          Mon <span className="highlight">jardin</span>
+        </h1>
+        <p>{user.username}</p>
       </header>
     </>
   );

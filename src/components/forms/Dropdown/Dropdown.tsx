@@ -10,34 +10,34 @@ import React, {
 import "./Dropdown.scss";
 import Button from "../../ui/Buttons/Button.jsx";
 import classNames from "classnames";
-import Option, {OptionProps} from "../Option/Option";
+import Option, { OptionProps } from "../Option/Option";
 import PropTypes from "prop-types";
 import { ChevronDown } from "react-feather";
 import { deleteDublicates } from "../../../utils/helpers";
-import {SizeProp} from "../../../types/helpers";
+import { SizeProp } from "../../../types/helpers";
 
 type DropdownProps = {
   inputId?: string;
   label: string;
   size?: SizeProp;
   defaultValue?: string | undefined;
+  handleValueChange?: (value: string) => void;
   children: React.ReactNode;
-  mb?: number;
-} & ButtonHTMLAttributes<HTMLButtonElement>
+} & ButtonHTMLAttributes<HTMLButtonElement>;
 
 function Dropdown({
   inputId,
   label,
   size = "large",
-  mb,
   defaultValue = undefined,
+  handleValueChange,
   children,
   ...props
 }: DropdownProps) {
   const [showOptions, setShowOptions] = useState(false);
   const [options, setOptions] = useState([]);
   const [currentValue, setCurrentValue] = useState("");
-  const [selectedOption, setSelectedOption] = useState(0);
+  const [selectedOptionIndex, setSelectedOptionIndex] = useState(0);
   const [buttonFocus, setButtonFocus] = useState(true);
   const [mouseOnOptions, setMouseOnOptions] = useState(false);
   const optionsRef = useRef(null);
@@ -52,16 +52,16 @@ function Dropdown({
     const childrens = Children.toArray(children).filter(
       (child) => child.type === Option,
     );
-    const newOptions = [];
+    const newOptions: string[] = [];
     childrens.map((child) => {
       let value = child.props.value ? child.props.value : child.props.children;
       newOptions.push(value);
     });
-    setOptions(() => newOptions);
+    setOptions(newOptions);
   }, []);
 
+  // hide options
   useEffect(() => {
-    // hide options
     if (!buttonFocus && showOptions && !mouseOnOptions) {
       setShowOptions(false);
     }
@@ -72,16 +72,16 @@ function Dropdown({
     const accessibility = (e) => {
       switch (e.key) {
         case "ArrowDown":
-          setSelectedOption((prev) =>
+          setSelectedOptionIndex((prev) =>
             prev < options.length - 1 ? prev + 1 : prev,
           );
           break;
         case "ArrowUp":
-          setSelectedOption((prev) => (prev > 0 ? prev - 1 : prev));
+          setSelectedOptionIndex((prev) => (prev > 0 ? prev - 1 : prev));
           break;
         case "Enter":
-          setCurrentValue(() => options[selectedOption]);
-          setSelectedOption(() => 0);
+          setCurrentValue(() => options[selectedOptionIndex]);
+          setSelectedOptionIndex(() => 0);
           break;
       }
     };
@@ -93,20 +93,27 @@ function Dropdown({
     return () => {
       window.removeEventListener("keydown", accessibility);
     };
-  }, [showOptions, selectedOption, options]);
+  }, [showOptions, selectedOptionIndex, options]);
+
+  useEffect(() => {
+    handleValueChange && handleValueChange(currentValue);
+  }, [currentValue]);
 
   return (
-    <div className={classNames("dropdown")} style={{ marginBottom: mb }}>
+    <div className={classNames("dropdown")}>
       <input
         id={inputId}
         name={inputId}
         className="hidden"
         value={currentValue}
+        // onChange={(e) => handleValueChange(e.target.value)}
         readOnly={true}
       />
-      {currentValue !== "" && <label htmlFor={id} className={classNames({ up: currentValue !== "" })}>
-        {label}
-      </label>}
+      {currentValue !== "" && (
+        <label htmlFor={id} className={classNames({ up: currentValue !== "" })}>
+          {label}
+        </label>
+      )}
       <Button
         className="sb"
         id={id}
@@ -142,7 +149,7 @@ function Dropdown({
               : option.props.children;
             return React.cloneElement(option, {
               ...option.props,
-              active: index === selectedOption,
+              active: index === selectedOptionIndex,
               key: index,
               onClick: (e) => {
                 e.preventDefault();

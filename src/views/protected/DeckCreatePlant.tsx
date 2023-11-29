@@ -20,7 +20,7 @@ function DeckCreatePlant() {
   const navigate = useNavigate();
   const { deckId } = useParams();
   const deckData = location.state?.data;
-  console.log(deckData)
+  console.log(deckData);
 
   const [plantValue, setPlantValue] = useState<string>("");
   const [plantData, setPlantData] = useState<PlantType | null>(null);

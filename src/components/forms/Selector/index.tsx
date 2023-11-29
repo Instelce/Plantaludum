@@ -25,7 +25,7 @@ function Selector({ inputId, choices, choiceType, setValue }: SelectorProps) {
   }, [confirmChoice]);
 
   const handleConfirmButtonClick = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (currentChoice !== null) {
       setValue?.(() => currentChoice);
       setConfirmChoice(() => true);

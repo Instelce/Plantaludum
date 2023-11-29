@@ -24,7 +24,7 @@ function useDeck({
       {
         queryKey: ["decks", deckId],
         queryFn: () => decks.details(parseInt(deckId)),
-        staleTime: 30_000,
+        staleTime: 1_000,
       },
       {
         queryKey: ["decks-plants", deckId],
@@ -56,6 +56,7 @@ function useDeck({
   // fetch quiz plants
   useEffect(() => {
     if (deckPlantsQuery.isSuccess && fetchPlants) {
+      console.log(deckPlantsQuery);
       plantsQuery.refetch();
     }
   }, [deckPlantsQuery.isSuccess]);
