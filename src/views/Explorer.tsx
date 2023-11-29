@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import Input from "../components/forms/Input/Input";
 import DeckCard from "../components/DeckCard/DeckCard";
 import Modal from "../components/ui/Modal/index.jsx";
@@ -15,12 +15,14 @@ import { Link } from "react-router-dom";
 import { Plus, Search } from "react-feather";
 import { useAuth } from "../context/AuthProvider";
 import { DeckType } from "../services/api/types/decks";
+import useObjectSearch from "../hooks/useObjectSearch";
 
 function Explorer() {
   const { accessToken } = useAuth();
   const [showModal, setShowModal] = useState(false);
+  const [searchInput, setSearchInput] = useState("")
   const [filter, setFilter] = useState("");
-  const [showFilter, setShowFilter] = useState(false);
+  const [showFilter, setShowFilter] = useState(true);
 
   const {
     isLoading,
@@ -30,10 +32,12 @@ function Explorer() {
     queryKey: ["decks"],
     queryFn: () => decks.list(),
   });
+  const filteredDecks = useObjectSearch<DeckType>({ data: decksData, fieldName: "name", searchInput: searchInput })
 
   useEffect(() => {
-    console.log(decksData);
-  }, [decksData]);
+    console.log(decksData, filteredDecks);
+
+  }, [filteredDecks]);
 
   return (
     <>
@@ -71,24 +75,30 @@ function Explorer() {
         </div>
       </Navbar>
 
-      <header className="page-header">
-        <h1>
-          <span className="highlight">Explore</span> les decks
-        </h1>
-        <div className="right">
-          <Input
-            label="Rechercher"
-            type="search"
-            size="large"
-            icon={<Search />}
-          />
-          <Button color="gray">Filtrer</Button>
-        </div>
-      </header>
+      <div className="page-sticky">
+        <header className="page-header">
+          <h1>
+            <span className="highlight">Explore</span> les decks
+          </h1>
+          <div className="right">
+            <Input
+              label="Rechercher"
+              type="search"
+              size="large"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              icon={<Search />}
+            />
+            <Button color="gray" onClick={() => setShowFilter(prev => !prev)}>Filtrer</Button>
+          </div>
+        </header>
+
+        <FilterPanel show={showFilter} />
+      </div>
 
       {isSuccess && (
         <div className="card-grid">
-          {decksData.map((deck: DeckType) => (
+          {filteredDecks?.map((deck: DeckType) => (
             <DeckCard key={deck.id} deck={deck} />
           ))}
         </div>
@@ -125,6 +135,25 @@ function Explorer() {
       </Modal>
     </>
   );
+}
+
+
+type FilterPanelProps = {
+  show: boolean;
+}
+
+function FilterPanel({show}: FilterPanelProps) {
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  console.log(show, panelRef.current?.offsetHeight)
+
+  return <div ref={panelRef} className={classNames("filter-panel", {show: show})}>
+      <Dropdown label="Difficulté">
+        <Option>1</Option>
+        <Option>2</Option>
+        <Option>3</Option>
+      </Dropdown>
+    </div>
 }
 
 export default Explorer;

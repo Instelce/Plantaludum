@@ -18,9 +18,10 @@ import { ErrorBoundary } from "react-error-boundary";
 import { useAuth } from "../../context/AuthProvider";
 import { CreateDeckFormDataType } from "../../services/api/types/decks";
 import { ImageType } from "../../services/api/types/images";
+import useUser from "../../hooks/auth/useUser";
 
 function DeckCreate() {
-  const { user } = useAuth();
+  const user = useUser()
   const privateFetch = usePrivateFetch();
   const location = useLocation();
   console.log(location);
@@ -28,7 +29,6 @@ function DeckCreate() {
   const navigate = useNavigate();
 
   const {
-    isFetching: deckFetching,
     isSuccess,
     data: deckData,
     mutate: mutateCreateDeck,
@@ -103,7 +103,7 @@ function DeckCreate() {
       difficulty: formData.get("difficulty") as string,
       preview_image_url: formData.get("preview-image-url") as string,
       private: !!formData.get("private"),
-      user: localStorage.getItem("USER-ID"),
+      user: user.id,
     });
   };
 
@@ -205,7 +205,6 @@ function DeckCreate() {
               type="submit"
               color="primary"
               disabled={!isFilled}
-              loading={deckFetching}
             >
               Continuer
             </Button>

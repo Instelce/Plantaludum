@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import "./Option.scss";
 import { ButtonHTMLAttributes, PropsWithChildren } from "react";
 
-type OptionProps = {
+export type OptionProps = {
   value?: string | null;
   active?: boolean;
 } & PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement>>;

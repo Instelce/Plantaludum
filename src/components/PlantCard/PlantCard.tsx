@@ -64,7 +64,7 @@ function PlantCard({ plant, images, ...props }: PlantCardProps) {
   return (
     <div className="plant-card" {...props} autoFocus={true}>
       <a
-        href="#"
+        tabIndex={0}
         className="focus"
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}

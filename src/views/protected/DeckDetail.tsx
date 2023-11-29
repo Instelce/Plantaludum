@@ -15,7 +15,7 @@ function DeckDetail() {
   const { user } = useAuth();
 
   const { deckQuery, deckPlantsQuery, deckPlantsImagesQuery } = useDeck({
-    deckId,
+    deckId: deckId ? deckId : "",
     fetchPlants: true,
     fetchImages: true,
   });
@@ -93,11 +93,12 @@ function DeckDetail() {
             </div>
 
             <Tabs.Content value="actions">
-              <p>actions</p>
+              <div className="container-table-page">
+                <p>actions</p>
+              </div>
             </Tabs.Content>
 
             <Tabs.Content value="plantes">
-              <p>plantes</p>
               <div className="list-container">
                 <div className="list-wrapper">
                   {deckPlantsQuery.isSuccess && (

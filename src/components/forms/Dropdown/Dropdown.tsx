@@ -1,4 +1,5 @@
 import React, {
+  ButtonHTMLAttributes,
   Children,
   useEffect,
   useId,
@@ -9,10 +10,20 @@ import React, {
 import "./Dropdown.scss";
 import Button from "../../ui/Buttons/Button.jsx";
 import classNames from "classnames";
-import Option from "../Option/Option";
+import Option, {OptionProps} from "../Option/Option";
 import PropTypes from "prop-types";
 import { ChevronDown } from "react-feather";
 import { deleteDublicates } from "../../../utils/helpers";
+import {SizeProp} from "../../../types/helpers";
+
+type DropdownProps = {
+  inputId?: string;
+  label: string;
+  size?: SizeProp;
+  defaultValue?: string | undefined;
+  children: React.ReactNode;
+  mb?: number;
+} & ButtonHTMLAttributes<HTMLButtonElement>
 
 function Dropdown({
   inputId,
@@ -20,10 +31,9 @@ function Dropdown({
   size = "large",
   mb,
   defaultValue = undefined,
-  placeholder = "Option",
   children,
   ...props
-}) {
+}: DropdownProps) {
   const [showOptions, setShowOptions] = useState(false);
   const [options, setOptions] = useState([]);
   const [currentValue, setCurrentValue] = useState("");
@@ -94,9 +104,9 @@ function Dropdown({
         value={currentValue}
         readOnly={true}
       />
-      <label htmlFor={id} className={classNames({ up: currentValue !== "" })}>
+      {currentValue !== "" && <label htmlFor={id} className={classNames({ up: currentValue !== "" })}>
         {label}
-      </label>
+      </label>}
       <Button
         className="sb"
         id={id}
@@ -108,7 +118,7 @@ function Dropdown({
         onClick={() => setShowOptions(!showOptions)}
         {...props}
       >
-        {currentValue != "" ? currentValue : <span> </span>}
+        {currentValue != "" ? currentValue : label}
         <ChevronDown
           color="rgb(var(--color-primary-light))"
           style={{
@@ -125,7 +135,7 @@ function Dropdown({
         onMouseEnter={() => setMouseOnOptions(() => true)}
         onMouseLeave={() => setMouseOnOptions(() => false)}
       >
-        {Children.map(children, (option, index) => {
+        {Children.map(children, (option: OptionProps, index: number) => {
           if (option.type === Option) {
             let value = option.props.value
               ? option.props.value
@@ -150,13 +160,5 @@ function Dropdown({
     </div>
   );
 }
-
-Dropdown.propTypes = {
-  label: PropTypes.string,
-  size: PropTypes.oneOf(["sm", "md", "lg", "big"]),
-  defaultValue: PropTypes.string || PropTypes.number,
-  placeholder: PropTypes.string,
-  children: PropTypes.node,
-};
 
 export default Dropdown;

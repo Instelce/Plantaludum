@@ -23,7 +23,7 @@ export interface CreateDeckFormDataType {
   difficulty: string;
   preview_image_url: string;
   private: boolean;
-  user_id: number;
+  user: number;
 }
 
 export interface CreateDeckPlantFormDataType {

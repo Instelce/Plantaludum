@@ -7,3 +7,30 @@
   grid-column-gap: 2rem;
   grid-row-gap: 2rem;
 }
+
+.filter-panel {
+  //height: 0;
+  width: 100%;
+  padding: 1rem var(--page-horizontal-padding);
+  position: absolute;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-column-gap: 2rem;
+  grid-row-gap: 2rem;
+
+  background: rgb(var(--color-gray-2));
+  border-bottom: 1px solid rgb(var(--color-gray-3));
+
+  transform: translateY(-10px);
+  transform-origin: top;
+  opacity: 0;
+
+  transition: opacity .3s ease, transform .3s ease;
+
+  &.show {
+    //height: auto;
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

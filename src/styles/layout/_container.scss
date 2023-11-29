@@ -37,7 +37,11 @@
   width: 100%;
   min-height: 100%;
   padding: 0;
-  overflow: hidden;
+  //overflow: hidden;
   position: relative;
   display: block;
+}
+
+.container-table-page {
+  padding: 1rem 20%;
 }

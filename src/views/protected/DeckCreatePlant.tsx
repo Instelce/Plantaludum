@@ -19,7 +19,8 @@ function DeckCreatePlant() {
   const fromLocation = location?.state?.from?.pathname || "/mon-jardin";
   const navigate = useNavigate();
   const { deckId } = useParams();
-  const quizData = location.state.data;
+  const deckData = location.state?.data;
+  console.log(deckData)
 
   const [plantValue, setPlantValue] = useState<string>("");
   const [plantData, setPlantData] = useState<PlantType | null>(null);
@@ -94,7 +95,7 @@ function DeckCreatePlant() {
       <header className="page-header center">
         <h1>
           <span className="highlight">Ajoute </span>
-          des plantes à {quizData.name}
+          des plantes à {deckData.name}
         </h1>
       </header>
 
