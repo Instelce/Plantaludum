@@ -2,10 +2,10 @@
   position: relative;
   z-index: 0;
 
-  background: transparent;
   color: var(--color-text);
   font-size: inherit;
   line-height: 1;
+  border-radius: var(--radius);
 
   display: flex;
   align-items: center;
@@ -14,21 +14,23 @@
   transition: transform 0.3s ease;
   cursor: pointer;
 
-  &:not(:disabled) {
-    &:active {
-      animation: bounce 0.3s ease forwards;
-      filter: drop-shadow(0 0 4px rgba(var(--color-gray-4), 0.4));
+  &.bounce {
+    &:not(:disabled) {
+      &:active {
+        animation: bounce 0.3s ease forwards;
+        filter: drop-shadow(0 0 4px rgba(var(--color-gray-4), 0.4));
 
-      &::after {
-        animation: after-bounce 0.3s ease forwards;
+        &::after {
+          animation: after-bounce 0.3s ease forwards;
+        }
       }
-    }
 
-    &:hover {
-      transform: translateY(-2px);
+      &:hover {
+        transform: translateY(-2px);
 
-      &::after {
-        transform: translateY(4px);
+        &::after {
+          transform: translateY(4px);
+        }
       }
     }
   }
@@ -75,30 +77,42 @@
     --color-border: rgb(var(--color-success-dark));
   }
 
-  &::before,
-  &::after {
-    content: "";
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: -1;
+  &.bounce {
+    &::before,
+    &::after {
+      content: "";
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
 
-    border-radius: var(--radius);
-    transition:
-      transform 0.3s ease,
-      background 0.3s ease;
+      border-radius: var(--radius);
+      transition:
+        transform 0.3s ease,
+        background 0.3s ease;
+    }
+
+    &::before {
+      background: var(--color-background);
+    }
+
+    &::after {
+      background: var(--color-border);
+      transform: translateY(2px);
+      z-index: -2;
+    }
   }
 
-  &::before {
+  &:not(.bounce) {
     background: var(--color-background);
-  }
 
-  &::after {
-    background: var(--color-border);
-    transform: translateY(2px);
-    z-index: -2;
+    transition: box-shadow .3s ease, background .3s ease;
+
+    &:hover {
+      background: var(--color-border);
+    }
   }
 
   &.only-icon {

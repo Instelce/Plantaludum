@@ -1,54 +1,85 @@
 import "./Notification.scss";
-import { StatusProp } from "../../types/helpers";
 import classNames from "classnames";
-import { useEffect, useState } from "react";
+import {useEffect, useRef, useState} from "react";
 import {
+  notificationIcons,
   NotificationType,
   useNotification,
 } from "../../context/NotificationsProvider";
 import Button from "../ui/Buttons/Button";
-import { X } from "react-feather";
+import {X} from "react-feather";
+import {StatusProp, TimeoutRef} from "../../types/helpers";
 
 type NotificationProps = {
-  index: number;
-  notification: NotificationType;
+  id: number,
+  message: string,
+  type: StatusProp,
+  duration: number,
 };
 
-function Notification({ index, notification }: NotificationProps) {
-  const {removeNotification} = useNotification()
-  const [remove, setRemove] = useState(false);
-  const [durationProgress, setDurationProgress] = useState(0);
+function Notification({ id, message, type, duration }: NotificationProps) {
+  const notification = useNotification()
+  const timerID = useRef<TimeoutRef | null>(null)
+  const progressRef = useRef<HTMLSpanElement | null>(null)
+  const [dismissed, setDismissed] = useState(false)
+
+  const handleDismiss = () => {
+    setDismissed(true)
+    setTimeout(() => {
+      notification.remove(id)
+    }, 400)
+  }
+
+  const handleMouseEnter = () => {
+    if (timerID.current)
+      clearTimeout(timerID.current);
+
+    if (progressRef.current)
+      progressRef.current.style.animationPlayState = "paused";
+  }
+
+  const handleMouseLeave = () => {
+    if (progressRef.current && progressRef.current.parentElement) {
+      const remainingWidth = (progressRef.current?.parentElement.offsetWidth - progressRef.current.offsetWidth);
+      const remainingTime = (remainingWidth / progressRef.current.parentElement.offsetWidth) * duration
+
+      if (progressRef.current) {
+        progressRef.current.style.animationPlayState = "running"
+      }
+
+      timerID.current = setTimeout(() => {
+        handleDismiss()
+      }, remainingTime)
+    }
+  }
 
   useEffect(() => {
-    const durationInterval = setInterval(() => {
-      setDurationProgress((durationProgress) => durationProgress + 1);
-    }, (notification.duration) / 100);
-
-    const removeTimeout = setTimeout(() => {
-      setRemove(true);
-      removeNotification(index);
-    }, notification.duration + 500);
+    timerID.current = setTimeout(() => {
+      handleDismiss()
+    }, duration)
 
     return () => {
-      clearTimeout(removeTimeout);
-      clearInterval(durationInterval);
-    };
+      clearTimeout(timerID.current)
+    }
   }, []);
 
   return (
-    <div
-      className={classNames("notification", notification.status, {
-        remove: remove,
-      })}
-    >
-      <div className="flex sb center">
-        {notification.message}
-        <Button onlyIcon className="ml-2" size="small" color="gray" onClick={() => removeNotification(notification.id)}>
-          <X />
-        </Button>
+    <>
+      <div
+        className={classNames("notification", type, {dismiss: dismissed})}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        <div className="flex sb center">
+          {notificationIcons[type]}
+          <p className="ml-1">{message}</p>
+          <Button onlyIcon bounce={false} className="ml-4" size="small" color="dark-gray" onClick={handleDismiss}>
+            <X />
+          </Button>
+        </div>
+        <span ref={progressRef} style={{animation: "progress " + duration + "ms linear forwards"}}></span>
       </div>
-      <span style={{ width: durationProgress + "%" }}></span>
-    </div>
+    </>
   );
 }
 

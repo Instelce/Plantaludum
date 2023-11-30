@@ -35,25 +35,8 @@ function ButtonsMenu() {
 }
 
 function Root() {
-  const { notifications } = useNotification();
-
-  useEffect(() => {
-    console.log(notifications);
-  }, [notifications]);
-
   return (
     <>
-      <div className="notifications-container">
-        {notifications
-          // .filter((notification) => notification.active)
-          .map((notification, index: number) => (
-            <Notification
-              key={index}
-              index={index}
-              notification={notification}
-            />
-          ))}
-      </div>
       <div className="page-container">
         <div className="container">
           <div className="scroller">

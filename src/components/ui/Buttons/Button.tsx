@@ -11,6 +11,7 @@ const Button = forwardRef<HTMLElement, ButtonProps>((props, forwardedRef) => {
     onlyIcon = false,
     color = "primary",
     size = "large",
+    bounce = true,
     disabled = false,
     fill = false,
     loading = false,
@@ -30,6 +31,7 @@ const Button = forwardRef<HTMLElement, ButtonProps>((props, forwardedRef) => {
         size,
         { "only-icon": onlyIcon },
         { fill: fill },
+        { bounce: bounce },
         { loading: loading },
       )}
       disabled={disabled}

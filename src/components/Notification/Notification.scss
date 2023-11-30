@@ -19,19 +19,30 @@
   border: 1px solid var(--color);
   border-radius: var(--radius);
 
-  animation: add-notification 0.3s ease forwards;
+  animation: notification-slide-in 0.2s ease forwards;
 
-  --color: rgb(var(--color-gray-3));
   &.success {
     --color: rgb(var(--color-primary-light));
   }
 
-  &.remove {
-    animation: remove-notification 0.3s ease forwards;
+  &.info {
+    --color: rgb(var(--color-gray-3));
+  }
+
+  &.warning {
+    --color: rgb(var(--color-yellow-light));
+  }
+
+  &.danger {
+    --color: rgb(var(--color-danger-light));
+  }
+
+  &.dismiss {
+    animation: notification-slide-out 0.2s ease forwards;
   }
 
   span {
-    width: 100%;
+    width: 0;
     height: 4px;
     position: absolute;
     bottom: 0;
@@ -42,27 +53,33 @@
   }
 }
 
-@keyframes add-notification {
+@keyframes notification-slide-in {
   0% {
     opacity: 0;
-    transform: translateX(20%);
+    transform: translateX(20%) scale(0.8);
   }
   100% {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateX(0) scale(1);
   }
 }
 
-@keyframes remove-notification {
+@keyframes notification-slide-out {
   0% {
     opacity: 1;
-    transform: translateX(0);
-  }
-  99% {
-    opacity: 0;
-    transform: translateX(20%);
+    transform: translateX(0) scale(1);
   }
   100% {
-    display: none;
+    opacity: 0;
+    transform: translateX(20%) scale(0.8);
+  }
+}
+
+@keyframes progress {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
   }
 }

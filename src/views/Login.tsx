@@ -1,22 +1,19 @@
-import { FormEvent, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import {FormEvent, useState} from "react";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import Input from "../components/forms/Input/Input";
 import Button from "../components/ui/Buttons/Button.jsx";
 import useFormFilled from "../hooks/useFormFilled.js";
-import { useMutation } from "@tanstack/react-query";
-import { auth } from "../services/api";
+import {useMutation} from "@tanstack/react-query";
+import {auth} from "../services/api";
 import Navbar from "../components/Navbar/Navbar";
-import { ArrowRight } from "react-feather";
-import { useAuth } from "../context/AuthProvider";
-import {
-  HelperLoginType,
-  LoginFormDataType,
-} from "../services/api/types/users";
-import { AxiosError, AxiosResponse } from "axios";
+import {ArrowRight} from "react-feather";
+import {useAuth} from "../context/AuthProvider";
+import {HelperLoginType, LoginFormDataType,} from "../services/api/types/users";
+import {AxiosError, AxiosResponse} from "axios";
 import Checkbox from "../components/forms/Checkbox/Checkbox";
-import { useNotification } from "../context/NotificationsProvider";
+import {useNotification} from "../context/NotificationsProvider";
 
-function Login(props) {
+function Login() {
   const { setAccessToken, setCSRFToken, persist, setPersist } = useAuth();
   const [passwordValue, setPasswordValue] = useState("");
   const [responseHelper, setResponseHelper] = useState<HelperLoginType>({});
@@ -25,7 +22,7 @@ function Login(props) {
   const fromLocation = location?.state?.from?.pathname || "/mon-jardin";
   const [loading, setLoading] = useState(false);
   const { formRef, handleFormChange, isFilled } = useFormFilled();
-  const { addNotification } = useNotification();
+  const notification = useNotification();
 
   const { isPending, mutate: mutateLogin } = useMutation({
     mutationKey: ["login"],
@@ -36,12 +33,7 @@ function Login(props) {
       setLoading(false);
 
       navigate(fromLocation, { replace: true });
-      addNotification({
-        id: "login",
-        message: "Connexion réussie",
-        status: "success",
-        duration: 3000,
-      });
+      notification.success({message: "Connexion réussie"});
     },
     onError: (error: AxiosError) => {
       setResponseHelper(error?.response.data);
@@ -51,13 +43,6 @@ function Login(props) {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
-
-    addNotification({
-      id: "check-login",
-      message: "En cours de connexion...",
-      status: "loading",
-      duration: 3000,
-    });
 
     mutateLogin({
       email: formData.get("email") as string,
@@ -81,19 +66,6 @@ function Login(props) {
       <header className="page-header center">
         <h1>Connexion</h1>
       </header>
-
-      <Button
-        onClick={() =>
-          addNotification({
-            id: "notif",
-            message: "Notification",
-            status: "success",
-            duration: 3000,
-          })
-        }
-      >
-        Add new notification
-      </Button>
 
       <div className="form-page">
         <form ref={formRef} onSubmit={handleSubmit} onChange={handleFormChange}>

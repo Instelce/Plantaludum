@@ -1,71 +1,82 @@
 import React, {
   createContext,
-  PropsWithChildren,
-  useContext,
+  PropsWithChildren, ReactNode,
+  useContext, useEffect, useReducer,
   useState,
 } from "react";
-import { StatusProp } from "../types/helpers";
-import set = gsap.set;
+import {StatusProp} from "../types/helpers";
+import {AlertCircle, CheckCircle, Info, XCircle} from "react-feather";
+import {
+  notificationReducer
+} from "../components/Notification/notificationReducer";
+import NotificationContainer
+  from "../components/Notification/NotificationContainer";
+import notification from "../components/Notification/Notification";
+
+export const notificationIcons: {
+  [key in StatusProp]: ReactNode
+} = {
+  success: <CheckCircle />,
+  danger: <XCircle />,
+  warning: <AlertCircle />,
+  info: <Info />,
+}
 
 export type NotificationType = {
-  id: string;
+  id?: string;
   message: string;
-  status: StatusProp;
-  duration: number;
-  active?: boolean;
+  type?: StatusProp;
+  duration?: number;
 };
 
 type NotificationsContextType = {
-  notifications: NotificationType[];
-  addNotification: (notification: NotificationType) => void;
-  removeNotification: (index: number) => void;
+  success: (notification: NotificationType) => void,
+  danger: (notification: NotificationType) => void,
+  warning: (notification: NotificationType) => void,
+  info: (notification: NotificationType) => void,
+  remove: (id: number) => void,
 };
 
-const NotificationContext = createContext<NotificationsContextType>({
-  notifications: [],
-  addNotification: (notification: NotificationType) => {},
-  removeNotification: (index: number) => {},
-});
+const NotificationContext = createContext<NotificationsContextType>({});
 
 export function useNotification(): NotificationsContextType {
   return useContext(NotificationContext);
 }
 
 export function NotificationsProvider({ children }: PropsWithChildren) {
-  const [notifications, setNotifications] = useState<NotificationType[]>([]);
+  const [state, displatch] = useReducer(notificationReducer, {
+    notifications: [],
+  })
 
-  const addNotification = (notification: Omit<NotificationType, "active">) => {
-    let newNotifications = notifications.filter((i) => i.active);
-    console.log("f", newNotifications)
+  const addNotification = (notif: NotificationType) => {
+    const id = Math.floor(Math.random() * 100000000000)
+    displatch({type: "ADD_NOTIFICATION", payload: {
+      ...notif,
+        id: id,
+        duration: notif.duration ? notif.duration : 3000
+      }})
+  }
 
-    setNotifications(() => newNotifications.concat({
-      ...notification,
-      active: true,
-    }));
-  };
+  const success = (notif: NotificationType) => addNotification({...notif, type: "success"})
+  const danger = (notif: NotificationType) => addNotification({...notif, type: "danger"})
+  const warning = (notif: NotificationType) => addNotification({...notif, type: "warning"})
+  const info = (notif: NotificationType) => addNotification({...notif, type: "info"})
 
-  const removeNotification = (index: number) => {
-    setNotifications(
-      notifications.map((notification, i) => {
-        if (i === index) {
-          return {
-            ...notification,
-            active: false,
-          };
-        }
-        return notification;
-      }),
-    );
-  };
+  const remove = (id: number) => {
+    displatch({type: "REMOVE_NOTIFICATION", payload: id})
+  }
 
   return (
     <NotificationContext.Provider
       value={{
-        notifications,
-        addNotification,
-        removeNotification,
+        success,
+        danger,
+        warning,
+        info,
+        remove
       }}
     >
+      <NotificationContainer notifications={state.notifications} />
       {children}
     </NotificationContext.Provider>
   );
