@@ -40,7 +40,7 @@ function DeckCreate() {
     data: deckData,
     mutate: mutateCreateDeck,
   } = useMutation({
-    mutationKey: ["decks"],
+    mutationKey: [],
     mutationFn: (data: CreateDeckFormDataType) =>
       decks.create(privateFetch, data),
   });

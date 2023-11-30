@@ -18,7 +18,7 @@ function useObjectSearch<T>({
       );
     }
     return data;
-  }, [searchInput]);
+  }, [searchInput, data]);
 
   return filteredData;
 }

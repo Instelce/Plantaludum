@@ -3,18 +3,15 @@ import React, {
   Children,
   useEffect,
   useId,
-  useMemo,
   useRef,
   useState,
 } from "react";
 import "./Dropdown.scss";
 import Button from "../../ui/Buttons/Button.jsx";
 import classNames from "classnames";
-import Option, { OptionProps } from "../Option/Option";
-import PropTypes from "prop-types";
-import { ChevronDown } from "react-feather";
-import { deleteDublicates } from "../../../utils/helpers";
-import { SizeProp } from "../../../types/helpers";
+import Option, {OptionProps} from "../Option/Option";
+import {ChevronDown} from "react-feather";
+import {SizeProp} from "../../../types/helpers";
 
 type DropdownProps = {
   inputId?: string;
@@ -114,12 +111,14 @@ function Dropdown({
           {label}
         </label>
       )}
+
       <Button
         className="sb"
         id={id}
         label={label}
         color="gray"
         size={size}
+        type="button"
         onFocus={() => setButtonFocus(() => true)}
         onBlur={() => setButtonFocus(() => false)}
         onClick={() => setShowOptions(!showOptions)}
@@ -134,6 +133,7 @@ function Dropdown({
           }}
         />
       </Button>
+
       <div
         ref={optionsRef}
         className={classNames("options-container", {

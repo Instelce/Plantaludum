@@ -20,7 +20,7 @@ function OwnDeck({children}: PropsWithChildren) {
   // error notification
   useEffect(() => {
     if (isSuccess && user) {
-      if (deckData.user.id !== user.id) {
+      if (deckData.user != user.id) {
         notifications.danger({
           message: "Vous n'êtes propriétaire de ce deck",
         })

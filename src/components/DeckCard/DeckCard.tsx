@@ -85,7 +85,9 @@ function DeckCard({ deck, ...props }: DeckCardProps) {
       </div>
       <div className="card-button">
         <Button asChild label="Découvrir">
-          <Link to={`/decks/${deck.id}`}>Découvrir</Link>
+          <Link to={`/decks/${deck.id}`}>
+            {user?.id === deck.user ? "Voir" : "Découvrir"}
+          </Link>
         </Button>
         {user?.id === deck.user && <Button asChild onlyIcon color="yellow">
           <Link to={`/decks/${deck.id}/update`}><RefreshCw /></Link>

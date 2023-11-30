@@ -9,7 +9,7 @@ import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
 import Selector from "../../components/forms/Selector";
 import useUser from "../../hooks/auth/useUser";
 import usePrivateFetch from "../../hooks/auth/usePrivateFetch";
-import {useMutation, useQuery} from "@tanstack/react-query";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {CreateDeckFormDataType} from "../../services/api/types/decks";
 import {decks, loadImages} from "../../services/api";
 import useFormFilled from "../../hooks/useFormFilled";
@@ -20,6 +20,7 @@ import Input from "../../components/forms/Input/Input";
 import Textarea from "../../components/forms/Textarea/Textarea";
 import Option from "../../components/forms/Option/Option";
 import useDeck from "../../hooks/api/useDeck";
+import {useNotification} from "../../context/NotificationsProvider";
 
 function DeckUpdate() {
   const user = useUser();
@@ -27,6 +28,7 @@ function DeckUpdate() {
   const location = useLocation();
   const fromLocation = location?.state?.from?.pathname || "/mon-jardin";
   const navigate = useNavigate();
+  const notification = useNotification();
 
   const {deckId} = useParams()
   const {deckQuery} = useDeck({deckId: deckId as string})
@@ -37,6 +39,7 @@ function DeckUpdate() {
   const [plantImages, setPlantImages] = useState(null);
   const [imageValue, setImageValue] = useState<string | null>(null);
 
+  const queryClient = useQueryClient()
   const {
     isSuccess,
     data: deckData,
@@ -45,6 +48,12 @@ function DeckUpdate() {
     mutationKey: ["decks"],
     mutationFn: (data: CreateDeckFormDataType) =>
       decks.update(privateFetch, deckId ? deckId : "", data),
+    onSuccess: data => {
+      queryClient.invalidateQueries({queryKey: ["decks"]});
+      queryClient.invalidateQueries({queryKey: ["decks", deckId]});
+      notification.success({message: `${data.name} mit à jour avec succès`});
+      navigate(`/decks/${deckId}`);
+    }
   });
 
   const {
@@ -59,7 +68,6 @@ function DeckUpdate() {
     enabled: false,
   });
   const plantImagesData = imagesData || null;
-
 
   // get all image urls for autocomplete input
   useEffect(() => {
@@ -80,19 +88,6 @@ function DeckUpdate() {
       );
     }
   }, [plantImagesData]);
-
-  // Navigate to create deck plants form if the deck is successfully created
-  useEffect(() => {
-    if (isSuccess) {
-      console.log(deckData);
-      navigate(`/decks/${deckData.id}`, {
-        state: {
-          data: deckData,
-          from: { pathname: location.pathname },
-        },
-      });
-    }
-  }, [isSuccess]);
 
   const handleFormSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -194,8 +189,7 @@ function DeckUpdate() {
             id="private"
             label="Privé"
             takeValue="true"
-            style={{ marginBottom: "1rem" }}
-            value={deckQuery.data?.private}
+            defaultValue={deckQuery.data?.private}
             data-not-count
           />
           <div className="form-buttons">

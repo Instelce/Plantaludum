@@ -5,12 +5,17 @@ import Button from "../Buttons/Button";
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 import { createPortal } from "react-dom";
 
-function Modal({ show, setShow, children, closeButtonLabel = "Fermer" }) {
+type ModalProps = {
+  show: boolean;
+  children: React.ReactNode;
+}
+
+function Modal({ show, children}: ModalProps) {
   useEffect(() => {
     if (show) {
-      disableBodyScroll(document);
+      disableBodyScroll(document.querySelector(".container"));
     } else {
-      enableBodyScroll(document);
+      enableBodyScroll(document.querySelector(".container"));
     }
   }, [show]);
 
@@ -18,13 +23,6 @@ function Modal({ show, setShow, children, closeButtonLabel = "Fermer" }) {
     <div className={classNames("modal-container", { show: show })}>
       <div className="modal">
         <div className="modal-content">{children}</div>
-        <div className="modal-button">
-          <Button
-            label={closeButtonLabel}
-            color="gray"
-            onClick={() => setShow(!show)}
-          />
-        </div>
       </div>
     </div>,
     document.body,
