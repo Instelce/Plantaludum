@@ -36,7 +36,7 @@ function MainMenu() {
         <h1>
           Mon <span className="highlight">jardin</span>
         </h1>
-        <p>{user.username}</p>
+        <p>{user?.username}</p>
       </header>
     </>
   );

@@ -16,9 +16,8 @@ function useObjectSearch<T>({
       return data.filter((obj) =>
         obj[fieldName].toLowerCase().startsWith(searchInput.toLowerCase()),
       );
-    } else {
-      return data;
     }
+    return data;
   }, [searchInput]);
 
   return filteredData;

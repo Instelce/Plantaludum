@@ -108,7 +108,9 @@
   &:not(.bounce) {
     background: var(--color-background);
 
-    transition: box-shadow .3s ease, background .3s ease;
+    transition:
+      box-shadow 0.3s ease,
+      background 0.3s ease;
 
     &:hover {
       background: var(--color-border);

@@ -15,6 +15,7 @@ import DeckDetail from "./views/protected/DeckDetail.jsx";
 import Test from "./views/Test.jsx";
 import RequireAuth from "./routes/RequireAuth";
 import PageNotFound from "./views/PageNotFound";
+import DeckUpdate from "./views/protected/DeckUpdate";
 
 function App() {
   return (
@@ -39,21 +40,22 @@ function App() {
                 <Route path="choix" element={<DeckChoice />} />
               </Route>
 
-              <Route path="decks/:deckId" element={<DeckDetail />} />
+              <Route path="decks/">
+                <Route path=":deckId" element={<DeckDetail />} />
+                <Route path=":deckId/game" element={<DeckGame />}>
+                  <Route
+                    path="resultat"
+                    element={<QuizResult />}
+                  />
+                </Route>
 
-              <Route path="decks/:deckId/game" element={<DeckGame />} />
-
-              <Route
-                path="decks/:deckId/game/resultat"
-                element={<QuizResult />}
-              />
-
-              <Route path="decks/create" element={<DeckCreate />} />
-
-              <Route
-                path="decks/:deckId/plants/create"
-                element={<DeckCreatePlant />}
-              />
+                <Route path="create" element={<DeckCreate />} />
+                <Route
+                  path=":deckId/plants/create"
+                  element={<DeckCreatePlant />}
+                />
+                <Route path=":deckId/update" element={<DeckUpdate />} />
+              </Route>
             </Route>
           </Route>
         </Route>

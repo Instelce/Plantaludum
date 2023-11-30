@@ -22,8 +22,8 @@ function Explorer() {
   const [showModal, setShowModal] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [showFilter, setShowFilter] = useState(false);
-  const [filteredDecks, setFilteredDecks] = useState<DeckType[]>([]);
 
+  // load decks data
   const {
     isLoading,
     isSuccess,
@@ -32,22 +32,31 @@ function Explorer() {
     queryKey: ["decks"],
     queryFn: () => decks.list(),
   });
+
+  // search and filters
+  const panelRef = useRef<HTMLDivElement>(null);
+  const [difficultyFilter, setDifficultyFilter] = useState(-1);
+
   const searchFilteredDecks = useObjectSearch<DeckType>({
     data: decksData as DeckType[],
     fieldName: "name",
     searchInput: searchInput,
   });
 
-  useEffect(() => {
-    console.log(filteredDecks);
-    console.log(searchFilteredDecks);
-  }, [filteredDecks]);
+  const filteredDecks = useMemo(() => {
+    return searchFilteredDecks?.filter((deck) => {
+      if (!isNaN(difficultyFilter)) {
+        console.log(difficultyFilter, deck.difficulty);
+        return deck.difficulty === difficultyFilter;
+      }
+      return deck;
+    });
+  }, [searchFilteredDecks, difficultyFilter]);
 
   useEffect(() => {
-    if (isSuccess) {
-      setFilteredDecks(decksData as DeckType[]);
-    }
-  }, [isSuccess]);
+    console.log(searchFilteredDecks);
+    console.log(filteredDecks);
+  }, [searchFilteredDecks, filteredDecks]);
 
   return (
     <>
@@ -105,18 +114,38 @@ function Explorer() {
           </div>
         </header>
 
-        <DeckFilterPanel
-          show={showFilter}
-          decksData={searchFilteredDecks}
-          setFilteredDecks={setFilteredDecks}
-        />
+        <div
+          ref={panelRef}
+          className={classNames("filter-panel", { show: showFilter })}
+        >
+          <Dropdown
+            label="Difficulté"
+            defaultValue="Toutes"
+            handleValueChange={(value) => setDifficultyFilter(parseInt(value))}
+          >
+            <Option>Toutes</Option>
+            <Option>1</Option>
+            <Option>2</Option>
+            <Option>3</Option>
+          </Dropdown>
+        </div>
       </div>
 
       {isSuccess && (
         <div className="card-grid">
-          {filteredDecks?.map((deck: DeckType) => (
-            <DeckCard key={deck.id} deck={deck} />
-          ))}
+          {filteredDecks ? (
+            <>
+              {filteredDecks?.map((deck: DeckType) => (
+                <DeckCard key={deck.id} deck={deck} />
+              ))}
+            </>
+          ) : (
+            <>
+              {decksData?.map((deck: DeckType) => (
+                <DeckCard key={deck.id} deck={deck} />
+              ))}
+            </>
+          )}
         </div>
       )}
 
@@ -150,54 +179,6 @@ function Explorer() {
         </svg>
       </Modal>
     </>
-  );
-}
-
-type DeckFilterPanelProps = {
-  show: boolean;
-  decksData: DeckType[];
-  setFilteredDecks: React.Dispatch<React.SetStateAction<DeckType[]>>;
-};
-
-function DeckFilterPanel({
-  show,
-  decksData,
-  setFilteredDecks,
-}: DeckFilterPanelProps) {
-  const panelRef = useRef<HTMLDivElement>(null);
-  const [difficultyFilter, setDifficultyFilter] = useState(-1);
-  const filteredDecks = useMemo(() => {
-    return decksData?.filter((deck) => {
-      if (!isNaN(difficultyFilter)) {
-        console.log(difficultyFilter, deck.difficulty);
-        return deck.difficulty === difficultyFilter;
-      }
-      return deck;
-    });
-  }, [decksData, difficultyFilter]);
-
-  useEffect(() => {
-    console.log(decksData);
-    console.log("difficulty", difficultyFilter);
-  }, [difficultyFilter]);
-
-  useEffect(() => {
-    setFilteredDecks(filteredDecks);
-  }, [filteredDecks]);
-
-  return (
-    <div ref={panelRef} className={classNames("filter-panel", { show: show })}>
-      <Dropdown
-        label="Difficulté"
-        defaultValue="Toutes"
-        handleValueChange={(value) => setDifficultyFilter(parseInt(value))}
-      >
-        <Option>Toutes</Option>
-        <Option>1</Option>
-        <Option>2</Option>
-        <Option>3</Option>
-      </Dropdown>
-    </div>
   );
 }
 

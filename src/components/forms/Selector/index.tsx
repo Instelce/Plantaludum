@@ -9,11 +9,12 @@ type SelectorProps = {
   choices: string[];
   choiceType: "text" | "img";
   multipleChoice?: boolean;
+  defaultValue?: string
   setValue: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
 function Selector({ inputId, choices, choiceType, setValue }: SelectorProps) {
-  const [currentChoice, setCurrentChoice] = useState<string | null>("");
+  const [currentChoice, setCurrentChoice] = useState<string | null>(null);
   const [confirmChoice, setConfirmChoice] = useState(false);
 
   useEffect(() => {

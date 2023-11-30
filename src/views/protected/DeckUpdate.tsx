@@ -1,35 +1,37 @@
-import usePrivateFetch from "../../hooks/auth/usePrivateFetch.js";
-import useFormFilled from "../../hooks/useFormFilled.js";
+import React, {FormEvent, useEffect, useState} from 'react';
+import {ErrorBoundary} from "react-error-boundary";
+import Dropdown from "../../components/forms/Dropdown/Dropdown";
+import AutocompleteInput
+  from "../../components/forms/AutocompleteInput/Autocomplete";
+import Checkbox from "../../components/forms/Checkbox/Checkbox";
+import Button from "../../components/ui/Buttons/Button";
+import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
+import Selector from "../../components/forms/Selector";
+import useUser from "../../hooks/auth/useUser";
+import usePrivateFetch from "../../hooks/auth/usePrivateFetch";
+import {useMutation, useQuery} from "@tanstack/react-query";
+import {CreateDeckFormDataType} from "../../services/api/types/decks";
+import {decks, loadImages} from "../../services/api";
+import useFormFilled from "../../hooks/useFormFilled";
+import {deleteDublicates} from "../../utils/helpers";
+import {ImageType} from "../../services/api/types/images";
+import Navbar from "../../components/Navbar/Navbar";
 import Input from "../../components/forms/Input/Input";
 import Textarea from "../../components/forms/Textarea/Textarea";
-import Dropdown from "../../components/forms/Dropdown/Dropdown";
-import { FormEvent, useEffect, useState } from "react";
-import Checkbox from "../../components/forms/Checkbox/Checkbox";
-import AutocompleteInput from "../../components/forms/AutocompleteInput/Autocomplete";
 import Option from "../../components/forms/Option/Option";
-import Selector from "../../components/forms/Selector/index.jsx";
-import { deleteDublicates } from "../../utils/helpers";
-import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
-import Button from "../../components/ui/Buttons/Button.jsx";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { decks, loadImages } from "../../services/api";
-import Navbar from "../../components/Navbar/Navbar";
-import { ErrorBoundary } from "react-error-boundary";
-import { useAuth } from "../../context/AuthProvider";
-import { CreateDeckFormDataType } from "../../services/api/types/decks";
-import { ImageType } from "../../services/api/types/images";
-import useUser from "../../hooks/auth/useUser";
 import useDeck from "../../hooks/api/useDeck";
 
-function DeckCreate() {
+function DeckUpdate() {
   const user = useUser();
   const privateFetch = usePrivateFetch();
   const location = useLocation();
   const fromLocation = location?.state?.from?.pathname || "/mon-jardin";
   const navigate = useNavigate();
 
-  const { formRef, handleFormChange, isFilled } = useFormFilled();
+  const {deckId} = useParams()
+  const {deckQuery} = useDeck({deckId: deckId as string})
 
+  const { formRef, handleFormChange, isFilled } = useFormFilled();
   const [plantValue, setPlantValue] = useState<string | null>(null);
   const [plantIsValid, setPlantIsValid] = useState(false);
   const [plantImages, setPlantImages] = useState(null);
@@ -42,7 +44,7 @@ function DeckCreate() {
   } = useMutation({
     mutationKey: ["decks"],
     mutationFn: (data: CreateDeckFormDataType) =>
-      decks.create(privateFetch, data),
+      decks.update(privateFetch, deckId ? deckId : "", data),
   });
 
   const {
@@ -133,18 +135,19 @@ function DeckCreate() {
           onSubmit={handleFormSubmit}
           onChange={handleFormChange}
         >
-          <Input id="name" label="Nom" type="text" size="large" />
+          <Input id="name" label="Nom" type="text" size="large" value={deckQuery.data?.name} />
           <Textarea
             id="description"
             label="Description"
             maxLenght={500}
             mb="1rem"
+            value={deckQuery.data?.description}
           />
           <Dropdown
             inputId="difficulty"
             label="Difficulté"
             size="large"
-            mb="1rem"
+            defaultValue={deckQuery.data?.difficulty}
           >
             <Option>1</Option>
             <Option>2</Option>
@@ -189,6 +192,7 @@ function DeckCreate() {
             label="Privé"
             takeValue="true"
             style={{ marginBottom: "1rem" }}
+            value={deckQuery.data?.private}
             data-not-count
           />
           <div className="form-buttons">
@@ -216,4 +220,4 @@ function DeckCreate() {
   );
 }
 
-export default DeckCreate;
+export default DeckUpdate;

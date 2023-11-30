@@ -17,6 +17,7 @@ export const auth = {
   register: (data: RegisterFormDataType) =>
     apiRequest.post("api/auth/register", data, { withCredentials: true }),
   logout: () => apiPrivateRequest.post("api/auth/logout"),
+  user: (privateFetch: AxiosInstance) => privateFetch.get("api/auth/user"),
 };
 
 // -----------------------------------------------------------------------------
@@ -35,7 +36,7 @@ export const decks = {
   create: (privateFetch: AxiosInstance, data: CreateDeckFormDataType) =>
     privateFetch.post("/api/decks", data).then((r) => r.data),
   //
-  update: (privateFetch: AxiosInstance, deckId: number, data: DeckType) =>
+  update: (privateFetch: AxiosInstance, deckId: string, data: DeckType) =>
     privateFetch.patch(`/api/decks/${deckId}`, data).then((r) => r.data),
   //
   delete: (privateFetch: AxiosInstance, deckId: number) =>

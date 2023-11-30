@@ -1,26 +1,26 @@
 import React, {
   createContext,
-  PropsWithChildren, ReactNode,
-  useContext, useEffect, useReducer,
+  PropsWithChildren,
+  ReactNode,
+  useContext,
+  useEffect,
+  useReducer,
   useState,
 } from "react";
-import {StatusProp} from "../types/helpers";
-import {AlertCircle, CheckCircle, Info, XCircle} from "react-feather";
-import {
-  notificationReducer
-} from "../components/Notification/notificationReducer";
-import NotificationContainer
-  from "../components/Notification/NotificationContainer";
+import { StatusProp } from "../types/helpers";
+import { AlertCircle, CheckCircle, Info, XCircle } from "react-feather";
+import { notificationReducer } from "../components/Notification/notificationReducer";
+import NotificationContainer from "../components/Notification/NotificationContainer";
 import notification from "../components/Notification/Notification";
 
 export const notificationIcons: {
-  [key in StatusProp]: ReactNode
+  [key in StatusProp]: ReactNode;
 } = {
   success: <CheckCircle />,
   danger: <XCircle />,
   warning: <AlertCircle />,
   info: <Info />,
-}
+};
 
 export type NotificationType = {
   id?: string;
@@ -30,11 +30,11 @@ export type NotificationType = {
 };
 
 type NotificationsContextType = {
-  success: (notification: NotificationType) => void,
-  danger: (notification: NotificationType) => void,
-  warning: (notification: NotificationType) => void,
-  info: (notification: NotificationType) => void,
-  remove: (id: number) => void,
+  success: (notification: NotificationType) => void;
+  danger: (notification: NotificationType) => void;
+  warning: (notification: NotificationType) => void;
+  info: (notification: NotificationType) => void;
+  remove: (id: number) => void;
 };
 
 const NotificationContext = createContext<NotificationsContextType>({});
@@ -46,25 +46,32 @@ export function useNotification(): NotificationsContextType {
 export function NotificationsProvider({ children }: PropsWithChildren) {
   const [state, displatch] = useReducer(notificationReducer, {
     notifications: [],
-  })
+  });
 
   const addNotification = (notif: NotificationType) => {
-    const id = Math.floor(Math.random() * 100000000000)
-    displatch({type: "ADD_NOTIFICATION", payload: {
-      ...notif,
+    const id = Math.floor(Math.random() * 100000000000);
+    displatch({
+      type: "ADD_NOTIFICATION",
+      payload: {
+        ...notif,
         id: id,
-        duration: notif.duration ? notif.duration : 3000
-      }})
-  }
+        duration: notif.duration ? notif.duration : 3000,
+      },
+    });
+  };
 
-  const success = (notif: NotificationType) => addNotification({...notif, type: "success"})
-  const danger = (notif: NotificationType) => addNotification({...notif, type: "danger"})
-  const warning = (notif: NotificationType) => addNotification({...notif, type: "warning"})
-  const info = (notif: NotificationType) => addNotification({...notif, type: "info"})
+  const success = (notif: NotificationType) =>
+    addNotification({ ...notif, type: "success" });
+  const danger = (notif: NotificationType) =>
+    addNotification({ ...notif, type: "danger" });
+  const warning = (notif: NotificationType) =>
+    addNotification({ ...notif, type: "warning" });
+  const info = (notif: NotificationType) =>
+    addNotification({ ...notif, type: "info" });
 
   const remove = (id: number) => {
-    displatch({type: "REMOVE_NOTIFICATION", payload: id})
-  }
+    displatch({ type: "REMOVE_NOTIFICATION", payload: id });
+  };
 
   return (
     <NotificationContext.Provider
@@ -73,7 +80,7 @@ export function NotificationsProvider({ children }: PropsWithChildren) {
         danger,
         warning,
         info,
-        remove
+        remove,
       }}
     >
       <NotificationContainer notifications={state.notifications} />

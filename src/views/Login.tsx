@@ -1,17 +1,20 @@
-import {FormEvent, useState} from "react";
-import {Link, useLocation, useNavigate} from "react-router-dom";
+import React, { FormEvent, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Input from "../components/forms/Input/Input";
 import Button from "../components/ui/Buttons/Button.jsx";
 import useFormFilled from "../hooks/useFormFilled.js";
-import {useMutation} from "@tanstack/react-query";
-import {auth} from "../services/api";
+import { useMutation } from "@tanstack/react-query";
+import { auth } from "../services/api";
 import Navbar from "../components/Navbar/Navbar";
-import {ArrowRight} from "react-feather";
-import {useAuth} from "../context/AuthProvider";
-import {HelperLoginType, LoginFormDataType,} from "../services/api/types/users";
-import {AxiosError, AxiosResponse} from "axios";
+import { ArrowRight } from "react-feather";
+import { useAuth } from "../context/AuthProvider";
+import {
+  HelperLoginType,
+  LoginFormDataType,
+} from "../services/api/types/users";
+import { AxiosError, AxiosResponse } from "axios";
 import Checkbox from "../components/forms/Checkbox/Checkbox";
-import {useNotification} from "../context/NotificationsProvider";
+import { useNotification } from "../context/NotificationsProvider";
 
 function Login() {
   const { setAccessToken, setCSRFToken, persist, setPersist } = useAuth();
@@ -33,7 +36,7 @@ function Login() {
       setLoading(false);
 
       navigate(fromLocation, { replace: true });
-      notification.success({message: "Connexion réussie"});
+      notification.success({ message: "Connexion réussie" });
     },
     onError: (error: AxiosError) => {
       setResponseHelper(error?.response.data);
@@ -61,6 +64,16 @@ function Login() {
         <div className="left">
           <Link to="/explorer">Explorer</Link>
         </div>
+        <div className="right">
+          <Button asChild label="Inscription" size="large" color="gray">
+            <Link
+              to="/inscription"
+              state={{ from: { pathname: location.pathname } }}
+            >
+              S'inscrire
+            </Link>
+          </Button>
+        </div>
       </Navbar>
 
       <header className="page-header center">
@@ -72,7 +85,7 @@ function Login() {
           <Input
             id="email"
             label="Email"
-            type="text"
+            type="email"
             size="large"
             showInfo
             helperText={responseHelper?.email}

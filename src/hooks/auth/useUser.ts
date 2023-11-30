@@ -1,27 +1,23 @@
 import usePrivateFetch from "./usePrivateFetch.js";
 import { useAuth } from "../../context/AuthProvider";
 import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { auth } from "../../services/api";
 
 function useUser() {
-  const { user, setUser } = useAuth();
+  const { setUser } = useAuth();
   const privateFetch = usePrivateFetch();
 
-  const getUser = async () => {
-    try {
-      const { data } = await privateFetch.get("api/auth/user");
-      setUser(data);
-    } catch (error) {
-      console.log("user", error);
-    }
-  };
+  const userQuery = useQuery({
+    queryKey: ["user"],
+    queryFn: async () => {
+      const response = await auth.user(privateFetch);
+      setUser(response.data);
+      return response.data;
+    },
+  });
 
-  useEffect(() => {
-    if (Object.values(user).length === 0) {
-      getUser();
-    }
-  }, []);
-
-  return user;
+  return userQuery.data;
 }
 
 export default useUser;

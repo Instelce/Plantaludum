@@ -9,16 +9,18 @@ import Tabs from "../../components/ui/Tabs/index.jsx";
 import PlantCard from "../../components/PlantCard/PlantCard";
 import { useAuth } from "../../context/AuthProvider";
 import Stars from "../../components/ui/Stars/Stars";
+import useUser from "../../hooks/auth/useUser";
 
 function DeckDetail() {
   const { deckId } = useParams();
-  const { user } = useAuth();
+  const user = useUser();
 
   const { deckQuery, deckPlantsQuery, deckPlantsImagesQuery } = useDeck({
     deckId: deckId ? deckId : "",
     fetchPlants: true,
     fetchImages: true,
   });
+  const isOwner = user?.id === deckQuery.data?.user;
 
   return (
     <div className="deck-detail">
@@ -83,20 +85,35 @@ function DeckDetail() {
             </div>
           </header>
 
-          <Tabs.Root defaultValue="actions">
+          <Tabs.Root defaultValue="plantes">
             <div className="fill-horizontal center sep-bottom">
               <Tabs.List>
-                <Tabs.Trigger value="actions">Actions</Tabs.Trigger>
+                {isOwner && (
+                  <Tabs.Trigger value="actions">Actions</Tabs.Trigger>
+                )}
                 <Tabs.Trigger value="plantes">Plantes</Tabs.Trigger>
                 <Tabs.Trigger value="plus-infos">Plus d'info</Tabs.Trigger>
               </Tabs.List>
             </div>
 
-            <Tabs.Content value="actions">
-              <div className="container-table-page">
-                <p>actions</p>
-              </div>
-            </Tabs.Content>
+            {isOwner && (
+              <Tabs.Content value="actions">
+                <div className="container-table-page">
+                  <div className="grid gc-2 gg-1">
+                    <Button asChild className="sb">
+                      <Link to={`/decks/${deckId}/update`}>
+                        Mettre à jour
+                        <RefreshCw />
+                      </Link>
+                    </Button>
+                    <Button className="sb" color="danger" fill>
+                      Supprimer
+                      <Trash />
+                    </Button>
+                  </div>
+                </div>
+              </Tabs.Content>
+            )}
 
             <Tabs.Content value="plantes">
               <div className="list-container">
@@ -123,7 +140,9 @@ function DeckDetail() {
             </Tabs.Content>
 
             <Tabs.Content value="plus-infos">
-              <p>{deckQuery.data.description}</p>
+              <div className="container-table-page">
+                <p>{deckQuery.data.description}</p>
+              </div>
             </Tabs.Content>
           </Tabs.Root>
         </>
