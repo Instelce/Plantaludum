@@ -85,7 +85,7 @@ function DeckUpdate() {
   useEffect(() => {
     if (isSuccess) {
       console.log(deckData);
-      navigate(`/decks/${deckData.id}/plants/create`, {
+      navigate(`/decks/${deckData.id}`, {
         state: {
           data: deckData,
           from: { pathname: location.pathname },
@@ -99,12 +99,14 @@ function DeckUpdate() {
     const formData = new FormData(e.target as HTMLFormElement);
 
     console.log(user);
+    console.log(formData.get("preview-image-url"))
+    console.log(deckData)
 
     mutateCreateDeck({
       name: formData.get("name") as string,
       description: formData.get("description") as string,
       difficulty: formData.get("difficulty") as string,
-      preview_image_url: formData.get("preview-image-url") as string,
+      preview_image_url: formData.get("preview-image-url") || deckQuery.data?.preview_image_url as string,
       private: !!formData.get("private"),
       user: user.id,
     });
@@ -125,7 +127,7 @@ function DeckUpdate() {
 
       <header className="page-header center">
         <h1>
-          <span className="highlight">Créer</span> ton deck
+          <span className="highlight">Mise à jour</span> de "{deckQuery.data?.name}"
         </h1>
       </header>
 
@@ -135,13 +137,12 @@ function DeckUpdate() {
           onSubmit={handleFormSubmit}
           onChange={handleFormChange}
         >
-          <Input id="name" label="Nom" type="text" size="large" value={deckQuery.data?.name} />
+          <Input id="name" label="Nom" type="text" size="large" defaultValue={deckQuery.data?.name} />
           <Textarea
             id="description"
             label="Description"
-            maxLenght={500}
-            mb="1rem"
-            value={deckQuery.data?.description}
+            maxlength={500}
+            defaultValue={deckQuery.data?.description}
           />
           <Dropdown
             inputId="difficulty"
@@ -153,8 +154,9 @@ function DeckUpdate() {
             <Option>2</Option>
             <Option>3</Option>
           </Dropdown>
+          <img src={deckQuery.data?.preview_image_url}/>
           <ErrorBoundary
-            fallback={<p>Erreur lors de l'obtention des données.</p>}
+            fallback={<p>Erreur lors de l'obtention des images.</p>}
           >
             {imageValue === null && (
               <>
@@ -169,6 +171,7 @@ function DeckUpdate() {
                   usageInfoText="Cherche le nom d’une plante, puis choisie l’image
                 de la plante qui te semble la mieux. Choisie la bien car c'est
                 elle qui servira d'image de couverture au decks."
+                  data-not-count
                 />
               </>
             )}

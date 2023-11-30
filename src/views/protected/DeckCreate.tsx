@@ -137,14 +137,12 @@ function DeckCreate() {
           <Textarea
             id="description"
             label="Description"
-            maxLenght={500}
-            mb="1rem"
+            maxlength={500}
           />
           <Dropdown
             inputId="difficulty"
             label="Difficulté"
             size="large"
-            mb="1rem"
           >
             <Option>1</Option>
             <Option>2</Option>
@@ -166,6 +164,7 @@ function DeckCreate() {
                   usageInfoText="Cherche le nom d’une plante, puis choisie l’image
                 de la plante qui te semble la mieux. Choisie la bien car c'est
                 elle qui servira d'image de couverture au decks."
+                  data-not-count
                 />
               </>
             )}

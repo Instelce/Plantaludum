@@ -22,6 +22,7 @@ function AutocompleteInput({
   setValidValue = null,
   setSelectedValueData = null,
   usageInfoText = null,
+  ...props
 }: AutocompleteInputProps) {
   const [searchValue, setSearchValue] = useState("");
   const [suggestions, setSuggestions] = useState<object | null>(null);
@@ -74,9 +75,9 @@ function AutocompleteInput({
         value={searchValue}
         handleValueChange={setSearchValue}
         onKeyDown={checkKeyDown}
-        mb="0"
         usageInfoText={usageInfoText}
-      />
+        {...props}
+        />
       {searchValue !== selectedValue && (
         <Suggestions
           searchValue={searchValue}

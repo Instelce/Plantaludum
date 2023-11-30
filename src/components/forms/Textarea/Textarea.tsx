@@ -1,29 +1,30 @@
 import "./Textarea.scss";
-import React, { useEffect, useId, useState } from "react";
+import React, {TextareaHTMLAttributes, useEffect, useId, useState} from "react";
 import classNames from "classnames";
 
 type TextareaProps = {
   id?: string;
   label: string;
-  maxLength?: number;
+  maxlength?: number;
   showActionBar?: boolean;
   disabled?: boolean;
   value?: string;
   handleValueChange?: React.Dispatch<React.SetStateAction<string>> | null;
   helperText?: string;
   mb?: number;
-};
+} & TextareaHTMLAttributes<HTMLTextAreaElement>;
 
 function Textarea({
   id,
   label,
-  maxLength,
+  maxlength,
   showActionBar = false,
   disabled = false,
   value,
   handleValueChange = null,
   helperText,
   mb,
+  ...props
 }: TextareaProps) {
   const defaultId = useId();
   const [valueLenght, setValueLenght] = useState(0);
@@ -45,15 +46,16 @@ function Textarea({
           placeholder=" "
           value={value ? value : undefined}
           onChange={(e) => handleChange(e.target.value)}
+          {...props}
         ></textarea>
         <label htmlFor={id ? id : defaultId}>{label}</label>
-        {maxLength && (
+        {maxlength && (
           <span
             className={classNames("world-counter", {
-              "text-overflow": valueLenght > maxLength,
+              "text-overflow": valueLenght > maxlength,
             })}
           >
-            {maxLength - valueLenght}
+            {maxlength - valueLenght}
           </span>
         )}
       </div>

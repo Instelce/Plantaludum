@@ -3,7 +3,7 @@ import React, { SetStateAction } from "react";
 export type AutocompleteInputProps = {
   id?: string;
   label: string;
-  size: "small" | "medium" | "large"; // Define the available sizes
+  size: "small" | "medium" | "large";
   url: string;
   fieldName: string;
   maxSuggestions?: number;

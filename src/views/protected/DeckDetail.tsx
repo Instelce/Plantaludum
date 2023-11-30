@@ -70,18 +70,6 @@ function DeckDetail() {
               <Button color="gray" onlyIcon>
                 <Share />
               </Button>
-              {deckId === user.id && (
-                <>
-                  <Button asChild color="yellow" onlyIcon>
-                    <Link to={`/decks/${deckId}/update`}>
-                      <RefreshCw />
-                    </Link>
-                  </Button>
-                  <Button color="danger" onlyIcon>
-                    <Trash />
-                  </Button>
-                </>
-              )}
             </div>
           </header>
 

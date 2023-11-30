@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import {Route, Routes, useParams} from "react-router-dom";
 import Root from "./views/Root.jsx";
 import Home from "./views/Home.jsx";
 import Register from "./views/Register.jsx";
@@ -16,8 +16,14 @@ import Test from "./views/Test.jsx";
 import RequireAuth from "./routes/RequireAuth";
 import PageNotFound from "./views/PageNotFound";
 import DeckUpdate from "./views/protected/DeckUpdate";
+import useUser from "./hooks/auth/useUser";
+import RequirePermission from "./routes/RequirePermission";
+import OwnDeck from "./routes/OwnDeck";
 
 function App() {
+  const {deckId} = useParams()
+  const user = useUser()
+
   return (
     <>
       <Routes>
@@ -54,7 +60,12 @@ function App() {
                   path=":deckId/plants/create"
                   element={<DeckCreatePlant />}
                 />
-                <Route path=":deckId/update" element={<DeckUpdate />} />
+
+                <Route path=":deckId/update" element={
+                  <OwnDeck>
+                    <DeckUpdate />
+                  </OwnDeck>
+                } />
               </Route>
             </Route>
           </Route>

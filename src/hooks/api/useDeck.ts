@@ -24,7 +24,6 @@ function useDeck({
       {
         queryKey: ["decks", deckId],
         queryFn: () => decks.details(parseInt(deckId)),
-        staleTime: 1_000,
       },
       {
         queryKey: ["decks-plants", deckId],

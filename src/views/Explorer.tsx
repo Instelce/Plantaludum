@@ -16,6 +16,7 @@ import { Plus, Search } from "react-feather";
 import { useAuth } from "../context/AuthProvider";
 import { DeckType } from "../services/api/types/decks";
 import useObjectSearch from "../hooks/useObjectSearch";
+import useUser from "../hooks/auth/useUser";
 
 function Explorer() {
   const { accessToken } = useAuth();

@@ -7,7 +7,7 @@ export interface DeckType {
   created_at: Date;
   times_played: number;
   private: boolean;
-  user_id: number;
+  user: number;
 }
 
 export interface DeckPlantType {

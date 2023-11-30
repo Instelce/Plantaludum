@@ -3,17 +3,18 @@ import Stars from "../ui/Stars/Stars";
 import "./DeckCard.scss";
 import { Link } from "react-router-dom";
 import Button from "../ui/Buttons/Button.jsx";
-import { Zap } from "react-feather";
+import {RefreshCw, Zap} from "react-feather";
 import Flower from "../ui/Icons";
 import { DeckType } from "../../services/api/types/decks";
+import useUser from "../../hooks/auth/useUser";
 
 type DeckCardProps = {
   deck: DeckType;
 };
 
 function DeckCard({ deck, ...props }: DeckCardProps) {
+  const user = useUser()
   const cardRef = useRef<HTMLDivElement | null>(null);
-  // const [currentImage, setCurrentImage] = useState<number>(2);
 
   const handleRightClick = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>,
@@ -86,6 +87,9 @@ function DeckCard({ deck, ...props }: DeckCardProps) {
         <Button asChild label="Découvrir">
           <Link to={`/decks/${deck.id}`}>Découvrir</Link>
         </Button>
+        {user?.id === deck.user && <Button asChild onlyIcon color="yellow">
+          <Link to={`/decks/${deck.id}/update`}><RefreshCw /></Link>
+        </Button>}
         <Button asChild color="yellow" onlyIcon>
           <Link to={`/decks/${deck.id}/game`}>
             <Zap />
