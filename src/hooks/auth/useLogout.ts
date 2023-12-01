@@ -1,5 +1,6 @@
 import usePrivateFetch from "./usePrivateFetch.js";
 import { useAuth } from "../../context/AuthProvider";
+import { auth } from "../../services/api/auth";
 
 export default function useLogout() {
   const { setUser, setAccessToken, setCSRFToken } = useAuth();
@@ -7,7 +8,7 @@ export default function useLogout() {
 
   const logout = async () => {
     try {
-      const response = await privateFetch.post("api/auth/logout");
+      const response = await auth.logout(privateFetch);
 
       setAccessToken(null);
       setCSRFToken(null);

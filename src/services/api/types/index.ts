@@ -6,4 +6,4 @@ import {
   CreateDeckFormDataType,
   CreateDeckPlantFormDataType,
 } from "./decks";
-import { User, UserPlayedDeck } from "./users";
+import { UserType, UserPlayedDeckType } from "./users";

@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useState } from "react";
+import {useMemo} from "react";
 
 type UseSearchArgs<T> = {
-  data: T[];
+  data: T[] | undefined;
   fieldName: keyof T;
   searchInput: string;
 };
@@ -13,9 +13,11 @@ function useObjectSearch<T>({
 }: UseSearchArgs<T>) {
   const filteredData = useMemo(() => {
     if (searchInput != "") {
-      return data.filter((obj) =>
-        obj[fieldName].toLowerCase().startsWith(searchInput.toLowerCase()),
-      );
+      return data?.filter((obj) => {
+        const fieldData = obj[fieldName] as string
+        console.log(fieldData)
+        return fieldData.toLowerCase().startsWith(searchInput.toLowerCase())
+      });
     }
     return data;
   }, [searchInput, data]);

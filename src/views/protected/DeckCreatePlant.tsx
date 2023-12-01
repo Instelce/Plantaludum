@@ -4,13 +4,14 @@ import Button from "../../components/ui/Buttons/Button.jsx";
 import AutocompleteInput from "../../components/forms/AutocompleteInput/Autocomplete";
 import usePrivateFetch from "../../hooks/auth/usePrivateFetch.js";
 import { useMutation } from "@tanstack/react-query";
-import { decks, loadPlantsIdsListImages } from "../../services/api";
+import { decks } from "../../services/api";
 import Navbar from "../../components/Navbar/Navbar";
 import { ErrorBoundary } from "react-error-boundary";
 import PlantCard from "../../components/PlantCard/PlantCard";
 import { PlantType } from "../../services/api/types/plants";
 import { ImageType } from "../../services/api/types/images";
 import { CreateDeckPlantFormDataType } from "../../services/api/types/decks";
+import {flore} from "../../services/api/flore";
 
 function DeckCreatePlant() {
   const privateFetch = usePrivateFetch();
@@ -22,7 +23,7 @@ function DeckCreatePlant() {
   const deckData = location.state?.data;
   console.log(deckData);
 
-  const [plantValue, setPlantValue] = useState<string>("");
+  const [plantValue, setPlantValue] = useState<string | null>(null);
   const [plantData, setPlantData] = useState<PlantType | null>(null);
   const [plantIsValid, setPlantIsValid] = useState(false);
 
@@ -39,7 +40,7 @@ function DeckCreatePlant() {
 
   const plantImagesMutation = useMutation({
     mutationKey: ["decks-plants", deckId],
-    mutationFn: (ids: number[]) => loadPlantsIdsListImages(ids),
+    mutationFn: (ids: number[]) => flore.images.getWithPlantsIds(ids),
   });
 
   const createDeckPlants = async () => {

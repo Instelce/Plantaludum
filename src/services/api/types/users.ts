@@ -1,4 +1,4 @@
-export interface User {
+export interface UserType {
   id: number;
   username: string;
   email: string;
@@ -7,7 +7,7 @@ export interface User {
   games_played: number;
 }
 
-export interface UserPlayedDeck {
+export interface UserPlayedDeckType {
   id: number;
   deck_id: number;
   user_id: number;

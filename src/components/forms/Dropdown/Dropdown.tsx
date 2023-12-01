@@ -9,9 +9,9 @@ import React, {
 import "./Dropdown.scss";
 import Button from "../../ui/Buttons/Button.jsx";
 import classNames from "classnames";
-import Option, {OptionProps} from "../Option/Option";
-import {ChevronDown} from "react-feather";
-import {SizeProp} from "../../../types/helpers";
+import Option, { OptionProps } from "../Option/Option";
+import { ChevronDown } from "react-feather";
+import { SizeProp } from "../../../types/helpers";
 
 type DropdownProps = {
   inputId?: string;

@@ -24,7 +24,7 @@ function Input({
   label,
   icon = null,
   type = "text",
-  size,
+  size = "large",
   disabled = false,
   showInfo = false,
   value,

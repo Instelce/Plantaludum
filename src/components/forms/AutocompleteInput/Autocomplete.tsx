@@ -77,7 +77,7 @@ function AutocompleteInput({
         onKeyDown={checkKeyDown}
         usageInfoText={usageInfoText}
         {...props}
-        />
+      />
       {searchValue !== selectedValue && (
         <Suggestions
           searchValue={searchValue}

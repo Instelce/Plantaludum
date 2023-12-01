@@ -1,19 +1,21 @@
-import React, {PropsWithChildren} from 'react';
-import {Navigate} from "react-router-dom";
-
+import React, { PropsWithChildren } from "react";
+import { Navigate } from "react-router-dom";
 
 type RequirePermissionType = {
   permission: boolean;
   redirect: string;
   children: React.ReactNode;
-} & PropsWithChildren
+} & PropsWithChildren;
 
-
-function RequirePermission({permission, redirect, children}: RequirePermissionType) {
+function RequirePermission({
+  permission,
+  redirect,
+  children,
+}: RequirePermissionType) {
   if (!permission) {
-    return <Navigate to={redirect}/>
+    return <Navigate to={redirect} />;
   } else {
-    return children
+    return children;
   }
 }
 

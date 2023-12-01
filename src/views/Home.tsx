@@ -9,6 +9,7 @@ import { loadRandomPlants } from "../services/api";
 import { PlantType } from "../services/api/types/plants";
 import Button from "../components/ui/Buttons/Button";
 import { Link } from "react-router-dom";
+import {flore} from "../services/api/flore";
 
 function Home(props) {
   let tempPlants: PlantType[] = [];
@@ -16,9 +17,9 @@ function Home(props) {
   const [currentPlant, setCurrentPlant] = useState({});
   const [showQuiz, setShowQuiz] = useState(false);
 
-  const { isLoading, data: plantsData } = useQuery({
+  const { isLoading, data: plantsData } = useQuery<PlantType[]>({
     queryKey: ["plants"],
-    queryFn: async () => loadRandomPlants(10),
+    queryFn: async () => flore.plants.random(10),
     staleTime: Infinity,
   });
 

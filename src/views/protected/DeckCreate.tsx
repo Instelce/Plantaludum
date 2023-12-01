@@ -3,23 +3,23 @@ import useFormFilled from "../../hooks/useFormFilled.js";
 import Input from "../../components/forms/Input/Input";
 import Textarea from "../../components/forms/Textarea/Textarea";
 import Dropdown from "../../components/forms/Dropdown/Dropdown";
-import { FormEvent, useEffect, useState } from "react";
+import {FormEvent, useEffect, useState} from "react";
 import Checkbox from "../../components/forms/Checkbox/Checkbox";
-import AutocompleteInput from "../../components/forms/AutocompleteInput/Autocomplete";
+import AutocompleteInput
+  from "../../components/forms/AutocompleteInput/Autocomplete";
 import Option from "../../components/forms/Option/Option";
 import Selector from "../../components/forms/Selector/index.jsx";
-import { deleteDublicates } from "../../utils/helpers";
-import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
+import {deleteDublicates} from "../../utils/helpers";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import Button from "../../components/ui/Buttons/Button.jsx";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { decks, loadImages } from "../../services/api";
+import {useMutation, useQuery} from "@tanstack/react-query";
+import {decks, PaginationResponseType} from "../../services/api";
 import Navbar from "../../components/Navbar/Navbar";
-import { ErrorBoundary } from "react-error-boundary";
-import { useAuth } from "../../context/AuthProvider";
-import { CreateDeckFormDataType } from "../../services/api/types/decks";
-import { ImageType } from "../../services/api/types/images";
+import {ErrorBoundary} from "react-error-boundary";
+import {CreateDeckFormDataType} from "../../services/api/types/decks";
+import {ImageType} from "../../services/api/types/images";
 import useUser from "../../hooks/auth/useUser";
-import useDeck from "../../hooks/api/useDeck";
+import {flore} from "../../services/api/flore";
 
 function DeckCreate() {
   const user = useUser();
@@ -50,14 +50,13 @@ function DeckCreate() {
     data: imagesData,
     error,
     refetch: fetchImages,
-  } = useQuery({
+  } = useQuery<PaginationResponseType<ImageType>, Error>({
     queryKey: ["images"],
-    queryFn: () => loadImages({ plant__french_name: plantValue }),
+    queryFn: () => flore.images.list({ plant__french_name: plantValue }),
     staleTime: Infinity,
     enabled: false,
   });
   const plantImagesData = imagesData || null;
-
 
   // get all image urls for autocomplete input
   useEffect(() => {
@@ -104,7 +103,7 @@ function DeckCreate() {
       difficulty: formData.get("difficulty") as string,
       preview_image_url: formData.get("preview-image-url") as string,
       private: !!formData.get("private"),
-      user: user.id,
+      user: user?.id as number,
     });
   };
 
@@ -133,23 +132,15 @@ function DeckCreate() {
           onSubmit={handleFormSubmit}
           onChange={handleFormChange}
         >
-          <Input id="name" label="Nom" type="text" size="large" />
-          <Textarea
-            id="description"
-            label="Description"
-            maxlength={500}
-          />
-          <Dropdown
-            inputId="difficulty"
-            label="Difficulté"
-            size="large"
-          >
+          <Input id="name" label="Nom" type="text" />
+          <Textarea id="description" label="Description" maxlength={500} />
+          <Dropdown inputId="difficulty" label="Difficulté" size="large">
             <Option>1</Option>
             <Option>2</Option>
             <Option>3</Option>
           </Dropdown>
           <ErrorBoundary
-            fallback={<p>Erreur lors de l'obtention des données.</p>}
+            fallback={<p>Erreur lors de l&apos;obtention des données.</p>}
           >
             {imageValue === null && (
               <>

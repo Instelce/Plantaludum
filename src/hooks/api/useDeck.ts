@@ -1,12 +1,13 @@
 import { useQueries, useQuery } from "@tanstack/react-query";
 import {
   decks,
-  loadPlantsIdsList,
-  loadPlantsIdsListImages,
 } from "../../services/api";
 import { useEffect } from "react";
 import { getObjectKeyValues } from "../../utils/helpers";
 import { PlantType } from "../../services/api/types/plants";
+import {flore} from "../../services/api/flore";
+import {ImageType} from "../../services/api/types/images";
+import {DeckType} from "../../services/api/types/decks";
 
 type UseDeckArgs = {
   deckId: string;
@@ -19,33 +20,30 @@ function useDeck({
   fetchPlants = false,
   fetchImages = false,
 }: UseDeckArgs) {
-  const [deckQuery, deckPlantsQuery] = useQueries({
-    queries: [
-      {
-        queryKey: ["decks", deckId],
-        queryFn: () => decks.details(parseInt(deckId)),
-      },
-      {
-        queryKey: ["decks-plants", deckId],
-        queryFn: () => decks.listPlants(parseInt(deckId)),
-      },
-    ],
+  const deckQuery = useQuery<DeckType>({
+    queryKey: ["decks", deckId],
+    queryFn: () => decks.details(parseInt(deckId)),
+  })
+
+  const deckPlantsQuery = useQuery<PlantType[]>({
+    queryKey: ["decks-plants", deckId],
+    queryFn: () => decks.listPlants(parseInt(deckId)),
   });
 
-  const plantsQuery = useQuery({
+  const plantsQuery = useQuery<PlantType[], Error>({
     queryKey: ["plants", deckId],
     queryFn: () =>
-      loadPlantsIdsList(
+      flore.plants.getWithIds(
         getObjectKeyValues(deckPlantsQuery.data, "plant_id"), // array of plant id
       ),
     staleTime: Infinity,
     enabled: false,
   });
 
-  const plantsImagesQuery = useQuery({
+  const plantsImagesQuery = useQuery<ImageType[], Error>({
     queryKey: ["plants-images", deckId],
     queryFn: () =>
-      loadPlantsIdsListImages(
+      flore.images.getWithPlantsIds(
         getObjectKeyValues(deckPlantsQuery.data, "plant_id"),
       ),
     staleTime: Infinity,

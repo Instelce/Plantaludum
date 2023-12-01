@@ -30,3 +30,14 @@ export interface CreateDeckPlantFormDataType {
   deck: number;
   plant_id: number;
 }
+
+export interface UpdateDeckFormDataType {
+  name?: string;
+  description?: string;
+  difficulty?: number;
+  preview_image_url?: string;
+  created_at?: Date;
+  times_played?: number;
+  private?: boolean;
+  user?: number;
+}

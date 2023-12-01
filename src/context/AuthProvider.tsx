@@ -4,12 +4,12 @@ import React, {
   useContext,
   useState,
 } from "react";
-import { User } from "../services/api/types/users";
+import { UserType } from "../services/api/types/users";
 import set = gsap.set;
 
 type AuthContextType = {
-  user: User | {};
-  setUser: React.Dispatch<React.SetStateAction<User | {}>>;
+  user: UserType | {};
+  setUser: React.Dispatch<React.SetStateAction<UserType | {}>>;
   accessToken: string | null;
   setAccessToken: React.Dispatch<React.SetStateAction<string | null>>;
   CSRFToken: string | null;

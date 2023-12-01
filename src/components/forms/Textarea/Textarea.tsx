@@ -1,5 +1,10 @@
 import "./Textarea.scss";
-import React, {TextareaHTMLAttributes, useEffect, useId, useState} from "react";
+import React, {
+  TextareaHTMLAttributes,
+  useEffect,
+  useId,
+  useState,
+} from "react";
 import classNames from "classnames";
 
 type TextareaProps = {

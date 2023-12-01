@@ -1,4 +1,4 @@
-import React, {FormEvent, useEffect, useState} from 'react';
+import React, {FormEvent, useEffect, useState} from "react";
 import {ErrorBoundary} from "react-error-boundary";
 import Dropdown from "../../components/forms/Dropdown/Dropdown";
 import AutocompleteInput
@@ -10,8 +10,8 @@ import Selector from "../../components/forms/Selector";
 import useUser from "../../hooks/auth/useUser";
 import usePrivateFetch from "../../hooks/auth/usePrivateFetch";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {CreateDeckFormDataType} from "../../services/api/types/decks";
-import {decks, loadImages} from "../../services/api";
+import {UpdateDeckFormDataType} from "../../services/api/types/decks";
+import {decks, PaginationResponseType} from "../../services/api";
 import useFormFilled from "../../hooks/useFormFilled";
 import {deleteDublicates} from "../../utils/helpers";
 import {ImageType} from "../../services/api/types/images";
@@ -21,6 +21,7 @@ import Textarea from "../../components/forms/Textarea/Textarea";
 import Option from "../../components/forms/Option/Option";
 import useDeck from "../../hooks/api/useDeck";
 import {useNotification} from "../../context/NotificationsProvider";
+import {flore} from "../../services/api/flore";
 
 function DeckUpdate() {
   const user = useUser();
@@ -30,8 +31,8 @@ function DeckUpdate() {
   const navigate = useNavigate();
   const notification = useNotification();
 
-  const {deckId} = useParams()
-  const {deckQuery} = useDeck({deckId: deckId as string})
+  const { deckId } = useParams();
+  const { deckQuery } = useDeck({ deckId: deckId as string });
 
   const { formRef, handleFormChange, isFilled } = useFormFilled();
   const [plantValue, setPlantValue] = useState<string | null>(null);
@@ -39,21 +40,21 @@ function DeckUpdate() {
   const [plantImages, setPlantImages] = useState(null);
   const [imageValue, setImageValue] = useState<string | null>(null);
 
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
   const {
     isSuccess,
     data: deckData,
     mutate: mutateCreateDeck,
   } = useMutation({
     mutationKey: ["decks"],
-    mutationFn: (data: CreateDeckFormDataType) =>
+    mutationFn: (data: UpdateDeckFormDataType) =>
       decks.update(privateFetch, deckId ? deckId : "", data),
-    onSuccess: data => {
-      queryClient.invalidateQueries({queryKey: ["decks"]});
-      queryClient.invalidateQueries({queryKey: ["decks", deckId]});
-      notification.success({message: `${data.name} mit à jour avec succès`});
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["decks"] });
+      queryClient.invalidateQueries({ queryKey: ["decks", deckId] });
+      notification.success({ message: `${data.name} mit à jour avec succès` });
       navigate(`/decks/${deckId}`);
-    }
+    },
   });
 
   const {
@@ -61,9 +62,9 @@ function DeckUpdate() {
     data: imagesData,
     error,
     refetch: fetchImages,
-  } = useQuery({
+  } = useQuery<PaginationResponseType<ImageType>, Error>({
     queryKey: ["images"],
-    queryFn: () => loadImages({ plant__french_name: plantValue }),
+    queryFn: () => flore.images.list({ plant__french_name: plantValue }),
     staleTime: Infinity,
     enabled: false,
   });
@@ -94,16 +95,19 @@ function DeckUpdate() {
     const formData = new FormData(e.target as HTMLFormElement);
 
     console.log(user);
-    console.log(formData.get("preview-image-url"))
-    console.log(deckData)
+    console.log(formData.get("preview-image-url"));
+    console.log(deckData);
 
     mutateCreateDeck({
       name: formData.get("name") as string,
       description: formData.get("description") as string,
-      difficulty: formData.get("difficulty") as string,
-      preview_image_url: formData.get("preview-image-url") || deckQuery.data?.preview_image_url as string,
+      difficulty: parseInt(formData.get("difficulty") as string) as number,
+      preview_image_url:
+        formData.get("preview-image-url") ?
+        formData.get("preview-image-url")?.toString() :
+        (deckQuery.data?.preview_image_url as string),
       private: !!formData.get("private"),
-      user: user.id,
+      user: user?.id,
     });
   };
 
@@ -122,7 +126,8 @@ function DeckUpdate() {
 
       <header className="page-header center">
         <h1>
-          <span className="highlight">Mise à jour</span> de "{deckQuery.data?.name}"
+          <span className="highlight">Mise à jour</span> de &quot;
+          {deckQuery.data?.name}&quot;
         </h1>
       </header>
 
@@ -132,7 +137,12 @@ function DeckUpdate() {
           onSubmit={handleFormSubmit}
           onChange={handleFormChange}
         >
-          <Input id="name" label="Nom" type="text" size="large" defaultValue={deckQuery.data?.name} />
+          <Input
+            id="name"
+            label="Nom"
+            type="text"
+            defaultValue={deckQuery.data?.name}
+          />
           <Textarea
             id="description"
             label="Description"
@@ -143,13 +153,13 @@ function DeckUpdate() {
             inputId="difficulty"
             label="Difficulté"
             size="large"
-            defaultValue={deckQuery.data?.difficulty}
+            defaultValue={deckQuery.data?.difficulty.toString()}
           >
             <Option>1</Option>
             <Option>2</Option>
             <Option>3</Option>
           </Dropdown>
-          <img src={deckQuery.data?.preview_image_url}/>
+          <img src={deckQuery.data?.preview_image_url} />
           <ErrorBoundary
             fallback={<p>Erreur lors de l'obtention des images.</p>}
           >

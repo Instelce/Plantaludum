@@ -1,4 +1,4 @@
-import {Route, Routes, useParams} from "react-router-dom";
+import { Route, Routes, useParams } from "react-router-dom";
 import Root from "./views/Root.jsx";
 import Home from "./views/Home.jsx";
 import Register from "./views/Register.jsx";
@@ -21,8 +21,8 @@ import RequirePermission from "./routes/RequirePermission";
 import OwnDeck from "./routes/OwnDeck";
 
 function App() {
-  const {deckId} = useParams()
-  const user = useUser()
+  const { deckId } = useParams();
+  const user = useUser();
 
   return (
     <>
@@ -49,10 +49,7 @@ function App() {
               <Route path="decks/">
                 <Route path=":deckId" element={<DeckDetail />} />
                 <Route path=":deckId/game" element={<DeckGame />}>
-                  <Route
-                    path="resultat"
-                    element={<QuizResult />}
-                  />
+                  <Route path="resultat" element={<QuizResult />} />
                 </Route>
 
                 <Route path="create" element={<DeckCreate />} />
@@ -61,11 +58,14 @@ function App() {
                   element={<DeckCreatePlant />}
                 />
 
-                <Route path=":deckId/update" element={
-                  <OwnDeck>
-                    <DeckUpdate />
-                  </OwnDeck>
-                } />
+                <Route
+                  path=":deckId/update"
+                  element={
+                    <OwnDeck>
+                      <DeckUpdate />
+                    </OwnDeck>
+                  }
+                />
               </Route>
             </Route>
           </Route>

@@ -1,16 +1,15 @@
-import React, { Children, useEffect } from "react";
+import React, {useEffect} from "react";
 import "./style.scss";
 import classNames from "classnames";
-import Button from "../Buttons/Button";
-import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
-import { createPortal } from "react-dom";
+import {disableBodyScroll, enableBodyScroll} from "body-scroll-lock";
+import {createPortal} from "react-dom";
 
 type ModalProps = {
   show: boolean;
   children: React.ReactNode;
-}
+};
 
-function Modal({ show, children}: ModalProps) {
+function Modal({ show, children }: ModalProps) {
   useEffect(() => {
     if (show) {
       disableBodyScroll(document.querySelector(".container"));

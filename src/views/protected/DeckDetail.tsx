@@ -1,5 +1,5 @@
-import React, {useState} from "react";
-import {Link, useNavigate, useParams} from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Loader from "../../components/Loader/index.jsx";
 import { EyeOff, RefreshCw, Share, Trash } from "react-feather";
 import Button from "../../components/ui/Buttons/Button.jsx";
@@ -11,19 +11,19 @@ import { useAuth } from "../../context/AuthProvider";
 import Stars from "../../components/ui/Stars/Stars";
 import useUser from "../../hooks/auth/useUser";
 import Flower from "../../components/ui/Icons";
-import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {decks} from "../../services/api";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { decks } from "../../services/api";
 import usePrivateFetch from "../../hooks/auth/usePrivateFetch";
 import Modal from "../../components/ui/Modal";
-import {useNotification} from "../../context/NotificationsProvider";
+import { useNotification } from "../../context/NotificationsProvider";
 
 function DeckDetail() {
   const { deckId } = useParams();
   const user = useUser();
-  const privateFetch = usePrivateFetch()
+  const privateFetch = usePrivateFetch();
   const navigate = useNavigate();
   const notification = useNotification();
-  const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const { deckQuery, deckPlantsQuery, deckPlantsImagesQuery } = useDeck({
     deckId: deckId ? deckId : "",
@@ -32,16 +32,16 @@ function DeckDetail() {
   });
   const isOwner = user?.id === deckQuery.data?.user;
 
-  const queryClient = useQueryClient()
-  const {mutate: mutateDeleteDeck} = useMutation({
+  const queryClient = useQueryClient();
+  const { mutate: mutateDeleteDeck } = useMutation({
     mutationKey: ["decks", deckId],
     mutationFn: () => decks.delete(privateFetch, parseInt(deckId as string)),
     onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: ["decks", deckId]});
-      notification.success({message: `${deckQuery.data?.name} supprimé`});
-      navigate(`/mon-jardin`)
+      queryClient.invalidateQueries({ queryKey: ["decks", deckId] });
+      notification.success({ message: `${deckQuery.data?.name} supprimé` });
+      navigate(`/mon-jardin`);
     },
-  })
+  });
 
   return (
     <div className="deck-detail">
@@ -49,8 +49,12 @@ function DeckDetail() {
         <h3>Est tu sur ?</h3>
         <p>Une fois supprimer, impossible de le récupérer.</p>
         <div className="modal-buttons mt-2">
-          <Button onClick={() => setShowDeleteModal(false)} color="gray">Non</Button>
-          <Button onClick={() => mutateDeleteDeck()} color="danger">Oui</Button>
+          <Button onClick={() => setShowDeleteModal(false)} color="gray">
+            Non
+          </Button>
+          <Button onClick={() => mutateDeleteDeck()} color="danger">
+            Oui
+          </Button>
         </div>
       </Modal>
 
@@ -91,7 +95,10 @@ function DeckDetail() {
               </Link>
             </p>
 
-            <Stars count={parseInt(deckQuery.data.difficulty)} icon={<Flower />}/>
+            <Stars
+              count={parseInt(deckQuery.data.difficulty)}
+              icon={<Flower />}
+            />
 
             <div>
               <Button asChild>
@@ -124,7 +131,12 @@ function DeckDetail() {
                         <RefreshCw />
                       </Link>
                     </Button>
-                    <Button className="sb" color="danger" fill onClick={() => setShowDeleteModal(true)}>
+                    <Button
+                      className="sb"
+                      color="danger"
+                      fill
+                      onClick={() => setShowDeleteModal(true)}
+                    >
                       Supprimer
                       <Trash />
                     </Button>

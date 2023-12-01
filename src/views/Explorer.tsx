@@ -1,45 +1,64 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, {useEffect, useMemo, useRef, useState} from "react";
 import Input from "../components/forms/Input/Input";
 import DeckCard from "../components/DeckCard/DeckCard";
 import Modal from "../components/ui/Modal/index.jsx";
 import Button from "../components/ui/Buttons/Button.jsx";
 import Dropdown from "../components/forms/Dropdown/Dropdown";
 import classNames from "classnames";
-import Stars from "../components/ui/Stars/Stars";
 import Option from "../components/forms/Option/Option";
-import { useQuery } from "@tanstack/react-query";
-import { decks } from "../services/api";
+import {useInfiniteQuery} from "@tanstack/react-query";
+import {decks, PaginationResponseType} from "../services/api";
 import Loader from "../components/Loader/index.jsx";
 import Navbar from "../components/Navbar/Navbar";
-import { Link } from "react-router-dom";
-import { Plus, Search } from "react-feather";
-import { useAuth } from "../context/AuthProvider";
-import { DeckType } from "../services/api/types/decks";
+import {Link} from "react-router-dom";
+import {Search} from "react-feather";
+import {useAuth} from "../context/AuthProvider";
+import {DeckType} from "../services/api/types/decks";
 import useObjectSearch from "../hooks/useObjectSearch";
-import useUser from "../hooks/auth/useUser";
+import {useInView} from "react-intersection-observer";
+import {Simulate} from "react-dom/test-utils";
+import load = Simulate.load;
+import useDebounce from "../hooks/useDebounce";
 
 function Explorer() {
   const { accessToken } = useAuth();
   const [showModal, setShowModal] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [showFilter, setShowFilter] = useState(false);
-
-  // load decks data
-  const {
-    isLoading,
-    isSuccess,
-    data: decksData,
-  } = useQuery({
-    queryKey: ["decks"],
-    queryFn: () => decks.list(),
-  });
+  const {ref: loaderSectionRef, inView: loaderInView} = useInView()
 
   // search and filters
   const panelRef = useRef<HTMLDivElement>(null);
   const [difficultyFilter, setDifficultyFilter] = useState(-1);
 
+  // load decks data
+  // const {
+  //   isLoading,
+  //   isSuccess,
+  //   data: decksData,
+  // } = useQuery<PaginationResponseType<DeckType>, Error>({
+  //   queryKey: ["decks"],
+  //   queryFn: () => decks.list(),
+  // });
+  const {
+    isLoading,
+    isSuccess,
+    data: decksData,
+    fetchNextPage,
+    isFetchingNextPage,
+    hasNextPage
+  } = useInfiniteQuery<PaginationResponseType<DeckType>, Error>({
+    queryKey: ["decks"],
+    queryFn: ({pageParam}) => decks.list(pageParam as number),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, allPages) => {
+      console.log(lastPage.results)
+      return lastPage.results.length === 6 ? allPages.length + 1 : undefined;
+    }
+  });
+
   const searchFilteredDecks = useObjectSearch<DeckType>({
-    data: decksData as DeckType[],
+    data: decksData?.pages.map(page => page.results).flat(1),
     fieldName: "name",
     searchInput: searchInput,
   });
@@ -47,7 +66,6 @@ function Explorer() {
   const filteredDecks = useMemo(() => {
     return searchFilteredDecks?.filter((deck) => {
       if (!isNaN(difficultyFilter)) {
-        console.log(difficultyFilter, deck.difficulty);
         return deck.difficulty === difficultyFilter;
       }
       return deck;
@@ -55,9 +73,14 @@ function Explorer() {
   }, [searchFilteredDecks, difficultyFilter]);
 
   useEffect(() => {
-    console.log(searchFilteredDecks);
-    console.log(filteredDecks);
+    console.log("search", searchFilteredDecks);
   }, [searchFilteredDecks, filteredDecks]);
+
+  useEffect(() => {
+    if (loaderInView && hasNextPage) {
+      fetchNextPage()
+    }
+  }, [loaderInView]);
 
   return (
     <>
@@ -87,7 +110,7 @@ function Explorer() {
                   to="/inscription"
                   state={{ from: { pathname: location.pathname } }}
                 >
-                  S'inscrire
+                  S&apos;inscrire
                 </Link>
               </Button>
             </>
@@ -104,7 +127,6 @@ function Explorer() {
             <Input
               label="Rechercher"
               type="search"
-              size="large"
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
               icon={<Search />}
@@ -132,7 +154,7 @@ function Explorer() {
         </div>
       </div>
 
-      {isSuccess && (
+      {isSuccess && <>
         <div className="card-grid">
           {filteredDecks ? (
             <>
@@ -142,17 +164,21 @@ function Explorer() {
             </>
           ) : (
             <>
-              {decksData?.map((deck: DeckType) => (
+              {decksData?.pages?.results?.map((deck: DeckType) => (
                 <DeckCard key={deck.id} deck={deck} />
               ))}
             </>
           )}
         </div>
-      )}
 
-      {isLoading && <Loader />}
+        <div ref={loaderSectionRef} className={classNames("deck-loader", {'no-results': !hasNextPage})}>
+          {hasNextPage ? "Chargement..." : "Plus de decks"}
+        </div>
+      </>}
 
-      <Modal show={showModal} setShow={setShowModal} closeButtonLabel="Compris">
+      {isLoading && <div className="center-loader"><Loader /></div>}
+
+      <Modal show={showModal}>
         <h3>Conseil</h3>
         <svg
           width="554"

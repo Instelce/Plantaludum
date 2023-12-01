@@ -9,7 +9,7 @@ type SelectorProps = {
   choices: string[];
   choiceType: "text" | "img";
   multipleChoice?: boolean;
-  defaultValue?: string
+  defaultValue?: string;
   setValue: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
