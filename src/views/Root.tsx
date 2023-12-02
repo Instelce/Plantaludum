@@ -21,11 +21,11 @@ function ButtonsMenu() {
         </Link>
       </Button>
       {accessToken && <> <Button asChild color="dark-gray" size="medium" onlyIcon>
-        <Link to="">
+        <Link to="/profile">
           <User />
         </Link>
       </Button>
-      <Button color="dark-gray" size="medium" onlyIcon onClick={logout}>
+      <Button onlyIcon color="dark-gray" size="medium" onClick={logout}>
         <LogOut />
       </Button>
       </>}

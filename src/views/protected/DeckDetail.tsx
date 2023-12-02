@@ -97,7 +97,16 @@ function DeckDetail() {
         <>
           <header className="page-header center">
             <div className="header-img">
-              <img src={deckQuery.data.preview_image_url} alt="Preview image" />
+              <div className="img-container">
+                <img src={deckQuery.data.preview_image_url} alt="Preview image" />
+              </div>
+
+              <div className="stars-container">
+                <Stars
+                  count={deckQuery.data.difficulty}
+                  icon={<Flower />}
+                />
+              </div>
             </div>
 
             <h1>
@@ -105,18 +114,12 @@ function DeckDetail() {
               {deckQuery.data.private && <EyeOff />}
             </h1>
             <p>
-              par{" "}
               <Link to={`/users/${deckQuery.data.user}`} className="link">
                 {deckQuery.data.user.username}
               </Link>
             </p>
 
-            <Stars
-              count={deckQuery.data.difficulty}
-              icon={<Flower />}
-            />
-
-            <div>
+            <div className="header-buttons">
               <Button asChild>
                 <Link to={`/decks/${deckId}/game`}>Jouer</Link>
               </Button>
@@ -153,16 +156,16 @@ function DeckDetail() {
                         <RefreshCw />
                       </Link>
                     </Button>
-                    <Button
-                      className="sb"
-                      color="danger"
-                      fill
-                      onClick={() => setShowDeleteModal(true)}
-                    >
-                      Supprimer
-                      <Trash />
-                    </Button>
                   </div>
+                  <Button
+                    className="sb mt-1"
+                    color="danger"
+                    fill
+                    onClick={() => setShowDeleteModal(true)}
+                  >
+                    Supprimer
+                    <Trash />
+                  </Button>
                 </div>
               </Tabs.Content>
             )}

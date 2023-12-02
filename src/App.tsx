@@ -18,6 +18,7 @@ import PageNotFound from "./views/PageNotFound";
 import DeckUpdate from "./views/protected/DeckUpdate";
 import useUser from "./hooks/auth/useUser";
 import OwnDeck from "./routes/OwnDeck";
+import Profile from "./views/protected/Profile";
 
 function App() {
   const { deckId } = useParams();
@@ -41,6 +42,8 @@ function App() {
 
           <Route element={<PersistLogin />}>
             <Route element={<RequireAuth />}>
+              <Route path="profile" element={<Profile />} />
+
               <Route path="mon-jardin" element={<MainMenu />}>
                 <Route path="choix" element={<DeckChoice />} />
               </Route>
