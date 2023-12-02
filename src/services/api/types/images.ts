@@ -7,3 +7,8 @@ export interface ImageType {
   plant_id: number;
   url: string;
 }
+
+export interface PlantImagesType {
+  id: number;
+  images: ImageType[];
+}

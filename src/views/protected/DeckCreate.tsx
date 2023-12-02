@@ -43,6 +43,14 @@ function DeckCreate() {
     mutationKey: [],
     mutationFn: (data: CreateDeckFormDataType) =>
       decks.create(privateFetch, data),
+    onSuccess: (data: CreateDeckFormDataType) => {
+      navigate(`/decks/${data?.id}/plants`, {
+        state: {
+          data: data,
+          from: { pathname: location.pathname },
+        },
+      });
+    }
   });
 
   const {
@@ -82,12 +90,6 @@ function DeckCreate() {
   useEffect(() => {
     if (isSuccess) {
       console.log(deckData);
-      navigate(`/decks/${deckData.id}/plants/create`, {
-        state: {
-          data: deckData,
-          from: { pathname: location.pathname },
-        },
-      });
     }
   }, [isSuccess]);
 

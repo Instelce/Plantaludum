@@ -1,7 +1,7 @@
 import React, {useEffect, useMemo, useRef, useState} from "react";
 import Input from "../components/forms/Input/Input";
 import DeckCard from "../components/DeckCard/DeckCard";
-import Modal from "../components/ui/Modal/index.jsx";
+import Modal from "../components/ui/Modal/Modal";
 import Button from "../components/ui/Buttons/Button.jsx";
 import Dropdown from "../components/forms/Dropdown/Dropdown";
 import classNames from "classnames";
@@ -16,8 +16,6 @@ import {useAuth} from "../context/AuthProvider";
 import {DeckType} from "../services/api/types/decks";
 import useObjectSearch from "../hooks/useObjectSearch";
 import {useInView} from "react-intersection-observer";
-import {Simulate} from "react-dom/test-utils";
-import load = Simulate.load;
 import useDebounce from "../hooks/useDebounce";
 
 function Explorer() {
@@ -29,17 +27,10 @@ function Explorer() {
 
   // search and filters
   const panelRef = useRef<HTMLDivElement>(null);
+  const debouncedSearchValue = useDebounce(searchInput, 500)
   const [difficultyFilter, setDifficultyFilter] = useState(-1);
 
   // load decks data
-  // const {
-  //   isLoading,
-  //   isSuccess,
-  //   data: decksData,
-  // } = useQuery<PaginationResponseType<DeckType>, Error>({
-  //   queryKey: ["decks"],
-  //   queryFn: () => decks.list(),
-  // });
   const {
     isLoading,
     isSuccess,
@@ -49,10 +40,9 @@ function Explorer() {
     hasNextPage
   } = useInfiniteQuery<PaginationResponseType<DeckType>, Error>({
     queryKey: ["decks"],
-    queryFn: ({pageParam}) => decks.list(pageParam as number),
+    queryFn: ({pageParam}) => decks.list({ search: searchInput.toString(), pageParam: pageParam as number }),
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => {
-      console.log(lastPage.results)
       return lastPage.results.length === 6 ? allPages.length + 1 : undefined;
     }
   });
@@ -137,34 +127,30 @@ function Explorer() {
           </div>
         </header>
 
-        <div
-          ref={panelRef}
-          className={classNames("filter-panel", { show: showFilter })}
-        >
-          <Dropdown
-            label="Difficulté"
-            defaultValue="Toutes"
-            handleValueChange={(value) => setDifficultyFilter(parseInt(value))}
+        <div className="filter-panel-container" style={{maxHeight: showFilter ? panelRef.current?.getBoundingClientRect().height : 0 + "px"}}>
+          <div
+            ref={panelRef}
+            className={classNames("filter-panel", { show: showFilter })}
           >
-            <Option>Toutes</Option>
-            <Option>1</Option>
-            <Option>2</Option>
-            <Option>3</Option>
-          </Dropdown>
+            <Dropdown
+              label="Difficulté"
+              defaultValue="Toutes"
+              handleValueChange={(value) => setDifficultyFilter(parseInt(value))}
+            >
+              <Option>Toutes</Option>
+              <Option>1</Option>
+              <Option>2</Option>
+              <Option>3</Option>
+            </Dropdown>
+          </div>
         </div>
-      </div>
+        </div>
 
       {isSuccess && <>
         <div className="card-grid">
-          {filteredDecks ? (
+          {filteredDecks && (
             <>
               {filteredDecks?.map((deck: DeckType) => (
-                <DeckCard key={deck.id} deck={deck} />
-              ))}
-            </>
-          ) : (
-            <>
-              {decksData?.pages?.results?.map((deck: DeckType) => (
                 <DeckCard key={deck.id} deck={deck} />
               ))}
             </>

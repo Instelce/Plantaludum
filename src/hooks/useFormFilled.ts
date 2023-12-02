@@ -1,4 +1,4 @@
-import { FormEventHandler, MutableRefObject, useRef, useState } from "react";
+import {MutableRefObject, useEffect, useRef, useState} from "react";
 
 type UseFormFilledReturnType = {
   formRef: MutableRefObject<HTMLFormElement | null>;
@@ -13,12 +13,13 @@ function useFormFilled(): UseFormFilledReturnType {
   const handleFormChange = () => {
     let countInputFilled = 0;
     const inputsElements = form.current?.querySelectorAll("input, textarea");
+    console.log(inputsElements)
 
     if (inputsElements) {
       // remove checkbox from inputs
       const inputs = Array.from(inputsElements).filter(
         (input: Element) =>
-          input instanceof HTMLInputElement &&
+          input &&
           !input.attributes.getNamedItem("data-not-count"),
       );
       const inputsCount = inputs.length;
@@ -26,6 +27,7 @@ function useFormFilled(): UseFormFilledReturnType {
       // loop all inputs and check their value
       inputs.forEach((input: Element) => {
         const inputElement = input as HTMLInputElement;
+        console.log(inputElement.value)
 
         if (inputElement.value !== "" && inputElement.type !== "checkbox") {
           countInputFilled++;
@@ -39,6 +41,12 @@ function useFormFilled(): UseFormFilledReturnType {
       }
     }
   };
+
+  useEffect(() => {
+    if (form.current) {
+      handleFormChange()
+    }
+  }, []);
 
   return {
     formRef: form,

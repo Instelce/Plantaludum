@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import "./style.scss";
+import "./Modal.scss";
 import classNames from "classnames";
 import {disableBodyScroll, enableBodyScroll} from "body-scroll-lock";
 import {createPortal} from "react-dom";

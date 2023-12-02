@@ -1,10 +1,5 @@
 import "./Textarea.scss";
-import React, {
-  TextareaHTMLAttributes,
-  useEffect,
-  useId,
-  useState,
-} from "react";
+import React, {TextareaHTMLAttributes, useId, useState,} from "react";
 import classNames from "classnames";
 
 type TextareaProps = {
@@ -16,7 +11,6 @@ type TextareaProps = {
   value?: string;
   handleValueChange?: React.Dispatch<React.SetStateAction<string>> | null;
   helperText?: string;
-  mb?: number;
 } & TextareaHTMLAttributes<HTMLTextAreaElement>;
 
 function Textarea({
@@ -28,11 +22,11 @@ function Textarea({
   value,
   handleValueChange = null,
   helperText,
-  mb,
+  defaultValue,
   ...props
 }: TextareaProps) {
   const defaultId = useId();
-  const [valueLenght, setValueLenght] = useState(0);
+  const [valueLenght, setValueLenght] = useState(defaultValue ? defaultValue.toString().length : 0);
 
   const handleChange = (value: string) => {
     setValueLenght(() => value.toString().length);
@@ -41,7 +35,7 @@ function Textarea({
   };
 
   return (
-    <div className="textarea-container" style={{ marginBottom: mb }}>
+    <div className="textarea-container">
       {showActionBar && <div className="action-bar"></div>}
       <div className="textarea-wrapper">
         <textarea
@@ -51,6 +45,7 @@ function Textarea({
           placeholder=" "
           value={value ? value : undefined}
           onChange={(e) => handleChange(e.target.value)}
+          defaultValue={defaultValue}
           {...props}
         ></textarea>
         <label htmlFor={id ? id : defaultId}>{label}</label>

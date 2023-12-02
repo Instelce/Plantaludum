@@ -218,10 +218,14 @@ function DeckUpdate() {
               color="primary"
               disabled={!isFilled}
             >
-              Continuer
+              Appliquer les modifications
             </Button>
           </div>
+          <Button asChild fill color="gray">
+            <Link to={`/decks/${deckId}/plants`}> Modifier les plantes</Link>
+          </Button>
         </form>
+
       </div>
     </>
   );

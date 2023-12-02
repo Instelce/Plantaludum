@@ -1,11 +1,11 @@
-import React, { useEffect, useRef } from "react";
+import React, {useEffect, useRef} from "react";
 import Stars from "../ui/Stars/Stars";
 import "./DeckCard.scss";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import Button from "../ui/Buttons/Button.jsx";
-import { RefreshCw, Zap } from "react-feather";
+import {RefreshCw, Zap} from "react-feather";
 import Flower from "../ui/Icons";
-import { DeckType } from "../../services/api/types/decks";
+import {DeckType} from "../../services/api/types/decks";
 import useUser from "../../hooks/auth/useUser";
 
 type DeckCardProps = {
@@ -80,16 +80,16 @@ function DeckCard({ deck, ...props }: DeckCardProps) {
         />
         <div className="card-content">
           <h3>{deck.name}</h3>
-          <Stars count={parseInt(deck.difficulty)} icon={<Flower />} />
+          <Stars count={deck.difficulty} icon={<Flower />} />
         </div>
       </div>
       <div className="card-button">
         <Button asChild label="Découvrir">
           <Link to={`/decks/${deck.id}`}>
-            {user?.id === deck.user ? "Voir" : "Découvrir"}
+            {user?.id === deck.user.id ? "Voir" : "Découvrir"}
           </Link>
         </Button>
-        {user?.id === deck.user && (
+        {user?.id === deck.user.id && (
           <Button asChild onlyIcon color="yellow">
             <Link to={`/decks/${deck.id}/update`}>
               <RefreshCw />

@@ -1,12 +1,10 @@
-import { useQueries, useQuery } from "@tanstack/react-query";
-import {
-  decks,
-} from "../../services/api";
-import { useEffect } from "react";
-import { getObjectKeyValues } from "../../utils/helpers";
-import { PlantType } from "../../services/api/types/plants";
+import {useQuery} from "@tanstack/react-query";
+import {decks,} from "../../services/api";
+import {useEffect} from "react";
+import {getObjectKeyValues} from "../../utils/helpers";
+import {PlantType} from "../../services/api/types/plants";
 import {flore} from "../../services/api/flore";
-import {ImageType} from "../../services/api/types/images";
+import {PlantImagesType} from "../../services/api/types/images";
 import {DeckType} from "../../services/api/types/decks";
 
 type UseDeckArgs = {
@@ -31,7 +29,7 @@ function useDeck({
   });
 
   const plantsQuery = useQuery<PlantType[], Error>({
-    queryKey: ["plants", deckId],
+    queryKey: ["decks-plants-infos", deckId],
     queryFn: () =>
       flore.plants.getWithIds(
         getObjectKeyValues(deckPlantsQuery.data, "plant_id"), // array of plant id
@@ -40,8 +38,8 @@ function useDeck({
     enabled: false,
   });
 
-  const plantsImagesQuery = useQuery<ImageType[], Error>({
-    queryKey: ["plants-images", deckId],
+  const plantsImagesQuery = useQuery<PlantImagesType[], Error>({
+    queryKey: ["decks-plants-images", deckId],
     queryFn: () =>
       flore.images.getWithPlantsIds(
         getObjectKeyValues(deckPlantsQuery.data, "plant_id"),
@@ -53,7 +51,6 @@ function useDeck({
   // fetch quiz plants
   useEffect(() => {
     if (deckPlantsQuery.isSuccess && fetchPlants) {
-      console.log(deckPlantsQuery);
       plantsQuery.refetch();
     }
   }, [deckPlantsQuery.isSuccess]);

@@ -1,7 +1,15 @@
 import "./PlantCard.scss";
-import { PlantType } from "../../services/api/types/plants";
-import { DragEventHandler, useEffect, useRef, useState } from "react";
+import {PlantType} from "../../services/api/types/plants";
+import {
+  DragEventHandler,
+  PropsWithChildren,
+  useEffect,
+  useRef,
+  useState
+} from "react";
 import classNames from "classnames";
+import Button from "../ui/Buttons/Button";
+import {Trash} from "react-feather";
 
 type PlantCardProps = {
   plant: PlantType;
@@ -52,7 +60,6 @@ function PlantCard({ plant, images, ...props }: PlantCardProps) {
     };
 
     if (isFocused) {
-      console.log("coucou");
       window.addEventListener("keydown", accessibility);
     }
 
@@ -91,6 +98,19 @@ function PlantCard({ plant, images, ...props }: PlantCardProps) {
           <p>{plant.french_name}</p>
         </div>
       </a>
+    </div>
+  );
+}
+
+type PlantCardRemoveProps = {
+  handleRemove: () => void,
+} & PropsWithChildren
+
+export function PlantCardRemove({handleRemove, children, ...props} : PlantCardRemoveProps) {
+  return (
+    <div className="plant-card-remove" {...props}>
+      {children}
+      <Button onlyIcon onClick={handleRemove} color="danger"><Trash /></Button>
     </div>
   );
 }

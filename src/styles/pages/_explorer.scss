@@ -8,11 +8,18 @@
   grid-row-gap: 2rem;
 }
 
+.filter-panel-container {
+  position: relative;
+  transition: max-height .3s ease;
+
+  &:has(> .filter-panel:not(.filter-panel.show)) {
+    overflow: hidden;
+  }
+}
+
 .filter-panel {
-  //height: 0;
   width: 100%;
   padding: 1rem var(--page-horizontal-padding);
-  position: absolute;
 
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -22,7 +29,6 @@
   background: rgb(var(--color-gray-2));
   border-bottom: 1px solid rgb(var(--color-gray-3));
 
-  transform: translateY(-10px);
   transform-origin: top;
   opacity: 0;
 
@@ -31,9 +37,7 @@
     transform 0.3s ease;
 
   &.show {
-    //height: auto;
     opacity: 1;
-    transform: translateY(0);
   }
 }
 

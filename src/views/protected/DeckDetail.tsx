@@ -1,21 +1,21 @@
-import React, { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import Loader from "../../components/Loader/index.jsx";
-import { EyeOff, RefreshCw, Share, Trash } from "react-feather";
+import {EyeOff, RefreshCw, Share, Trash} from "react-feather";
 import Button from "../../components/ui/Buttons/Button.jsx";
 import useDeck from "../../hooks/api/useDeck.js";
 import Navbar from "../../components/Navbar/Navbar";
 import Tabs from "../../components/ui/Tabs/index.jsx";
 import PlantCard from "../../components/PlantCard/PlantCard";
-import { useAuth } from "../../context/AuthProvider";
 import Stars from "../../components/ui/Stars/Stars";
 import useUser from "../../hooks/auth/useUser";
 import Flower from "../../components/ui/Icons";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { decks } from "../../services/api";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {decks} from "../../services/api";
 import usePrivateFetch from "../../hooks/auth/usePrivateFetch";
-import Modal from "../../components/ui/Modal";
-import { useNotification } from "../../context/NotificationsProvider";
+import Modal from "../../components/ui/Modal/Modal";
+import {useNotification} from "../../context/NotificationsProvider";
+import useCacheImages from "../../hooks/useCacheImages";
 
 function DeckDetail() {
   const { deckId } = useParams();
@@ -25,18 +25,34 @@ function DeckDetail() {
   const notification = useNotification();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
+  const { isLoading: imagesLoading, setImagesArray: setImagesArray } =
+    useCacheImages();
+
   const { deckQuery, deckPlantsQuery, deckPlantsImagesQuery } = useDeck({
     deckId: deckId ? deckId : "",
     fetchPlants: true,
     fetchImages: true,
   });
-  const isOwner = user?.id === deckQuery.data?.user;
+  const isOwner = user?.id === deckQuery.data?.user.id;
+
+  // load images in cache
+  useEffect(() => {
+    if (deckPlantsImagesQuery.isSuccess) {
+      setImagesArray(() =>
+        Object.values(deckPlantsImagesQuery.data)
+          .map((plants) => plants.images)
+          .map((images) => images.map((img) => img.url))
+          .flat(1),
+      );
+    }
+  }, [deckPlantsImagesQuery.isSuccess]);
 
   const queryClient = useQueryClient();
   const { mutate: mutateDeleteDeck } = useMutation({
     mutationKey: ["decks", deckId],
     mutationFn: () => decks.delete(privateFetch, parseInt(deckId as string)),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["decks"] });
       queryClient.invalidateQueries({ queryKey: ["decks", deckId] });
       notification.success({ message: `${deckQuery.data?.name} supprimé` });
       navigate(`/mon-jardin`);
@@ -91,12 +107,12 @@ function DeckDetail() {
             <p>
               par{" "}
               <Link to={`/users/${deckQuery.data.user}`} className="link">
-                {deckQuery.data.user}
+                {deckQuery.data.user.username}
               </Link>
             </p>
 
             <Stars
-              count={parseInt(deckQuery.data.difficulty)}
+              count={deckQuery.data.difficulty}
               icon={<Flower />}
             />
 
@@ -131,6 +147,12 @@ function DeckDetail() {
                         <RefreshCw />
                       </Link>
                     </Button>
+                    <Button asChild className="sb">
+                      <Link to={`/decks/${deckId}/plants`}>
+                        Mettre à jour les plantes
+                        <RefreshCw />
+                      </Link>
+                    </Button>
                     <Button
                       className="sb"
                       color="danger"
@@ -150,15 +172,14 @@ function DeckDetail() {
                 <div className="list-wrapper">
                   {deckPlantsQuery.isSuccess && (
                     <>
-                      {deckPlantsQuery.data.map((plant, index) => (
+                      {deckPlantsQuery.data.map((plant) => (
                         <PlantCard
                           key={plant.id}
-                          index={index}
                           plant={plant}
                           images={deckPlantsImagesQuery.data
                             ?.filter((p) => p.id === plant.id)?.[0]
                             ?.images?.map((img) => img.url)
-                            .slice(0, 5)}
+                            .slice(0, 5) as string[]}
                         />
                       ))}
                     </>

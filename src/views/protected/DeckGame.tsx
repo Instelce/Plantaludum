@@ -1,9 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
-import ImageSlider from "../../components/ImageSlider/index.jsx";
+import React, {useEffect, useRef, useState} from "react";
 import ChoiceBlock from "../../components/ChoiceBlock/ChoiceBlock";
-import { RefreshCw, Star, X } from "react-feather";
-import { useTimer } from "../../hooks/useTimer.js";
-import { Link, redirect, useNavigate, useParams } from "react-router-dom";
+import {Loader, RefreshCw, X} from "react-feather";
+import {useTimer} from "../../hooks/useTimer.js";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import Stars from "../../components/ui/Stars/Stars";
 import ProgressBar from "../../components/ProrgessBar/ProgressBar";
 import useDeck from "../../hooks/api/useDeck.js";
@@ -12,19 +11,17 @@ import {
   deleteDublicates,
   shuffleArray,
 } from "../../utils/helpers";
-import { ErrorBoundary } from "react-error-boundary";
 import useCacheImages from "../../hooks/useCacheImages.js";
-import Navbar from "../../components/Navbar/Navbar";
-import ButtonLink from "../../components/ui/Buttons/ButtonLink.jsx";
-import PlantImageSlider from "../../components/PlantImageSlider/PlantImageSlider";
+import PlantImageSlider
+  from "../../components/PlantImageSlider/PlantImageSlider";
 import Button from "../../components/ui/Buttons/Button";
-import { PlantType } from "../../services/api/types/plants";
+import {PlantType} from "../../services/api/types/plants";
 
-function DeckGame(props) {
+function DeckGame() {
   const navigate = useNavigate();
   let { deckId } = useParams();
 
-  const maxQuestions = 30;
+  const maxQuestions = 5;
   const [showResult, setShowResult] = useState(false);
   const [isRight, setIsRight] = useState(undefined);
   const { stringTime, start, reset } = useTimer({ startValue: 5 });
@@ -35,7 +32,7 @@ function DeckGame(props) {
   const [stars, setStars] = useState(0);
   const [progress, setProgress] = useState(0);
 
-  const [plantsData, setPlantsData] = useState(null);
+  const [plantsData, setPlantsData] = useState<PlantType[] | null>(null);
   const [currentPlant, setCurrentPlant] = useState(null);
   const [currentImages, setCurrentImages] = useState(null);
 
@@ -45,22 +42,24 @@ function DeckGame(props) {
   const deckContent = useRef(null);
 
   const { deckQuery, deckPlantsQuery, deckPlantsImagesQuery } = useDeck({
-    deckId,
+    deckId: deckId as string,
     fetchPlants: true,
     fetchImages: true,
   });
 
   useEffect(() => {
-    start();
-  }, []);
+    if (!imagesLoading) {
+      start();
+    }
+  }, [imagesLoading]);
 
   // get new plant on start
   useEffect(() => {
     console.log("start p");
     if (deckPlantsImagesQuery.isSuccess && deckPlantsQuery.isFetched) {
-      setPlantsData(() => deckPlantsQuery.data);
+      setPlantsData(() => deckPlantsQuery.data ||[]);
       // console.log("plants data", plantsData)
-      const currentPlantData = arrayChoice(deckPlantsQuery.data)[0];
+      const currentPlantData = arrayChoice(deckPlantsQuery.data || [])[0];
       setCurrentPlant(() => currentPlantData);
       //
       // console.log(Object.values(deckPlantsImagesQuery.data)
@@ -80,8 +79,8 @@ function DeckGame(props) {
     if (deckPlantsImagesQuery.isSuccess) {
       setImagesArray(() =>
         Object.values(deckPlantsImagesQuery.data)
-          .map((v) => v.images)
-          .map((im) => im.map((img) => img.url))
+          .map((plants) => plants.images)
+          .map((images) => images.map((img) => img.url))
           .flat(1),
       );
     }
@@ -128,9 +127,9 @@ function DeckGame(props) {
       let changeData = setTimeout(() => {
         // choose another images
         let lastPlant = currentPlant;
-        let currentPlantData = arrayChoice(deckPlantsQuery.data)[0];
+        let currentPlantData = arrayChoice(deckPlantsQuery.data || [])[0];
         if (lastPlant.id === currentPlantData.id) {
-          currentPlantData = arrayChoice(deckPlantsQuery.data)[0];
+          currentPlantData = arrayChoice(deckPlantsQuery.data || [])[0];
         }
         setCurrentPlant(() => currentPlantData);
 
@@ -207,7 +206,7 @@ function DeckGame(props) {
         shape="square"
       />
 
-      <div className="game-content">
+      {!imagesLoading && <div className="game-content">
         {currentImages && currentPlant && (
           <div className="game-grid" ref={deckContent}>
             {currentImages && (
@@ -240,7 +239,9 @@ function DeckGame(props) {
             </div>
           </div>
         )}
-      </div>
+      </div>}
+
+      {imagesLoading && <div className="center-loader"><Loader /></div>}
     </div>
   );
 }

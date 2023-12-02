@@ -96,9 +96,13 @@
   }
 }
 
-.grabbing * {
-  cursor: grabbing !important;
-  cursor: -webkit-grabbing !important;
-  cursor: -moz-grabbing !important;
-  cursor: grabbing !important;
+.plant-card-remove {
+  position: relative;
+
+  & > button {
+    z-index: 10;
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+  }
 }

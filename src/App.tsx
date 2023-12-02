@@ -1,4 +1,4 @@
-import { Route, Routes, useParams } from "react-router-dom";
+import {Route, Routes, useParams} from "react-router-dom";
 import Root from "./views/Root.jsx";
 import Home from "./views/Home.jsx";
 import Register from "./views/Register.jsx";
@@ -10,14 +10,13 @@ import QuizResult from "./views/protected/DeckGameResult.jsx";
 import Explorer from "./views/Explorer.jsx";
 import PersistLogin from "./routes/PersistLogin";
 import DeckCreate from "./views/protected/DeckCreate.jsx";
-import DeckCreatePlant from "./views/protected/DeckCreatePlant.jsx";
+import DeckPlants from "./views/protected/DeckPlants";
 import DeckDetail from "./views/protected/DeckDetail.jsx";
 import Test from "./views/Test.jsx";
 import RequireAuth from "./routes/RequireAuth";
 import PageNotFound from "./views/PageNotFound";
 import DeckUpdate from "./views/protected/DeckUpdate";
 import useUser from "./hooks/auth/useUser";
-import RequirePermission from "./routes/RequirePermission";
 import OwnDeck from "./routes/OwnDeck";
 
 function App() {
@@ -54,8 +53,8 @@ function App() {
 
                 <Route path="create" element={<DeckCreate />} />
                 <Route
-                  path=":deckId/plants/create"
-                  element={<DeckCreatePlant />}
+                  path=":deckId/plants"
+                  element={<DeckPlants />}
                 />
 
                 <Route

@@ -9,9 +9,9 @@ import React, {
 import "./Dropdown.scss";
 import Button from "../../ui/Buttons/Button.jsx";
 import classNames from "classnames";
-import Option, { OptionProps } from "../Option/Option";
-import { ChevronDown } from "react-feather";
-import { SizeProp } from "../../../types/helpers";
+import Option, {OptionProps} from "../Option/Option";
+import {ChevronDown} from "react-feather";
+import {SizeProp} from "../../../types/helpers";
 
 type DropdownProps = {
   inputId?: string;
@@ -38,6 +38,7 @@ function Dropdown({
   const [buttonFocus, setButtonFocus] = useState(true);
   const [mouseOnOptions, setMouseOnOptions] = useState(false);
   const optionsRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const id = useId();
 
   useEffect(() => {
@@ -94,17 +95,24 @@ function Dropdown({
 
   useEffect(() => {
     handleValueChange && handleValueChange(currentValue);
+
+    if (inputRef.current && currentValue !== undefined) {
+      let ev = new Event('input', { bubbles: true});
+      inputRef.current.value = currentValue;
+      inputRef.current.dispatchEvent(ev)
+    }
+
   }, [currentValue]);
 
   return (
     <div className={classNames("dropdown")}>
       <input
+        ref={inputRef}
+        type="hidden"
         id={inputId}
         name={inputId}
-        className="hidden"
-        value={currentValue}
-        // onChange={(e) => handleValueChange(e.target.value)}
-        readOnly={true}
+        // value={currentValue}
+        // readOnly={true}
       />
       {currentValue !== "" && (
         <label htmlFor={id} className={classNames({ up: currentValue !== "" })}>
@@ -122,6 +130,7 @@ function Dropdown({
         onFocus={() => setButtonFocus(() => true)}
         onBlur={() => setButtonFocus(() => false)}
         onClick={() => setShowOptions(!showOptions)}
+        bounce={false}
         {...props}
       >
         {currentValue != "" ? currentValue : label}

@@ -1,9 +1,10 @@
-import React, { InputHTMLAttributes, ReactNode, useId, useState } from "react";
+import React, {InputHTMLAttributes, ReactNode, useId, useState} from "react";
 
 import "./Input.scss";
-import Modal from "../../ui/Modal/index.jsx";
-import { Info } from "react-feather";
-import { SizeProp } from "../../../types/helpers";
+import Modal from "../../ui/Modal/Modal";
+import {Info} from "react-feather";
+import {SizeProp} from "../../../types/helpers";
+import Button from "../../ui/Buttons/Button";
 
 type InputProps = {
   id?: string | null;
@@ -87,8 +88,11 @@ function Input({
       </div>
 
       {usageInfoText && (
-        <Modal show={showInfoModal} setShow={setShowInfoModal}>
-          {usageInfoText ? usageInfoText : ""}
+        <Modal show={showInfoModal}>
+          <p className="mb-1">{usageInfoText ? usageInfoText : ""}</p>
+          <Button onClick={() => setShowInfoModal(false)} fill>
+            Ok
+          </Button>
         </Modal>
       )}
     </>

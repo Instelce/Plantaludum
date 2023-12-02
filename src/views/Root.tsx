@@ -1,14 +1,12 @@
-import { Link, Outlet } from "react-router-dom";
-import { HelpCircle, LogOut, Settings, User } from "react-feather";
+import {Link, Outlet} from "react-router-dom";
+import {HelpCircle, LogOut, Settings, User} from "react-feather";
 import Button from "../components/ui/Buttons/Button";
 import useLogout from "../hooks/auth/useLogout";
-import { useNotification } from "../context/NotificationsProvider";
-import Notification from "../components/Notification/Notification";
-import { StatusProp } from "../types/helpers";
-import { useEffect } from "react";
+import {useAuth} from "../context/AuthProvider";
 
 function ButtonsMenu() {
   const logout = useLogout();
+  const {accessToken} = useAuth()
 
   return (
     <div className="buttons-menu">
@@ -22,7 +20,7 @@ function ButtonsMenu() {
           <Settings />
         </Link>
       </Button>
-      <Button asChild color="dark-gray" size="medium" onlyIcon>
+      {accessToken && <> <Button asChild color="dark-gray" size="medium" onlyIcon>
         <Link to="">
           <User />
         </Link>
@@ -30,6 +28,7 @@ function ButtonsMenu() {
       <Button color="dark-gray" size="medium" onlyIcon onClick={logout}>
         <LogOut />
       </Button>
+      </>}
     </div>
   );
 }

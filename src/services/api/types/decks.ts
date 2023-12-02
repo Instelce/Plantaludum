@@ -7,13 +7,16 @@ export interface DeckType {
   created_at: Date;
   times_played: number;
   private: boolean;
-  user: number;
+  user: {
+    id: number;
+    username: string;
+  };
 }
 
 export interface DeckPlantType {
   id: number;
   plant_id: number;
-  deck_id: number;
+  deck: number;
 }
 
 // Forms data

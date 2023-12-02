@@ -144,7 +144,7 @@
     transform: translateY(-50%);
     cursor: pointer;
     opacity: 0.8;
-    stroke: rgb(var(--color-secondary));
+    stroke: rgb(var(--color-white));
 
     &:hover {
       opacity: 1;
@@ -179,7 +179,7 @@
     margin: 0;
   }
 
-  button {
+  button.bounce {
     height: auto;
     border-radius: 0 10px 10px 0;
 

@@ -2,8 +2,8 @@ export function getRandomInt(min: number, max: number) {
   return min + Math.floor(Math.random() * (max - min));
 }
 
-export function arrayChoice(array: [], num: number = 1) {
-  let choices: [] = [];
+export function arrayChoice(array: any[], num: number = 1) {
+  let choices: any[] = [];
 
   for (let i = 0; i < num; i++) {
     let choice = array[Math.floor(Math.random() * array.length)];
