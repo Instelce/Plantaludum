@@ -1,14 +1,16 @@
 import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
 import {FormEvent, useEffect, useState} from "react";
-import Button from "../../components/ui/Buttons/Button.jsx";
+import Button from "../../components/Atoms/Buttons/Button.jsx";
 import AutocompleteInput
-  from "../../components/forms/AutocompleteInput/Autocomplete";
+  from "../../components/Molecules/AutocompleteInput/Autocomplete";
 import usePrivateFetch from "../../hooks/auth/usePrivateFetch.js";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {decks} from "../../services/api";
-import Navbar from "../../components/Navbar/Navbar";
+import Navbar from "../../components/Organisms/Navbar/Navbar";
 import {ErrorBoundary} from "react-error-boundary";
-import PlantCard, {PlantCardRemove} from "../../components/PlantCard/PlantCard";
+import PlantCard, {
+  PlantCardRemove
+} from "../../components/Molecules/PlantCard/PlantCard";
 import {PlantType} from "../../services/api/types/plants";
 import {ImageType} from "../../services/api/types/images";
 import {CreateDeckPlantFormDataType} from "../../services/api/types/decks";

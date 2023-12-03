@@ -1,13 +1,9 @@
-import React, { useEffect, useRef } from "react";
-import Input from "../../components/forms/Input/Input";
-import { Link } from "react-router-dom";
-import LocomotiveScroll from "locomotive-scroll";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import gsap from "gsap";
+import React, {useRef} from "react";
+import Input from "../../components/Atoms/Input/Input";
+import {Link} from "react-router-dom";
 import "locomotive-scroll/src/locomotive-scroll.scss";
-import Checkbox from "../../components/forms/Checkbox/Checkbox";
-import Stars from "../../components/ui/Stars/Stars";
-import { useQuery } from "@tanstack/react-query";
+import Checkbox from "../../components/Atoms/Checkbox/Checkbox";
+import Stars from "../../components/Atoms/Stars/Stars";
 
 const quizzes = [
   {

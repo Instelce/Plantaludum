@@ -1,0 +1,50 @@
+@import "../../../styles/abstracts/typescale";
+
+.navbar {
+  width: 100%;
+  padding: 1.5em var(--page-horizontal-padding);
+  position: relative;
+  z-index: 20;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background: rgb(var(--color-gray-2));
+  border-bottom: 1px solid rgb(var(--color-gray-3));
+
+  .right,
+  .left {
+    display: flex;
+    align-items: center;
+  }
+
+  .right,
+  .left {
+    & > a:not(.button) {
+      margin-right: 1.5rem;
+      transition: color 0.3s ease;
+
+      &:hover {
+        color: rgb(var(--color-primary-light));
+      }
+    }
+  }
+
+  .right {
+    & > * {
+      margin-left: 2rem;
+    }
+  }
+
+  .logo {
+    align-self: center;
+    margin-right: 2.5em;
+    transition: transform 0.3s cubic-bezier(0.12, 0.5, 0.56, 0.97);
+    transform-origin: center center;
+
+    &:hover {
+      transform: rotate(360deg);
+    }
+  }
+}

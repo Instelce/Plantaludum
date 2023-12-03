@@ -3,15 +3,15 @@ import React, {
   PropsWithChildren,
   ReactNode,
   useContext,
-  useEffect,
   useReducer,
-  useState,
 } from "react";
-import { StatusProp } from "../types/helpers";
-import { AlertCircle, CheckCircle, Info, XCircle } from "react-feather";
-import { notificationReducer } from "../components/Notification/notificationReducer";
-import NotificationContainer from "../components/Notification/NotificationContainer";
-import notification from "../components/Notification/Notification";
+import {StatusProp} from "../types/helpers";
+import {AlertCircle, CheckCircle, Info, XCircle} from "react-feather";
+import {
+  notificationReducer
+} from "../components/Molecules/Notification/notificationReducer";
+import NotificationContainer
+  from "../components/Molecules/Notification/NotificationContainer";
 
 export const notificationIcons: {
   [key in StatusProp]: ReactNode;

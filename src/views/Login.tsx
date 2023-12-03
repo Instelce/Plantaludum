@@ -1,20 +1,17 @@
-import React, { FormEvent, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import Input from "../components/forms/Input/Input";
-import Button from "../components/ui/Buttons/Button.jsx";
+import React, {FormEvent, useState} from "react";
+import {Link, useLocation, useNavigate} from "react-router-dom";
+import Input from "../components/Atoms/Input/Input";
+import Button from "../components/Atoms/Buttons/Button.jsx";
 import useFormFilled from "../hooks/useFormFilled.js";
-import { useMutation } from "@tanstack/react-query";
-import { auth } from "../services/api";
-import Navbar from "../components/Navbar/Navbar";
-import { ArrowRight } from "react-feather";
-import { useAuth } from "../context/AuthProvider";
-import {
-  HelperLoginType,
-  LoginFormDataType,
-} from "../services/api/types/users";
-import { AxiosError, AxiosResponse } from "axios";
-import Checkbox from "../components/forms/Checkbox/Checkbox";
-import { useNotification } from "../context/NotificationsProvider";
+import {useMutation} from "@tanstack/react-query";
+import {auth} from "../services/api";
+import Navbar from "../components/Organisms/Navbar/Navbar";
+import {ArrowRight} from "react-feather";
+import {useAuth} from "../context/AuthProvider";
+import {HelperLoginType, LoginFormDataType,} from "../services/api/types/users";
+import {AxiosError, AxiosResponse} from "axios";
+import Checkbox from "../components/Atoms/Checkbox/Checkbox";
+import {useNotification} from "../context/NotificationsProvider";
 
 function Login() {
   const { setAccessToken, setCSRFToken, persist, setPersist } = useAuth();

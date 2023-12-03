@@ -1,6 +1,6 @@
 import {Link, Outlet} from "react-router-dom";
 import {HelpCircle, LogOut, Settings, User} from "react-feather";
-import Button from "../components/ui/Buttons/Button";
+import Button from "../components/Atoms/Buttons/Button";
 import useLogout from "../hooks/auth/useLogout";
 import {useAuth} from "../context/AuthProvider";
 

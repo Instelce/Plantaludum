@@ -1,7 +1,7 @@
 import useUser from "../../hooks/auth/useUser";
 import {Link} from "react-router-dom";
-import Button from "../../components/ui/Buttons/Button";
-import Navbar from "../../components/Navbar/Navbar";
+import Button from "../../components/Atoms/Buttons/Button";
+import Navbar from "../../components/Organisms/Navbar/Navbar";
 import React from "react";
 
 function Profile() {

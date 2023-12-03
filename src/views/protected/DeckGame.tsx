@@ -1,10 +1,10 @@
 import React, {useEffect, useRef, useState} from "react";
-import ChoiceBlock from "../../components/ChoiceBlock/ChoiceBlock";
+import ChoiceBlock from "../../components/Molecules/ChoiceBlock/ChoiceBlock";
 import {Loader, RefreshCw, X} from "react-feather";
 import {useTimer} from "../../hooks/useTimer.js";
 import {Link, useNavigate, useParams} from "react-router-dom";
-import Stars from "../../components/ui/Stars/Stars";
-import ProgressBar from "../../components/ProrgessBar/ProgressBar";
+import Stars from "../../components/Atoms/Stars/Stars";
+import ProgressBar from "../../components/Atoms/ProrgessBar/ProgressBar";
 import useDeck from "../../hooks/api/useDeck.js";
 import {
   arrayChoice,
@@ -13,8 +13,8 @@ import {
 } from "../../utils/helpers";
 import useCacheImages from "../../hooks/useCacheImages.js";
 import PlantImageSlider
-  from "../../components/PlantImageSlider/PlantImageSlider";
-import Button from "../../components/ui/Buttons/Button";
+  from "../../components/Molecules/PlantImageSlider/PlantImageSlider";
+import Button from "../../components/Atoms/Buttons/Button";
 import {PlantType} from "../../services/api/types/plants";
 import {useMutation} from "@tanstack/react-query";
 import {users} from "../../services/api/plantaludum";

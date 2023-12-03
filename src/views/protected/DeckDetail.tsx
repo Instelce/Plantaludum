@@ -1,19 +1,19 @@
 import React, {useEffect, useState} from "react";
 import {Link, useNavigate, useParams} from "react-router-dom";
-import Loader from "../../components/Loader/index.jsx";
-import {EyeOff, RefreshCw, Share, Trash} from "react-feather";
-import Button from "../../components/ui/Buttons/Button.jsx";
+import Loader from "../../components/Atoms/Loader/index.jsx";
+import {Edit, EyeOff, RefreshCw, Share, Trash} from "react-feather";
+import Button from "../../components/Atoms/Buttons/Button.jsx";
 import useDeck from "../../hooks/api/useDeck.js";
-import Navbar from "../../components/Navbar/Navbar";
-import Tabs from "../../components/ui/Tabs/index.jsx";
-import PlantCard from "../../components/PlantCard/PlantCard";
-import Stars from "../../components/ui/Stars/Stars";
+import Navbar from "../../components/Organisms/Navbar/Navbar";
+import Tabs from "../../components/Molecules/Tabs/index.jsx";
+import PlantCard from "../../components/Molecules/PlantCard/PlantCard";
+import Stars from "../../components/Atoms/Stars/Stars";
 import useUser from "../../hooks/auth/useUser";
-import Flower from "../../components/ui/Icons";
+import Flower from "../../components/Atoms/Icons";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {decks} from "../../services/api";
 import usePrivateFetch from "../../hooks/auth/usePrivateFetch";
-import Modal from "../../components/ui/Modal/Modal";
+import Modal from "../../components/Molecules/Modal/Modal";
 import {useNotification} from "../../context/NotificationsProvider";
 import useCacheImages from "../../hooks/useCacheImages";
 
@@ -147,7 +147,7 @@ function DeckDetail() {
                     <Button asChild className="sb">
                       <Link to={`/decks/${deckId}/update`}>
                         Mettre à jour
-                        <RefreshCw />
+                        <Edit />
                       </Link>
                     </Button>
                     <Button asChild className="sb">

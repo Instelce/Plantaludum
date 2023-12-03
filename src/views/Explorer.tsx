@@ -1,17 +1,17 @@
 import React, {useEffect, useMemo, useRef, useState} from "react";
-import Input from "../components/forms/Input/Input";
-import DeckCard from "../components/DeckCard/DeckCard";
-import Modal from "../components/ui/Modal/Modal";
-import Button from "../components/ui/Buttons/Button.jsx";
-import Dropdown from "../components/forms/Dropdown/Dropdown";
+import Input from "../components/Atoms/Input/Input";
+import DeckCard from "../components/Molecules/DeckCard/DeckCard";
+import Modal from "../components/Molecules/Modal/Modal";
+import Button from "../components/Atoms/Buttons/Button.jsx";
+import Dropdown from "../components/Molecules/Dropdown/Dropdown";
 import classNames from "classnames";
-import Option from "../components/forms/Option/Option";
+import Option from "../components/Atoms/Option/Option";
 import {useInfiniteQuery} from "@tanstack/react-query";
 import {decks, PaginationResponseType} from "../services/api";
-import Loader from "../components/Loader/index.jsx";
-import Navbar from "../components/Navbar/Navbar";
+import Loader from "../components/Atoms/Loader/index.jsx";
+import Navbar from "../components/Organisms/Navbar/Navbar";
 import {Link} from "react-router-dom";
-import {Search} from "react-feather";
+import {Search, Sliders} from "react-feather";
 import {useAuth} from "../context/AuthProvider";
 import {DeckType} from "../services/api/types/decks";
 import useObjectSearch from "../hooks/useObjectSearch";
@@ -121,8 +121,8 @@ function Explorer() {
               onChange={(e) => setSearchInput(e.target.value)}
               icon={<Search />}
             />
-            <Button color="gray" onClick={() => setShowFilter((prev) => !prev)}>
-              Filtrer
+            <Button onlyIcon color="gray" onClick={() => setShowFilter((prev) => !prev)}>
+              <Sliders />
             </Button>
           </div>
         </header>

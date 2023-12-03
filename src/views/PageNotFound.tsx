@@ -1,8 +1,8 @@
 import React from "react";
-import Button from "../components/ui/Buttons/Button";
-import { Link, useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar/Navbar";
-import { useAuth } from "../context/AuthProvider";
+import Button from "../components/Atoms/Buttons/Button";
+import {Link, useNavigate} from "react-router-dom";
+import Navbar from "../components/Organisms/Navbar/Navbar";
+import {useAuth} from "../context/AuthProvider";
 
 function PageNotFound() {
   const navigate = useNavigate();
