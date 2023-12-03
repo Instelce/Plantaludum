@@ -1,18 +1,29 @@
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, {useEffect} from "react";
+import {Link} from "react-router-dom";
 import usePrivateFetch from "../../hooks/auth/usePrivateFetch.js";
-import useRefreshToken from "../../hooks/auth/useRefreshToken.js";
-import useLogout from "../../hooks/auth/useLogout.js";
-import useUser from "../../hooks/auth/useUser.js";
 import Navbar from "../../components/Navbar/Navbar";
-import { useAuth } from "../../context/AuthProvider";
 import Button from "../../components/ui/Buttons/Button";
+import {UserPlayedDeckType} from "../../services/api/types/decks";
+import {useQuery} from "@tanstack/react-query";
+import {users} from "../../services/api/plantaludum";
+import useUser from "../../hooks/auth/useUser";
+import DeckCard from "../../components/DeckCard/DeckCard";
 
 function MainMenu() {
   const privateFetch = usePrivateFetch();
-  const refresh = useRefreshToken();
-  const logout = useLogout();
-  const user = useUser();
+  const user = useUser()
+
+  const playedDecksQuery = useQuery<UserPlayedDeckType[]>({
+    queryKey: ["user-played-decks"],
+    queryFn: () => users.playedDecks.list(user?.id as number),
+    enabled: false
+  })
+
+  useEffect(() => {
+    if (user) {
+      playedDecksQuery.refetch()
+    }
+  }, [user]);
 
   return (
     <>
@@ -38,6 +49,14 @@ function MainMenu() {
         </h1>
         <p>{user?.username}</p>
       </header>
+
+      <main className="card-grid">
+        {playedDecksQuery.isSuccess && <>
+          {playedDecksQuery.data.map((playedDeck) => (
+            <DeckCard key={playedDeck.id} deck={playedDeck.deck} />
+          ))}
+        </>}
+      </main>
     </>
   );
 }

@@ -38,6 +38,7 @@
   }
 
   .page-header {
+    padding: 1rem var(--page-horizontal-padding);
     .stats {
       position: absolute;
       left: 50%;
@@ -54,15 +55,19 @@
       }
     }
 
-    .row-stars {
+    .stars-container {
+      padding: .5rem .5rem;
       position: absolute;
       bottom: 0;
       left: 50%;
-      transform: translate(-50%, 160%);
+      transform: translate(-50%, 80%);
+      background: rgb(var(--color-gray-2));
+      //border: 1px solid rgb(var(--color-gray-3));
+      border-radius: 100px;
 
-      svg {
-        fill: rgb(var(--color-gray-2));
-      }
+    }
+    .row-stars {
+      margin: 0;
     }
   }
 }

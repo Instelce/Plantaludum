@@ -19,6 +19,13 @@ export interface DeckPlantType {
   deck: number;
 }
 
+export interface UserPlayedDeckType {
+  id: number;
+  user: number;
+  deck: DeckType;
+  level: number;
+}
+
 // Forms data
 export interface CreateDeckFormDataType {
   name: string;

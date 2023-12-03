@@ -8,6 +8,10 @@
   justify-content: center;
 }
 
+.sep-top {
+  border-top: 1px solid rgb(var(--color-gray-3));
+}
+
 .sep-bottom {
   border-bottom: 1px solid rgb(var(--color-gray-3));
 }

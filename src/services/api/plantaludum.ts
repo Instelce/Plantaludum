@@ -5,6 +5,7 @@ import {
   CreateDeckPlantFormDataType,
   DeckType,
   UpdateDeckFormDataType,
+  UserPlayedDeckType,
 } from "./types/decks";
 import {PaginationResponseType} from "./index";
 import {PlantType} from "./types/plants";
@@ -65,10 +66,16 @@ export const users = {
     apiRequest.get(`/api/users/${userId}`).then((r) => {
       return r.data as UserType;
     }),
-  listPlayedDecks: (userId: number) =>
-    apiRequest.get(`/api/users/${userId}/played_decks`).then((r) => {r.data}),
-  createPlayedDecks: (privateFetch: AxiosInstance, userId: number) =>
-    privateFetch.post(`/api/users/${userId}/played_decks`).then((r) => {r.data}),
-  updatePlayedDecks: (privateFetch: AxiosInstance, userId: number) =>
-    privateFetch.patch(`/api/users/${userId}/played_decks`).then((r) => {r.data})
+  playedDecks: {
+    list: (userId: number) =>
+      apiRequest.get(`/api/users/${userId}/played_decks`).then((r) => {
+        return r.data as UserPlayedDeckType[];
+      }),
+    details: (userId: number, deckId: number) =>
+      apiRequest.get(`api/users/${userId}/played_decks/${deckId}`).then((r) => r.data),
+    create: (privateFetch: AxiosInstance, userId: number, data: {deck: number}) =>
+      privateFetch.post(`/api/users/${userId}/played_decks`, data).then((r) => {r.data}),
+    update: (privateFetch: AxiosInstance, userId: number, deckId: number, data: {level: number}) =>
+      privateFetch.patch(`/api/users/${userId}/played_decks/${deckId}`, data).then((r) => {r.data})
+  }
 }
