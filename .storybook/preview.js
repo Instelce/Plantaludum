@@ -1,27 +1,15 @@
-
-import '../src/styles/style.scss';
+import "../src/styles/style.scss"
 
 /** @type { import('@storybook/react').Preview } */
 const preview = {
   parameters: {
-    actions: { argTypesRegex: "^on[A-Z].*" },
-    controls: {
-      matchers: {
-        color: /(background|color)$/i,
-        date: /Date$/i,
-      },
-    },
     backgrounds: {
-      default: 'dark',
+      default: 'default',
       values: [
         {
-          name: 'dark',
-          value: 'rgb(var(--color-background))',
+          name: 'default',
+          value: '#2a2a2a',
         },
-        {
-          name: 'light',
-          value: '#fff',
-        }
       ]
     }
   },

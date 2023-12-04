@@ -1,7 +1,7 @@
 import Textarea from "./Textarea";
 
 export default {
-  title: "Components/Forms/Textarea",
+  title: "Atoms/Textarea",
   component: Textarea,
 };
 

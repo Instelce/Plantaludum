@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "../../components/Atoms/Buttons/Button.jsx";
-import {useParams} from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 function DeckGameResult(props) {
   const { quizId } = useParams();

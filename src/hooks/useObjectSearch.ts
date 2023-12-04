@@ -1,4 +1,4 @@
-import {useMemo} from "react";
+import { useMemo } from "react";
 
 type UseSearchArgs<T> = {
   data: T[] | undefined;
@@ -14,9 +14,9 @@ function useObjectSearch<T>({
   const filteredData = useMemo(() => {
     if (searchInput != "") {
       return data?.filter((obj) => {
-        const fieldData = obj[fieldName] as string
-        console.log(fieldData)
-        return fieldData.toLowerCase().startsWith(searchInput.toLowerCase())
+        const fieldData = obj[fieldName] as string;
+        console.log(fieldData);
+        return fieldData.toLowerCase().startsWith(searchInput.toLowerCase());
       });
     }
     return data;

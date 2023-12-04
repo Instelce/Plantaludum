@@ -1,9 +1,9 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import "./style.scss";
 import ChoiceBlock from "../../Molecules/ChoiceBlock/ChoiceBlock";
 import ImageSlider from "../../Molecules/ImageSlider";
-import {X} from "react-feather";
+import { X } from "react-feather";
 import PropTypes from "prop-types";
 
 function PlantQuiz({ show, setShow, plant, handleQuizSubmit }) {

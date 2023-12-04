@@ -1,7 +1,7 @@
-import {Outlet} from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import useRefreshToken from "../hooks/auth/useRefreshToken.js";
-import {useAuth} from "../context/AuthProvider";
-import {useEffect, useState} from "react";
+import { useAuth } from "../context/AuthProvider";
+import { useEffect, useState } from "react";
 import Loader from "../components/Atoms/Loader";
 
 function PersistLogin() {

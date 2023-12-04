@@ -3,10 +3,13 @@
 import Button from "./Button";
 
 export default {
-  title: "Components/Button",
+  title: "Atoms/Button",
   component: Button,
   parameters: {
     layout: "centered",
+    backgrounds: {
+      default: "default",
+    },
   },
   tags: ["autodocs"],
 };
@@ -14,12 +17,11 @@ export default {
 export const Primary = {
   args: {
     label: "Click",
-    type: "button",
     color: "primary",
-    size: "lg",
-    variant: "solid",
+    size: "large",
     disabled: false,
     fill: false,
+    children: "Button",
   },
 };
 

@@ -1,21 +1,20 @@
-import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
-import {FormEvent, useEffect, useState} from "react";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { FormEvent, useEffect, useState } from "react";
 import Button from "../../components/Atoms/Buttons/Button.jsx";
-import AutocompleteInput
-  from "../../components/Molecules/AutocompleteInput/Autocomplete";
+import AutocompleteInput from "../../components/Molecules/AutocompleteInput/Autocomplete";
 import usePrivateFetch from "../../hooks/auth/usePrivateFetch.js";
-import {useMutation, useQueryClient} from "@tanstack/react-query";
-import {decks} from "../../services/api";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { decks } from "../../services/api";
 import Navbar from "../../components/Organisms/Navbar/Navbar";
-import {ErrorBoundary} from "react-error-boundary";
+import { ErrorBoundary } from "react-error-boundary";
 import PlantCard, {
-  PlantCardRemove
+  PlantCardRemove,
 } from "../../components/Molecules/PlantCard/PlantCard";
-import {PlantType} from "../../services/api/types/plants";
-import {ImageType} from "../../services/api/types/images";
-import {CreateDeckPlantFormDataType} from "../../services/api/types/decks";
-import {flore} from "../../services/api/flore";
-import {useNotification} from "../../context/NotificationsProvider";
+import { PlantType } from "../../services/api/types/plants";
+import { ImageType } from "../../services/api/types/images";
+import { CreateDeckPlantFormDataType } from "../../services/api/types/decks";
+import { flore } from "../../services/api/flore";
+import { useNotification } from "../../context/NotificationsProvider";
 import useDeck from "../../hooks/api/useDeck";
 
 function DeckPlants() {
@@ -31,41 +30,52 @@ function DeckPlants() {
   const [plantValue, setPlantValue] = useState<string | null>(null);
   const [plantData, setPlantData] = useState<PlantType | null>(null);
   const [plantIsValid, setPlantIsValid] = useState(false);
-  const [removePlantIds, setRemovePlantIds] = useState<number[]>([])
+  const [removePlantIds, setRemovePlantIds] = useState<number[]>([]);
 
   const [plants, setPlants] = useState<PlantType[]>([]);
 
-  const {deckQuery, deckPlantsQuery, deckPlantsImagesQuery} = useDeck({
+  const { deckQuery, deckPlantsQuery, deckPlantsImagesQuery } = useDeck({
     deckId: deckId as string,
     fetchPlants: true,
     fetchImages: true,
-  })
+  });
   const deckData = deckDataFromCreate || deckQuery.data;
 
-  const queryClient = useQueryClient()
-  const {mutate: mutateCreatePlantQuiz } = useMutation({
+  const queryClient = useQueryClient();
+  const { mutate: mutateCreatePlantQuiz } = useMutation({
     mutationKey: ["decks-plants", deckId],
     mutationFn: (data: CreateDeckPlantFormDataType) =>
       decks.createPlant(privateFetch, data),
     onSuccess: (data) => {
-      queryClient.invalidateQueries({queryKey: ["decks-plants", deckId]})
-      queryClient.invalidateQueries({queryKey: ["decks-plants-infos", deckId]})
-      queryClient.invalidateQueries({queryKey: ["decks-plants-images", deckId]})
+      queryClient.invalidateQueries({ queryKey: ["decks-plants", deckId] });
+      queryClient.invalidateQueries({
+        queryKey: ["decks-plants-infos", deckId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["decks-plants-images", deckId],
+      });
       notification.success({
-        message: deckData ? `Plantes de ${deckData.name} mise à jour avec succès` :
-        `Plantes de ${deckDataFromCreate.name} créé avec succès`,
-      })
+        message: deckData
+          ? `Plantes de ${deckData.name} mise à jour avec succès`
+          : `Plantes de ${deckDataFromCreate.name} créé avec succès`,
+      });
       navigate(`/decks/${deckId}`, { replace: true });
     },
   });
-  const {mutate: mutateDeletePlantDeck } = useMutation({
+  const { mutate: mutateDeletePlantDeck } = useMutation({
     mutationKey: ["decks-plants", deckId],
     mutationFn: (plantId: number) =>
       decks.deletePlant(privateFetch, parseInt(deckId as string), plantId),
     onSuccess: (data) => {
-      queryClient.invalidateQueries({queryKey: ["decks-plants", deckId]})
-      queryClient.invalidateQueries({queryKey: ["decks-plants-infos", deckId], exact: true})
-      queryClient.invalidateQueries({queryKey: ["decks-plants-images", deckId], exact: true})
+      queryClient.invalidateQueries({ queryKey: ["decks-plants", deckId] });
+      queryClient.invalidateQueries({
+        queryKey: ["decks-plants-infos", deckId],
+        exact: true,
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["decks-plants-images", deckId],
+        exact: true,
+      });
       navigate(`/decks/${deckId}`, { replace: true });
     },
   });
@@ -86,7 +96,7 @@ function DeckPlants() {
 
     // remove plants
     for (const plant_id of removePlantIds) {
-      console.log(plant_id)
+      console.log(plant_id);
       mutateDeletePlantDeck(plant_id);
     }
   };
@@ -179,22 +189,32 @@ function DeckPlants() {
           <ErrorBoundary
             fallback={<p>Erreur lors du chargement des données des plantes.</p>}
           >
-            {deckPlantsQuery.isSuccess && deckPlantsImagesQuery.isSuccess && <>
-              {deckPlantsQuery?.data.filter(plants => !removePlantIds.includes(plants.id)).map((plant, index) => (
-                <PlantCardRemove key={index} handleRemove={() => removePlant(plant.id)}>
-                  <PlantCard
-                    key={index}
-                    plant={plant}
-                    images={deckPlantsImagesQuery.data
-                      .filter(images => images.id === plant.id)[0].images
-                      ?.map((img: ImageType) => img.url)
-                      .slice(0, 5)}
-                  />
-                </PlantCardRemove>
-              ))}
-            </>}
+            {deckPlantsQuery.isSuccess && deckPlantsImagesQuery.isSuccess && (
+              <>
+                {deckPlantsQuery?.data
+                  .filter((plants) => !removePlantIds.includes(plants.id))
+                  .map((plant, index) => (
+                    <PlantCardRemove
+                      key={index}
+                      handleRemove={() => removePlant(plant.id)}
+                    >
+                      <PlantCard
+                        key={index}
+                        plant={plant}
+                        images={deckPlantsImagesQuery.data
+                          .filter((images) => images.id === plant.id)[0]
+                          .images?.map((img: ImageType) => img.url)
+                          .slice(0, 5)}
+                      />
+                    </PlantCardRemove>
+                  ))}
+              </>
+            )}
             {plants.map((plant, index) => (
-              <PlantCardRemove key={index} handleRemove={() => removeFreshPlant(plant)}>
+              <PlantCardRemove
+                key={index}
+                handleRemove={() => removeFreshPlant(plant)}
+              >
                 <PlantCard
                   key={index}
                   plant={plant}
@@ -214,16 +234,17 @@ function DeckPlants() {
           <Button asChild label="Retour" size="large" color="gray" fill>
             <Link to={`/decks/${deckId}/update`}>Retour</Link>
           </Button>
-          {deckPlantsQuery.isSuccess &&
-          <Button
-            label="Continuer"
-            size="large"
-            color="primary"
-            disabled={plants.length + deckPlantsQuery.data.length < 4}
-            onClick={handleSubmit}
-          >
-            Continuer
-          </Button>}
+          {deckPlantsQuery.isSuccess && (
+            <Button
+              label="Continuer"
+              size="large"
+              color="primary"
+              disabled={plants.length + deckPlantsQuery.data.length < 4}
+              onClick={handleSubmit}
+            >
+              Continuer
+            </Button>
+          )}
         </div>
       </div>
     </>

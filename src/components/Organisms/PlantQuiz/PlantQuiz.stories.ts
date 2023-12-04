@@ -3,7 +3,7 @@
 import PlantCard from "./index";
 
 export default {
-  title: "WebApp/PlantQuiz",
+  title: "Organisms/PlantQuiz",
   component: PlantCard,
   parameters: {},
 };

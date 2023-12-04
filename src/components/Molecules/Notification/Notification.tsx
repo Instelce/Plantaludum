@@ -1,13 +1,13 @@
 import "./Notification.scss";
 import classNames from "classnames";
-import {useEffect, useRef, useState} from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   notificationIcons,
   useNotification,
 } from "../../../context/NotificationsProvider";
 import Button from "../../Atoms/Buttons/Button";
-import {X} from "react-feather";
-import {StatusProp, TimeoutRef} from "../../../types/helpers";
+import { X } from "react-feather";
+import { StatusProp, TimeoutRef } from "../../../types/helpers";
 
 type NotificationProps = {
   id: number;

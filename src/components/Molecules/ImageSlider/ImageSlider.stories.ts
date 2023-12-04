@@ -1,9 +1,7 @@
-// ImageSlider.stories.js
-
 import ImageSlider from "./index";
 
 export default {
-  title: "Components/ImageSlider",
+  title: "Molecules/ImageSlider",
   component: ImageSlider,
   parameters: {
     layout: "centered",

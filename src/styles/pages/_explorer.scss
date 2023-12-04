@@ -10,7 +10,7 @@
 
 .filter-panel-container {
   position: relative;
-  transition: max-height .3s ease;
+  transition: max-height 0.3s ease;
 
   &:has(> .filter-panel:not(.filter-panel.show)) {
     overflow: hidden;

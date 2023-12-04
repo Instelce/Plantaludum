@@ -1,4 +1,4 @@
-import {NotificationType} from "../../../context/NotificationsProvider";
+import { NotificationType } from "../../../context/NotificationsProvider";
 
 export const notificationReducer = (state, action) => {
   switch (action.type) {

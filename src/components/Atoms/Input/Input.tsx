@@ -1,9 +1,9 @@
-import React, {InputHTMLAttributes, ReactNode, useId, useState} from "react";
+import React, { InputHTMLAttributes, ReactNode, useId, useState } from "react";
 
 import "./Input.scss";
 import Modal from "../../Molecules/Modal/Modal";
-import {Info} from "react-feather";
-import {SizeProp} from "../../../types/helpers";
+import { Info } from "react-feather";
+import { SizeProp } from "../../../types/helpers";
 import Button from "../Buttons/Button";
 
 type InputProps = {

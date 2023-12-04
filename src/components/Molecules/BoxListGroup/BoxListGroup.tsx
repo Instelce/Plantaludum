@@ -1,13 +1,12 @@
 import "./BoxListGroup.scss";
-import {SizeProp} from "../../../types/helpers";
-import React, {PropsWithChildren} from "react";
+import { SizeProp } from "../../../types/helpers";
+import React, { PropsWithChildren } from "react";
 import classNames from "classnames";
 
 type BoxListGroupProps = {
   size: SizeProp;
   rounded: boolean;
-  children: React.ReactNode;
-};
+} & PropsWithChildren;
 
 function BoxListGroup({ size, rounded, children }: BoxListGroupProps) {
   return (

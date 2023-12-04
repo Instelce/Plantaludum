@@ -3,7 +3,7 @@ import { useAuth } from "../../context/AuthProvider";
 import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { auth } from "../../services/api";
-import {UserType} from "../../services/api/types/users";
+import { UserType } from "../../services/api/types/users";
 
 function useUser() {
   const { setUser } = useAuth();

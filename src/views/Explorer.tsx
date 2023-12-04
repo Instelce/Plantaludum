@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useRef, useState} from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Input from "../components/Atoms/Input/Input";
 import DeckCard from "../components/Molecules/DeckCard/DeckCard";
 import Modal from "../components/Molecules/Modal/Modal";
@@ -6,16 +6,16 @@ import Button from "../components/Atoms/Buttons/Button.jsx";
 import Dropdown from "../components/Molecules/Dropdown/Dropdown";
 import classNames from "classnames";
 import Option from "../components/Atoms/Option/Option";
-import {useInfiniteQuery} from "@tanstack/react-query";
-import {decks, PaginationResponseType} from "../services/api";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { decks, PaginationResponseType } from "../services/api";
 import Loader from "../components/Atoms/Loader/index.jsx";
 import Navbar from "../components/Organisms/Navbar/Navbar";
-import {Link} from "react-router-dom";
-import {Search, Sliders} from "react-feather";
-import {useAuth} from "../context/AuthProvider";
-import {DeckType} from "../services/api/types/decks";
+import { Link } from "react-router-dom";
+import { Search, Sliders } from "react-feather";
+import { useAuth } from "../context/AuthProvider";
+import { DeckType } from "../services/api/types/decks";
 import useObjectSearch from "../hooks/useObjectSearch";
-import {useInView} from "react-intersection-observer";
+import { useInView } from "react-intersection-observer";
 import useDebounce from "../hooks/useDebounce";
 
 function Explorer() {
@@ -23,11 +23,11 @@ function Explorer() {
   const [showModal, setShowModal] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [showFilter, setShowFilter] = useState(false);
-  const {ref: loaderSectionRef, inView: loaderInView} = useInView()
+  const { ref: loaderSectionRef, inView: loaderInView } = useInView();
 
   // search and filters
   const panelRef = useRef<HTMLDivElement>(null);
-  const debouncedSearchValue = useDebounce(searchInput, 500)
+  const debouncedSearchValue = useDebounce(searchInput, 500);
   const [difficultyFilter, setDifficultyFilter] = useState(-1);
 
   // load decks data
@@ -37,18 +37,22 @@ function Explorer() {
     data: decksData,
     fetchNextPage,
     isFetchingNextPage,
-    hasNextPage
+    hasNextPage,
   } = useInfiniteQuery<PaginationResponseType<DeckType>, Error>({
     queryKey: ["decks"],
-    queryFn: ({pageParam}) => decks.list({ search: searchInput.toString(), pageParam: pageParam as number }),
+    queryFn: ({ pageParam }) =>
+      decks.list({
+        search: searchInput.toString(),
+        pageParam: pageParam as number,
+      }),
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => {
       return lastPage.results.length === 6 ? allPages.length + 1 : undefined;
-    }
+    },
   });
 
   const searchFilteredDecks = useObjectSearch<DeckType>({
-    data: decksData?.pages.map(page => page.results).flat(1),
+    data: decksData?.pages.map((page) => page.results).flat(1),
     fieldName: "name",
     searchInput: searchInput,
   });
@@ -68,7 +72,7 @@ function Explorer() {
 
   useEffect(() => {
     if (loaderInView && hasNextPage) {
-      fetchNextPage()
+      fetchNextPage();
     }
   }, [loaderInView]);
 
@@ -121,13 +125,24 @@ function Explorer() {
               onChange={(e) => setSearchInput(e.target.value)}
               icon={<Search />}
             />
-            <Button onlyIcon color="gray" onClick={() => setShowFilter((prev) => !prev)}>
+            <Button
+              onlyIcon
+              color="gray"
+              onClick={() => setShowFilter((prev) => !prev)}
+            >
               <Sliders />
             </Button>
           </div>
         </header>
 
-        <div className="filter-panel-container" style={{maxHeight: showFilter ? panelRef.current?.getBoundingClientRect().height : 0 + "px"}}>
+        <div
+          className="filter-panel-container"
+          style={{
+            maxHeight: showFilter
+              ? panelRef.current?.getBoundingClientRect().height
+              : 0 + "px",
+          }}
+        >
           <div
             ref={panelRef}
             className={classNames("filter-panel", { show: showFilter })}
@@ -135,7 +150,9 @@ function Explorer() {
             <Dropdown
               label="Difficulté"
               defaultValue="Toutes"
-              handleValueChange={(value) => setDifficultyFilter(parseInt(value))}
+              handleValueChange={(value) =>
+                setDifficultyFilter(parseInt(value))
+              }
             >
               <Option>Toutes</Option>
               <Option>1</Option>
@@ -144,25 +161,36 @@ function Explorer() {
             </Dropdown>
           </div>
         </div>
-        </div>
+      </div>
 
-      {isSuccess && <>
-        <div className="card-grid">
-          {filteredDecks && (
-            <>
-              {filteredDecks?.map((deck: DeckType) => (
-                <DeckCard key={deck.id} deck={deck} />
-              ))}
-            </>
-          )}
-        </div>
+      {isSuccess && (
+        <>
+          <div className="card-grid">
+            {filteredDecks && (
+              <>
+                {filteredDecks?.map((deck: DeckType) => (
+                  <DeckCard key={deck.id} deck={deck} />
+                ))}
+              </>
+            )}
+          </div>
 
-        <div ref={loaderSectionRef} className={classNames("deck-loader", {'no-results': !hasNextPage})}>
-          {hasNextPage ? "Chargement..." : "Plus de decks"}
-        </div>
-      </>}
+          <div
+            ref={loaderSectionRef}
+            className={classNames("deck-loader", {
+              "no-results": !hasNextPage,
+            })}
+          >
+            {hasNextPage ? "Chargement..." : "Plus de decks"}
+          </div>
+        </>
+      )}
 
-      {isLoading && <div className="center-loader"><Loader /></div>}
+      {isLoading && (
+        <div className="center-loader">
+          <Loader />
+        </div>
+      )}
 
       <Modal show={showModal}>
         <h3>Conseil</h3>

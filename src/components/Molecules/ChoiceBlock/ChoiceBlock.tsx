@@ -1,7 +1,7 @@
-import React, {ButtonHTMLAttributes, useEffect, useRef} from "react";
+import React, { ButtonHTMLAttributes, useEffect, useRef } from "react";
 
 import "./ChoiceBlock.scss";
-import {Check, X} from "react-feather";
+import { Check, X } from "react-feather";
 import Button from "../../Atoms/Buttons/Button";
 
 type ChoiceBlockProps = {
@@ -10,7 +10,7 @@ type ChoiceBlockProps = {
   isRightAnswer: boolean;
   showResult: boolean;
   setShowResult: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsRight: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsRight?: React.Dispatch<React.SetStateAction<boolean>>;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 function ChoiceBlock({
@@ -25,7 +25,7 @@ function ChoiceBlock({
 
   const handleDoubleClick = () => {
     setShowResult(true);
-    setIsRight(isRightAnswer);
+    setIsRight?.(isRightAnswer);
     if (!isRightAnswer && ref.current) {
       ref.current.style.animation = "";
       ref.current.style.animation = "shake .2s ease";

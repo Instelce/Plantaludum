@@ -1,8 +1,8 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ChoiceBlock from "../../components/Molecules/ChoiceBlock/ChoiceBlock";
-import {Loader, RefreshCw, X} from "react-feather";
-import {useTimer} from "../../hooks/useTimer.js";
-import {Link, useNavigate, useParams} from "react-router-dom";
+import { Loader, RefreshCw, X } from "react-feather";
+import { useTimer } from "../../hooks/useTimer.js";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Stars from "../../components/Atoms/Stars/Stars";
 import ProgressBar from "../../components/Atoms/ProrgessBar/ProgressBar";
 import useDeck from "../../hooks/api/useDeck.js";
@@ -12,24 +12,23 @@ import {
   shuffleArray,
 } from "../../utils/helpers";
 import useCacheImages from "../../hooks/useCacheImages.js";
-import PlantImageSlider
-  from "../../components/Molecules/PlantImageSlider/PlantImageSlider";
+import PlantImageSlider from "../../components/Molecules/PlantImageSlider/PlantImageSlider";
 import Button from "../../components/Atoms/Buttons/Button";
-import {PlantType} from "../../services/api/types/plants";
-import {useMutation} from "@tanstack/react-query";
-import {users} from "../../services/api/plantaludum";
+import { PlantType } from "../../services/api/types/plants";
+import { useMutation } from "@tanstack/react-query";
+import { users } from "../../services/api/plantaludum";
 import usePrivateFetch from "../../hooks/auth/usePrivateFetch";
 import useUser from "../../hooks/auth/useUser";
-import {AxiosError} from "axios";
-import {UserPlayedDeckType} from "../../services/api/types/decks";
+import { AxiosError } from "axios";
+import { UserPlayedDeckType } from "../../services/api/types/decks";
 
 function DeckGame() {
   const navigate = useNavigate();
   let { deckId } = useParams();
   const privateFetch = usePrivateFetch();
-  const user = useUser()
+  const user = useUser();
 
-  const scoreRightAnswer = 100
+  const scoreRightAnswer = 100;
   const maxQuestions = 5;
 
   const [showResult, setShowResult] = useState(false);
@@ -37,7 +36,7 @@ function DeckGame() {
   const { stringTime, start, reset } = useTimer({ startValue: 5 });
   const [userErrors, setUserErrors] = useState(0);
 
-  const [isFisrtPlay, setIsFisrtPlay] = useState(false)
+  const [isFisrtPlay, setIsFisrtPlay] = useState(false);
 
   // Stats
   const [score, setScore] = useState(0);
@@ -62,27 +61,37 @@ function DeckGame() {
 
   const userPlayedDeckQuery = useMutation<UserPlayedDeckType>({
     mutationKey: ["user-played-decks", deckId],
-    mutationFn: () => users.playedDecks.details(user?.id as number, parseInt(deckId as string)),
+    mutationFn: () =>
+      users.playedDecks.details(user?.id as number, parseInt(deckId as string)),
     onError: (err: AxiosError) => {
       if (err.response?.status === 500) {
-        console.log("Le joueur n'a jamais joué ce deck")
-        setIsFisrtPlay(true)
+        console.log("Le joueur n'a jamais joué ce deck");
+        setIsFisrtPlay(true);
       }
-    }
-  })
+    },
+  });
 
-  const {mutate: mutateCreatePlayedDeck} = useMutation({
+  const { mutate: mutateCreatePlayedDeck } = useMutation({
     mutationKey: ["user-played-decks", deckId],
-    mutationFn: () => users.playedDecks.create(privateFetch, user?.id as number, {deck: parseInt(deckId as string)}),
-  })
-  const {mutate: mutateUpdatePlayedDeckLevel} = useMutation({
+    mutationFn: () =>
+      users.playedDecks.create(privateFetch, user?.id as number, {
+        deck: parseInt(deckId as string),
+      }),
+  });
+  const { mutate: mutateUpdatePlayedDeckLevel } = useMutation({
     mutationKey: ["user-played-decks", deckId],
-    mutationFn: () => users.playedDecks.update(privateFetch, user?.id as number, parseInt(deckId as string), {level: userPlayedDeckQuery.data.level + 1}),
-  })
+    mutationFn: () =>
+      users.playedDecks.update(
+        privateFetch,
+        user?.id as number,
+        parseInt(deckId as string),
+        { level: userPlayedDeckQuery.data.level + 1 },
+      ),
+  });
 
   useEffect(() => {
     if (user) {
-      userPlayedDeckQuery.mutate()
+      userPlayedDeckQuery.mutate();
     }
   }, [user]);
 
@@ -97,7 +106,7 @@ function DeckGame() {
   useEffect(() => {
     console.log("start p");
     if (deckPlantsImagesQuery.isSuccess && deckPlantsQuery.isFetched) {
-      setPlantsData(() => deckPlantsQuery.data ||[]);
+      setPlantsData(() => deckPlantsQuery.data || []);
       const currentPlantData = arrayChoice(deckPlantsQuery.data || [])[0];
       setCurrentPlant(() => currentPlantData);
     }
@@ -122,7 +131,7 @@ function DeckGame() {
 
   // set images
   useEffect(() => {
-    console.log("id", currentPlant?.scientific_name)
+    console.log("id", currentPlant?.scientific_name);
     if (currentPlant) {
       let tempImagesData = deckPlantsImagesQuery.data;
       setCurrentImages(() =>
@@ -154,13 +163,13 @@ function DeckGame() {
     // set stars
     console.log("Erreur de l'utilisateur", userErrors, maxQuestions - progress);
     if (progress >= maxQuestions / 3 && userErrors < 2) {
-      setStars(1)
+      setStars(1);
     }
-    if (progress >= ( maxQuestions / 3 ) * 2 && userErrors < 4) {
-      setStars(2)
+    if (progress >= (maxQuestions / 3) * 2 && userErrors < 4) {
+      setStars(2);
     }
     if (progress >= maxQuestions && userErrors < 4) {
-      setStars(3)
+      setStars(3);
     }
 
     if (showResult && progress < maxQuestions) {
@@ -189,14 +198,14 @@ function DeckGame() {
     // redirect to result page if deck is finished
     if (progress === maxQuestions - 1) {
       if (isFisrtPlay) {
-        mutateCreatePlayedDeck()
+        mutateCreatePlayedDeck();
       } else {
         if (stars === 3) {
-          mutateUpdatePlayedDeckLevel()
+          mutateUpdatePlayedDeckLevel();
         }
       }
       setTimeout(() => {
-        navigate(`/decks/${deckId}/game/resultat`, {replace: true});
+        navigate(`/decks/${deckId}/game/resultat`, { replace: true });
       }, 2000);
     }
   }, [showResult]);
@@ -205,9 +214,9 @@ function DeckGame() {
   useEffect(() => {
     if (isRight !== undefined) {
       if (isRight) {
-        setScore(score => score + scoreRightAnswer);
+        setScore((score) => score + scoreRightAnswer);
       } else {
-        setUserErrors(errors => errors + 1);
+        setUserErrors((errors) => errors + 1);
       }
       setIsRight(undefined);
     }
@@ -216,10 +225,10 @@ function DeckGame() {
   const resetQuiz = () => {
     reset();
     setProgress(0);
-    setScore(0)
-    setStars(0)
+    setScore(0);
+    setStars(0);
     setShowResult(false);
-    setUserErrors(0)
+    setUserErrors(0);
   };
 
   return (
@@ -258,42 +267,48 @@ function DeckGame() {
         shape="square"
       />
 
-      {!imagesLoading && <div className="game-content">
-        {currentImages && currentPlant && (
-          <div className="game-grid" ref={deckContent}>
-            {currentImages && (
-              <PlantImageSlider
-                imagesData={currentImages}
-                plantData={currentPlant}
-              />
-            )}
-
-            <div>
-              {deckPlantsQuery.isSuccess ? (
-                <>
-                  {plantsData?.map((plant, index) => (
-                    <ChoiceBlock
-                      key={plant.id}
-                      index={index}
-                      title={plant.french_name}
-                      subtitle={plant.scientific_name}
-                      isRightAnswer={plant.id === currentPlant.id}
-                      showResult={showResult}
-                      setShowResult={setShowResult}
-                      setIsRight={setIsRight}
-                    />
-                  ))}
-                  <p>Double click sur la réponse de ton choix</p>
-                </>
-              ) : (
-                <p>Fini !</p>
+      {!imagesLoading && (
+        <div className="game-content">
+          {currentImages && currentPlant && (
+            <div className="game-grid" ref={deckContent}>
+              {currentImages && (
+                <PlantImageSlider
+                  imagesData={currentImages}
+                  plantData={currentPlant}
+                />
               )}
-            </div>
-          </div>
-        )}
-      </div>}
 
-      {imagesLoading && <div className="center-loader"><Loader /></div>}
+              <div>
+                {deckPlantsQuery.isSuccess ? (
+                  <>
+                    {plantsData?.map((plant, index) => (
+                      <ChoiceBlock
+                        key={plant.id}
+                        index={index}
+                        title={plant.french_name}
+                        subtitle={plant.scientific_name}
+                        isRightAnswer={plant.id === currentPlant.id}
+                        showResult={showResult}
+                        setShowResult={setShowResult}
+                        setIsRight={setIsRight}
+                      />
+                    ))}
+                    <p>Double click sur la réponse de ton choix</p>
+                  </>
+                ) : (
+                  <p>Fini !</p>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {imagesLoading && (
+        <div className="center-loader">
+          <Loader />
+        </div>
+      )}
     </div>
   );
 }

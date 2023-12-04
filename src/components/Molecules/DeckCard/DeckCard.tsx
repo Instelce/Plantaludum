@@ -1,11 +1,11 @@
-import React, {useEffect, useRef} from "react";
+import React, { useEffect, useRef } from "react";
 import Stars from "../../Atoms/Stars/Stars";
 import "./DeckCard.scss";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import Button from "../../Atoms/Buttons/Button";
-import {RefreshCw, Zap} from "react-feather";
+import { RefreshCw, Zap } from "react-feather";
 import Flower from "../../Atoms/Icons";
-import {DeckType} from "../../../services/api/types/decks";
+import { DeckType } from "../../../services/api/types/decks";
 import useUser from "../../../hooks/auth/useUser";
 
 type DeckCardProps = {

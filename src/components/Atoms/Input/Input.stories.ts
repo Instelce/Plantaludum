@@ -1,25 +1,9 @@
 // Input.stories.js
 
 import Input from "./Input";
-import { useArgs } from "@storybook/preview-api";
-
-/*function Component(Story, ctx) {
-  const [, setArgs] = useArgs();
-
-  const handleValueChange = (value) => {
-    ctx.args.handleValueChange?.(value);
-    setArgs({ value });
-
-    if (ctx.args.value !== undefined) {
-      setArgs({ value });
-    }
-  };
-
-  return <Story args={{ ...ctx.args, handleValueChange }} />;
-}*/
 
 export default {
-  title: "Components/Forms/Input",
+  title: "Atoms/Input",
   component: Input,
   parameters: {
     layout: "centered",

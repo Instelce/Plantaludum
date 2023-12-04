@@ -1,15 +1,15 @@
 import "./PlantCard.scss";
-import {PlantType} from "../../../services/api/types/plants";
+import { PlantType } from "../../../services/api/types/plants";
 import {
   DragEventHandler,
   PropsWithChildren,
   useEffect,
   useRef,
-  useState
+  useState,
 } from "react";
 import classNames from "classnames";
 import Button from "../../Atoms/Buttons/Button";
-import {Trash} from "react-feather";
+import { Trash } from "react-feather";
 
 type PlantCardProps = {
   plant: PlantType;
@@ -103,14 +103,20 @@ function PlantCard({ plant, images, ...props }: PlantCardProps) {
 }
 
 type PlantCardRemoveProps = {
-  handleRemove: () => void,
-} & PropsWithChildren
+  handleRemove: () => void;
+} & PropsWithChildren;
 
-export function PlantCardRemove({handleRemove, children, ...props} : PlantCardRemoveProps) {
+export function PlantCardRemove({
+  handleRemove,
+  children,
+  ...props
+}: PlantCardRemoveProps) {
   return (
     <div className="plant-card-remove" {...props}>
       {children}
-      <Button onlyIcon onClick={handleRemove} color="danger"><Trash /></Button>
+      <Button onlyIcon onClick={handleRemove} color="danger">
+        <Trash />
+      </Button>
     </div>
   );
 }

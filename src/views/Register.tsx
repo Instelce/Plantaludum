@@ -1,19 +1,18 @@
-import React, {FormEvent, useState} from "react";
-import {Link, useNavigate} from "react-router-dom";
+import React, { FormEvent, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Input from "../components/Atoms/Input/Input";
 import Button from "../components/Atoms/Buttons/Button.jsx";
-import PasswordChecker
-  from "../components/Molecules/PasswordChecker/PasswordChecker";
+import PasswordChecker from "../components/Molecules/PasswordChecker/PasswordChecker";
 import useFormFilled from "../hooks/useFormFilled.js";
-import {useMutation} from "@tanstack/react-query";
-import {auth} from "../services/api";
+import { useMutation } from "@tanstack/react-query";
+import { auth } from "../services/api";
 import {
   HelperRegisterType,
   RegisterFormDataType,
 } from "../services/api/types/users";
-import {AxiosError} from "axios";
+import { AxiosError } from "axios";
 import Navbar from "../components/Organisms/Navbar/Navbar";
-import {ArrowRight} from "react-feather";
+import { ArrowRight } from "react-feather";
 
 function Register() {
   const navigate = useNavigate();

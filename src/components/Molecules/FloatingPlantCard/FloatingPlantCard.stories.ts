@@ -1,9 +1,7 @@
-// FloatingPlantCard.stories.js
-
 import FloatingPlantCard from "./index";
 
 export default {
-  title: "WebApp/FloatingPlantCard",
+  title: "Molecules/FloatingPlantCard",
   component: FloatingPlantCard,
   parameters: {},
 };

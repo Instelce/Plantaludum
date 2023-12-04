@@ -9,7 +9,7 @@
 
   h1 {
     margin-top: 1rem;
-    margin-bottom: .4rem;
+    margin-bottom: 0.4rem;
     line-height: 100%;
   }
 
@@ -57,7 +57,7 @@
     }
 
     .stars-container {
-      padding: .6rem 1rem;
+      padding: 0.6rem 1rem;
       position: absolute;
       bottom: 0;
       left: 50%;
@@ -80,15 +80,19 @@
       }
 
       &::before {
-        left: .5px;
+        left: 0.5px;
         transform: translateX(-100%);
-        clip-path: path("M7 7C9.10304 4.89696 10 0 10 0V10H0C0 10 4.89696 9.10304 7 7Z");
+        clip-path: path(
+          "M7 7C9.10304 4.89696 10 0 10 0V10H0C0 10 4.89696 9.10304 7 7Z"
+        );
       }
 
       &::after {
-        right: .5px;
+        right: 0.5px;
         transform: translateX(100%);
-        clip-path: path("M0.000707507 1.59144e-05C0.000707507 1.59144e-05 0.897148 4.89694 3 7C5.10293 9.10314 10 10 10 10H0L0.000707507 1.59144e-05Z");
+        clip-path: path(
+          "M0.000707507 1.59144e-05C0.000707507 1.59144e-05 0.897148 4.89694 3 7C5.10293 9.10314 10 10 10 10H0L0.000707507 1.59144e-05Z"
+        );
       }
     }
 

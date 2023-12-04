@@ -1,5 +1,5 @@
 import "./Textarea.scss";
-import React, {TextareaHTMLAttributes, useId, useState,} from "react";
+import React, { TextareaHTMLAttributes, useId, useState } from "react";
 import classNames from "classnames";
 
 type TextareaProps = {
@@ -26,7 +26,9 @@ function Textarea({
   ...props
 }: TextareaProps) {
   const defaultId = useId();
-  const [valueLenght, setValueLenght] = useState(defaultValue ? defaultValue.toString().length : 0);
+  const [valueLenght, setValueLenght] = useState(
+    defaultValue ? defaultValue.toString().length : 0,
+  );
 
   const handleChange = (value: string) => {
     setValueLenght(() => value.toString().length);

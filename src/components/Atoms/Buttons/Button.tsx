@@ -1,7 +1,7 @@
 import "./Button.scss";
 import classNames from "classnames";
-import {ForwardedRef, forwardRef} from "react";
-import {ButtonProps} from "./ButtonProps";
+import { ForwardedRef, forwardRef } from "react";
+import { ButtonProps } from "./ButtonProps";
 import Slot from "../Slot";
 
 const Button = forwardRef<HTMLElement, ButtonProps>((props, forwardedRef) => {

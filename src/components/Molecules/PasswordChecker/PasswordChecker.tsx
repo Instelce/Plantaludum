@@ -1,4 +1,4 @@
-import React, {useMemo} from "react";
+import React, { useMemo } from "react";
 
 import "./PasswordChecker.scss";
 import ProgressBar from "../../Atoms/ProrgessBar/ProgressBar";

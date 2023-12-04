@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from "react";
-import {Link, useNavigate, useParams} from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Loader from "../../components/Atoms/Loader/index.jsx";
-import {Edit, EyeOff, RefreshCw, Share, Trash} from "react-feather";
+import { Edit, EyeOff, RefreshCw, Share, Trash } from "react-feather";
 import Button from "../../components/Atoms/Buttons/Button.jsx";
 import useDeck from "../../hooks/api/useDeck.js";
 import Navbar from "../../components/Organisms/Navbar/Navbar";
@@ -10,11 +10,11 @@ import PlantCard from "../../components/Molecules/PlantCard/PlantCard";
 import Stars from "../../components/Atoms/Stars/Stars";
 import useUser from "../../hooks/auth/useUser";
 import Flower from "../../components/Atoms/Icons";
-import {useMutation, useQueryClient} from "@tanstack/react-query";
-import {decks} from "../../services/api";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { decks } from "../../services/api";
 import usePrivateFetch from "../../hooks/auth/usePrivateFetch";
 import Modal from "../../components/Molecules/Modal/Modal";
-import {useNotification} from "../../context/NotificationsProvider";
+import { useNotification } from "../../context/NotificationsProvider";
 import useCacheImages from "../../hooks/useCacheImages";
 
 function DeckDetail() {
@@ -98,14 +98,14 @@ function DeckDetail() {
           <header className="page-header center">
             <div className="header-img">
               <div className="img-container">
-                <img src={deckQuery.data.preview_image_url} alt="Preview image" />
+                <img
+                  src={deckQuery.data.preview_image_url}
+                  alt="Preview image"
+                />
               </div>
 
               <div className="stars-container">
-                <Stars
-                  count={deckQuery.data.difficulty}
-                  icon={<Flower />}
-                />
+                <Stars count={deckQuery.data.difficulty} icon={<Flower />} />
               </div>
             </div>
 
@@ -179,10 +179,12 @@ function DeckDetail() {
                         <PlantCard
                           key={plant.id}
                           plant={plant}
-                          images={deckPlantsImagesQuery.data
-                            ?.filter((p) => p.id === plant.id)?.[0]
-                            ?.images?.map((img) => img.url)
-                            .slice(0, 5) as string[]}
+                          images={
+                            deckPlantsImagesQuery.data
+                              ?.filter((p) => p.id === plant.id)?.[0]
+                              ?.images?.map((img) => img.url)
+                              .slice(0, 5) as string[]
+                          }
                         />
                       ))}
                     </>

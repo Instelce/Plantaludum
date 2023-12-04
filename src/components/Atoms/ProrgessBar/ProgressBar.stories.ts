@@ -3,7 +3,7 @@
 import ProgressBar from "./ProgressBar";
 
 export default {
-  title: "Components/ProgressBar",
+  title: "Atoms/ProgressBar",
   component: ProgressBar,
   parameters: {
     layout: "centered",

@@ -1,27 +1,27 @@
-import React, {useEffect} from "react";
-import {Link} from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 import usePrivateFetch from "../../hooks/auth/usePrivateFetch.js";
 import Navbar from "../../components/Organisms/Navbar/Navbar";
 import Button from "../../components/Atoms/Buttons/Button";
-import {UserPlayedDeckType} from "../../services/api/types/decks";
-import {useQuery} from "@tanstack/react-query";
-import {users} from "../../services/api/plantaludum";
+import { UserPlayedDeckType } from "../../services/api/types/decks";
+import { useQuery } from "@tanstack/react-query";
+import { users } from "../../services/api/plantaludum";
 import useUser from "../../hooks/auth/useUser";
 import DeckCard from "../../components/Molecules/DeckCard/DeckCard";
 
 function MainMenu() {
   const privateFetch = usePrivateFetch();
-  const user = useUser()
+  const user = useUser();
 
   const playedDecksQuery = useQuery<UserPlayedDeckType[]>({
     queryKey: ["user-played-decks"],
     queryFn: () => users.playedDecks.list(user?.id as number),
-    enabled: false
-  })
+    enabled: false,
+  });
 
   useEffect(() => {
     if (user) {
-      playedDecksQuery.refetch()
+      playedDecksQuery.refetch();
     }
   }, [user]);
 
@@ -51,11 +51,13 @@ function MainMenu() {
       </header>
 
       <main className="card-grid">
-        {playedDecksQuery.isSuccess && <>
-          {playedDecksQuery.data.map((playedDeck) => (
-            <DeckCard key={playedDeck.id} deck={playedDeck.deck} />
-          ))}
-        </>}
+        {playedDecksQuery.isSuccess && (
+          <>
+            {playedDecksQuery.data.map((playedDeck) => (
+              <DeckCard key={playedDeck.id} deck={playedDeck.deck} />
+            ))}
+          </>
+        )}
       </main>
     </>
   );

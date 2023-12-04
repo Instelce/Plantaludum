@@ -1,11 +1,11 @@
 import "./Autocomplete.scss";
 import Input from "../../Atoms/Input/Input";
-import React, {KeyboardEvent, useEffect, useMemo, useState} from "react";
+import React, { KeyboardEvent, useEffect, useMemo, useState } from "react";
 import classNames from "classnames";
 import Option from "../../Atoms/Option/Option";
 import useDebounce from "../../../hooks/useDebounce";
 import axios from "axios";
-import {deleteDublicates} from "../../../utils/helpers";
+import { deleteDublicates } from "../../../utils/helpers";
 import {
   AutocompleteInputProps,
   SuggestionsProps,

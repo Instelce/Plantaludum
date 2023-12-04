@@ -5,13 +5,10 @@ import React, {
   useContext,
   useReducer,
 } from "react";
-import {StatusProp} from "../types/helpers";
-import {AlertCircle, CheckCircle, Info, XCircle} from "react-feather";
-import {
-  notificationReducer
-} from "../components/Molecules/Notification/notificationReducer";
-import NotificationContainer
-  from "../components/Molecules/Notification/NotificationContainer";
+import { StatusProp } from "../types/helpers";
+import { AlertCircle, CheckCircle, Info, XCircle } from "react-feather";
+import { notificationReducer } from "../components/Molecules/Notification/notificationReducer";
+import NotificationContainer from "../components/Molecules/Notification/NotificationContainer";
 
 export const notificationIcons: {
   [key in StatusProp]: ReactNode;

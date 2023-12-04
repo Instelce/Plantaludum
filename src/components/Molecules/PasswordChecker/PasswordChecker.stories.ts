@@ -1,9 +1,7 @@
-// PasswordChecker.stories.js
-
 import PasswordChecker from "./PasswordChecker";
 
 export default {
-  title: "Components/PasswordChecker",
+  title: "Molecules/PasswordChecker",
   component: PasswordChecker,
   parameters: {
     layout: "centered",

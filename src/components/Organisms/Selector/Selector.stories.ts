@@ -1,7 +1,7 @@
 import Selector from "./index";
 
 export default {
-  title: "Components/Forms/Selector",
+  title: "Organisms/Selector",
   component: Selector,
 };
 

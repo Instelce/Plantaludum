@@ -1,7 +1,7 @@
 import Button from "../components/Atoms/Buttons/Button.jsx";
-import {Settings} from "react-feather";
+import { Settings } from "react-feather";
 import Navbar from "../components/Organisms/Navbar/Navbar";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function Test(props) {
   return (

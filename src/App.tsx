@@ -1,4 +1,4 @@
-import {Route, Routes, useParams} from "react-router-dom";
+import { Route, Routes, useParams } from "react-router-dom";
 import Root from "./views/Root.jsx";
 import Home from "./views/Home.jsx";
 import Register from "./views/Register.jsx";
@@ -55,10 +55,7 @@ function App() {
                 </Route>
 
                 <Route path="create" element={<DeckCreate />} />
-                <Route
-                  path=":deckId/plants"
-                  element={<DeckPlants />}
-                />
+                <Route path=":deckId/plants" element={<DeckPlants />} />
 
                 <Route
                   path=":deckId/update"

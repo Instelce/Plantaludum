@@ -1,9 +1,8 @@
-// Stars.stories.js
-
 import Stars from "./Stars";
+import Flower from "../Icons";
 
 export default {
-  title: "Components/Stars",
+  title: "Atoms/Stars",
   component: Stars,
   parameters: {
     layout: "centered",
@@ -13,6 +12,14 @@ export default {
 
 export const Default = {
   args: {
-    count: 2,
+    count: 1,
   },
+};
+
+export const OtherIcon = () => {
+  return (
+    <>
+      <Stars count={2} icon={<Flower />} />
+    </>
+  );
 };

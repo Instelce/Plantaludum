@@ -6,7 +6,9 @@
   .button {
     border: 1px solid rgba(var(--color-gray-5), 0.2);
     background: rgb(var(--color-gray-3));
-    transition: border 0.3s ease, box-shadow 0.3s ease;
+    transition:
+      border 0.3s ease,
+      box-shadow 0.3s ease;
 
     &:active {
       animation: none;
