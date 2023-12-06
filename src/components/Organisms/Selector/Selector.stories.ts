@@ -1,4 +1,4 @@
-import Selector from "./index";
+import Selector from "./Selector";
 
 export default {
   title: "Organisms/Selector",
@@ -33,7 +33,5 @@ export const ImageSelector = {
       "https://api.tela-botanica.org/img:000080980CRS.jpg",
     ],
     choiceType: "img",
-    // multiChoice: false,
-    // setValue
   },
 };

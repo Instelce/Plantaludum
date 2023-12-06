@@ -1,18 +1,20 @@
-import React, { FormEvent, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, {FormEvent, useState} from "react";
+import {Link, useNavigate} from "react-router-dom";
 import Input from "../components/Atoms/Input/Input";
 import Button from "../components/Atoms/Buttons/Button.jsx";
-import PasswordChecker from "../components/Molecules/PasswordChecker/PasswordChecker";
+import PasswordChecker
+  from "../components/Molecules/PasswordChecker/PasswordChecker";
 import useFormFilled from "../hooks/useFormFilled.js";
-import { useMutation } from "@tanstack/react-query";
-import { auth } from "../services/api";
+import {useMutation} from "@tanstack/react-query";
+import {auth} from "../services/api";
 import {
   HelperRegisterType,
   RegisterFormDataType,
 } from "../services/api/types/users";
-import { AxiosError } from "axios";
+import {AxiosError} from "axios";
 import Navbar from "../components/Organisms/Navbar/Navbar";
-import { ArrowRight } from "react-feather";
+import {ArrowRight} from "react-feather";
+import Header from "../components/Molecules/Header/Header";
 
 function Register() {
   const navigate = useNavigate();
@@ -29,7 +31,7 @@ function Register() {
       }, 2000);
     },
     onError: (error: AxiosError) => {
-      setResponseHelper(error.response.data);
+      setResponseHelper(error.response?.data || {});
     },
   });
 
@@ -56,15 +58,15 @@ function Register() {
         </div>
       </Navbar>
 
-      <header className="page-header center">
-        <h1>Inscription</h1>
-      </header>
+      <Header.Root type="page" center>
+        <Header.Title>Inscription</Header.Title>
+      </Header.Root>
+
       <div className="form-page">
         <form ref={formRef} onSubmit={handleSubmit} onChange={handleFormChange}>
           <Input
             id="username"
             label="Nom"
-            size="large"
             type="text"
             showInfo
             helperText={responseHelper?.username}
@@ -72,7 +74,6 @@ function Register() {
           <Input
             id="email"
             label="Email"
-            size="large"
             type="email"
             showInfo
             helperText={responseHelper?.email}
@@ -81,7 +82,6 @@ function Register() {
             id="password"
             label="Mot de passe"
             type="password"
-            size="large"
             showInfo
             value={passwordValue}
             handleValueChange={setPasswordValue}
@@ -90,7 +90,6 @@ function Register() {
           <Input
             id="password_confirmation"
             label="Confirmation du mot de passe"
-            size="large"
             type="password"
             showInfo
             helperText={responseHelper?.password_confirmation}

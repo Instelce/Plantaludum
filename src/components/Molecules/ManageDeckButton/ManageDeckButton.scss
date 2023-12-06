@@ -1,0 +1,80 @@
+.manage-deck-button {
+  position: relative;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+
+  background: rgb(var(--color-gray-4));
+  border-radius: var(--radius);
+  box-shadow: 0 2px 4px 0 rgba(var(--color-gray-1), 0.2);
+
+  .img-container {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+
+    &::after {
+      z-index: 2;
+      content: "";
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      display: block;
+      left: 0;
+      top: 0;
+      background: linear-gradient(
+          90deg,
+          transparent 0%,
+          rgb(var(--color-gray-4)) 80%
+        )
+        right repeat;
+    }
+  }
+
+  img {
+    width: 100%;
+    z-index: 1;
+    position: absolute;
+    aspect-ratio: 1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.8;
+  }
+
+  div:nth-child(2) > a {
+    z-index: 2;
+    margin-left: 0.5rem;
+    padding: 0.5rem 1rem;
+    line-height: 20px;
+    align-self: center;
+    border-radius: 5px;
+
+    transition:
+      color 0.3s ease,
+      background-color 0.3s ease;
+
+    &:hover {
+      color: rgb(var(--color-gray-2));
+      background: rgb(var(--color-primary-light));
+    }
+  }
+
+  & > div {
+    display: flex;
+
+    a {
+      z-index: 2;
+      border-radius: 0;
+    }
+
+    a:first-child {
+      svg {
+        stroke: none;
+      }
+    }
+  }
+}

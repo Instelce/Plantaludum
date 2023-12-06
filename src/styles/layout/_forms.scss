@@ -11,6 +11,17 @@
   }
 }
 
+.form-simple-input {
+  width: 100%;
+  padding: 4rem 0 2rem 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+
+  form {
+    grid-column: 2 / 4;
+  }
+}
+
 form {
   display: grid;
   grid-template-columns: 1fr;

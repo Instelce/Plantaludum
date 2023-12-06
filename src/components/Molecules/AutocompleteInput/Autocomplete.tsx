@@ -67,7 +67,7 @@ function AutocompleteInput({
   };
 
   return (
-    <div className="autocomplete" style={{ marginBottom: "1rem" }}>
+    <div className="autocomplete">
       <Input
         id={id}
         label={label}

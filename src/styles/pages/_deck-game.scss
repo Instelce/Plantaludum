@@ -37,7 +37,7 @@
     }
   }
 
-  .page-header {
+  header {
     padding: 1rem var(--page-horizontal-padding);
     .stats {
       position: absolute;
@@ -53,6 +53,10 @@
         margin-right: 1rem;
         font-size: var(--typescale-h5);
       }
+
+      svg {
+        cursor: pointer;
+      }
     }
 
     .stars-container {
@@ -60,7 +64,7 @@
       position: absolute;
       bottom: 0;
       left: 50%;
-      transform: translate(-50%, 80%);
+      transform: translate(-50%, 120%);
       background: rgb(var(--color-gray-2));
       //border: 1px solid rgb(var(--color-gray-3));
       border-radius: 100px;

@@ -80,7 +80,7 @@
       }
 
       &::before {
-        left: 0.5px;
+        left: 1px;
         transform: translateX(-100%);
         clip-path: path(
           "M7 7C9.10304 4.89696 10 0 10 0V10H0C0 10 4.89696 9.10304 7 7Z"
@@ -88,7 +88,7 @@
       }
 
       &::after {
-        right: 0.5px;
+        right: 1px;
         transform: translateX(100%);
         clip-path: path(
           "M0.000707507 1.59144e-05C0.000707507 1.59144e-05 0.897148 4.89694 3 7C5.10293 9.10314 10 10 10 10H0L0.000707507 1.59144e-05Z"

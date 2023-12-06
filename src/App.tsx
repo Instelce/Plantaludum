@@ -50,7 +50,7 @@ function App() {
 
               <Route path="decks/">
                 <Route path=":deckId" element={<DeckDetail />} />
-                <Route path=":deckId/game" element={<DeckGame />}>
+                <Route path=":deckId/game/:level" element={<DeckGame />}>
                   <Route path="resultat" element={<QuizResult />} />
                 </Route>
 

@@ -1,18 +1,15 @@
-import React, { useEffect, useRef } from "react";
+import React, { PropsWithChildren, useEffect, useRef } from "react";
 import Stars from "../../Atoms/Stars/Stars";
 import "./DeckCard.scss";
-import { Link } from "react-router-dom";
-import Button from "../../Atoms/Buttons/Button";
-import { RefreshCw, Zap } from "react-feather";
 import Flower from "../../Atoms/Icons";
 import { DeckType } from "../../../services/api/types/decks";
 import useUser from "../../../hooks/auth/useUser";
 
 type DeckCardProps = {
   deck: DeckType;
-};
+} & PropsWithChildren;
 
-function DeckCard({ deck, ...props }: DeckCardProps) {
+function Root({ deck, children, ...props }: DeckCardProps) {
   const user = useUser();
   const cardRef = useRef<HTMLDivElement | null>(null);
 
@@ -83,27 +80,13 @@ function DeckCard({ deck, ...props }: DeckCardProps) {
           <Stars count={deck.difficulty} icon={<Flower />} />
         </div>
       </div>
-      <div className="card-button">
-        <Button asChild label="Découvrir">
-          <Link to={`/decks/${deck.id}`}>
-            {user?.id === deck.user.id ? "Voir" : "Découvrir"}
-          </Link>
-        </Button>
-        {user?.id === deck.user.id && (
-          <Button asChild onlyIcon color="yellow">
-            <Link to={`/decks/${deck.id}/update`}>
-              <RefreshCw />
-            </Link>
-          </Button>
-        )}
-        <Button asChild color="yellow" onlyIcon>
-          <Link to={`/decks/${deck.id}/game`}>
-            <Zap />
-          </Link>
-        </Button>
-      </div>
+      <div className="card-button">{children}</div>
     </div>
   );
 }
+
+const DeckCard = {
+  Root,
+};
 
 export default DeckCard;

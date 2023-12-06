@@ -14,10 +14,16 @@ import { UserType } from "./types/users";
 type DeckListArgsType = {
   search?: string | null;
   pageParam?: number | null;
+  fieldFilters?: {
+    private?: boolean | null;
+    difficulty?: number | null;
+    created_at?: Date | null;
+    user__id?: number;
+  };
 };
 
 export const decks = {
-  list: async ({ search, pageParam }: DeckListArgsType) => {
+  list: async ({ search, pageParam, fieldFilters }: DeckListArgsType) => {
     const params = new URLSearchParams();
     if (pageParam) {
       params.set("page", pageParam.toString());
@@ -25,8 +31,16 @@ export const decks = {
     if (search) {
       params.set("search", search);
     }
+
+    if (fieldFilters) {
+      for (const [key, value] of Object.entries(fieldFilters)) {
+        if (value !== null) {
+          params.set(key, value.toString());
+        }
+      }
+    }
+
     const r = await apiRequest.get(`/api/decks?${params}`);
-    console.log(">>", r.data, pageParam);
     return r.data as PaginationResponseType<DeckType>;
   },
   //

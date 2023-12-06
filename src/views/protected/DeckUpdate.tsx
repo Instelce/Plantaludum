@@ -5,7 +5,7 @@ import AutocompleteInput from "../../components/Molecules/AutocompleteInput/Auto
 import Checkbox from "../../components/Atoms/Checkbox/Checkbox";
 import Button from "../../components/Atoms/Buttons/Button";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
-import Selector from "../../components/Organisms/Selector";
+import Selector from "../../components/Organisms/Selector/Selector";
 import useUser from "../../hooks/auth/useUser";
 import usePrivateFetch from "../../hooks/auth/usePrivateFetch";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -21,6 +21,7 @@ import Option from "../../components/Atoms/Option/Option";
 import useDeck from "../../hooks/api/useDeck";
 import { useNotification } from "../../context/NotificationsProvider";
 import { flore } from "../../services/api/flore";
+import Header from "../../components/Molecules/Header/Header";
 
 function DeckUpdate() {
   const user = useUser();
@@ -89,6 +90,12 @@ function DeckUpdate() {
     }
   }, [plantImagesData]);
 
+  useEffect(() => {
+    if (deckQuery.isSuccess) {
+      setImageValue(() => deckQuery.data.preview_image_url);
+    }
+  }, [deckQuery.isSuccess]);
+
   const handleFormSubmit = (e: FormEvent) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
@@ -122,12 +129,12 @@ function DeckUpdate() {
         </div>
       </Navbar>
 
-      <header className="page-header center">
-        <h1>
+      <Header.Root type="page" center>
+        <Header.Title>
           <span className="highlight">Mise à jour</span> de &quot;
           {deckQuery.data?.name}&quot;
-        </h1>
-      </header>
+        </Header.Title>
+      </Header.Root>
 
       <div className="form-page">
         <form
@@ -141,12 +148,14 @@ function DeckUpdate() {
             type="text"
             defaultValue={deckQuery.data?.name}
           />
+
           <Textarea
             id="description"
             label="Description"
             maxlength={500}
             defaultValue={deckQuery.data?.description}
           />
+
           <Dropdown
             inputId="difficulty"
             label="Difficulté"
@@ -157,7 +166,7 @@ function DeckUpdate() {
             <Option>2</Option>
             <Option>3</Option>
           </Dropdown>
-          <img src={deckQuery.data?.preview_image_url} />
+
           <ErrorBoundary
             fallback={<p>Erreur lors de l'obtention des images.</p>}
           >
@@ -179,18 +188,19 @@ function DeckUpdate() {
               </>
             )}
           </ErrorBoundary>
-          {!imagesLoading && plantValue && (
+          {!imagesLoading && (
             <div>
-              {plantImages !== null ? (
-                <Selector
-                  inputId="preview-image-url"
-                  choices={plantImages}
-                  choiceType="img"
-                  setValue={setImageValue}
-                />
-              ) : (
-                <p>Chargement des images</p>
-              )}
+              {/*{plantImages !== null ? (*/}
+              <Selector
+                inputId="preview-image-url"
+                choices={plantImages}
+                choiceType="img"
+                defaultValue={deckQuery.data?.preview_image_url}
+                setValue={setImageValue}
+              />
+              {/*) : (*/}
+              {/*  <p>Chargement des images</p>*/}
+              {/*)}*/}
             </div>
           )}
           <Checkbox

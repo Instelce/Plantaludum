@@ -1,20 +1,18 @@
-import React, { FormEvent, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import {FormEvent, useState} from "react";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import Input from "../components/Atoms/Input/Input";
 import Button from "../components/Atoms/Buttons/Button.jsx";
 import useFormFilled from "../hooks/useFormFilled.js";
-import { useMutation } from "@tanstack/react-query";
-import { auth } from "../services/api";
+import {useMutation} from "@tanstack/react-query";
+import {auth} from "../services/api";
 import Navbar from "../components/Organisms/Navbar/Navbar";
-import { ArrowRight } from "react-feather";
-import { useAuth } from "../context/AuthProvider";
-import {
-  HelperLoginType,
-  LoginFormDataType,
-} from "../services/api/types/users";
-import { AxiosError, AxiosResponse } from "axios";
+import {ArrowRight} from "react-feather";
+import {useAuth} from "../context/AuthProvider";
+import {HelperLoginType, LoginFormDataType,} from "../services/api/types/users";
+import {AxiosError, AxiosResponse} from "axios";
 import Checkbox from "../components/Atoms/Checkbox/Checkbox";
-import { useNotification } from "../context/NotificationsProvider";
+import {useNotification} from "../context/NotificationsProvider";
+import Header from "../components/Molecules/Header/Header";
 
 function Login() {
   const { setAccessToken, setCSRFToken, persist, setPersist } = useAuth();
@@ -39,7 +37,7 @@ function Login() {
       notification.success({ message: "Connexion réussie" });
     },
     onError: (error: AxiosError) => {
-      setResponseHelper(error?.response.data);
+      setResponseHelper(error?.response?.data || {});
     },
   });
 
@@ -70,15 +68,15 @@ function Login() {
               to="/inscription"
               state={{ from: { pathname: location.pathname } }}
             >
-              S'inscrire
+              S&apos;inscrire
             </Link>
           </Button>
         </div>
       </Navbar>
 
-      <header className="page-header center">
-        <h1>Connexion</h1>
-      </header>
+      <Header.Root type="page" center>
+        <Header.Title>Connexion</Header.Title>
+      </Header.Root>
 
       <div className="form-page">
         <form ref={formRef} onSubmit={handleSubmit} onChange={handleFormChange}>
@@ -86,7 +84,6 @@ function Login() {
             id="email"
             label="Email"
             type="email"
-            size="large"
             showInfo
             helperText={responseHelper?.email}
           />
@@ -95,7 +92,6 @@ function Login() {
             label="Mot de passe"
             type="password"
             showInfo
-            size="large"
             value={passwordValue}
             handleValueChange={setPasswordValue}
             helperText={responseHelper?.password}

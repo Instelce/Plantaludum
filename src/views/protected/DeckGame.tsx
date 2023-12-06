@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import ChoiceBlock from "../../components/Molecules/ChoiceBlock/ChoiceBlock";
-import { Loader, RefreshCw, X } from "react-feather";
+import { Loader, RotateCcw, X } from "react-feather";
 import { useTimer } from "../../hooks/useTimer.js";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Stars from "../../components/Atoms/Stars/Stars";
@@ -21,6 +21,7 @@ import usePrivateFetch from "../../hooks/auth/usePrivateFetch";
 import useUser from "../../hooks/auth/useUser";
 import { AxiosError } from "axios";
 import { UserPlayedDeckType } from "../../services/api/types/decks";
+import Header from "../../components/Molecules/Header/Header";
 
 function DeckGame() {
   const navigate = useNavigate();
@@ -233,22 +234,13 @@ function DeckGame() {
 
   return (
     <div className="deck-game-page">
-      {/*<Navbar >*/}
-      {/*  <div className="left">*/}
-      {/*    <Link to="/mon-jardin">Mon jardin</Link>*/}
-      {/*    <Link to="/explorer">Explorer</Link>*/}
-      {/*  </div>*/}
-      {/*  <div className="right">*/}
-      {/*  </div>*/}
-      {/*</Navbar>*/}
-
-      <header className="page-header">
+      <Header.Root type="page">
         <div className="timer">
           <span>{stringTime}</span>
-          <RefreshCw onClick={() => resetQuiz()} />
+          <RotateCcw onClick={() => resetQuiz()} />
         </div>
         <div className="stats">
-          <h1>{score}</h1>
+          <Header.Title>{score}</Header.Title>
           <div className="stars-container">
             <Stars count={stars} />
           </div>
@@ -258,7 +250,7 @@ function DeckGame() {
             <X />
           </Link>
         </Button>
-      </header>
+      </Header.Root>
 
       <ProgressBar
         value={(progress * 100) / maxQuestions}

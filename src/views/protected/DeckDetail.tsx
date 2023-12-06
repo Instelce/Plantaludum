@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Loader from "../../components/Atoms/Loader/index.jsx";
-import { Edit, EyeOff, RefreshCw, Share, Trash } from "react-feather";
+import { Edit, Lock, RefreshCw, Share, Trash } from "react-feather";
 import Button from "../../components/Atoms/Buttons/Button.jsx";
 import useDeck from "../../hooks/api/useDeck.js";
 import Navbar from "../../components/Organisms/Navbar/Navbar";
@@ -111,7 +111,7 @@ function DeckDetail() {
 
             <h1>
               {deckQuery.data.name}
-              {deckQuery.data.private && <EyeOff />}
+              {deckQuery.data.private && <Lock className="ml-1" />}
             </h1>
             <p>
               <Link to={`/users/${deckQuery.data.user}`} className="link">
@@ -121,7 +121,7 @@ function DeckDetail() {
 
             <div className="header-buttons">
               <Button asChild>
-                <Link to={`/decks/${deckId}/game`}>Jouer</Link>
+                <Link to={`/decks/${deckId}/game/${1}`}>Jouer</Link>
               </Button>
               <Button color="gray" onlyIcon>
                 <Share />
@@ -171,7 +171,7 @@ function DeckDetail() {
             )}
 
             <Tabs.Content value="plantes">
-              <div className="list-container">
+              <div className="list-container mt-2 mb-2">
                 <div className="list-wrapper">
                   {deckPlantsQuery.isSuccess && (
                     <>

@@ -16,6 +16,7 @@ import { CreateDeckPlantFormDataType } from "../../services/api/types/decks";
 import { flore } from "../../services/api/flore";
 import { useNotification } from "../../context/NotificationsProvider";
 import useDeck from "../../hooks/api/useDeck";
+import Header from "../../components/Molecules/Header/Header";
 
 function DeckPlants() {
   const privateFetch = usePrivateFetch();
@@ -146,14 +147,14 @@ function DeckPlants() {
         </div>
       </Navbar>
 
-      <header className="page-header center">
-        <h1>
+      <Header.Root type="page" center>
+        <Header.Title>
           <span className="highlight">Ajoute </span>
           des plantes à {deckData?.name}
-        </h1>
-      </header>
+        </Header.Title>
+      </Header.Root>
 
-      <div className="form-page">
+      <div className="form-simple-input">
         <form onSubmit={addPlant}>
           <div className="input-button">
             <ErrorBoundary
@@ -234,15 +235,25 @@ function DeckPlants() {
           <Button asChild label="Retour" size="large" color="gray" fill>
             <Link to={`/decks/${deckId}/update`}>Retour</Link>
           </Button>
-          {deckPlantsQuery.isSuccess && (
+          {deckPlantsQuery.isSuccess ? (
             <Button
-              label="Continuer"
+              label="Mettre à jour"
               size="large"
               color="primary"
               disabled={plants.length + deckPlantsQuery.data.length < 4}
               onClick={handleSubmit}
             >
-              Continuer
+              Mettre à jour
+            </Button>
+          ) : (
+            <Button
+              label="Créer les plantes"
+              size="large"
+              color="primary"
+              disabled={plants.length < 4}
+              onClick={handleSubmit}
+            >
+              Créer les plantes
             </Button>
           )}
         </div>

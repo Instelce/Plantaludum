@@ -7,7 +7,7 @@ import { FormEvent, useEffect, useState } from "react";
 import Checkbox from "../../components/Atoms/Checkbox/Checkbox";
 import AutocompleteInput from "../../components/Molecules/AutocompleteInput/Autocomplete";
 import Option from "../../components/Atoms/Option/Option";
-import Selector from "../../components/Organisms/Selector/index.jsx";
+import Selector from "../../components/Organisms/Selector/Selector";
 import { deleteDublicates } from "../../utils/helpers";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Button from "../../components/Atoms/Buttons/Button.jsx";
@@ -19,6 +19,7 @@ import { CreateDeckFormDataType } from "../../services/api/types/decks";
 import { ImageType } from "../../services/api/types/images";
 import useUser from "../../hooks/auth/useUser";
 import { flore } from "../../services/api/flore";
+import Header from "../../components/Molecules/Header/Header";
 
 function DeckCreate() {
   const user = useUser();
@@ -121,11 +122,11 @@ function DeckCreate() {
         </div>
       </Navbar>
 
-      <header className="page-header center">
-        <h1>
+      <Header.Root type="page" center>
+        <Header.Title>
           <span className="highlight">Créer</span> ton deck
-        </h1>
-      </header>
+        </Header.Title>
+      </Header.Root>
 
       <div className="form-page">
         <form

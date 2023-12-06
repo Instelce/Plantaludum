@@ -1,4 +1,4 @@
-import "./style.scss";
+import "./Selector.scss";
 import Button from "../../Atoms/Buttons/Button";
 import classNames from "classnames";
 import React, { useEffect, useState } from "react";
@@ -13,7 +13,13 @@ type SelectorProps = {
   setValue: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
-function Selector({ inputId, choices, choiceType, setValue }: SelectorProps) {
+function Selector({
+  inputId,
+  choices,
+  choiceType,
+  defaultValue,
+  setValue,
+}: SelectorProps) {
   const [currentChoice, setCurrentChoice] = useState<string | null>(null);
   const [confirmChoice, setConfirmChoice] = useState(false);
 
@@ -24,6 +30,13 @@ function Selector({ inputId, choices, choiceType, setValue }: SelectorProps) {
       setCurrentChoice(() => null);
     }
   }, [confirmChoice]);
+
+  useEffect(() => {
+    if (defaultValue) {
+      setCurrentChoice(() => defaultValue);
+      setConfirmChoice(true);
+    }
+  }, []);
 
   const handleConfirmButtonClick = (e) => {
     e.preventDefault();

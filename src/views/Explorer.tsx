@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, {useEffect, useMemo, useRef, useState} from "react";
 import Input from "../components/Atoms/Input/Input";
 import DeckCard from "../components/Molecules/DeckCard/DeckCard";
 import Modal from "../components/Molecules/Modal/Modal";
@@ -6,20 +6,23 @@ import Button from "../components/Atoms/Buttons/Button.jsx";
 import Dropdown from "../components/Molecules/Dropdown/Dropdown";
 import classNames from "classnames";
 import Option from "../components/Atoms/Option/Option";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { decks, PaginationResponseType } from "../services/api";
+import {useInfiniteQuery} from "@tanstack/react-query";
+import {decks, PaginationResponseType} from "../services/api";
 import Loader from "../components/Atoms/Loader/index.jsx";
 import Navbar from "../components/Organisms/Navbar/Navbar";
-import { Link } from "react-router-dom";
-import { Search, Sliders } from "react-feather";
-import { useAuth } from "../context/AuthProvider";
-import { DeckType } from "../services/api/types/decks";
+import {Link} from "react-router-dom";
+import {RefreshCw, Search, Sliders, Zap} from "react-feather";
+import {useAuth} from "../context/AuthProvider";
+import {DeckType} from "../services/api/types/decks";
 import useObjectSearch from "../hooks/useObjectSearch";
-import { useInView } from "react-intersection-observer";
+import {useInView} from "react-intersection-observer";
 import useDebounce from "../hooks/useDebounce";
+import useUser from "../hooks/auth/useUser";
+import Header from "../components/Molecules/Header/Header";
 
 function Explorer() {
   const { accessToken } = useAuth();
+  const user = useUser();
   const [showModal, setShowModal] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [showFilter, setShowFilter] = useState(false);
@@ -42,6 +45,9 @@ function Explorer() {
     queryKey: ["decks"],
     queryFn: ({ pageParam }) =>
       decks.list({
+        fieldFilters: {
+          private: false,
+        },
         search: searchInput.toString(),
         pageParam: pageParam as number,
       }),
@@ -51,12 +57,14 @@ function Explorer() {
     },
   });
 
+  // filter by search input value
   const searchFilteredDecks = useObjectSearch<DeckType>({
     data: decksData?.pages.map((page) => page.results).flat(1),
     fieldName: "name",
     searchInput: searchInput,
   });
 
+  // filter data by difficulty
   const filteredDecks = useMemo(() => {
     return searchFilteredDecks?.filter((deck) => {
       if (!isNaN(difficultyFilter)) {
@@ -112,54 +120,50 @@ function Explorer() {
         </div>
       </Navbar>
 
-      <div className="page-sticky">
-        <header className="page-header">
-          <h1>
-            <span className="highlight">Explore</span> les decks
-          </h1>
-          <div className="right">
-            <Input
-              label="Rechercher"
-              type="search"
-              value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
-              icon={<Search />}
-            />
-            <Button
-              onlyIcon
-              color="gray"
-              onClick={() => setShowFilter((prev) => !prev)}
-            >
-              <Sliders />
-            </Button>
-          </div>
-        </header>
-
-        <div
-          className="filter-panel-container"
-          style={{
-            maxHeight: showFilter
-              ? panelRef.current?.getBoundingClientRect().height
-              : 0 + "px",
-          }}
-        >
-          <div
-            ref={panelRef}
-            className={classNames("filter-panel", { show: showFilter })}
+      <Header.Root type="page">
+        <Header.Title>
+          <span className="highlight">Explore</span> les decks
+        </Header.Title>
+        <Header.Right>
+          <Input
+            label="Rechercher"
+            type="search"
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            icon={<Search />}
+          />
+          <Button
+            onlyIcon
+            color="gray"
+            onClick={() => setShowFilter((prev) => !prev)}
           >
-            <Dropdown
-              label="Difficulté"
-              defaultValue="Toutes"
-              handleValueChange={(value) =>
-                setDifficultyFilter(parseInt(value))
-              }
-            >
-              <Option>Toutes</Option>
-              <Option>1</Option>
-              <Option>2</Option>
-              <Option>3</Option>
-            </Dropdown>
-          </div>
+            <Sliders />
+          </Button>
+        </Header.Right>
+      </Header.Root>
+
+      <div
+        className="filter-panel-container"
+        style={{
+          maxHeight: showFilter
+            ? panelRef.current?.getBoundingClientRect().height
+            : 0 + "px",
+        }}
+      >
+        <div
+          ref={panelRef}
+          className={classNames("filter-panel", { show: showFilter })}
+        >
+          <Dropdown
+            label="Difficulté"
+            defaultValue="Toutes"
+            handleValueChange={(value) => setDifficultyFilter(parseInt(value))}
+          >
+            <Option>Toutes</Option>
+            <Option>1</Option>
+            <Option>2</Option>
+            <Option>3</Option>
+          </Dropdown>
         </div>
       </div>
 
@@ -169,7 +173,25 @@ function Explorer() {
             {filteredDecks && (
               <>
                 {filteredDecks?.map((deck: DeckType) => (
-                  <DeckCard key={deck.id} deck={deck} />
+                  <DeckCard.Root key={deck.id} deck={deck}>
+                    <Button asChild label="Découvrir">
+                      <Link to={`/decks/${deck.id}`}>
+                        {user?.id === deck.user.id ? "Voir" : "Découvrir"}
+                      </Link>
+                    </Button>
+                    {user?.id === deck.user.id && (
+                      <Button asChild onlyIcon color="yellow">
+                        <Link to={`/decks/${deck.id}/update`}>
+                          <RefreshCw />
+                        </Link>
+                      </Button>
+                    )}
+                    <Button asChild color="yellow" onlyIcon>
+                      <Link to={`/decks/${deck.id}/game`}>
+                        <Zap />
+                      </Link>
+                    </Button>
+                  </DeckCard.Root>
                 ))}
               </>
             )}
