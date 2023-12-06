@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import Loader from "../../components/Atoms/Loader/index.jsx";
-import { Edit, Lock, RefreshCw, Share, Trash } from "react-feather";
+import {Edit, Lock, RefreshCw, Share, Trash} from "react-feather";
 import Button from "../../components/Atoms/Buttons/Button.jsx";
 import useDeck from "../../hooks/api/useDeck.js";
 import Navbar from "../../components/Organisms/Navbar/Navbar";
@@ -10,20 +10,28 @@ import PlantCard from "../../components/Molecules/PlantCard/PlantCard";
 import Stars from "../../components/Atoms/Stars/Stars";
 import useUser from "../../hooks/auth/useUser";
 import Flower from "../../components/Atoms/Icons";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { decks } from "../../services/api";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {decks} from "../../services/api";
 import usePrivateFetch from "../../hooks/auth/usePrivateFetch";
 import Modal from "../../components/Molecules/Modal/Modal";
-import { useNotification } from "../../context/NotificationsProvider";
+import {useNotification} from "../../context/NotificationsProvider";
 import useCacheImages from "../../hooks/useCacheImages";
+import DeckLevelCard
+  from "../../components/Molecules/DeckLevelCard/DeckLevelCard";
+import {UserPlayedDeckType} from "../../services/api/types/decks";
+import {users} from "../../services/api/plantaludum";
+import {AxiosError} from "axios";
 
 function DeckDetail() {
+  const queryClient = useQueryClient();
   const { deckId } = useParams();
   const user = useUser();
   const privateFetch = usePrivateFetch();
   const navigate = useNavigate();
   const notification = useNotification();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  const [isFisrtPlay, setIsFisrtPlay] = useState(false);
 
   const { isLoading: imagesLoading, setImagesArray: setImagesArray } =
     useCacheImages();
@@ -34,6 +42,30 @@ function DeckDetail() {
     fetchImages: true,
   });
   const isOwner = user?.id === deckQuery.data?.user.id;
+
+  const userPlayedDeckQuery = useMutation<UserPlayedDeckType>({
+    mutationKey: ["user-played-decks", deckId],
+    mutationFn: () =>
+      users.playedDecks.details(user?.id as number, parseInt(deckId as string)),
+    onError: (err: Error) => {
+      const e = err as AxiosError;
+      if (e.response?.status === 500) {
+        console.log("Le joueur n'a jamais joué ce deck");
+        setIsFisrtPlay(true);
+      }
+    },
+  });
+
+  const { mutate: mutateDeleteDeck } = useMutation({
+    mutationKey: ["decks", deckId],
+    mutationFn: () => decks.delete(privateFetch, parseInt(deckId as string)),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["decks"] });
+      queryClient.invalidateQueries({ queryKey: ["decks", deckId] });
+      notification.success({ message: `${deckQuery.data?.name} supprimé` });
+      navigate(`/mon-jardin`);
+    },
+  })
 
   // load images in cache
   useEffect(() => {
@@ -47,17 +79,11 @@ function DeckDetail() {
     }
   }, [deckPlantsImagesQuery.isSuccess]);
 
-  const queryClient = useQueryClient();
-  const { mutate: mutateDeleteDeck } = useMutation({
-    mutationKey: ["decks", deckId],
-    mutationFn: () => decks.delete(privateFetch, parseInt(deckId as string)),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["decks"] });
-      queryClient.invalidateQueries({ queryKey: ["decks", deckId] });
-      notification.success({ message: `${deckQuery.data?.name} supprimé` });
-      navigate(`/mon-jardin`);
-    },
-  });
+  useEffect(() => {
+    if (user) {
+      userPlayedDeckQuery.mutate()
+    }
+  }, [user]);
 
   return (
     <div className="deck-detail">
@@ -121,7 +147,7 @@ function DeckDetail() {
 
             <div className="header-buttons">
               <Button asChild>
-                <Link to={`/decks/${deckId}/game/${1}`}>Jouer</Link>
+                <Link to={`/decks/${deckId}/game/${userPlayedDeckQuery.isSuccess ? userPlayedDeckQuery.data?.level : 1}`}>Jouer</Link>
               </Button>
               <Button color="gray" onlyIcon>
                 <Share />
@@ -135,6 +161,7 @@ function DeckDetail() {
                 {isOwner && (
                   <Tabs.Trigger value="actions">Actions</Tabs.Trigger>
                 )}
+                <Tabs.Trigger value="progression">Progression</Tabs.Trigger>
                 <Tabs.Trigger value="plantes">Plantes</Tabs.Trigger>
                 <Tabs.Trigger value="plus-infos">Plus d'info</Tabs.Trigger>
               </Tabs.List>
@@ -169,6 +196,24 @@ function DeckDetail() {
                 </div>
               </Tabs.Content>
             )}
+
+            <Tabs.Content value="progression">
+              <div className="container-table-page">
+                {userPlayedDeckQuery.isSuccess ? (
+                  <div className="grid gc-3 gg-1">
+                    {[1, 2, 3].map(level => (
+                      <DeckLevelCard key={level} deck={deckQuery.data} level={level} levelStars={level < userPlayedDeckQuery.data.level ? 3 : 1} isReached={isFisrtPlay ? level == 1 : level <= userPlayedDeckQuery.data.level} />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="grid gc-3 gg-1">
+                    {[1, 2, 3].map(level => (
+                      <DeckLevelCard key={level} deck={deckQuery.data} level={level} levelStars={1} isReached={level == 1} />
+                    ))}
+                  </div>
+                )}
+              </div>
+            </Tabs.Content>
 
             <Tabs.Content value="plantes">
               <div className="list-container mt-2 mb-2">

@@ -1,7 +1,7 @@
 @import "../abstracts/typescale";
 
 .card-grid {
-  padding: 4rem var(--page-horizontal-padding);
+  padding: 2rem var(--page-horizontal-padding);
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-column-gap: 2rem;

@@ -1,0 +1,102 @@
+@import "src/styles/utilities/_mixins.scss";
+
+.deck-level-card {
+  display: inline-block;
+  overflow: hidden;
+  position: relative;
+
+  padding: .5rem;
+
+  border-radius: var(--radius);
+  border: 1px solid rgb(var(--card-color));
+  background: rgba(var(--card-color), .2);
+
+  &:not(&.not-reached):hover {
+
+    img {
+      transform: scale(1.05);
+    }
+  }
+
+  .img-container {
+    width: 100%;
+    height: 0;
+    padding-bottom: 100%;
+    overflow: hidden;
+    @include calc-border-radius(var(--radius), .1rem);
+
+    img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      transition: transform .2s ease;
+    }
+  }
+
+  &.level-1 {
+    --card-color: var(--color-yellow-light);
+  }
+
+  &.level-2 {
+    --card-color: var(--color-orange-light);
+  }
+
+  &.level-3 {
+    --card-color: var(--color-danger-light);
+  }
+
+  .progression-wave {
+    width: 100%;
+    height: 0%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+
+    transition: height .3s ease;
+
+    background: rgba(var(--card-color), .2);
+
+    svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: translateY(-100%);
+
+      path {
+        fill: rgb(var(--card-color), .2)
+      }
+    }
+  }
+
+  &.not-reached {
+    cursor: default;
+
+    img {
+      filter: grayscale(100%);
+    }
+  }
+
+  .cross {
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(var(--card-color), .5);
+    border-radius: 5px;
+  }
+
+  .row-stars {
+    position: absolute;
+    bottom: .5rem;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}

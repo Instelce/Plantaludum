@@ -1,5 +1,5 @@
-import { apiRequest } from "./axios";
-import { AxiosInstance } from "axios/index";
+import {apiRequest} from "./axios";
+import {AxiosInstance} from "axios/index";
 import {
   CreateDeckFormDataType,
   CreateDeckPlantFormDataType,
@@ -7,9 +7,9 @@ import {
   UpdateDeckFormDataType,
   UserPlayedDeckType,
 } from "./types/decks";
-import { PaginationResponseType } from "./index";
-import { PlantType } from "./types/plants";
-import { UserType } from "./types/users";
+import {PaginationResponseType} from "./index";
+import {PlantType} from "./types/plants";
+import {UserType} from "./types/users";
 
 type DeckListArgsType = {
   search?: string | null;
@@ -90,14 +90,16 @@ export const users = {
     details: (userId: number, deckId: number) =>
       apiRequest
         .get(`api/users/${userId}/played_decks/${deckId}`)
-        .then((r) => r.data),
+        .then((r) => {
+          return r.data as UserPlayedDeckType
+        }),
     create: (
       privateFetch: AxiosInstance,
       userId: number,
       data: { deck: number },
     ) =>
       privateFetch.post(`/api/users/${userId}/played_decks`, data).then((r) => {
-        r.data;
+        return r.data;
       }),
     update: (
       privateFetch: AxiosInstance,
@@ -108,7 +110,7 @@ export const users = {
       privateFetch
         .patch(`/api/users/${userId}/played_decks/${deckId}`, data)
         .then((r) => {
-          r.data;
+          return r.data;
         }),
   },
 };

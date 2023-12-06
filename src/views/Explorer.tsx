@@ -120,50 +120,52 @@ function Explorer() {
         </div>
       </Navbar>
 
-      <Header.Root type="page">
-        <Header.Title>
-          <span className="highlight">Explore</span> les decks
-        </Header.Title>
-        <Header.Right>
-          <Input
-            label="Rechercher"
-            type="search"
-            value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
-            icon={<Search />}
-          />
-          <Button
-            onlyIcon
-            color="gray"
-            onClick={() => setShowFilter((prev) => !prev)}
-          >
-            <Sliders />
-          </Button>
-        </Header.Right>
-      </Header.Root>
+      <div className="page-sticky">
+        <Header.Root type="page">
+          <Header.Title>
+            <span className="highlight">Explore</span> les decks
+          </Header.Title>
+          <Header.Right>
+            <Input
+              label="Rechercher"
+              type="search"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              icon={<Search />}
+            />
+            <Button
+              onlyIcon
+              color="gray"
+              onClick={() => setShowFilter((prev) => !prev)}
+            >
+              <Sliders />
+            </Button>
+          </Header.Right>
+        </Header.Root>
 
-      <div
-        className="filter-panel-container"
-        style={{
-          maxHeight: showFilter
-            ? panelRef.current?.getBoundingClientRect().height
-            : 0 + "px",
-        }}
-      >
         <div
-          ref={panelRef}
-          className={classNames("filter-panel", { show: showFilter })}
+          className="filter-panel-container"
+          style={{
+            maxHeight: showFilter
+              ? panelRef.current?.getBoundingClientRect().height
+              : 0 + "px",
+          }}
         >
-          <Dropdown
-            label="Difficulté"
-            defaultValue="Toutes"
-            handleValueChange={(value) => setDifficultyFilter(parseInt(value))}
+          <div
+            ref={panelRef}
+            className={classNames("filter-panel", { show: showFilter })}
           >
-            <Option>Toutes</Option>
-            <Option>1</Option>
-            <Option>2</Option>
-            <Option>3</Option>
-          </Dropdown>
+            <Dropdown
+              label="Difficulté"
+              defaultValue="Toutes"
+              handleValueChange={(value) => setDifficultyFilter(parseInt(value))}
+            >
+              <Option>Toutes</Option>
+              <Option>1</Option>
+              <Option>2</Option>
+              <Option>3</Option>
+            </Dropdown>
+          </div>
         </div>
       </div>
 
@@ -187,7 +189,7 @@ function Explorer() {
                       </Button>
                     )}
                     <Button asChild color="yellow" onlyIcon>
-                      <Link to={`/decks/${deck.id}/game`}>
+                      <Link to={`/decks/${deck.id}/game/1`}>
                         <Zap />
                       </Link>
                     </Button>

@@ -53,6 +53,9 @@
     align-self: center;
     border-radius: 5px;
 
+    background: rgba(var(--color-gray-4), .1);
+    backdrop-filter: blur(50px);
+
     transition:
       color 0.3s ease,
       background-color 0.3s ease;

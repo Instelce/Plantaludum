@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import ChoiceBlock from "../../components/Molecules/ChoiceBlock/ChoiceBlock";
-import { Loader, RotateCcw, X } from "react-feather";
-import { useTimer } from "../../hooks/useTimer.js";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import {Loader, RotateCcw, X} from "react-feather";
+import {useTimer} from "../../hooks/useTimer.js";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import Stars from "../../components/Atoms/Stars/Stars";
 import ProgressBar from "../../components/Atoms/ProrgessBar/ProgressBar";
 import useDeck from "../../hooks/api/useDeck.js";
@@ -12,15 +12,16 @@ import {
   shuffleArray,
 } from "../../utils/helpers";
 import useCacheImages from "../../hooks/useCacheImages.js";
-import PlantImageSlider from "../../components/Molecules/PlantImageSlider/PlantImageSlider";
+import PlantImageSlider
+  from "../../components/Molecules/PlantImageSlider/PlantImageSlider";
 import Button from "../../components/Atoms/Buttons/Button";
-import { PlantType } from "../../services/api/types/plants";
-import { useMutation } from "@tanstack/react-query";
-import { users } from "../../services/api/plantaludum";
+import {PlantType} from "../../services/api/types/plants";
+import {useMutation} from "@tanstack/react-query";
+import {users} from "../../services/api/plantaludum";
 import usePrivateFetch from "../../hooks/auth/usePrivateFetch";
 import useUser from "../../hooks/auth/useUser";
-import { AxiosError } from "axios";
-import { UserPlayedDeckType } from "../../services/api/types/decks";
+import {AxiosError} from "axios";
+import {UserPlayedDeckType} from "../../services/api/types/decks";
 import Header from "../../components/Molecules/Header/Header";
 
 function DeckGame() {
@@ -64,8 +65,9 @@ function DeckGame() {
     mutationKey: ["user-played-decks", deckId],
     mutationFn: () =>
       users.playedDecks.details(user?.id as number, parseInt(deckId as string)),
-    onError: (err: AxiosError) => {
-      if (err.response?.status === 500) {
+    onError: (err: Error) => {
+      const e = err as AxiosError;
+      if (e.response?.status === 500) {
         console.log("Le joueur n'a jamais joué ce deck");
         setIsFisrtPlay(true);
       }
@@ -81,13 +83,19 @@ function DeckGame() {
   });
   const { mutate: mutateUpdatePlayedDeckLevel } = useMutation({
     mutationKey: ["user-played-decks", deckId],
-    mutationFn: () =>
-      users.playedDecks.update(
+    mutationFn: () => {
+      let level: number;
+      if (isFisrtPlay) {
+        level = 2;
+      } else {
+        level = userPlayedDeckQuery.data?.level + 1;
+      }
+      return users.playedDecks.update(
         privateFetch,
         user?.id as number,
         parseInt(deckId as string),
-        { level: userPlayedDeckQuery.data.level + 1 },
-      ),
+        { level: level },
+      )}
   });
 
   useEffect(() => {
@@ -105,7 +113,7 @@ function DeckGame() {
 
   // get new plant on start
   useEffect(() => {
-    console.log("start p");
+    // console.log("start p");
     if (deckPlantsImagesQuery.isSuccess && deckPlantsQuery.isFetched) {
       setPlantsData(() => deckPlantsQuery.data || []);
       const currentPlantData = arrayChoice(deckPlantsQuery.data || [])[0];
@@ -132,7 +140,7 @@ function DeckGame() {
 
   // set images
   useEffect(() => {
-    console.log("id", currentPlant?.scientific_name);
+    console.log("----", currentPlant?.french_name);
     if (currentPlant) {
       let tempImagesData = deckPlantsImagesQuery.data;
       setCurrentImages(() =>
@@ -149,8 +157,6 @@ function DeckGame() {
         ),
       );
       // console.log(currentImages)
-
-      console.log(currentImages);
     }
   }, [currentPlant]);
 
@@ -196,8 +202,12 @@ function DeckGame() {
       };
     }
 
+  }, [showResult]);
+
+  useEffect(() => {
     // redirect to result page if deck is finished
-    if (progress === maxQuestions - 1) {
+    if (progress === maxQuestions) {
+      console.log("Deck quiz finished")
       if (isFisrtPlay) {
         mutateCreatePlayedDeck();
       } else {
@@ -205,11 +215,11 @@ function DeckGame() {
           mutateUpdatePlayedDeckLevel();
         }
       }
-      setTimeout(() => {
-        navigate(`/decks/${deckId}/game/resultat`, { replace: true });
-      }, 2000);
+      // setTimeout(() => {
+      //   navigate(`/decks/${deckId}/game/resultat`, { replace: true });
+      // }, 2000);
     }
-  }, [showResult]);
+  }, [progress]);
 
   // update score
   useEffect(() => {

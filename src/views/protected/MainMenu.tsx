@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import usePrivateFetch from "../../hooks/auth/usePrivateFetch.js";
 import Navbar from "../../components/Organisms/Navbar/Navbar";
@@ -13,12 +13,12 @@ import Input from "../../components/Atoms/Input/Input";
 import {PaginationResponseType} from "../../services/api";
 import ManageDeckButton
   from "../../components/Molecules/ManageDeckButton/ManageDeckButton";
-import {useInView} from "react-intersection-observer";
+import useObjectSearch from "../../hooks/useObjectSearch";
 
 function MainMenu() {
   const privateFetch = usePrivateFetch();
   const user = useUser();
-  const { ref: loaderRef, inView: loaderInView } = useInView();
+  const [searchOwnDeckInput, setSearchOwnDeckInput] = useState("");
 
   const playedDecksQuery = useQuery<UserPlayedDeckType[]>({
     queryKey: ["user-played-decks"],
@@ -39,6 +39,12 @@ function MainMenu() {
     enabled: false,
   });
 
+  const ownDeckFilteredData = useObjectSearch<DeckType>({
+    data: userDecksQuery.data?.pages.map(page => page.results).flat(1),
+    searchInput: searchOwnDeckInput,
+    fieldName: "name",
+  })
+
   useEffect(() => {
     if (user) {
       playedDecksQuery.refetch();
@@ -48,6 +54,7 @@ function MainMenu() {
 
   useEffect(() => {
     if (userDecksQuery.hasNextPage) {
+      userDecksQuery.data?.pages.map(page => page.results).flat(1)
       userDecksQuery.fetchNextPage()
     }
   }, [userDecksQuery.hasNextPage]);
@@ -82,19 +89,22 @@ function MainMenu() {
       <Header.Root type="section">
         <Header.Title>Deck créé</Header.Title>
         <Header.Right>
-          <Input type="search" label="Rechercher" />
+          <Input type="search" label="Rechercher" value={searchOwnDeckInput} handleValueChange={setSearchOwnDeckInput} />
         </Header.Right>
       </Header.Root>
 
       <div className="owndeck-grid">
         {userDecksQuery.isSuccess && (
           <>
-            {userDecksQuery.data.pages.map(page => page.results).flat(1).map((deck) => (
+            {ownDeckFilteredData?.map((deck) => (
               <ManageDeckButton key={deck.id} deck={deck} />
             ))}
+
+            {userDecksQuery.data.pages[0].results.length === 0 && (
+              <p>Créer ton <Link to="/decks/create" className="link">premier deck</Link>.</p>
+            )}
           </>
         )}
-        <div ref={loaderRef} style={{height: "1px"}}></div>
       </div>
 
       <Header.Root type="section">
@@ -115,8 +125,12 @@ function MainMenu() {
                 </Button>
               </DeckCard.Root>
             ))}
+          {playedDecksQuery.data.length === 0 && (
+            <p>Tu n'as pas encore joué à un deck. Découvre la diversité florale <Link to="/explorer" className="link">ici</Link>.</p>
+          )}
           </>
         )}
+
       </main>
     </div>
   );
