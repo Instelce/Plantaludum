@@ -11,11 +11,11 @@
   border: 1px solid rgb(var(--card-color));
   background: rgba(var(--card-color), .2);
 
-  &:not(&.not-reached):hover {
+  transition: padding .1s ease, transform .1s ease;
 
-    img {
-      transform: scale(1.05);
-    }
+  &:not(&.not-reached):hover {
+    padding: 0;
+    transform: scale(0.95);
   }
 
   .img-container {
@@ -72,7 +72,7 @@
     cursor: default;
 
     img {
-      filter: grayscale(100%);
+      filter: grayscale(100%) blur(5px);
     }
   }
 

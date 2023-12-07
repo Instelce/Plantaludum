@@ -16,7 +16,7 @@ import {useMutation, useQuery} from "@tanstack/react-query";
 import {decks, PaginationResponseType} from "../../services/api";
 import Navbar from "../../components/Organisms/Navbar/Navbar";
 import {ErrorBoundary} from "react-error-boundary";
-import {CreateDeckFormDataType} from "../../services/api/types/decks";
+import {CreateDeckFormDataType, DeckType} from "../../services/api/types/decks";
 import {ImageType} from "../../services/api/types/images";
 import useUser from "../../hooks/auth/useUser";
 import {flore} from "../../services/api/flore";
@@ -44,7 +44,7 @@ function DeckCreate() {
     mutationKey: [],
     mutationFn: (data: CreateDeckFormDataType) =>
       decks.create(privateFetch, data),
-    onSuccess: (data: CreateDeckFormDataType) => {
+    onSuccess: (data: DeckType) => {
       navigate(`/decks/${data?.id}/plants`, {
         state: {
           data: data,

@@ -62,14 +62,6 @@ function useDeck({
     }
   }, [plantsQuery.isSuccess]);
 
-  useEffect(() => {
-    console.log("refetching")
-    if (deckPlantsQuery.data.length !== plantsQuery.data.length) {
-      console.log("refetching plants")
-      plantsQuery.refetch()
-    }
-  }, [plantsQuery.isSuccess, deckPlantsQuery.isSuccess]);
-
   return {
     deckQuery: deckQuery || {},
     deckPlantsQuery: plantsQuery || {},

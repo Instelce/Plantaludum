@@ -96,6 +96,8 @@ function DeckPlants() {
     for (const plant_id of removePlantIds) {
       mutateDeletePlantDeck(plant_id);
     }
+
+    // launch notification
     notification.success({
       message: deckData
         ? `Plantes de ${deckData.name} mise à jour avec succès`

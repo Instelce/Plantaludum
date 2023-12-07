@@ -24,6 +24,7 @@ export interface UserPlayedDeckType {
   user: number;
   deck: DeckType;
   level: number;
+  current_stars: number;
 }
 
 // Forms data

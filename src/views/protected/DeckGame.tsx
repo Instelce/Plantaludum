@@ -23,10 +23,11 @@ import useUser from "../../hooks/auth/useUser";
 import {AxiosError} from "axios";
 import {UserPlayedDeckType} from "../../services/api/types/decks";
 import Header from "../../components/Molecules/Header/Header";
+import {PlantImagesType} from "../../services/api/types/images";
 
 function DeckGame() {
   const navigate = useNavigate();
-  let { deckId } = useParams();
+  let { deckId, deckLevel } = useParams();
   const privateFetch = usePrivateFetch();
   const user = useUser();
 
@@ -79,22 +80,18 @@ function DeckGame() {
     mutationFn: () =>
       users.playedDecks.create(privateFetch, user?.id as number, {
         deck: parseInt(deckId as string),
+        level: stars === 3 ? 2 : 1,
+        current_stars: stars,
       }),
   });
   const { mutate: mutateUpdatePlayedDeckLevel } = useMutation({
     mutationKey: ["user-played-decks", deckId],
-    mutationFn: () => {
-      let level: number;
-      if (isFisrtPlay) {
-        level = 2;
-      } else {
-        level = userPlayedDeckQuery.data?.level + 1;
-      }
+    mutationFn: ({ level, current_stars }: {level?: number, current_stars?: number}) => {
       return users.playedDecks.update(
         privateFetch,
         user?.id as number,
         parseInt(deckId as string),
-        { level: level },
+        { level: level, current_stars: current_stars },
       )}
   });
 
@@ -142,7 +139,7 @@ function DeckGame() {
   useEffect(() => {
     console.log("----", currentPlant?.french_name);
     if (currentPlant) {
-      let tempImagesData = deckPlantsImagesQuery.data;
+      let tempImagesData: PlantImagesType[] = deckPlantsImagesQuery.data as PlantImagesType[];
       setCurrentImages(() =>
         shuffleArray(
           arrayChoice(
@@ -170,13 +167,14 @@ function DeckGame() {
     // set stars
     console.log("Erreur de l'utilisateur", userErrors, maxQuestions - progress);
     if (progress >= maxQuestions / 3 && userErrors < 2) {
-      setStars(1);
+      setStars(() => 1);
     }
     if (progress >= (maxQuestions / 3) * 2 && userErrors < 4) {
-      setStars(2);
+      setStars(() => 2);
     }
     if (progress >= maxQuestions && userErrors < 4) {
-      setStars(3);
+      setStars(() => 3);
+      console.log("STARS", stars)
     }
 
     if (showResult && progress < maxQuestions) {
@@ -209,17 +207,30 @@ function DeckGame() {
     if (progress === maxQuestions) {
       console.log("Deck quiz finished")
       if (isFisrtPlay) {
+        console.log("Create deck", stars)
         mutateCreatePlayedDeck();
       } else {
+        console.log("Ok lets go")
+        console.log("Update deck", stars)
+
         if (stars === 3) {
-          mutateUpdatePlayedDeckLevel();
+          console.log("................................")
+          mutateUpdatePlayedDeckLevel({
+            level: userPlayedDeckQuery.data?.level + 1,
+            current_stars: 1,
+          });
+        } else {
+          if (stars > userPlayedDeckQuery.data?.current_stars) {
+            mutateUpdatePlayedDeckLevel({current_stars: stars})
+          }
         }
       }
-      // setTimeout(() => {
-      //   navigate(`/decks/${deckId}/game/resultat`, { replace: true });
-      // }, 2000);
+
+      setTimeout(() => {
+        navigate(`/decks/${deckId}/game/${deckLevel}/resultat`, { replace: true });
+      }, 2000);
     }
-  }, [progress]);
+  }, [progress, stars]);
 
   // update score
   useEffect(() => {

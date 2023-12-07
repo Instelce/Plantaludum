@@ -49,6 +49,7 @@ function PlantImageSlider({ imagesData, plantData }: PlantImageSliderProps) {
 
   return (
     <div className="slider">
+      {plantData.french_name}
       <div className="slide-container">
         {prevImages === imagesData && (
           <>

@@ -1,26 +1,27 @@
-import React, { FormEvent, useEffect, useState } from "react";
-import { ErrorBoundary } from "react-error-boundary";
+import React, {FormEvent, useEffect, useState} from "react";
+import {ErrorBoundary} from "react-error-boundary";
 import Dropdown from "../../components/Molecules/Dropdown/Dropdown";
-import AutocompleteInput from "../../components/Molecules/AutocompleteInput/Autocomplete";
+import AutocompleteInput
+  from "../../components/Molecules/AutocompleteInput/Autocomplete";
 import Checkbox from "../../components/Atoms/Checkbox/Checkbox";
 import Button from "../../components/Atoms/Buttons/Button";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
 import Selector from "../../components/Organisms/Selector/Selector";
 import useUser from "../../hooks/auth/useUser";
 import usePrivateFetch from "../../hooks/auth/usePrivateFetch";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { UpdateDeckFormDataType } from "../../services/api/types/decks";
-import { decks, PaginationResponseType } from "../../services/api";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
+import {UpdateDeckFormDataType} from "../../services/api/types/decks";
+import {decks, PaginationResponseType} from "../../services/api";
 import useFormFilled from "../../hooks/useFormFilled";
-import { deleteDublicates } from "../../utils/helpers";
-import { ImageType } from "../../services/api/types/images";
+import {deleteDublicates} from "../../utils/helpers";
+import {ImageType} from "../../services/api/types/images";
 import Navbar from "../../components/Organisms/Navbar/Navbar";
 import Input from "../../components/Atoms/Input/Input";
 import Textarea from "../../components/Atoms/Textarea/Textarea";
 import Option from "../../components/Atoms/Option/Option";
 import useDeck from "../../hooks/api/useDeck";
-import { useNotification } from "../../context/NotificationsProvider";
-import { flore } from "../../services/api/flore";
+import {useNotification} from "../../context/NotificationsProvider";
+import {flore} from "../../services/api/flore";
 import Header from "../../components/Molecules/Header/Header";
 
 function DeckUpdate() {
@@ -207,7 +208,7 @@ function DeckUpdate() {
             id="private"
             label="Privé"
             takeValue="true"
-            defaultValue={deckQuery.data?.private}
+            defaultChecked={deckQuery.data?.private}
             data-not-count
           />
           <div className="form-buttons">

@@ -1,4 +1,4 @@
-import { Route, Routes, useParams } from "react-router-dom";
+import {Route, Routes, useParams} from "react-router-dom";
 import Root from "./views/Root.jsx";
 import Home from "./views/Home.jsx";
 import Register from "./views/Register.jsx";
@@ -6,7 +6,6 @@ import Login from "./views/Login.jsx";
 import MainMenu from "./views/protected/MainMenu.jsx";
 import DeckChoice from "./views/protected/DeckChoice.jsx";
 import DeckGame from "./views/protected/DeckGame.jsx";
-import QuizResult from "./views/protected/DeckGameResult.jsx";
 import Explorer from "./views/Explorer.jsx";
 import PersistLogin from "./routes/PersistLogin";
 import DeckCreate from "./views/protected/DeckCreate.jsx";
@@ -19,6 +18,7 @@ import DeckUpdate from "./views/protected/DeckUpdate";
 import useUser from "./hooks/auth/useUser";
 import OwnDeck from "./routes/OwnDeck";
 import Profile from "./views/protected/Profile";
+import DeckGameResult from "./views/protected/DeckGameResult.jsx";
 
 function App() {
   const { deckId } = useParams();
@@ -50,9 +50,8 @@ function App() {
 
               <Route path="decks/">
                 <Route path=":deckId" element={<DeckDetail />} />
-                <Route path=":deckId/game/:level" element={<DeckGame />}>
-                  <Route path="resultat" element={<QuizResult />} />
-                </Route>
+                <Route path=":deckId/game/:deckLevel" element={<DeckGame />} />
+                <Route path=":deckId/game/:deckLevel/resultat" element={<DeckGameResult />} />
 
                 <Route path="create" element={<DeckCreate />} />
                 <Route path=":deckId/plants" element={<DeckPlants />} />

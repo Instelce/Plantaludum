@@ -70,6 +70,7 @@ function DeckDetail() {
   // load images in cache
   useEffect(() => {
     if (deckPlantsImagesQuery.isSuccess) {
+      console.log(userPlayedDeckQuery.data?.level)
       setImagesArray(() =>
         Object.values(deckPlantsImagesQuery.data)
           .map((plants) => plants.images)
@@ -202,7 +203,7 @@ function DeckDetail() {
                 {userPlayedDeckQuery.isSuccess ? (
                   <div className="grid gc-3 gg-1">
                     {[1, 2, 3].map(level => (
-                      <DeckLevelCard key={level} deck={deckQuery.data} level={level} levelStars={level < userPlayedDeckQuery.data.level ? 3 : 1} isReached={isFisrtPlay ? level == 1 : level <= userPlayedDeckQuery.data.level} />
+                      <DeckLevelCard key={level} deck={deckQuery.data} level={level} levelStars={level < userPlayedDeckQuery.data.level ? 3 : userPlayedDeckQuery.data.current_stars} isReached={level <= userPlayedDeckQuery.data.level} />
                     ))}
                   </div>
                 ) : (

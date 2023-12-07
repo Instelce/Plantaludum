@@ -96,7 +96,7 @@ export const users = {
     create: (
       privateFetch: AxiosInstance,
       userId: number,
-      data: { deck: number },
+      data: { deck: number, level?: number, current_stars?: number },
     ) =>
       privateFetch.post(`/api/users/${userId}/played_decks`, data).then((r) => {
         return r.data;
@@ -105,7 +105,7 @@ export const users = {
       privateFetch: AxiosInstance,
       userId: number,
       deckId: number,
-      data: { level: number },
+      data: { level?: number, current_stars?: number },
     ) =>
       privateFetch
         .patch(`/api/users/${userId}/played_decks/${deckId}`, data)
