@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 
 export function useFetch({ fetchFunc, method, setHelper }) {
   const [launchRequest, setLaunchRequest] = useState(false);
@@ -48,7 +48,7 @@ export function useFetch({ fetchFunc, method, setHelper }) {
           });
       }
     }
-  }, [launchRequest]);
+  }, [fetchFunc, formData, launchRequest, method, route, setHelper]);
 
   return {
     launchRequest: launchRequestFunction,

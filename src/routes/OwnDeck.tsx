@@ -1,9 +1,9 @@
-import React, { PropsWithChildren, useEffect } from "react";
+import React, {PropsWithChildren, useEffect} from "react";
 import useUser from "../hooks/auth/useUser";
-import { Navigate, useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { decks } from "../services/api";
-import { useNotification } from "../context/NotificationsProvider";
+import {Navigate, useParams} from "react-router-dom";
+import {useQuery} from "@tanstack/react-query";
+import {decks} from "../services/api";
+import {useNotification} from "../context/NotificationsProvider";
 
 function OwnDeck({ children }: PropsWithChildren) {
   const { deckId } = useParams();
@@ -26,7 +26,7 @@ function OwnDeck({ children }: PropsWithChildren) {
         });
       }
     }
-  }, [isSuccess, deckData, user]);
+  }, [isSuccess, deckData, user, notifications]);
 
   if (isSuccess && user) {
     if (deckData.user.id === user.id) {

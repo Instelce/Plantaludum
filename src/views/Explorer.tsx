@@ -11,7 +11,7 @@ import {decks, PaginationResponseType} from "../services/api";
 import Loader from "../components/Atoms/Loader/index.jsx";
 import Navbar from "../components/Organisms/Navbar/Navbar";
 import {Link} from "react-router-dom";
-import {RefreshCw, Search, Sliders, Zap} from "react-feather";
+import {Edit, Search, Sliders, Zap} from "react-feather";
 import {useAuth} from "../context/AuthProvider";
 import {DeckType} from "../services/api/types/decks";
 import useObjectSearch from "../hooks/useObjectSearch";
@@ -82,7 +82,7 @@ function Explorer() {
     if (loaderInView && hasNextPage) {
       fetchNextPage();
     }
-  }, [loaderInView]);
+  }, [fetchNextPage, hasNextPage, loaderInView]);
 
   return (
     <>
@@ -184,7 +184,7 @@ function Explorer() {
                     {user?.id === deck.user.id && (
                       <Button asChild onlyIcon color="yellow">
                         <Link to={`/decks/${deck.id}/update`}>
-                          <RefreshCw />
+                          <Edit />
                         </Link>
                       </Button>
                     )}

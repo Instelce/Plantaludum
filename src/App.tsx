@@ -40,6 +40,8 @@ function App() {
 
           <Route path="explorer" element={<Explorer />} />
 
+          <Route path="decks/:deckId" element={<DeckDetail />} />
+
           <Route element={<PersistLogin />}>
             <Route element={<RequireAuth />}>
               <Route path="profile" element={<Profile />} />
@@ -49,7 +51,6 @@ function App() {
               </Route>
 
               <Route path="decks/">
-                <Route path=":deckId" element={<DeckDetail />} />
                 <Route path=":deckId/game/:deckLevel" element={<DeckGame />} />
                 <Route path=":deckId/game/:deckLevel/resultat" element={<DeckGameResult />} />
 

@@ -9,9 +9,9 @@ import React, {
 import "./Dropdown.scss";
 import Button from "../../Atoms/Buttons/Button";
 import classNames from "classnames";
-import Option, { OptionProps } from "../../Atoms/Option/Option";
-import { ChevronDown } from "react-feather";
-import { SizeProp } from "../../../types/helpers";
+import Option, {OptionProps} from "../../Atoms/Option/Option";
+import {ChevronDown} from "react-feather";
+import {SizeProp} from "../../../types/helpers";
 
 type DropdownProps = {
   inputId?: string;
@@ -63,7 +63,7 @@ function Dropdown({
     if (!buttonFocus && showOptions && !mouseOnOptions) {
       setShowOptions(false);
     }
-  }, [buttonFocus, showOptions]);
+  }, [buttonFocus, mouseOnOptions, showOptions]);
 
   // Accessibility
   useEffect(() => {
@@ -101,7 +101,7 @@ function Dropdown({
       inputRef.current.value = currentValue;
       inputRef.current.dispatchEvent(ev);
     }
-  }, [currentValue]);
+  }, [currentValue, handleValueChange]);
 
   return (
     <div className={classNames("dropdown")}>

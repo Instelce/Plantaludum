@@ -29,7 +29,7 @@ function PlantImageSlider({ imagesData, plantData }: PlantImageSliderProps) {
     //   "image",
     //   imagesData.map((im) => im.url),
     // );
-  }, [imagesData]);
+  }, [imagesData, prevImages]);
 
   const next = () => {
     setCurrent((current) => (current === length - 1 ? 0 : current + 1));
@@ -94,6 +94,7 @@ function PlantImageSlider({ imagesData, plantData }: PlantImageSliderProps) {
               size="small"
               className="show-info"
               onClick={() => setShowImageInfo((show) => !show)}
+              bounce={false}
             >
               <Info />
             </Button>
@@ -107,6 +108,7 @@ function PlantImageSlider({ imagesData, plantData }: PlantImageSliderProps) {
               size="small"
               className="show-info"
               onClick={() => setShowImageInfo((show) => !show)}
+              bounce={false}
             >
               <X />
             </Button>

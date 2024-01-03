@@ -32,7 +32,7 @@ function DeckGame() {
   const user = useUser();
 
   const scoreRightAnswer = 100;
-  const maxQuestions = 5;
+  const maxQuestions = 1;
 
   const [showResult, setShowResult] = useState(false);
   const [isRight, setIsRight] = useState(undefined);
@@ -80,7 +80,7 @@ function DeckGame() {
     mutationFn: () =>
       users.playedDecks.create(privateFetch, user?.id as number, {
         deck: parseInt(deckId as string),
-        level: stars === 3 ? 2 : 1,
+        level: stars === 3 ? 2 : stars,
         current_stars: stars,
       }),
   });
@@ -106,7 +106,7 @@ function DeckGame() {
     if (!imagesLoading) {
       start();
     }
-  }, [imagesLoading]);
+  }, [imagesLoading, start]);
 
   // get new plant on start
   useEffect(() => {
@@ -116,12 +116,7 @@ function DeckGame() {
       const currentPlantData = arrayChoice(deckPlantsQuery.data || [])[0];
       setCurrentPlant(() => currentPlantData);
     }
-  }, [
-    deckPlantsQuery.isSuccess,
-    deckPlantsImagesQuery.isSuccess,
-    currentPlant,
-    plantsData,
-  ]);
+  }, [deckPlantsQuery.isSuccess, deckPlantsImagesQuery.isSuccess, currentPlant, plantsData, deckPlantsQuery.isFetched, deckPlantsQuery.data]);
 
   // load images in cache
   useEffect(() => {
@@ -133,7 +128,7 @@ function DeckGame() {
           .flat(1),
       );
     }
-  }, [deckPlantsImagesQuery.isSuccess]);
+  }, [deckPlantsImagesQuery.data, deckPlantsImagesQuery.isSuccess, setImagesArray]);
 
   // set images
   useEffect(() => {
@@ -155,7 +150,7 @@ function DeckGame() {
       );
       // console.log(currentImages)
     }
-  }, [currentPlant]);
+  }, [currentPlant, deckPlantsImagesQuery.data]);
 
   // is show results
   useEffect(() => {
@@ -200,7 +195,7 @@ function DeckGame() {
       };
     }
 
-  }, [showResult]);
+  }, [currentPlant, deckPlantsQuery.data, progress, showResult, stars, userErrors]);
 
   useEffect(() => {
     // redirect to result page if deck is finished
@@ -227,10 +222,20 @@ function DeckGame() {
       }
 
       setTimeout(() => {
-        navigate(`/decks/${deckId}/game/${deckLevel}/resultat`, { replace: true });
+        navigate(`/decks/${deckId}/game/${deckLevel}/resultat`, {
+          state: {
+            data: {
+              score: score,
+              deck: deckQuery.data,
+              level: deckLevel,
+              stars: stars,
+              times: stringTime
+            }
+          }
+        });
       }, 2000);
     }
-  }, [progress, stars]);
+  }, [deckId, deckLevel, deckQuery.data, isFisrtPlay, mutateCreatePlayedDeck, mutateUpdatePlayedDeckLevel, navigate, progress, score, stars, stringTime, userPlayedDeckQuery.data?.current_stars, userPlayedDeckQuery.data?.level]);
 
   // update score
   useEffect(() => {

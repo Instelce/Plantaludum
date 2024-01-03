@@ -72,7 +72,7 @@ function DeckCreate() {
     if (plantIsValid) {
       fetchImages();
     }
-  }, [plantIsValid]);
+  }, [fetchImages, plantIsValid]);
 
   // set plant images to an array of images
   useEffect(() => {
@@ -92,7 +92,7 @@ function DeckCreate() {
     if (isSuccess) {
       console.log(deckData);
     }
-  }, [isSuccess]);
+  }, [deckData, isSuccess]);
 
   const handleFormSubmit = (e: FormEvent) => {
     e.preventDefault();

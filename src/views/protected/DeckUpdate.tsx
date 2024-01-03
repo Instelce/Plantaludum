@@ -76,7 +76,7 @@ function DeckUpdate() {
     if (plantIsValid) {
       fetchImages();
     }
-  }, [plantIsValid]);
+  }, [fetchImages, plantIsValid]);
 
   // set plant images to an array of images
   useEffect(() => {
@@ -95,7 +95,7 @@ function DeckUpdate() {
     if (deckQuery.isSuccess) {
       setImageValue(() => deckQuery.data.preview_image_url);
     }
-  }, [deckQuery.isSuccess]);
+  }, [deckQuery.data.preview_image_url, deckQuery.isSuccess]);
 
   const handleFormSubmit = (e: FormEvent) => {
     e.preventDefault();

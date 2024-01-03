@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import {useEffect} from "react";
 
 function useAccessibility({
   keysAction: keys = {
@@ -43,7 +43,7 @@ function useAccessibility({
     return () => {
       window.removeEventListener("keydown", accessibility);
     };
-  }, []);
+  }, [keys.ArrowDown, keys.ArrowUp, keys.Enter]);
 }
 
 export default useAccessibility;

@@ -10,10 +10,10 @@ import useUser from "../../hooks/auth/useUser";
 import DeckCard from "../../components/Molecules/DeckCard/DeckCard";
 import Header from "../../components/Molecules/Header/Header";
 import Input from "../../components/Atoms/Input/Input";
+import useObjectSearch from "../../hooks/useObjectSearch";
 import {PaginationResponseType} from "../../services/api";
 import ManageDeckButton
   from "../../components/Molecules/ManageDeckButton/ManageDeckButton";
-import useObjectSearch from "../../hooks/useObjectSearch";
 
 function MainMenu() {
   const privateFetch = usePrivateFetch();
@@ -46,18 +46,11 @@ function MainMenu() {
   })
 
   useEffect(() => {
-    if (user) {
+    if (user && playedDecksQuery.isStale && userDecksQuery.isStale) {
       playedDecksQuery.refetch();
       userDecksQuery.refetch();
     }
-  }, [user]);
-
-  useEffect(() => {
-    if (userDecksQuery.hasNextPage) {
-      userDecksQuery.data?.pages.map(page => page.results).flat(1)
-      userDecksQuery.fetchNextPage()
-    }
-  }, [userDecksQuery.hasNextPage]);
+  }, [playedDecksQuery, user, userDecksQuery]);
 
   return (
     <div className="mainmenu">

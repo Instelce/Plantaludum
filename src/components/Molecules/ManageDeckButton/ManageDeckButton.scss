@@ -53,8 +53,8 @@
     align-self: center;
     border-radius: 5px;
 
-    background: rgba(var(--color-gray-4), .1);
-    backdrop-filter: blur(50px);
+    background: rgba(var(--color-gray-4), .4);
+    //backdrop-filter: blur(50px);
 
     transition:
       color 0.3s ease,
@@ -64,6 +64,10 @@
       color: rgb(var(--color-gray-2));
       background: rgb(var(--color-primary-light));
     }
+  }
+
+  & > div:nth-child(2) svg {
+    z-index: 3;
   }
 
   & > div {

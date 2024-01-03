@@ -1,7 +1,7 @@
-import React, { ButtonHTMLAttributes, useEffect, useRef } from "react";
+import React, {ButtonHTMLAttributes, useRef} from "react";
 
 import "./ChoiceBlock.scss";
-import { Check, X } from "react-feather";
+import {Check, X} from "react-feather";
 import Button from "../../Atoms/Buttons/Button";
 
 type ChoiceBlockProps = {
@@ -31,8 +31,6 @@ function ChoiceBlock({
       ref.current.style.animation = "shake .2s ease";
     }
   };
-
-  useEffect(() => {}, [showResult]);
 
   return (
     <Button

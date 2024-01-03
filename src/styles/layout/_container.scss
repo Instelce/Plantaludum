@@ -2,7 +2,7 @@
   width: 100vw;
   min-height: 100vh;
   max-height: 100vh;
-  padding: 2rem 5%;
+  padding: 2rem clamp(0px, 5%, 5%);
   overflow: hidden;
   position: relative;
   display: flex;
@@ -14,6 +14,7 @@
   position: relative;
   display: block;
   overflow-x: hidden;
+  grid-column: page-content;
 
   border-radius: 5px;
   border: 1px solid rgb(var(--color-gray-3));

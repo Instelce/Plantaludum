@@ -1,5 +1,37 @@
 @import "../abstracts/typescale";
 
-.quiz-results {
+.deck-results {
 
+
+  header {
+    padding: 2rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+
+    border-bottom: 1px solid rgb(var(--color-gray-3));
+
+    & > div:nth-child(1) {
+      display: flex;
+      align-items: flex-end;
+      flex-direction: column;
+      gap: .5rem;
+    }
+
+    h2 {
+      font-size: var(--typescale-h3);
+      font-weight: 700;
+    }
+
+    p {
+      font-size: var(--typescale-h5);
+    }
+  }
+
+  .grid-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-column-gap: 1rem;
+  }
 }

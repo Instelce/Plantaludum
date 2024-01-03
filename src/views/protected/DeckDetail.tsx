@@ -78,13 +78,13 @@ function DeckDetail() {
           .flat(1),
       );
     }
-  }, [deckPlantsImagesQuery.isSuccess]);
+  }, [deckPlantsImagesQuery, userPlayedDeckQuery]);
 
   useEffect(() => {
-    if (user) {
+    if (user && !isFisrtPlay && userPlayedDeckQuery.data === undefined) {
       userPlayedDeckQuery.mutate()
     }
-  }, [user]);
+  }, [user, userPlayedDeckQuery]);
 
   return (
     <div className="deck-detail">
