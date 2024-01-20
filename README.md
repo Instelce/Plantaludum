@@ -26,7 +26,7 @@ cd WebApp
 2. Cloner le repo
 
 ```shell
-git clone https://github.com/<Votre-Pseudo>/Plantaludum.git
+git clone https://github.com/<Votre-Pseudo>/Plantaludum.git .
 ```
 
 4. Installer les dépendances
@@ -35,9 +35,11 @@ git clone https://github.com/<Votre-Pseudo>/Plantaludum.git
 pnpm i
 ```
 
-5. Enfin lancer le serveur de développement et le storybook
+5. Enfin lancer le serveur de développement ou le storybook
 
 ```shell
 pnpm run dev
 pnpm run storybook
 ```
+
+6. Lancer les API avec les scripts `runservers.fish` ou `runservers.bash`.
