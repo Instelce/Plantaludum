@@ -1,4 +1,4 @@
-import {Children, isValidElement, PropsWithChildren} from "react";
+import { Children, isValidElement, PropsWithChildren } from "react";
 import "./Navbar.scss";
 
 function Navbar({ children }: PropsWithChildren) {
@@ -15,7 +15,9 @@ function Navbar({ children }: PropsWithChildren) {
   return (
     <div className="navbar">
       <div className="left">
-        <img className="logo" src="/public/icon.svg" alt="Plantaludum icon" width={40} />
+        <button className="logo">
+          <img src="/public/icon.svg" alt="Plantaludum icon" width={40} />
+        </button>
 
         {leftElements}
       </div>

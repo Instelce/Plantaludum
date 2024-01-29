@@ -1,5 +1,5 @@
-import {apiRequest} from "./axios";
-import {AxiosInstance} from "axios/index";
+import api, { apiRequest } from "./axios";
+import { AxiosInstance } from "axios/index";
 import {
   CreateDeckFormDataType,
   CreateDeckPlantFormDataType,
@@ -7,9 +7,9 @@ import {
   UpdateDeckFormDataType,
   UserPlayedDeckType,
 } from "./types/decks";
-import {PaginationResponseType} from "./index";
-import {PlantType} from "./types/plants";
-import {UserType} from "./types/users";
+import { PaginationResponseType } from "./types/pagination";
+import { PlantType } from "./types/plants";
+import { UserType } from "./types/users";
 
 type DeckListArgsType = {
   search?: string | null;
@@ -79,24 +79,29 @@ export const decks = {
 
 export const users = {
   details: (userId: number) =>
-    apiRequest.get(`/api/users/${userId}`).then((r) => {
+    apiRequest.get(`/api/auth/users/${userId}`).then((r) => {
       return r.data as UserType;
     }),
+  update: (privateFetch: AxiosInstance, userId: number, data: object) =>
+    privateFetch.patch(`/api/auth/users/${userId}`, data).then((r) => r.data),
+  delete: (privateFetch: AxiosInstance, userId: number) =>
+    privateFetch.delete(`/api/auth/users/${userId}`).then((r) => r.data),
+
+  decks: (userId: number) =>
+    api.get(`/api/user-decks/${userId}`).then((r) => r.data as DeckType[]),
   playedDecks: {
     list: (userId: number) =>
-      apiRequest.get(`/api/users/${userId}/played_decks`).then((r) => {
+      api.get(`/api/users/${userId}/played_decks`).then((r) => {
         return r.data as UserPlayedDeckType[];
       }),
     details: (userId: number, deckId: number) =>
-      apiRequest
-        .get(`api/users/${userId}/played_decks/${deckId}`)
-        .then((r) => {
-          return r.data as UserPlayedDeckType
-        }),
+      api.get(`api/users/${userId}/played_decks/${deckId}`).then((r) => {
+        return r.data as UserPlayedDeckType;
+      }),
     create: (
       privateFetch: AxiosInstance,
       userId: number,
-      data: { deck: number, level?: number, current_stars?: number },
+      data: { deck: number; level?: number; current_stars?: number },
     ) =>
       privateFetch.post(`/api/users/${userId}/played_decks`, data).then((r) => {
         return r.data;
@@ -105,7 +110,7 @@ export const users = {
       privateFetch: AxiosInstance,
       userId: number,
       deckId: number,
-      data: { level?: number, current_stars?: number },
+      data: { level?: number; current_stars?: number },
     ) =>
       privateFetch
         .patch(`/api/users/${userId}/played_decks/${deckId}`, data)

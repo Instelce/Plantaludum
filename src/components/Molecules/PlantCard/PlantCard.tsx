@@ -1,5 +1,5 @@
 import "./PlantCard.scss";
-import {PlantType} from "../../../services/api/types/plants";
+import { PlantType } from "../../../services/api/types/plants";
 import {
   DragEventHandler,
   PropsWithChildren,
@@ -9,7 +9,7 @@ import {
 } from "react";
 import classNames from "classnames";
 import Button from "../../Atoms/Buttons/Button";
-import {Trash} from "react-feather";
+import { Trash } from "react-feather";
 
 type PlantCardProps = {
   plant: PlantType;

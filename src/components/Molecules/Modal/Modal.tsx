@@ -12,9 +12,9 @@ type ModalProps = {
 function Modal({ show, children }: ModalProps) {
   useEffect(() => {
     if (show) {
-      disableBodyScroll(document.querySelector(".container"));
+      disableBodyScroll(document.querySelector(".container") as HTMLElement);
     } else {
-      enableBodyScroll(document.querySelector(".container"));
+      enableBodyScroll(document.querySelector(".container") as HTMLElement);
     }
   }, [show]);
 

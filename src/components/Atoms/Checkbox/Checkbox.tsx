@@ -4,7 +4,7 @@ import "./Checkbox.scss";
 type CheckboxProps = {
   id?: string;
   label: string;
-  takeValue: string;
+  takeValue: string | boolean;
   value?: boolean;
   handleValueChange?: React.Dispatch<React.SetStateAction<boolean>> | null;
   disabled?: boolean;
@@ -27,7 +27,7 @@ function Checkbox({
         id={id ? id : defaultId}
         name={id ? id : defaultId}
         disabled={disabled}
-        value={takeValue}
+        value={takeValue.toString()}
         checked={value}
         onChange={(e) => handleValueChange?.(e.target.checked)}
         {...props}

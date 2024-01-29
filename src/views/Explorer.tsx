@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useRef, useState} from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Input from "../components/Atoms/Input/Input";
 import DeckCard from "../components/Molecules/DeckCard/DeckCard";
 import Modal from "../components/Molecules/Modal/Modal";
@@ -6,16 +6,16 @@ import Button from "../components/Atoms/Buttons/Button.jsx";
 import Dropdown from "../components/Molecules/Dropdown/Dropdown";
 import classNames from "classnames";
 import Option from "../components/Atoms/Option/Option";
-import {useInfiniteQuery} from "@tanstack/react-query";
-import {decks, PaginationResponseType} from "../services/api";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { decks, PaginationResponseType } from "../services/api";
 import Loader from "../components/Atoms/Loader/index.jsx";
 import Navbar from "../components/Organisms/Navbar/Navbar";
-import {Link} from "react-router-dom";
-import {Edit, Search, Sliders, Zap} from "react-feather";
-import {useAuth} from "../context/AuthProvider";
-import {DeckType} from "../services/api/types/decks";
+import { Link } from "react-router-dom";
+import { Edit, Search, Sliders, Zap } from "react-feather";
+import { useAuth } from "../context/AuthProvider";
+import { DeckType } from "../services/api/types/decks";
 import useObjectSearch from "../hooks/useObjectSearch";
-import {useInView} from "react-intersection-observer";
+import { useInView } from "react-intersection-observer";
 import useDebounce from "../hooks/useDebounce";
 import useUser from "../hooks/auth/useUser";
 import Header from "../components/Molecules/Header/Header";
@@ -158,7 +158,9 @@ function Explorer() {
             <Dropdown
               label="Difficulté"
               defaultValue="Toutes"
-              handleValueChange={(value) => setDifficultyFilter(parseInt(value))}
+              handleValueChange={(value) =>
+                setDifficultyFilter(parseInt(value))
+              }
             >
               <Option>Toutes</Option>
               <Option>1</Option>

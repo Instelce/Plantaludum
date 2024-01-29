@@ -3,23 +3,25 @@ import useFormFilled from "../../hooks/useFormFilled.js";
 import Input from "../../components/Atoms/Input/Input";
 import Textarea from "../../components/Atoms/Textarea/Textarea";
 import Dropdown from "../../components/Molecules/Dropdown/Dropdown";
-import {FormEvent, useEffect, useState} from "react";
+import { FormEvent, useEffect, useState } from "react";
 import Checkbox from "../../components/Atoms/Checkbox/Checkbox";
-import AutocompleteInput
-  from "../../components/Molecules/AutocompleteInput/Autocomplete";
+import AutocompleteInput from "../../components/Molecules/AutocompleteInput/Autocomplete";
 import Option from "../../components/Atoms/Option/Option";
 import Selector from "../../components/Organisms/Selector/Selector";
-import {deleteDublicates} from "../../utils/helpers";
-import {Link, useLocation, useNavigate} from "react-router-dom";
+import { deleteDublicates } from "../../utils/helpers";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Button from "../../components/Atoms/Buttons/Button.jsx";
-import {useMutation, useQuery} from "@tanstack/react-query";
-import {decks, PaginationResponseType} from "../../services/api";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { decks, PaginationResponseType } from "../../services/api";
 import Navbar from "../../components/Organisms/Navbar/Navbar";
-import {ErrorBoundary} from "react-error-boundary";
-import {CreateDeckFormDataType, DeckType} from "../../services/api/types/decks";
-import {ImageType} from "../../services/api/types/images";
+import { ErrorBoundary } from "react-error-boundary";
+import {
+  CreateDeckFormDataType,
+  DeckType,
+} from "../../services/api/types/decks";
+import { ImageType } from "../../services/api/types/images";
 import useUser from "../../hooks/auth/useUser";
-import {flore} from "../../services/api/flore";
+import { flore } from "../../services/api/flore";
 import Header from "../../components/Molecules/Header/Header";
 
 function DeckCreate() {

@@ -10,7 +10,7 @@ function useUser() {
   const privateFetch = usePrivateFetch();
 
   const userQuery = useQuery<UserType>({
-    queryKey: ["user"],
+    queryKey: ["current-user"],
     queryFn: async () => {
       const response = await auth.user(privateFetch);
       setUser(response.data);

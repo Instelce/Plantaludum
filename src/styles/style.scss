@@ -75,11 +75,11 @@ button {
     left: 0;
     transform: translateY(1px);
     opacity: 0;
-    transition: transform .3s ease;
+    transition: transform 0.3s ease;
   }
 
   &:hover {
-    opacity: .8;
+    opacity: 0.8;
 
     &::after {
       opacity: 1;
@@ -92,6 +92,7 @@ button {
 @import "layout/forms";
 @import "layout/container";
 @import "layout/header";
+@import "layout/footer";
 
 // Page imports
 @import "pages/main-menu";
@@ -100,3 +101,4 @@ button {
 @import "pages/deck-game";
 @import "pages/deck-results";
 @import "pages/explorer";
+@import "pages/profile";

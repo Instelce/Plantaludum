@@ -1,11 +1,11 @@
-import {useQuery} from "@tanstack/react-query";
-import {decks} from "../../services/api";
-import {useEffect} from "react";
-import {getObjectKeyValues} from "../../utils/helpers";
-import {PlantType} from "../../services/api/types/plants";
-import {flore} from "../../services/api/flore";
-import {PlantImagesType} from "../../services/api/types/images";
-import {DeckType} from "../../services/api/types/decks";
+import { useQuery } from "@tanstack/react-query";
+import { decks } from "../../services/api";
+import { useEffect } from "react";
+import { getObjectKeyValues } from "../../utils/helpers";
+import { PlantType } from "../../services/api/types/plants";
+import { flore } from "../../services/api/flore";
+import { PlantImagesType } from "../../services/api/types/images";
+import { DeckType } from "../../services/api/types/decks";
 
 type UseDeckArgs = {
   deckId: string;

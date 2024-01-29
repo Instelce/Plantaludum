@@ -1,15 +1,14 @@
-import {useEffect, useRef, useState} from "react";
-import {css} from "@emotion/css";
-import FloatingPlantCard
-  from "../components/Molecules/FloatingPlantCard/index.jsx";
-import {arrayChoice, deleteDublicates, getRandomInt} from "../utils/helpers";
+import { useEffect, useRef, useState } from "react";
+import { css } from "@emotion/css";
+import FloatingPlantCard from "../components/Molecules/FloatingPlantCard/index.jsx";
+import { arrayChoice, deleteDublicates, getRandomInt } from "../utils/helpers";
 import PlantQuiz from "../components/Organisms/PlantQuiz/index.jsx";
-import {apiFlore} from "../services/api/axios.js";
-import {useQuery} from "@tanstack/react-query";
-import {PlantType} from "../services/api/types/plants";
+import { apiFlore } from "../services/api/axios.js";
+import { useQuery } from "@tanstack/react-query";
+import { PlantType } from "../services/api/types/plants";
 import Button from "../components/Atoms/Buttons/Button";
-import {Link} from "react-router-dom";
-import {flore} from "../services/api/flore";
+import { Link } from "react-router-dom";
+import { flore } from "../services/api/flore";
 
 function Home() {
   const [plants, setPlants] = useState([]);
@@ -24,7 +23,6 @@ function Home() {
   });
 
   useEffect(() => {
-
     if (!isLoading && plantsData) {
       // let tempPlants = []
       let col = -1;

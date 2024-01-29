@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 
 export function useFetch({ fetchFunc, method, setHelper }) {
   const [launchRequest, setLaunchRequest] = useState(false);

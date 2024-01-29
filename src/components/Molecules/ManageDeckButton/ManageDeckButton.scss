@@ -11,6 +11,18 @@
   border-radius: var(--radius);
   box-shadow: 0 2px 4px 0 rgba(var(--color-gray-1), 0.2);
 
+  .private {
+    padding: .5rem;
+    z-index: 4;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: radial-gradient(circle at center, rgba(var(--color-gray-4), 1), transparent);
+    border-radius: 5px;
+  }
+
   .img-container {
     width: 100%;
     height: 100%;
@@ -53,12 +65,12 @@
     align-self: center;
     border-radius: 5px;
 
-    background: rgba(var(--color-gray-4), .4);
+    background: rgba(var(--color-gray-4), 0.4);
     //backdrop-filter: blur(50px);
 
     transition:
       color 0.3s ease,
-      background-color 0.3s ease;
+      background-color 0.1s ease;
 
     &:hover {
       color: rgb(var(--color-gray-2));
@@ -76,12 +88,6 @@
     a {
       z-index: 2;
       border-radius: 0;
-    }
-
-    a:first-child {
-      svg {
-        stroke: none;
-      }
     }
   }
 }

@@ -1,8 +1,8 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ChoiceBlock from "../../components/Molecules/ChoiceBlock/ChoiceBlock";
-import {Loader, RotateCcw, X} from "react-feather";
-import {useTimer} from "../../hooks/useTimer.js";
-import {Link, useNavigate, useParams} from "react-router-dom";
+import { Loader, RotateCcw, X } from "react-feather";
+import { useTimer } from "../../hooks/useTimer.js";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Stars from "../../components/Atoms/Stars/Stars";
 import ProgressBar from "../../components/Atoms/ProrgessBar/ProgressBar";
 import useDeck from "../../hooks/api/useDeck.js";
@@ -12,18 +12,17 @@ import {
   shuffleArray,
 } from "../../utils/helpers";
 import useCacheImages from "../../hooks/useCacheImages.js";
-import PlantImageSlider
-  from "../../components/Molecules/PlantImageSlider/PlantImageSlider";
+import PlantImageSlider from "../../components/Molecules/PlantImageSlider/PlantImageSlider";
 import Button from "../../components/Atoms/Buttons/Button";
-import {PlantType} from "../../services/api/types/plants";
-import {useMutation} from "@tanstack/react-query";
-import {users} from "../../services/api/plantaludum";
+import { PlantType } from "../../services/api/types/plants";
+import { useMutation } from "@tanstack/react-query";
+import { users } from "../../services/api/plantaludum";
 import usePrivateFetch from "../../hooks/auth/usePrivateFetch";
 import useUser from "../../hooks/auth/useUser";
-import {AxiosError} from "axios";
-import {UserPlayedDeckType} from "../../services/api/types/decks";
+import { AxiosError } from "axios";
+import { UserPlayedDeckType } from "../../services/api/types/decks";
 import Header from "../../components/Molecules/Header/Header";
-import {PlantImagesType} from "../../services/api/types/images";
+import { PlantImagesType } from "../../services/api/types/images";
 
 function DeckGame() {
   const navigate = useNavigate();
@@ -86,13 +85,20 @@ function DeckGame() {
   });
   const { mutate: mutateUpdatePlayedDeckLevel } = useMutation({
     mutationKey: ["user-played-decks", deckId],
-    mutationFn: ({ level, current_stars }: {level?: number, current_stars?: number}) => {
+    mutationFn: ({
+      level,
+      current_stars,
+    }: {
+      level?: number;
+      current_stars?: number;
+    }) => {
       return users.playedDecks.update(
         privateFetch,
         user?.id as number,
         parseInt(deckId as string),
         { level: level, current_stars: current_stars },
-      )}
+      );
+    },
   });
 
   useEffect(() => {
@@ -106,7 +112,7 @@ function DeckGame() {
     if (!imagesLoading) {
       start();
     }
-  }, [imagesLoading, start]);
+  }, [imagesLoading]);
 
   // get new plant on start
   useEffect(() => {
@@ -116,7 +122,14 @@ function DeckGame() {
       const currentPlantData = arrayChoice(deckPlantsQuery.data || [])[0];
       setCurrentPlant(() => currentPlantData);
     }
-  }, [deckPlantsQuery.isSuccess, deckPlantsImagesQuery.isSuccess, currentPlant, plantsData, deckPlantsQuery.isFetched, deckPlantsQuery.data]);
+  }, [
+    deckPlantsQuery.isSuccess,
+    deckPlantsImagesQuery.isSuccess,
+    currentPlant,
+    plantsData,
+    deckPlantsQuery.isFetched,
+    deckPlantsQuery.data,
+  ]);
 
   // load images in cache
   useEffect(() => {
@@ -128,13 +141,14 @@ function DeckGame() {
           .flat(1),
       );
     }
-  }, [deckPlantsImagesQuery.data, deckPlantsImagesQuery.isSuccess, setImagesArray]);
+  }, [deckPlantsImagesQuery.data, deckPlantsImagesQuery.isSuccess]);
 
   // set images
   useEffect(() => {
     console.log("----", currentPlant?.french_name);
     if (currentPlant) {
-      let tempImagesData: PlantImagesType[] = deckPlantsImagesQuery.data as PlantImagesType[];
+      let tempImagesData: PlantImagesType[] =
+        deckPlantsImagesQuery.data as PlantImagesType[];
       setCurrentImages(() =>
         shuffleArray(
           arrayChoice(
@@ -169,7 +183,7 @@ function DeckGame() {
     }
     if (progress >= maxQuestions && userErrors < 4) {
       setStars(() => 3);
-      console.log("STARS", stars)
+      console.log("STARS", stars);
     }
 
     if (showResult && progress < maxQuestions) {
@@ -194,29 +208,35 @@ function DeckGame() {
         clearTimeout(changeData);
       };
     }
-
-  }, [currentPlant, deckPlantsQuery.data, progress, showResult, stars, userErrors]);
+  }, [
+    currentPlant,
+    deckPlantsQuery.data,
+    progress,
+    showResult,
+    stars,
+    userErrors,
+  ]);
 
   useEffect(() => {
     // redirect to result page if deck is finished
     if (progress === maxQuestions) {
-      console.log("Deck quiz finished")
+      console.log("Deck quiz finished");
       if (isFisrtPlay) {
-        console.log("Create deck", stars)
+        console.log("Create deck", stars);
         mutateCreatePlayedDeck();
       } else {
-        console.log("Ok lets go")
-        console.log("Update deck", stars)
+        console.log("Ok lets go");
+        console.log("Update deck", stars);
 
         if (stars === 3) {
-          console.log("................................")
+          console.log("................................");
           mutateUpdatePlayedDeckLevel({
             level: userPlayedDeckQuery.data?.level + 1,
             current_stars: 1,
           });
         } else {
           if (stars > userPlayedDeckQuery.data?.current_stars) {
-            mutateUpdatePlayedDeckLevel({current_stars: stars})
+            mutateUpdatePlayedDeckLevel({ current_stars: stars });
           }
         }
       }
@@ -229,13 +249,27 @@ function DeckGame() {
               deck: deckQuery.data,
               level: deckLevel,
               stars: stars,
-              times: stringTime
-            }
-          }
+              times: stringTime,
+            },
+          },
         });
       }, 2000);
     }
-  }, [deckId, deckLevel, deckQuery.data, isFisrtPlay, mutateCreatePlayedDeck, mutateUpdatePlayedDeckLevel, navigate, progress, score, stars, stringTime, userPlayedDeckQuery.data?.current_stars, userPlayedDeckQuery.data?.level]);
+  }, [
+    deckId,
+    deckLevel,
+    deckQuery.data,
+    isFisrtPlay,
+    mutateCreatePlayedDeck,
+    mutateUpdatePlayedDeckLevel,
+    navigate,
+    progress,
+    score,
+    stars,
+    stringTime,
+    userPlayedDeckQuery.data?.current_stars,
+    userPlayedDeckQuery.data?.level,
+  ]);
 
   // update score
   useEffect(() => {

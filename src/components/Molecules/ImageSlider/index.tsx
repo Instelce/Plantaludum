@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 
 import "./style.scss";
-import {ArrowLeft, ArrowRight} from "react-feather";
+import { ArrowLeft, ArrowRight } from "react-feather";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 

@@ -1,7 +1,7 @@
-import React, {ButtonHTMLAttributes, useRef} from "react";
+import React, { ButtonHTMLAttributes, useRef } from "react";
 
 import "./ChoiceBlock.scss";
-import {Check, X} from "react-feather";
+import { Check, X } from "react-feather";
 import Button from "../../Atoms/Buttons/Button";
 
 type ChoiceBlockProps = {

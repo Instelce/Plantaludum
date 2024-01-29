@@ -1,8 +1,8 @@
 import "./Selector.scss";
 import Button from "../../Atoms/Buttons/Button";
 import classNames from "classnames";
-import React, {useEffect, useState} from "react";
-import {Check, RefreshCcw} from "react-feather";
+import React, { useEffect, useState } from "react";
+import { Check, RefreshCcw } from "react-feather";
 
 type SelectorProps = {
   inputId?: string;

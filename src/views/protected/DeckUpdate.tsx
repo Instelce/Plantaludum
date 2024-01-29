@@ -1,28 +1,28 @@
-import React, {FormEvent, useEffect, useState} from "react";
-import {ErrorBoundary} from "react-error-boundary";
+import React, { FormEvent, useEffect, useState } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 import Dropdown from "../../components/Molecules/Dropdown/Dropdown";
-import AutocompleteInput
-  from "../../components/Molecules/AutocompleteInput/Autocomplete";
+import AutocompleteInput from "../../components/Molecules/AutocompleteInput/Autocomplete";
 import Checkbox from "../../components/Atoms/Checkbox/Checkbox";
 import Button from "../../components/Atoms/Buttons/Button";
-import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import Selector from "../../components/Organisms/Selector/Selector";
 import useUser from "../../hooks/auth/useUser";
 import usePrivateFetch from "../../hooks/auth/usePrivateFetch";
-import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {UpdateDeckFormDataType} from "../../services/api/types/decks";
-import {decks, PaginationResponseType} from "../../services/api";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { UpdateDeckFormDataType } from "../../services/api/types/decks";
+import { decks, PaginationResponseType } from "../../services/api";
 import useFormFilled from "../../hooks/useFormFilled";
-import {deleteDublicates} from "../../utils/helpers";
-import {ImageType} from "../../services/api/types/images";
+import { deleteDublicates } from "../../utils/helpers";
+import { ImageType } from "../../services/api/types/images";
 import Navbar from "../../components/Organisms/Navbar/Navbar";
 import Input from "../../components/Atoms/Input/Input";
 import Textarea from "../../components/Atoms/Textarea/Textarea";
 import Option from "../../components/Atoms/Option/Option";
 import useDeck from "../../hooks/api/useDeck";
-import {useNotification} from "../../context/NotificationsProvider";
-import {flore} from "../../services/api/flore";
+import { useNotification } from "../../context/NotificationsProvider";
+import { flore } from "../../services/api/flore";
 import Header from "../../components/Molecules/Header/Header";
+import PlantImageSelector from "../../components/Organisms/PlantImageSelector/PlantImageSelector";
 
 function DeckUpdate() {
   const user = useUser();
@@ -58,39 +58,6 @@ function DeckUpdate() {
     },
   });
 
-  const {
-    isLoading: imagesLoading,
-    data: imagesData,
-    error,
-    refetch: fetchImages,
-  } = useQuery<PaginationResponseType<ImageType>, Error>({
-    queryKey: ["images"],
-    queryFn: () => flore.images.list({ plant__french_name: plantValue }),
-    staleTime: Infinity,
-    enabled: false,
-  });
-  const plantImagesData = imagesData || null;
-
-  // get all image urls for autocomplete input
-  useEffect(() => {
-    if (plantIsValid) {
-      fetchImages();
-    }
-  }, [fetchImages, plantIsValid]);
-
-  // set plant images to an array of images
-  useEffect(() => {
-    if (plantImagesData) {
-      setPlantImages(() =>
-        deleteDublicates(
-          plantImagesData.results.map((data: ImageType) =>
-            data.url.replace("L", "CRS"),
-          ),
-        ),
-      );
-    }
-  }, [plantImagesData]);
-
   useEffect(() => {
     if (deckQuery.isSuccess) {
       setImageValue(() => deckQuery.data.preview_image_url);
@@ -116,10 +83,6 @@ function DeckUpdate() {
       user: user?.id,
     });
   };
-
-  useEffect(() => {
-    console.log("err", error);
-  }, [error]);
 
   return (
     <>
@@ -168,42 +131,11 @@ function DeckUpdate() {
             <Option>3</Option>
           </Dropdown>
 
-          <ErrorBoundary
-            fallback={<p>Erreur lors de l'obtention des images.</p>}
-          >
-            {imageValue === null && (
-              <>
-                <AutocompleteInput
-                  label="Nom d'une plante"
-                  size="large"
-                  url={`${import.meta.env.VITE_FLORE_API_URL}/api/plants`}
-                  fieldName="french_name"
-                  maxSuggestions={5}
-                  handleValueChange={setPlantValue}
-                  setValidValue={setPlantIsValid}
-                  usageInfoText="Cherche le nom d’une plante, puis choisie l’image
-                de la plante qui te semble la mieux. Choisie la bien car c'est
-                elle qui servira d'image de couverture au decks."
-                  data-not-count
-                />
-              </>
-            )}
-          </ErrorBoundary>
-          {!imagesLoading && (
-            <div>
-              {/*{plantImages !== null ? (*/}
-              <Selector
-                inputId="preview-image-url"
-                choices={plantImages}
-                choiceType="img"
-                defaultValue={deckQuery.data?.preview_image_url}
-                setValue={setImageValue}
-              />
-              {/*) : (*/}
-              {/*  <p>Chargement des images</p>*/}
-              {/*)}*/}
-            </div>
-          )}
+          <PlantImageSelector
+            setPlantImage={setImageValue}
+            defaultValue={deckQuery.data?.preview_image_url || ""}
+          />
+
           <Checkbox
             id="private"
             label="Privé"

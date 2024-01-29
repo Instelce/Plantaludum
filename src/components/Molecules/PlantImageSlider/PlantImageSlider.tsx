@@ -1,12 +1,18 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import classNames from "classnames";
-import {ArrowUpRight, ChevronLeft, ChevronRight, Info, X,} from "react-feather";
+import {
+  ArrowUpRight,
+  ChevronLeft,
+  ChevronRight,
+  Info,
+  X,
+} from "react-feather";
 import Button from "../../Atoms/Buttons/Button";
 import "./PlantImageSlider.scss";
-import {ImageType} from "../../../services/api/types/images";
-import BoxListGroup, {BoxListItem} from "../BoxListGroup/BoxListGroup";
-import {Link} from "react-router-dom";
-import {PlantType} from "../../../services/api/types/plants";
+import { ImageType } from "../../../services/api/types/images";
+import BoxListGroup, { BoxListItem } from "../BoxListGroup/BoxListGroup";
+import { Link } from "react-router-dom";
+import { PlantType } from "../../../services/api/types/plants";
 
 type PlantImageSliderProps = {
   imagesData: ImageType[];

@@ -1,29 +1,29 @@
 import "./Autocomplete.scss";
 import Input from "../../Atoms/Input/Input";
-import React, {KeyboardEvent, useEffect, useMemo, useState} from "react";
+import React, { KeyboardEvent, useEffect, useMemo, useState } from "react";
 import classNames from "classnames";
 import Option from "../../Atoms/Option/Option";
 import useDebounce from "../../../hooks/useDebounce";
 import axios from "axios";
-import {deleteDublicates} from "../../../utils/helpers";
+import { deleteDublicates } from "../../../utils/helpers";
 import {
   AutocompleteInputProps,
   SuggestionsProps,
 } from "./AutocompleteInputProps";
 
 function AutocompleteInput({
-                             id,
-                             label,
-                             size = "large",
-                             url,
-                             fieldName,
-                             maxSuggestions = 10,
-                             handleValueChange,
-                             setValidValue = null,
-                             setSelectedValueData = null,
-                             usageInfoText = null,
-                             ...props
-                           }: AutocompleteInputProps) {
+  id,
+  label,
+  size = "large",
+  url,
+  fieldName,
+  maxSuggestions = 10,
+  handleValueChange,
+  setValidValue = null,
+  setSelectedValueData = null,
+  usageInfoText = null,
+  ...props
+}: AutocompleteInputProps) {
   const [searchValue, setSearchValue] = useState("");
   const [suggestions, setSuggestions] = useState<object | null>(null);
   const debouncedSearchValue = useDebounce(searchValue, 300);
@@ -32,7 +32,7 @@ function AutocompleteInput({
   // fetch data from url pass in props
   useEffect(() => {
     axios
-      .get(url, {params: {search: debouncedSearchValue}})
+      .get(url, { params: { search: debouncedSearchValue } })
       .then((response) => {
         setSuggestions(() => response.data.results);
       });
@@ -92,12 +92,12 @@ function AutocompleteInput({
 }
 
 function Suggestions({
-                       searchValue,
-                       fieldName,
-                       suggestions,
-                       maxSuggestions,
-                       setSelectedValue,
-                     }: SuggestionsProps) {
+  searchValue,
+  fieldName,
+  suggestions,
+  maxSuggestions,
+  setSelectedValue,
+}: SuggestionsProps) {
   const [selectedSuggestion, setSelectedSuggestion] = useState(0);
   const filteredSuggestions = useMemo(() => {
     if (searchValue.length === 0) {

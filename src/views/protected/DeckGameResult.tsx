@@ -1,22 +1,21 @@
 import React from "react";
-import {Link, Navigate, useLocation, useParams} from "react-router-dom";
+import { Link, Navigate, useLocation, useParams } from "react-router-dom";
 import Navbar from "../../components/Organisms/Navbar/Navbar";
 import Button from "../../components/Atoms/Buttons/Button";
 import useUser from "../../hooks/auth/useUser";
 import Stars from "../../components/Atoms/Stars/Stars";
-import DeckLevelCard
-  from "../../components/Molecules/DeckLevelCard/DeckLevelCard";
-import {ArrowLeft, ArrowRight} from "react-feather";
+import DeckLevelCard from "../../components/Molecules/DeckLevelCard/DeckLevelCard";
+import { ArrowLeft, ArrowRight } from "react-feather";
 
 function DeckGameResult() {
   const { deckId, deckLevel } = useParams();
-  const user = useUser()
+  const user = useUser();
 
-  const location = useLocation()
-  const deckGameResultData = location.state?.data
+  const location = useLocation();
+  const deckGameResultData = location.state?.data;
 
   if (!deckGameResultData) {
-    return <Navigate to={`/decks/${deckId}`} />
+    return <Navigate to={`/decks/${deckId}`} />;
   }
 
   return (
@@ -46,7 +45,12 @@ function DeckGameResult() {
           <h2>{deckGameResultData.score}</h2>
           <Stars count={deckGameResultData.stars} />
         </div>
-        <DeckLevelCard deck={deckGameResultData.deck} level={deckGameResultData.level} levelStars={deckGameResultData.stars} isReached={true} />
+        <DeckLevelCard
+          deck={deckGameResultData.deck}
+          level={deckGameResultData.level}
+          levelStars={deckGameResultData.stars}
+          isReached={true}
+        />
       </header>
 
       <div className="grid-buttons">

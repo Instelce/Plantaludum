@@ -1,21 +1,20 @@
-import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
-import {FormEvent, useEffect, useState} from "react";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { FormEvent, useEffect, useState } from "react";
 import Button from "../../components/Atoms/Buttons/Button.jsx";
-import AutocompleteInput
-  from "../../components/Molecules/AutocompleteInput/Autocomplete";
+import AutocompleteInput from "../../components/Molecules/AutocompleteInput/Autocomplete";
 import usePrivateFetch from "../../hooks/auth/usePrivateFetch.js";
-import {useMutation, useQueryClient} from "@tanstack/react-query";
-import {decks} from "../../services/api";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { decks } from "../../services/api";
 import Navbar from "../../components/Organisms/Navbar/Navbar";
-import {ErrorBoundary} from "react-error-boundary";
+import { ErrorBoundary } from "react-error-boundary";
 import PlantCard, {
   PlantCardRemove,
 } from "../../components/Molecules/PlantCard/PlantCard";
-import {PlantType} from "../../services/api/types/plants";
-import {ImageType} from "../../services/api/types/images";
-import {CreateDeckPlantFormDataType} from "../../services/api/types/decks";
-import {flore} from "../../services/api/flore";
-import {useNotification} from "../../context/NotificationsProvider";
+import { PlantType } from "../../services/api/types/plants";
+import { ImageType } from "../../services/api/types/images";
+import { CreateDeckPlantFormDataType } from "../../services/api/types/decks";
+import { flore } from "../../services/api/flore";
+import { useNotification } from "../../context/NotificationsProvider";
 import useDeck from "../../hooks/api/useDeck";
 import Header from "../../components/Molecules/Header/Header";
 

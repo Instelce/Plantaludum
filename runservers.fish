@@ -1,5 +1,7 @@
 #!/usr/bin/env fish
 
+systemctl start postgresql
+
 set FLORE_API_PATH "$HOME/documents/lab/FloreAPI"
 set PLANTALUDUM_API_PATH "$HOME/documents/lab/Plantaludum/API"
 set ACTIVATION_SCRIPT "env/bin/activate.fish"
