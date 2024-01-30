@@ -6,7 +6,7 @@ type IconProps = {
 function Flower({ fill = "#fff", color = "#fff", ...props }: IconProps) {
   return (
     <svg
-      style={{stroke: "none"}}
+      style={{ stroke: "none" }}
       {...props}
       width="20"
       height="20"

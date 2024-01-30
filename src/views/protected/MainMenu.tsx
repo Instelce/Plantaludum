@@ -4,7 +4,7 @@ import usePrivateFetch from "../../hooks/auth/usePrivateFetch.js";
 import Navbar from "../../components/Organisms/Navbar/Navbar";
 import Button from "../../components/Atoms/Buttons/Button";
 import { DeckType, UserPlayedDeckType } from "../../services/api/types/decks";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { decks, users } from "../../services/api/plantaludum";
 import useUser from "../../hooks/auth/useUser";
 import DeckCard from "../../components/Molecules/DeckCard/DeckCard";
@@ -18,8 +18,13 @@ function MainMenu() {
   const privateFetch = usePrivateFetch();
   const user = useUser();
   const [searchOwnDeckInput, setSearchOwnDeckInput] = useState("");
-  const userDecksQuery = useUserDecks(user?.id as number);
 
+  // User decks
+  const userDecksQuery = useUserDecks({
+    id: user?.id as number
+  });
+
+  // User played decks
   const playedDecksQuery = useQuery<UserPlayedDeckType[]>({
     queryKey: ["user-played-decks"],
     queryFn: () => users.playedDecks.list(user?.id as number),

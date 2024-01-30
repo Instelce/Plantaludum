@@ -53,14 +53,14 @@ function useDeck({
     if (deckPlantsQuery.isSuccess && fetchPlants) {
       plantsQuery.refetch();
     }
-  }, [deckPlantsQuery.isSuccess, plantsQuery]);
+  }, [deckPlantsQuery.isSuccess]);
 
   // fetch plants images
   useEffect(() => {
     if (deckPlantsQuery.isSuccess && fetchImages) {
       plantsImagesQuery.refetch();
     }
-  }, [deckPlantsQuery.isSuccess, plantsImagesQuery]);
+  }, [deckPlantsQuery.isSuccess]);
 
   return {
     deckQuery: deckQuery || {},

@@ -17,7 +17,11 @@ function ManageDeckButton({ deck }: ManageDeckButtonProps) {
       </div>
       <div className="flex center">
         <Link to={`/decks/${deck.id}`}>{deck.name}</Link>
-        {deck.private && <div className="private ml-1"><Lock size={15} /></div>}
+        {deck.private && (
+          <div className="private ml-1">
+            <Lock size={15} />
+          </div>
+        )}
       </div>
 
       <div>

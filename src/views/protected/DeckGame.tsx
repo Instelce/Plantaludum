@@ -31,11 +31,13 @@ function DeckGame() {
   const user = useUser();
 
   const scoreRightAnswer = 100;
-  const maxQuestions = 1;
+  const maxQuestions = 10 + (parseInt(deckLevel) * 10);
 
   const [showResult, setShowResult] = useState(false);
   const [isRight, setIsRight] = useState(undefined);
-  const { stringTime, start, reset } = useTimer({ startValue: 5 });
+  const { formattedTime, seconds, start, reset } = useTimer({
+    initialSeconds: 5 * 60
+  });
   const [userErrors, setUserErrors] = useState(0);
 
   const [isFisrtPlay, setIsFisrtPlay] = useState(false);
@@ -117,7 +119,7 @@ function DeckGame() {
   // get new plant on start
   useEffect(() => {
     // console.log("start p");
-    if (deckPlantsImagesQuery.isSuccess && deckPlantsQuery.isFetched) {
+    if (deckPlantsImagesQuery.isSuccess && deckPlantsQuery.isSuccess) {
       setPlantsData(() => deckPlantsQuery.data || []);
       const currentPlantData = arrayChoice(deckPlantsQuery.data || [])[0];
       setCurrentPlant(() => currentPlantData);
@@ -127,21 +129,20 @@ function DeckGame() {
     deckPlantsImagesQuery.isSuccess,
     currentPlant,
     plantsData,
-    deckPlantsQuery.isFetched,
     deckPlantsQuery.data,
   ]);
 
   // load images in cache
-  useEffect(() => {
-    if (deckPlantsImagesQuery.isSuccess) {
-      setImagesArray(() =>
-        Object.values(deckPlantsImagesQuery.data)
-          .map((plants) => plants.images)
-          .map((images) => images.map((img) => img.url))
-          .flat(1),
-      );
-    }
-  }, [deckPlantsImagesQuery.data, deckPlantsImagesQuery.isSuccess]);
+  // useEffect(() => {
+  //   if (deckPlantsImagesQuery.isSuccess) {
+  //     setImagesArray(() =>
+  //       Object.values(deckPlantsImagesQuery.data)
+  //         .map((plants) => plants.images)
+  //         .map((images) => images.map((img) => img.url))
+  //         .flat(1),
+  //     );
+  //   }
+  // }, [deckPlantsImagesQuery.data, deckPlantsImagesQuery.isSuccess]);
 
   // set images
   useEffect(() => {
@@ -219,7 +220,8 @@ function DeckGame() {
 
   useEffect(() => {
     // redirect to result page if deck is finished
-    if (progress === maxQuestions) {
+    // or when time is finished
+    if (progress === maxQuestions || seconds === 0) {
       console.log("Deck quiz finished");
       if (isFisrtPlay) {
         console.log("Create deck", stars);
@@ -249,13 +251,14 @@ function DeckGame() {
               deck: deckQuery.data,
               level: deckLevel,
               stars: stars,
-              times: stringTime,
+              times: seconds,
             },
           },
         });
       }, 2000);
     }
   }, [
+    seconds,
     deckId,
     deckLevel,
     deckQuery.data,
@@ -266,7 +269,6 @@ function DeckGame() {
     progress,
     score,
     stars,
-    stringTime,
     userPlayedDeckQuery.data?.current_stars,
     userPlayedDeckQuery.data?.level,
   ]);
@@ -296,7 +298,7 @@ function DeckGame() {
     <div className="deck-game-page">
       <Header.Root type="page">
         <div className="timer">
-          <span>{stringTime}</span>
+          <span>{formattedTime}</span>
           <RotateCcw onClick={() => resetQuiz()} />
         </div>
         <div className="stats">

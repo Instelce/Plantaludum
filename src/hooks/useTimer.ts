@@ -1,44 +1,44 @@
-import { useEffect, useState } from "react";
+import {useCallback, useEffect, useState} from "react";
 
-export function useTimer({ startValue = 5 }) {
-  const [timer, setTimer] = useState({
-    minutes: startValue,
-    seconds: 0,
-  });
-  const [toggle, setToggle] = useState(false);
-
+const interval = (delay = 0) => callback => {
   useEffect(() => {
-    const timerFunc = setTimeout(() => {
-      // console.log('effect', toggle, timer)
-      if (toggle && timer["minutes"] > 0) {
-        setTimer((v) => ({ ...timer, seconds: v["seconds"] - 1 }));
-        if (timer["seconds"] === 0) {
-          setTimer((v) => ({
-            minutes: v["minutes"] - 1,
-            seconds: 59,
-          }));
-        }
-      }
-    }, 1000);
+    const id = setInterval(callback, delay);
 
-    return () => clearTimeout(timerFunc);
-  }, [timer, toggle]);
+    return () => clearInterval(id);
+  }, [callback]);
+};
 
-  const reset = () => {
-    setTimer({
-      minutes: startValue,
-      seconds: 0,
-    });
+const useSecondsInterval = interval(1000);
+
+export const useTimer = ({
+                           initiallyRunning = false,
+                           initialSeconds = 60,
+                           type = "DECREMENT",
+                           end = 0,
+                         } = {}) => {
+  const [seconds, setSeconds] = useState(initialSeconds);
+  const [running, setRunning] = useState(initiallyRunning);
+
+  const tick = useCallback(
+    () => (running ?
+      setSeconds((seconds) =>
+        type == "DECREMENT" ?
+          seconds > end ? seconds - 1 : end :
+          seconds < end ? seconds + 1: end)
+      : undefined),
+    [running]
+  );
+
+  const start = () => setRunning(true);
+  const pause = () => setRunning(false);
+  const reset = () => setSeconds(initialSeconds);
+  const stop = () => {
+    pause();
+    reset();
   };
+  let formattedTime = new Date(seconds * 1000).toISOString().substring(14, 19)
 
-  return {
-    seconds: timer["seconds"],
-    minutes: timer["minutes"],
-    stringTime: `${timer["minutes"] > 9 ? "" : "0"}${timer["minutes"]}:${
-      timer["seconds"] > 9 ? "" : "0"
-    }${timer["seconds"]}`,
-    start: () => setToggle(true),
-    pause: () => setToggle(false),
-    reset: reset,
-  };
-}
+  useSecondsInterval(tick);
+
+  return {pause, reset, running, seconds, formattedTime, start, stop};
+};

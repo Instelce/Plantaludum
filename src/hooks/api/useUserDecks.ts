@@ -1,23 +1,29 @@
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { decks } from "../../services/api";
-import { DeckType } from "../../services/api/types/decks";
-import useUser from "../auth/useUser";
+import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { users } from "../../services/api/plantaludum";
 
-const useUserDecks = (id: number) => {
+type UseUserDecksArgs = {
+  id: number,
+  fieldFilters?: object
+}
+
+const useUserDecks = ({id, fieldFilters}: UseUserDecksArgs) => {
   const userDecksQuery = useQuery({
     queryKey: ["user-decks", id],
-    queryFn: () => users.decks(id as number),
+    queryFn: () => users.decks({
+      userId: id,
+      fieldFilters: fieldFilters
+    }),
     enabled: false,
   });
 
   useEffect(() => {
     if (id) {
-      userDecksQuery.refetch();
+      console.log("Fetch to get user decks")
       console.log(id, userDecksQuery.data);
+      userDecksQuery.refetch();
     }
-  }, [id]);
+  }, [id, userDecksQuery]);
 
   return userDecksQuery;
 };

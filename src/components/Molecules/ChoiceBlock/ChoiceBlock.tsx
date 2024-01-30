@@ -26,10 +26,10 @@ function ChoiceBlock({
   const handleDoubleClick = () => {
     setShowResult(true);
     setIsRight?.(isRightAnswer);
-    if (!isRightAnswer && ref.current) {
+    /*if (!isRightAnswer && ref.current) {
       ref.current.style.animation = "";
       ref.current.style.animation = "shake .2s ease";
-    }
+    }*/
   };
 
   return (

@@ -201,20 +201,25 @@ function Explorer() {
             )}
           </div>
 
-          <div
+          {hasNextPage && <div
             ref={loaderSectionRef}
             className={classNames("deck-loader", {
               "no-results": !hasNextPage,
             })}
           >
             {hasNextPage ? "Chargement..." : "Plus de decks"}
-          </div>
+          </div>}
+
+          {!hasNextPage && <div className="flex center pt-1 pb-1">
+            <p className="t-center">Plus aucun deck à charger ! <br/>Si tu pense qu'il manque un deck, <Link to="/decks/create" className="link">créer en un</Link>.</p>
+          </div>}
+
         </>
       )}
 
       {isLoading && (
         <div className="center-loader">
-          <Loader />
+          <Loader/>
         </div>
       )}
 

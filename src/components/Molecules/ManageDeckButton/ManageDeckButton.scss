@@ -12,14 +12,18 @@
   box-shadow: 0 2px 4px 0 rgba(var(--color-gray-1), 0.2);
 
   .private {
-    padding: .5rem;
+    padding: 0.5rem;
     z-index: 4;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    background: radial-gradient(circle at center, rgba(var(--color-gray-4), 1), transparent);
+    background: radial-gradient(
+      circle at center,
+      rgba(var(--color-gray-4), 1),
+      transparent
+    );
     border-radius: 5px;
   }
 

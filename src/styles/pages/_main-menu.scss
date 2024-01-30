@@ -19,7 +19,7 @@
     border-radius: 100px;
 
     font-size: var(--typescale-h5);
-    transition: box-shadow .2s ease;
+    transition: box-shadow 0.2s ease;
 
     &:hover {
       box-shadow: 0 0 0 2px rgb(var(--color-gray-4));

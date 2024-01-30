@@ -46,8 +46,8 @@ function Root() {
         <div className="container">
           <div className="scroller">
             <Outlet />
-            <footer>© 2024 - Plantaludum Github</footer>
           </div>
+            <footer>© 2024 - Plantaludum Github</footer>
         </div>
         <ButtonsMenu />
       </div>

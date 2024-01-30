@@ -39,7 +39,7 @@ function PlantImageSelector({
   // set image value to null if default value doesn't exist
   useEffect(() => {
     if (defaultValue === "") {
-      setImageValue(null)
+      setImageValue(null);
     }
   }, [defaultValue]);
 

@@ -25,9 +25,6 @@ function UserProfile() {
     modal: "",
   });
 
-  // User decks
-  const userDecksQuery = useUserDecks(parseInt(userId));
-
   // User data
   const currentUser = useUser();
   const userQuery = useQuery({
@@ -36,7 +33,16 @@ function UserProfile() {
   });
   const userData = userQuery.data || null;
 
-  // Update user data
+  // Current user profile
+  const currentUserProfile = userData?.id === currentUser?.id
+
+  // User decks
+  const userDecksQuery = useUserDecks({
+    id: parseInt(userId),
+    fieldFilters: currentUserProfile ? {} : {private: false}
+  });
+
+  // Update user data mutation
   const queryClient = useQueryClient();
   const updateUserMutation = useMutation({
     mutationKey: ["user-update", userId],
@@ -55,7 +61,7 @@ function UserProfile() {
     },
   });
 
-  // reset stats
+  // Reset stats mutation
   const refreshUserStatsMutation = useMutation({
     mutationKey: ["user-refresh-stats", userId],
     mutationFn: () =>
@@ -192,13 +198,12 @@ function UserProfile() {
         <Header.Right>
           <span>Score</span>
           <h2>{userData?.score}</h2>
-          {/*{userData?.level}*/}
         </Header.Right>
       </Header.Root>
 
       {userData && currentUser && (
         <>
-          {currentUser.id === userData.id && (
+          {currentUserProfile && (
             <>
               <Tabs.Root defaultValue="actions">
                 <div className="fill-horizontal center sep-bottom">
