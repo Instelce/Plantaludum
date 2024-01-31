@@ -34,6 +34,7 @@ function Dropdown({
   const [showOptions, setShowOptions] = useState(false);
   const [options, setOptions] = useState([]);
   const [currentValue, setCurrentValue] = useState("");
+  const [currentRealValue, setCurrentRealValue] = useState(undefined)
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(0);
   const [buttonFocus, setButtonFocus] = useState(true);
   const [mouseOnOptions, setMouseOnOptions] = useState(false);
@@ -42,10 +43,6 @@ function Dropdown({
   const id = useId();
 
   useEffect(() => {
-    if (defaultValue) {
-      setCurrentValue(defaultValue);
-    }
-
     // get options in array
     const childrens = Children.toArray(children).filter(
       (child) => child.type === Option,
@@ -53,9 +50,18 @@ function Dropdown({
     const newOptions: string[] = [];
     childrens.map((child) => {
       let value = child.props.value ? child.props.value : child.props.children;
+      if (child.props.children === defaultValue && child.props.value) {
+        setCurrentRealValue(child.props.value)
+        handleValueChange && handleValueChange(child.props.value);
+      }
       newOptions.push(value);
     });
     setOptions(newOptions);
+
+    // set default value
+    if (defaultValue) {
+      setCurrentValue(defaultValue);
+    }
   }, []);
 
   // hide options
@@ -94,14 +100,18 @@ function Dropdown({
   }, [showOptions, selectedOptionIndex, options]);
 
   useEffect(() => {
-    handleValueChange && handleValueChange(currentValue);
+    if (handleValueChange) {
+      console.log("CURRENT VALUE", currentValue, "CURRENT REAL VALUE", currentRealValue);
+      if (currentRealValue !== undefined) handleValueChange(currentRealValue);
+      else handleValueChange(currentValue);
+    }
 
     if (inputRef.current && currentValue !== undefined) {
       let ev = new Event("input", { bubbles: true });
       inputRef.current.value = currentValue;
       inputRef.current.dispatchEvent(ev);
     }
-  }, [currentValue, handleValueChange]);
+  }, [currentValue, currentRealValue, handleValueChange]);
 
   return (
     <div className={classNames("dropdown")}>
@@ -142,36 +152,39 @@ function Dropdown({
         />
       </Button>
 
-      <div
-        ref={optionsRef}
-        className={classNames("options-container", {
-          show: showOptions,
-        })}
-        onMouseEnter={() => setMouseOnOptions(() => true)}
-        onMouseLeave={() => setMouseOnOptions(() => false)}
-      >
-        {Children.map(children, (option: OptionProps, index: number) => {
-          if (option.type === Option) {
-            let value = option.props.value
-              ? option.props.value
-              : option.props.children;
-            return React.cloneElement(option, {
-              ...option.props,
-              active: index === selectedOptionIndex,
-              key: index,
-              onClick: (e) => {
-                e.preventDefault();
-                setCurrentValue(
-                  option.props.value ? option.props.children : value,
-                );
-                setShowOptions(false);
-              },
-            });
-          } else {
-            return null;
-          }
-        })}
-      </div>
+      {showOptions && <>
+        <div
+          ref={optionsRef}
+          className={classNames("options-container", {
+            show: showOptions,
+          })}
+          onMouseEnter={() => setMouseOnOptions(() => true)}
+          onMouseLeave={() => setMouseOnOptions(() => false)}
+        >
+          {Children.map(children, (option: OptionProps, index: number) => {
+            if (option.type === Option) {
+              let value = option.props.value
+                ? option.props.value
+                : option.props.children;
+              return React.cloneElement(option, {
+                ...option.props,
+                active: index === selectedOptionIndex,
+                key: index,
+                onClick: (e) => {
+                  e.preventDefault();
+                  setCurrentValue(
+                    option.props.value ? option.props.children : value,
+                  );
+                  setCurrentRealValue(value)
+                  setShowOptions(false);
+                },
+              });
+            } else {
+              return null;
+            }
+          })}
+        </div>
+      </>}
     </div>
   );
 }

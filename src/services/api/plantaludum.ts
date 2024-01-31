@@ -87,18 +87,26 @@ export const users = {
   delete: (privateFetch: AxiosInstance, userId: number) =>
     privateFetch.delete(`/api/auth/users/${userId}`).then((r) => r.data),
 
-  decks: ({userId, fieldFilters = {}}: {userId?: number, fieldFilters?: object}) => {
-    const params = new URLSearchParams()
+  decks: ({
+    userId,
+    fieldFilters = {},
+  }: {
+    userId?: number;
+    fieldFilters?: object;
+  }) => {
+    const params = new URLSearchParams();
 
     for (const [key, value] of Object.entries(fieldFilters)) {
       if (value != null) {
-        params.set(key, value.toString())
+        params.set(key, value.toString());
       }
     }
 
-    console.log(fieldFilters, params)
+    console.log(fieldFilters, params);
 
-    return api.get(`/api/user-decks/${userId}?${params}`).then((r) => r.data as DeckType[])
+    return api
+      .get(`/api/user-decks/${userId}?${params}`)
+      .then((r) => r.data as DeckType[]);
   },
   playedDecks: {
     list: (userId: number) =>

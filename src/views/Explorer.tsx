@@ -177,49 +177,62 @@ function Explorer() {
             {filteredDecks && (
               <>
                 {filteredDecks?.map((deck: DeckType) => (
-                  <DeckCard.Root key={deck.id} deck={deck}>
-                    <Button asChild label="Découvrir">
-                      <Link to={`/decks/${deck.id}`}>
-                        {user?.id === deck.user.id ? "Voir" : "Découvrir"}
-                      </Link>
-                    </Button>
-                    {user?.id === deck.user.id && (
-                      <Button asChild onlyIcon color="yellow">
-                        <Link to={`/decks/${deck.id}/update`}>
-                          <Edit />
+                  <DeckCard.Root key={deck.id}>
+                    <DeckCard.Header deck={deck} />
+                    <DeckCard.Buttons>
+                      <Button asChild label="Découvrir">
+                        <Link to={`/decks/${deck.id}`}>
+                          {user?.id === deck.user.id ? "Voir" : "Découvrir"}
                         </Link>
                       </Button>
-                    )}
-                    <Button asChild color="yellow" onlyIcon>
-                      <Link to={`/decks/${deck.id}/game/1`}>
-                        <Zap />
-                      </Link>
-                    </Button>
+                      {user?.id === deck.user.id && (
+                        <Button asChild onlyIcon color="yellow">
+                          <Link to={`/decks/${deck.id}/update`}>
+                            <Edit />
+                          </Link>
+                        </Button>
+                      )}
+                      <Button asChild color="yellow" onlyIcon>
+                        <Link to={`/decks/${deck.id}/game/1`}>
+                          <Zap />
+                        </Link>
+                      </Button>
+                    </DeckCard.Buttons>
                   </DeckCard.Root>
                 ))}
               </>
             )}
           </div>
 
-          {hasNextPage && <div
-            ref={loaderSectionRef}
-            className={classNames("deck-loader", {
-              "no-results": !hasNextPage,
-            })}
-          >
-            {hasNextPage ? "Chargement..." : "Plus de decks"}
-          </div>}
+          {hasNextPage && (
+            <div
+              ref={loaderSectionRef}
+              className={classNames("deck-loader", {
+                "no-results": !hasNextPage,
+              })}
+            >
+              {hasNextPage ? "Chargement..." : "Plus de decks"}
+            </div>
+          )}
 
-          {!hasNextPage && <div className="flex center pt-1 pb-1">
-            <p className="t-center">Plus aucun deck à charger ! <br/>Si tu pense qu'il manque un deck, <Link to="/decks/create" className="link">créer en un</Link>.</p>
-          </div>}
-
+          {!hasNextPage && (
+            <div className="flex center pt-1 pb-1">
+              <p className="t-center">
+                Plus aucun deck à charger ! <br />
+                Si tu pense qu'il manque un deck,{" "}
+                <Link to="/decks/create" className="link">
+                  créer en un
+                </Link>
+                .
+              </p>
+            </div>
+          )}
         </>
       )}
 
       {isLoading && (
         <div className="center-loader">
-          <Loader/>
+          <Loader />
         </div>
       )}
 

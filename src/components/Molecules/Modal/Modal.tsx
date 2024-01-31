@@ -10,6 +10,7 @@ type ModalProps = {
 };
 
 function Modal({ show, children }: ModalProps) {
+  // disable scroll when modal is open
   useEffect(() => {
     if (show) {
       disableBodyScroll(document.querySelector(".container") as HTMLElement);

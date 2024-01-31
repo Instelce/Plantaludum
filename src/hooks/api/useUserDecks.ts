@@ -3,23 +3,24 @@ import { useEffect } from "react";
 import { users } from "../../services/api/plantaludum";
 
 type UseUserDecksArgs = {
-  id: number,
-  fieldFilters?: object
-}
+  id: number;
+  fieldFilters?: object;
+};
 
-const useUserDecks = ({id, fieldFilters}: UseUserDecksArgs) => {
+const useUserDecks = ({ id, fieldFilters }: UseUserDecksArgs) => {
   const userDecksQuery = useQuery({
     queryKey: ["user-decks", id],
-    queryFn: () => users.decks({
-      userId: id,
-      fieldFilters: fieldFilters
-    }),
+    queryFn: () =>
+      users.decks({
+        userId: id,
+        fieldFilters: fieldFilters,
+      }),
     enabled: false,
   });
 
   useEffect(() => {
     if (id) {
-      console.log("Fetch to get user decks")
+      console.log("Fetch to get user decks");
       console.log(id, userDecksQuery.data);
       userDecksQuery.refetch();
     }

@@ -108,7 +108,11 @@ function Suggestions({
       // then filter by search value
       results = results.filter(
         (value: string) =>
-          value?.toLowerCase().startsWith(searchValue.toLowerCase().charAt(1)) || value?.toLowerCase().indexOf(searchValue?.toLowerCase()) != -1,
+          value
+            ?.toLowerCase()
+            .startsWith(searchValue.toLowerCase().charAt(1)) ||
+          value?.toLowerCase().indexOf(searchValue?.toLowerCase()) != -1 ||
+          value?.toLowerCase().search(searchValue.toLowerCase()) > -1,
       );
       // and get only keep 0 to maxSuggestions values
       results = results.slice(0, maxSuggestions);

@@ -1,7 +1,7 @@
+import "./Switch.scss";
 import React, { InputHTMLAttributes, useId } from "react";
-import "./Checkbox.scss";
 
-type CheckboxProps = {
+type SwitchProps = {
   id?: string;
   label: string;
   takeValue: string | boolean;
@@ -10,7 +10,7 @@ type CheckboxProps = {
   disabled?: boolean;
 } & InputHTMLAttributes<HTMLInputElement>;
 
-function Checkbox({
+function Switch({
   id,
   label,
   takeValue,
@@ -18,24 +18,27 @@ function Checkbox({
   handleValueChange = null,
   disabled,
   ...props
-}: CheckboxProps) {
+}: SwitchProps) {
   const defaultId = useId();
   const uniqueId = id ? id : defaultId;
   return (
-    <div className="checkbox">
-      <input
-        type="checkbox"
-        id={uniqueId}
-        name={uniqueId}
-        disabled={disabled}
-        value={takeValue.toString()}
-        checked={value}
-        onChange={(e) => handleValueChange?.(e.target.checked)}
-        {...props}
-      />
+    <div className="switch-container">
+      <div className="switch">
+        <input
+          type="checkbox"
+          id={uniqueId}
+          name={uniqueId}
+          disabled={disabled}
+          value={takeValue.toString()}
+          checked={value}
+          onChange={(e) => handleValueChange?.(e.target.checked)}
+          {...props}
+        />
+        <span className="slider"></span>
+      </div>
       <label htmlFor={uniqueId}>{label}</label>
     </div>
   );
 }
 
-export default Checkbox;
+export default Switch;

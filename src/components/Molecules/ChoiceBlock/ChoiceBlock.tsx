@@ -1,4 +1,4 @@
-import React, { ButtonHTMLAttributes, useRef } from "react";
+import React, {ButtonHTMLAttributes, useEffect, useRef, useState} from "react";
 
 import "./ChoiceBlock.scss";
 import { Check, X } from "react-feather";
@@ -22,22 +22,34 @@ function ChoiceBlock({
   setIsRight,
 }: ChoiceBlockProps) {
   const ref = useRef<HTMLButtonElement>(null);
+  const [isClicked, setIsClicked] = useState(false)
 
   const handleDoubleClick = () => {
     setShowResult(true);
     setIsRight?.(isRightAnswer);
+    setIsClicked(true);
+
+    // shake animation
     /*if (!isRightAnswer && ref.current) {
       ref.current.style.animation = "";
       ref.current.style.animation = "shake .2s ease";
     }*/
   };
 
+  useEffect(() => {
+    if (isClicked) {
+      setTimeout(() => {
+        setIsClicked(false)
+      }, 1000);
+    }
+  }, [isClicked]);
+
   return (
     <Button
       color="gray"
       ref={ref}
       className={`choice-block
-            ${showResult ? "show-result" : ""} 
+            ${showResult || isClicked ? "show-result" : ""} 
             ${isRightAnswer ? "right-answer" : ""}`}
       onDoubleClick={handleDoubleClick}
       fill

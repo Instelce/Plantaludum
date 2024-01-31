@@ -1,7 +1,10 @@
 import { apiFlore } from "./axios";
+import { PlantType } from "./types/plants";
 
 export function loadRandomPlants(number = 10) {
-  return apiFlore.get(`api/plants/random/${number}`).then((r) => r.data);
+  return apiFlore
+    .get(`api/plants/random/${number}`)
+    .then((r) => r.data as PlantType[]);
 }
 
 export function loadPlants({

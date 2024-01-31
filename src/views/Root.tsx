@@ -17,14 +17,15 @@ function ButtonsMenu() {
           <HelpCircle />
         </Link>
       </Button>
-      <Button asChild color="dark-gray" size="medium" onlyIcon>
-        <Link to="/settings">
-          <Settings />
-        </Link>
-      </Button>
+
       {accessToken && (
         <>
           {" "}
+          <Button asChild color="dark-gray" size="medium" onlyIcon>
+            <Link to="/settings">
+              <Settings />
+            </Link>
+          </Button>
           <Button asChild color="dark-gray" size="medium" onlyIcon>
             <Link to={`profile/${currentUser?.id}`}>
               <User />
@@ -47,7 +48,7 @@ function Root() {
           <div className="scroller">
             <Outlet />
           </div>
-            <footer>© 2024 - Plantaludum Github</footer>
+          <footer>© 2024 - Plantaludum Github</footer>
         </div>
         <ButtonsMenu />
       </div>

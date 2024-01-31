@@ -34,12 +34,12 @@ function UserProfile() {
   const userData = userQuery.data || null;
 
   // Current user profile
-  const currentUserProfile = userData?.id === currentUser?.id
+  const currentUserProfile = userData?.id === currentUser?.id;
 
   // User decks
   const userDecksQuery = useUserDecks({
     id: parseInt(userId),
-    fieldFilters: currentUserProfile ? {} : {private: false}
+    fieldFilters: currentUserProfile ? {} : { private: false },
   });
 
   // Update user data mutation
@@ -205,7 +205,7 @@ function UserProfile() {
         <>
           {currentUserProfile && (
             <>
-              <Tabs.Root defaultValue="actions">
+              <Tabs.Root defaultValue="donnees">
                 <div className="fill-horizontal center sep-bottom">
                   <Tabs.List>
                     <Tabs.Trigger value="donnees">Infos Compte</Tabs.Trigger>
@@ -214,7 +214,7 @@ function UserProfile() {
                 </div>
 
                 <Tabs.Content value="actions">
-                  <div className="container-table-page">
+                  <div className="content-container">
                     <form onSubmit={submitUpdateForm}>
                       <Input
                         label="Nom"
@@ -268,7 +268,7 @@ function UserProfile() {
                 </Tabs.Content>
 
                 <Tabs.Content value="donnees">
-                  <div className="container-table-page">
+                  <div className="content-container">
                     <p>Email : {currentUser.email}</p>
                     <p>Score : {currentUser.score}</p>
                     <p>Level : {currentUser.level}</p>
@@ -291,19 +291,22 @@ function UserProfile() {
           <>
             {userDecksQuery.data?.map((deck) => (
               <>
-                <DeckCard.Root key={deck.id} deck={deck}>
-                  <Button asChild label="Découvrir">
-                    <Link to={`/decks/${deck.id}`}>
-                      {currentUser?.id === deck.user.id
-                        ? "Détail"
-                        : "Découvrir"}
-                    </Link>
-                  </Button>
-                  <Button asChild onlyIcon color="yellow">
-                    <Link to={`/decks/${deck.id}/game/1`}>
-                      <Zap />
-                    </Link>
-                  </Button>
+                <DeckCard.Root key={deck.id}>
+                  <DeckCard.Header deck={deck} />
+                 <DeckCard.Buttons>
+                   <Button asChild label="Découvrir">
+                     <Link to={`/decks/${deck.id}`}>
+                       {currentUser?.id === deck.user.id
+                         ? "Détail"
+                         : "Découvrir"}
+                     </Link>
+                   </Button>
+                   <Button asChild onlyIcon color="yellow">
+                     <Link to={`/decks/${deck.id}/game/1`}>
+                       <Zap />
+                     </Link>
+                   </Button>
+                 </DeckCard.Buttons>
                 </DeckCard.Root>
               </>
             ))}

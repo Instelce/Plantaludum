@@ -3,7 +3,7 @@ import { PropsWithChildren } from "react";
 import classNames from "classnames";
 
 type HeaderProps = {
-  type: "page" | "section";
+  type: "page" | "section" | "sub-section";
   sticky?: boolean;
   center?: boolean;
 } & PropsWithChildren;

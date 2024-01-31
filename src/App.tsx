@@ -19,6 +19,7 @@ import useUser from "./hooks/auth/useUser";
 import OwnDeck from "./routes/OwnDeck";
 import UserProfile from "./views/protected/UserProfile";
 import DeckGameResult from "./views/protected/DeckGameResult.jsx";
+import Settings from "./views/protected/Settings";
 
 function App() {
   const { deckId } = useParams();
@@ -44,6 +45,7 @@ function App() {
 
           <Route element={<PersistLogin />}>
             <Route element={<RequireAuth />}>
+              <Route path="settings" element={<Settings />} />
               <Route path="profile/:userId" element={<UserProfile />} />
 
               <Route path="mon-jardin" element={<MainMenu />}>

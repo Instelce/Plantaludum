@@ -25,4 +25,15 @@
       box-shadow: 0 0 0 2px rgb(var(--color-gray-4));
     }
   }
+
+  .level-progression {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 5px;
+    background: rgba(var(--color-yellow-light), 1);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
 }

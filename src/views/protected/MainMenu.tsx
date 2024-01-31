@@ -15,33 +15,7 @@ import ManageDeckButton from "../../components/Molecules/ManageDeckButton/Manage
 import useUserDecks from "../../hooks/api/useUserDecks";
 
 function MainMenu() {
-  const privateFetch = usePrivateFetch();
-  const user = useUser();
-  const [searchOwnDeckInput, setSearchOwnDeckInput] = useState("");
-
-  // User decks
-  const userDecksQuery = useUserDecks({
-    id: user?.id as number
-  });
-
-  // User played decks
-  const playedDecksQuery = useQuery<UserPlayedDeckType[]>({
-    queryKey: ["user-played-decks"],
-    queryFn: () => users.playedDecks.list(user?.id as number),
-    enabled: false,
-  });
-
-  const ownDeckFilteredData = useObjectSearch<DeckType>({
-    data: userDecksQuery.data,
-    searchInput: searchOwnDeckInput,
-    fieldName: "name",
-  });
-
-  useEffect(() => {
-    if (user && playedDecksQuery.isStale) {
-      playedDecksQuery.refetch();
-    }
-  }, [playedDecksQuery.isStale, user]);
+  const user = useUser()
 
   return (
     <div className="mainmenu">
@@ -72,14 +46,40 @@ function MainMenu() {
         </Header.Right>
       </Header.Root>
 
+      <CreatedDeckSection />
+
+      <PlayedDeckSection />
+
+    </div>
+  );
+}
+
+
+function CreatedDeckSection() {
+  const user = useUser()
+  const [searchInput, setSearchInput] = useState("");
+
+  // User decks
+  const userDecksQuery = useUserDecks({
+    id: user?.id as number,
+  });
+
+  const ownDeckFilteredData = useObjectSearch<DeckType>({
+    data: userDecksQuery.data,
+    searchInput: searchInput,
+    fieldName: "name",
+  });
+
+  return (
+    <>
       <Header.Root type="section">
         <Header.Title>Deck créé</Header.Title>
         <Header.Right>
           <Input
             type="search"
             label="Rechercher"
-            value={searchOwnDeckInput}
-            handleValueChange={setSearchOwnDeckInput}
+            value={searchInput}
+            handleValueChange={setSearchInput}
           />
         </Header.Right>
       </Header.Root>
@@ -103,23 +103,68 @@ function MainMenu() {
           </>
         )}
       </div>
+    </>
+  )
+}
 
+function PlayedDeckSection() {
+  const user = useUser();
+  const [searchInput, setSearchInput] = useState("");
+
+  // User played decks
+  const playedDecksQuery = useQuery<UserPlayedDeckType[]>({
+    queryKey: ["user-played-decks"],
+    queryFn: () => users.playedDecks.list(user?.id as number),
+    enabled: false,
+  });
+
+  useEffect(() => {
+    if (user && playedDecksQuery.isStale) {
+      playedDecksQuery.refetch();
+    }
+  }, [playedDecksQuery.isStale, user]);
+
+  const playedDeckFilteredData = useObjectSearch<UserPlayedDeckType>({
+    data: playedDecksQuery?.data,
+    searchInput: searchInput,
+    fieldName: "deck",
+    subField: "name",
+  });
+
+  return (
+    <>
       <Header.Root type="section">
         <Header.Title>Deck joué</Header.Title>
+        <Header.Right>
+          <Input
+            type="search"
+            label="Rechercher"
+            value={searchInput}
+            handleValueChange={setSearchInput}
+          />
+        </Header.Right>
       </Header.Root>
 
       <main className="card-grid">
         {playedDecksQuery.isSuccess && (
           <>
-            {playedDecksQuery.data.map((playedDeck) => (
-              <DeckCard.Root key={playedDeck.id} deck={playedDeck.deck}>
-                <Button asChild>
-                  <Link
-                    to={`/decks/${playedDeck.deck.id}/game/${playedDeck.level}`}
-                  >
-                    Continuer le niveau {playedDeck.level}
-                  </Link>
-                </Button>
+            {playedDeckFilteredData?.map((playedDeck) => (
+              <DeckCard.Root key={playedDeck.id}>
+                <DeckCard.Header deck={playedDeck.deck} height={200}>
+                  <span className="level-progression" style={{
+                    width: `${33.333 * playedDeck.level}%`,
+                    borderBottomRightRadius: playedDeck.level === 3 ? 0 : '10px'
+                  }}></span>
+                </DeckCard.Header>
+                <DeckCard.Buttons>
+                  <Button asChild>
+                    <Link
+                      to={`/decks/${playedDeck.deck.id}/game/${playedDeck.level}`}
+                    >
+                      Niveau {playedDeck.level}
+                    </Link>
+                  </Button>
+                </DeckCard.Buttons>
               </DeckCard.Root>
             ))}
             {playedDecksQuery.data.length === 0 && (
@@ -134,8 +179,8 @@ function MainMenu() {
           </>
         )}
       </main>
-    </div>
-  );
+    </>
+  )
 }
 
 export default MainMenu;

@@ -31,12 +31,13 @@ function DeckGame() {
   const user = useUser();
 
   const scoreRightAnswer = 100;
-  const maxQuestions = 10 + (parseInt(deckLevel) * 10);
+  // const maxQuestions = 10 + parseInt(deckLevel) * 10;
+  const maxQuestions = 3;
 
   const [showResult, setShowResult] = useState(false);
   const [isRight, setIsRight] = useState(undefined);
   const { formattedTime, seconds, start, reset } = useTimer({
-    initialSeconds: 5 * 60
+    initialSeconds: 5 * 60,
   });
   const [userErrors, setUserErrors] = useState(0);
 
@@ -63,6 +64,15 @@ function DeckGame() {
     fetchImages: true,
   });
 
+  const { mutate: mutateUserStats } = useMutation({
+    mutationKey: ["user-stats"],
+    mutationFn: ({level, score}: {level: number, score: number}) => users.update(privateFetch, user?.id as number, {
+      level: level,
+      score: score,
+      games_played: user?.games_played as number + 1,
+    }),
+  });
+
   const userPlayedDeckQuery = useMutation<UserPlayedDeckType>({
     mutationKey: ["user-played-decks", deckId],
     mutationFn: () =>
@@ -76,6 +86,7 @@ function DeckGame() {
     },
   });
 
+  // Create or update the deck currently being played on UserPlayedDecks
   const { mutate: mutateCreatePlayedDeck } = useMutation({
     mutationKey: ["user-played-decks", deckId],
     mutationFn: () =>
@@ -243,6 +254,14 @@ function DeckGame() {
         }
       }
 
+      // update user stats
+      if (user && userPlayedDeckQuery.data) {
+        mutateUserStats({
+          level: stars === 3 ? user.level + 1 : user.level,
+          score: user.score + score
+        });
+      }
+
       setTimeout(() => {
         navigate(`/decks/${deckId}/game/${deckLevel}/resultat`, {
           state: {
@@ -251,7 +270,7 @@ function DeckGame() {
               deck: deckQuery.data,
               level: deckLevel,
               stars: stars,
-              times: seconds,
+              times: formattedTime,
             },
           },
         });
@@ -281,6 +300,29 @@ function DeckGame() {
       } else {
         setUserErrors((errors) => errors + 1);
       }
+
+      // set stars
+      let percent = (progress * 100) / maxQuestions;
+      let progressStars;
+      if (percent <= 33) {
+        progressStars = 1;
+      } else if (percent <= 66) {
+        progressStars = 2;
+      } else {
+        progressStars = 3;
+      }
+
+      let userErrorStars;
+      if (userErrors <= 5) {
+        userErrorStars = 3;
+      } else if (userErrors <= 10) {
+        userErrorStars = 2;
+      } else {
+        userErrorStars = 1;
+      }
+
+      setStars(Math.min(progressStars, userErrorStars));
+
       setIsRight(undefined);
     }
   }, [isRight]);
@@ -323,6 +365,7 @@ function DeckGame() {
 
       {!imagesLoading && (
         <div className="game-content">
+          <p>{currentPlant?.french_name}</p>
           {currentImages && currentPlant && (
             <div className="game-grid" ref={deckContent}>
               {currentImages && (
@@ -339,10 +382,10 @@ function DeckGame() {
                       <ChoiceBlock
                         key={plant.id}
                         index={index}
-                        title={plant.french_name}
-                        subtitle={plant.scientific_name}
+                        title={plant[JSON.parse(localStorage.getItem("settings.gameButtonInfo")! as string).title as keyof PlantType].toString()}
+                        subtitle={plant[JSON.parse(localStorage.getItem("settings.gameButtonInfo")! as string).subtitle as keyof PlantType].toString()}
                         isRightAnswer={plant.id === currentPlant.id}
-                        showResult={showResult}
+                        showResult={plant.id === currentPlant.id ? showResult : false}
                         setShowResult={setShowResult}
                         setIsRight={setIsRight}
                       />

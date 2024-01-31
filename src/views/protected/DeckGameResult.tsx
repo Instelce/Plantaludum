@@ -6,6 +6,7 @@ import useUser from "../../hooks/auth/useUser";
 import Stars from "../../components/Atoms/Stars/Stars";
 import DeckLevelCard from "../../components/Molecules/DeckLevelCard/DeckLevelCard";
 import { ArrowLeft, ArrowRight } from "react-feather";
+import ConfettiExplosion from "react-confetti-explosion";
 
 function DeckGameResult() {
   const { deckId, deckLevel } = useParams();
@@ -44,33 +45,33 @@ function DeckGameResult() {
           <p>{deckGameResultData.times}</p>
           <h2>{deckGameResultData.score}</h2>
           <Stars count={deckGameResultData.stars} />
+          {deckGameResultData.stars === 3 && <>
+            <ConfettiExplosion force={0.6} duration={2500} particleCount={80} width={1000} />
+          </>}
         </div>
-        <DeckLevelCard
-          deck={deckGameResultData.deck}
-          level={deckGameResultData.level}
-          levelStars={deckGameResultData.stars}
-          isReached={true}
-        />
       </header>
 
-      <div className="grid-buttons">
-        <Button asChild label="" className="sb">
+      <div className="content-container grid-buttons">
+        <Button asChild className="sb" color="gray" disabled={parseInt(deckLevel) === 1}>
           <Link to={`/decks/${deckId}/game/${deckGameResultData.level - 1}`}>
             <ArrowLeft />
             Niveau précédent
           </Link>
         </Button>
-        <Button asChild label="">
+
+        <Button asChild color={deckGameResultData.stars === 3 ? "gray" : "primary"}>
           <Link to={`/decks/${deckId}/game/${deckGameResultData.level}`}>
             Recommencer
           </Link>
         </Button>
-        <Button asChild label="" className="sb">
+
+        {deckGameResultData.stars === 3 || parseInt(deckLevel) < 3 && <Button asChild className="sb">
           <Link to={`/decks/${deckId}/game/${deckGameResultData.level + 1}`}>
             Niveau suivant
             <ArrowRight />
           </Link>
-        </Button>
+        </Button>}
+
       </div>
     </div>
   );
