@@ -100,3 +100,7 @@ export function removeAccent(s: string) {
   r = r.replace(new RegExp("\\W", "g"), "");
   return r;
 }
+
+export function getAnotherFormat(imageUrl: string, newFormat: string): string {
+  return imageUrl.replace("L.jpg", `${newFormat}.jpg`)
+}

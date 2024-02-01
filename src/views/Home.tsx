@@ -1,245 +1,123 @@
-import { useEffect, useRef, useState } from "react";
-import { css } from "@emotion/css";
-import FloatingPlantCard from "../components/Molecules/FloatingPlantCard/index.jsx";
-import { arrayChoice, deleteDublicates, getRandomInt } from "../utils/helpers";
-import PlantQuiz from "../components/Organisms/PlantQuiz/index.jsx";
-import { apiFlore } from "../services/api/axios.js";
-import { useQuery } from "@tanstack/react-query";
-import { PlantType } from "../services/api/types/plants";
+import Navbar from "../components/Organisms/Navbar/Navbar";
 import Button from "../components/Atoms/Buttons/Button";
-import { Link } from "react-router-dom";
-import { flore } from "../services/api/flore";
+import {Link} from "react-router-dom";
+import React, {useEffect, useRef, useState} from "react";
+import {useQuery} from "@tanstack/react-query";
+import {flore} from "../services/api/flore";
+import {getAnotherFormat} from "../utils/helpers";
 
 function Home() {
-  const [plants, setPlants] = useState([]);
-  const [currentPlant, setCurrentPlant] = useState({});
-  const [showQuiz, setShowQuiz] = useState(false);
-  let tempPlants: PlantType[] = [];
-
-  const { isLoading, data: plantsData } = useQuery<PlantType[]>({
-    queryKey: ["plants"],
-    queryFn: async () => flore.plants.random(10),
-    staleTime: Infinity,
-  });
-
-  useEffect(() => {
-    if (!isLoading && plantsData) {
-      // let tempPlants = []
-      let col = -1;
-      const size = 300;
-
-      // loop 10 plants
-      for (let i = 0; i < 10; i++) {
-        let choices = [];
-        let images = [];
-        let plant = plantsData[i];
-        // console.log(plant)
-
-        apiFlore.get(`/api/images?plant__id=${plant.id}`).then((response) => {
-          if (response.status === 200) {
-            const allImages = response.data;
-            // console.log(i, plant.id, allImages)
-            // console.log(plant)
-
-            // get images
-            let randomImages = arrayChoice(
-              allImages.results,
-              allImages.count >= 8 ? 8 : allImages.count,
-            );
-            for (let id in randomImages) {
-              if (randomImages[id]?.url) {
-                images.push(randomImages[id].url);
-              }
-            }
-            images = deleteDublicates(images);
-
-            // console.log(images)
-
-            // get choices
-            let randomChoices = arrayChoice(plantsData, 2);
-
-            let randomPlace = getRandomInt(0, randomChoices.length + 1);
-            let id = 0;
-            for (let i = 0; i < randomChoices.length + 1; i++) {
-              if (i === randomPlace) {
-                // console.log(i)
-                choices.push({
-                  title: plant.french_name
-                    ? plant.french_name
-                    : plant.correct_name,
-                  subtitle: plant.scientific_name,
-                  rightAnswer: true,
-                });
-              } else {
-                console.log("aaa", randomChoices[id].french_name);
-                if (randomChoices[id].french_name !== plant.french_name) {
-                  choices.push({
-                    title: randomChoices[id].french_name
-                      ? randomChoices[id].french_name
-                      : randomChoices[id].correct_name,
-                    subtitle: randomChoices[id].scientific_name,
-                    rightAnswer: false,
-                  });
-                  id++;
-                }
-              }
-            }
-            choices = deleteDublicates(choices);
-            console.log(plant.french_name, choices);
-
-            tempPlants.push({
-              src: allImages.results[
-                getRandomInt(0, allImages.results.length - 1)
-              ]?.url,
-              size: size,
-              name: plant.french_name
-                ? plant.french_name
-                : plant.scientific_name,
-              found: false,
-              x: 20 * (i % 5) + 3,
-              y:
-                col === Math.ceil(10 / 2 / 2 - 1)
-                  ? i % 2 === 0
-                    ? getRandomInt(10, 15)
-                    : getRandomInt(60, 70)
-                  : i % 2 === 0
-                    ? getRandomInt(10, 20)
-                    : getRandomInt(50, 60),
-              images: images,
-              choices: choices,
-            });
-
-            if (tempPlants.length === 10) {
-              setPlants(tempPlants);
-            }
-          }
-        });
-      }
-    }
-  }, [isLoading, plantsData]);
-
-  useEffect(() => {
-    if (tempPlants.length === 10) {
-      setPlants(tempPlants);
-    }
-  }, [tempPlants]);
-
-  const handleCardClick = (e, plant) => {
-    e.preventDefault();
-    setCurrentPlant(() => plant);
-    setShowQuiz(() => !showQuiz);
-  };
-
-  const handleQuizSubmit = (plant, value) => {
-    let updatePlants = plants.map((p) => {
-      if (p.name === plant.name && !plant.found) {
-        return {
-          ...p,
-          found: value,
-        };
-      } else {
-        return p;
-      }
-    });
-    setPlants(updatePlants);
-  };
-
   return (
-    <div className="fixed-container">
-      <CardWrapper active={!showQuiz}>
-        {!isLoading &&
-          plants.map((plant, index) => (
-            <FloatingPlantCard
-              key={plant.src}
-              index={index}
-              plant={plant}
-              handleClick={handleCardClick}
-            />
-          ))}
-        <div
-          className={css`
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            display: block;
-          `}
-        >
-          <h1 className="main-title">Plantaludum</h1>
-          <Button
-            asChild
-            label="Jouer"
-            size="large"
-            color="primary"
-            fill={true}
-          >
-            <Link to="/connexion">Jouer</Link>
+    <div className="home">
+      <Navbar.Root>
+        <Navbar.Left>
+          <Link to="/explorer">Explorer</Link>
+        </Navbar.Left>
+
+        <Navbar.Right>
+          <Link to="/connexion">Connexion</Link>
+          <Button asChild>
+            <Link to="/inscription">Inscription</Link>
           </Button>
-        </div>
-      </CardWrapper>
-      <PlantQuiz
-        show={showQuiz}
-        setShow={setShowQuiz}
-        plant={currentPlant}
-        handleQuizSubmit={handleQuizSubmit}
-      />
+        </Navbar.Right>
+      </Navbar.Root>
+
+      <HomeHeader/>
+
     </div>
   );
 }
 
-export function CardWrapper({ children, active }) {
-  const ref = useRef(null);
+function HomeHeader() {
+  const [plantsImagesData, setPlantsImagesData] = useState([])
+  const [imagesLoadedCount, setImagesLoadedCount] = useState(0)
+  const plantsWallRef = useRef<HTMLDivElement>(null)
+
+  const plantsQuery = useQuery({
+    queryKey: ["home-plants"],
+    queryFn: () => flore.plants.random(30),
+  })
+
+  const plantsImagesQuery = useQuery({
+    queryKey: ["home-plants-images"],
+    queryFn: () => {
+      if (plantsQuery.isSuccess) {
+        return flore.images.getWithPlantsIds(plantsQuery.data?.map(plant => plant.id))
+      }
+    },
+    enabled: false,
+  })
+
+  // Line slide of plants images
+  useEffect(() => {
+    if (plantsWallRef.current) {
+      let lines = plantsWallRef.current.querySelectorAll(".line")
+      console.log("lines", lines)
+      lines[0].style.transform = "translateX(-2%)";
+      lines[1].style.transform = "translateX(-18%)";
+      lines[2].style.transform = "translateX(-8%)";
+    }
+  }, []);
+
+  // get images
+  useEffect(() => {
+    if (plantsQuery.isSuccess) {
+      plantsImagesQuery.refetch()
+    }
+  }, [plantsQuery.isSuccess]);
+
+  // split data of plantsImagesQuery into 3 arrays of 10 plants images
+  useEffect(() => {
+    if (plantsImagesQuery.isSuccess && plantsImagesData.length === 0) {
+      const chunkSize = 10;
+      for (let i = 0; i < plantsImagesQuery.data?.length; i += chunkSize) {
+        const chunk = [...plantsImagesQuery.data!].slice(i, i + chunkSize);
+        setPlantsImagesData(prev => prev.concat([chunk]))
+      }
+    }
+  }, [plantsImagesQuery.isSuccess]);
 
   useEffect(() => {
-    const handleMouseMove = (e) => {
-      const x = e.clientX;
-      const y = e.clientY;
-
-      const xDecimal = x / window.innerWidth;
-      const yDecimal = y / window.innerHeight;
-
-      const maxX = ref.current?.offsetWidth - window.innerWidth;
-      const maxY = ref.current?.offsetHeight - window.innerHeight;
-
-      const panX = maxX * xDecimal * -1;
-      const panY = maxY * yDecimal * -1;
-
-      if (active) {
-        ref.current.animate(
-          {
-            transform: `translate(${panX}px, ${panY}px)`,
-          },
-          {
-            duration: 4000,
-            fill: "forwards",
-            easing: "ease",
-          },
-        );
-      }
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-    };
-  }, [active]);
+    console.log(imagesLoadedCount)
+  }, [imagesLoadedCount]);
 
   return (
-    <div
-      ref={ref}
-      style={{
-        width: "140vw",
-        height: "160vh",
-        top: 0,
-        left: 0,
-        position: "absolute",
-        transition: "transform .3s cubic-bezier(.23,.74,.83,.83)",
-      }}
-    >
-      {children}
-    </div>
-  );
+    <>
+      <header>
+
+        {/* Plant wall */}
+        {plantsImagesQuery.isSuccess && (
+          <div className="plants-wall" ref={plantsWallRef}>
+            {plantsImagesData.map((lines, i) => (
+              <div key={i} className="line">
+                {lines.map(plant => {
+                  let image = plant.images[0];
+                  return (
+                    <div key={image.id} className="image-container">
+                      <img
+                        style={{opacity: imagesLoadedCount === 30 ? "1" : "0"}}
+                        src={getAnotherFormat(image.url, "CRS")}
+                        alt={`Image de ${image.author}`}
+                        onLoad={() => setImagesLoadedCount(prev => prev + 1)}
+                      />
+                      <small>Par {image.author}</small>
+                    </div>
+                  )
+                })}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Title */}
+        <div className="content">
+          <h1>Plantaludum</h1>
+          <p>Un jeux pour découvrir et apprendre à reconnaitre les plantes !</p>
+        </div>
+
+      </header>
+    </>
+  )
 }
 
 export default Home;

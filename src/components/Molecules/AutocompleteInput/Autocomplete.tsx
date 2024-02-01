@@ -22,6 +22,7 @@ function AutocompleteInput({
   setValidValue = null,
   setSelectedValueData = null,
   usageInfoText = null,
+  resetFieldOnSubmit = false,
   ...props
 }: AutocompleteInputProps) {
   const [searchValue, setSearchValue] = useState("");
@@ -46,6 +47,9 @@ function AutocompleteInput({
   }, [searchValue, selectedValue, setValidValue]);
 
   const handleOptionClick = (value: string) => {
+    if (resetFieldOnSubmit) {
+      setSelectedValue("");
+    }
     setSelectedValue(() => value);
     setSearchValue(() => value);
     setValidValue?.(() => true);

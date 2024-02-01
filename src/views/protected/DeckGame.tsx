@@ -365,7 +365,7 @@ function DeckGame() {
 
       {!imagesLoading && (
         <div className="game-content">
-          <p>{currentPlant?.french_name}</p>
+          {/*<p>{currentPlant?.french_name}</p>*/}
           {currentImages && currentPlant && (
             <div className="game-grid" ref={deckContent}>
               {currentImages && (

@@ -1,5 +1,6 @@
 import { apiFlore } from "./axios";
 import { PlantType } from "./types/plants";
+import {PlantImagesType} from "./types/images";
 
 export function loadRandomPlants(number = 10) {
   return apiFlore
@@ -48,7 +49,7 @@ export function loadPlantsIdsListImages(ids: number[]) {
 
   return apiFlore
     .get(`api/plants-list/images?${params.toString()}`)
-    .then((r) => r.data);
+    .then((r) => r.data as PlantImagesType[]);
 }
 
 type LoadImagesArgs = {

@@ -19,11 +19,11 @@ function MainMenu() {
 
   return (
     <div className="mainmenu">
-      <Navbar>
-        <div className="left">
+      <Navbar.Root>
+        <Navbar.Left>
           <Link to="/explorer">Explorer</Link>
-        </div>
-        <div className="right">
+        </Navbar.Left>
+        <Navbar.Right>
           <Button asChild label="Nouveau deck" size="large" color="gray">
             <Link
               to="/decks/create"
@@ -32,8 +32,8 @@ function MainMenu() {
               Nouveau deck
             </Link>
           </Button>
-        </div>
-      </Navbar>
+        </Navbar.Right>
+      </Navbar.Root>
 
       <Header.Root type="page">
         <Header.Title>
@@ -46,14 +46,25 @@ function MainMenu() {
         </Header.Right>
       </Header.Root>
 
-      <CreatedDeckSection />
-
-      <PlayedDeckSection />
+      <SectionOrder />
 
     </div>
   );
 }
 
+const SectionOrder = () => {
+  if (localStorage.getItem("settings.switchingGardenSection") === "true") {
+    return <>
+      <PlayedDeckSection />
+      <CreatedDeckSection />
+    </>
+  } else {
+    return <>
+      <CreatedDeckSection />
+      <PlayedDeckSection />
+    </>
+  }
+}
 
 function CreatedDeckSection() {
   const user = useUser()

@@ -21,12 +21,12 @@ function DeckGameResult() {
 
   return (
     <div className="deck-results">
-      <Navbar>
-        <div className="left">
+      <Navbar.Root>
+        <Navbar.Left>
           <Link to="/mon-jardin">Mon jardin</Link>
           <Link to="/explorer">Explorer</Link>
-        </div>
-        <div className="right">
+        </Navbar.Left>
+        <Navbar.Right>
           {user && (
             <Button asChild label="Nouveau deck" size="large" color="gray">
               <Link
@@ -37,8 +37,8 @@ function DeckGameResult() {
               </Link>
             </Button>
           )}
-        </div>
-      </Navbar>
+        </Navbar.Right>
+      </Navbar.Root>
 
       <header>
         <div>

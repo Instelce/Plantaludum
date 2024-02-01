@@ -48,14 +48,22 @@ function Register() {
 
   return (
     <>
-      <Navbar>
-        <div className="left">
+      <Navbar.Root>
+        <Navbar.Left>
           <Link to="/explorer">Explorer</Link>
-        </div>
-        <div className="right">
+        </Navbar.Left>
+        <Navbar.Right>
           <Link to="/connexion">Connexion</Link>
-        </div>
-      </Navbar>
+          <Button asChild label="Inscription" size="large" color="gray">
+            <Link
+              to="/inscription"
+              state={{ from: { pathname: location.pathname } }}
+            >
+              S&apos;inscrire
+            </Link>
+          </Button>
+        </Navbar.Right>
+      </Navbar.Root>
 
       <Header.Root type="page" center>
         <Header.Title>Inscription</Header.Title>

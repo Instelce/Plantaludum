@@ -8,15 +8,15 @@ export default {
 export const Default = () => {
   return (
     <>
-      <Navbar>
-        <div className="left">
+      <Navbar.Root>
+        <Navbar.Left>
           <a href="#">Mon jardin</a>
           <a href="#">Explorer</a>
-        </div>
-        <div className="right">
+        </Navbar.Left>
+        <Navbar.Right>
           <Button color="gray">Nouveau deck</Button>
-        </div>
-      </Navbar>
+        </Navbar.Right>
+      </Navbar.Root>
     </>
   );
 };

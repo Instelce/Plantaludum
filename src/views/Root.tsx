@@ -10,6 +10,8 @@ function ButtonsMenu() {
   const { accessToken } = useAuth();
   const currentUser = useUser();
 
+  if (!accessToken) return null;
+
   return (
     <div className="buttons-menu">
       <Button asChild color="dark-gray" size="medium" onlyIcon>

@@ -1,5 +1,6 @@
 import "./Switch.scss";
 import React, { InputHTMLAttributes, useId } from "react";
+import classNames from "classnames";
 
 type SwitchProps = {
   id?: string;
@@ -22,7 +23,7 @@ function Switch({
   const defaultId = useId();
   const uniqueId = id ? id : defaultId;
   return (
-    <div className="switch-container">
+    <div className={classNames("switch-container", props.className)}>
       <div className="switch">
         <input
           type="checkbox"

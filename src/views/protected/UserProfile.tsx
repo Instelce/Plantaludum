@@ -173,12 +173,12 @@ function UserProfile() {
         </Modal>
       )}
 
-      <Navbar>
-        <div className="left">
+      <Navbar.Root>
+        <Navbar.Left>
           <Link to="/mon-jardin">Mon jardin</Link>
           <Link to="/explorer">Explorer</Link>
-        </div>
-        <div className="right">
+        </Navbar.Left>
+        <Navbar.Right>
           <Button asChild label="Nouveau deck" size="large" color="gray">
             <Link
               to="/decks/create"
@@ -187,8 +187,8 @@ function UserProfile() {
               Nouveau deck
             </Link>
           </Button>
-        </div>
-      </Navbar>
+        </Navbar.Right>
+      </Navbar.Root>
 
       <Header.Root type="page">
         {userData && currentUser && (

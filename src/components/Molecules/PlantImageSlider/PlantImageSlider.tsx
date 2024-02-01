@@ -9,6 +9,7 @@ import {
 } from "react-feather";
 import Button from "../../Atoms/Buttons/Button";
 import "./PlantImageSlider.scss";
+import "../ImageSlider/style.scss"
 import { ImageType } from "../../../services/api/types/images";
 import BoxListGroup, { BoxListItem } from "../BoxListGroup/BoxListGroup";
 import { Link } from "react-router-dom";
@@ -31,6 +32,8 @@ function PlantImageSlider({ imagesData, plantData }: PlantImageSliderProps) {
       setCurrent(() => 0);
       setPrevImages(() => imagesData);
     }
+
+    console.log("coucou")
     // console.log(
     //   "image",
     //   imagesData.map((im) => im.url),

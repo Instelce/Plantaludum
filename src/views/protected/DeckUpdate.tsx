@@ -86,12 +86,12 @@ function DeckUpdate() {
 
   return (
     <>
-      <Navbar>
-        <div className="left">
+      <Navbar.Root>
+        <Navbar.Left>
           <Link to="/mon-jardin">Mon jardin</Link>
           <Link to="/explorer">Explorer</Link>
-        </div>
-      </Navbar>
+        </Navbar.Left>
+      </Navbar.Root>
 
       <Header.Root type="page" center>
         <Header.Title>
@@ -132,7 +132,7 @@ function DeckUpdate() {
           </Dropdown>
 
           <PlantImageSelector
-            setPlantImage={setImageValue}
+            handleImageValueChange={setImageValue}
             defaultValue={deckQuery.data?.preview_image_url || ""}
           />
 

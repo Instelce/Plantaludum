@@ -3,25 +3,26 @@ import { ErrorBoundary } from "react-error-boundary";
 import AutocompleteInput from "../../Molecules/AutocompleteInput/Autocomplete";
 import Selector from "../Selector/Selector";
 import { useQuery } from "@tanstack/react-query";
-import { PaginationResponseType } from "../../../services/api";
 import { ImageType } from "../../../services/api/types/images";
 import { flore } from "../../../services/api/flore";
 import { useEffect, useState } from "react";
-import { deleteDublicates } from "../../../utils/helpers";
+import {deleteDublicates, getAnotherFormat} from "../../../utils/helpers";
+import {PaginationResponseType} from "../../../services/api/types/pagination";
 
 type PlantImageSelectorProps = {
-  setPlantImage: (value: string) => void;
-  defaultValue: string;
+  handleImageValueChange: (value: string) => void;
+  defaultValue?: string;
 };
 
 function PlantImageSelector({
   defaultValue,
-  setPlantImage,
+  handleImageValueChange,
 }: PlantImageSelectorProps) {
   const [plantValue, setPlantValue] = useState<string | null>(null);
   const [plantIsValid, setPlantIsValid] = useState(false);
   const [plantImages, setPlantImages] = useState(null);
   const [imageValue, setImageValue] = useState<string | null>(null);
+  const [isFirst, setIsFirst] = useState(true)
 
   const {
     isLoading: imagesLoading,
@@ -34,12 +35,14 @@ function PlantImageSelector({
     staleTime: Infinity,
     enabled: false,
   });
-  const plantImagesData = imagesData || null;
+  let plantImagesData = imagesData || null;
 
   // set image value to null if default value doesn't exist
   useEffect(() => {
     if (defaultValue === "") {
       setImageValue(null);
+    } else {
+      setImageValue(defaultValue)
     }
   }, [defaultValue]);
 
@@ -47,16 +50,17 @@ function PlantImageSelector({
   useEffect(() => {
     if (plantIsValid) {
       fetchImages();
+      setIsFirst(false)
     }
   }, [fetchImages, plantIsValid]);
 
   // set plant images to an array of images
   useEffect(() => {
-    if (plantImagesData) {
+    if (plantImagesData && !isFirst) {
       setPlantImages(() =>
         deleteDublicates(
-          plantImagesData.results.map(
-            (data: ImageType) => data.url.replace("L", "CRS"), // change format of image
+          plantImagesData?.results.map(
+            (data: ImageType) => getAnotherFormat(data.url, "CRS"), // change format of image
           ),
         ),
       );
@@ -65,7 +69,7 @@ function PlantImageSelector({
 
   return (
     <>
-      <ErrorBoundary fallback={<p>Erreur lors de l'obtention des images.</p>}>
+      <ErrorBoundary fallback={<p>Erreur lors de l&apos;obtention des images.</p>}>
         {!imageValue && (
           <>
             <AutocompleteInput
@@ -89,12 +93,13 @@ function PlantImageSelector({
           {/*{plantImages !== null ? (*/}
           <Selector
             inputId="preview-image-url"
-            choices={plantImages}
+            choices={plantImages || []}
             choiceType="img"
             defaultValue={defaultValue}
+            resetChoice={() => setPlantImages([])}
             setValue={(value) => {
               setImageValue(value);
-              setPlantImage(value);
+              handleImageValueChange(value);
             }}
           />
           {/*) : (*/}

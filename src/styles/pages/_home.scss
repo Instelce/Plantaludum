@@ -1,0 +1,94 @@
+
+.home {
+
+  header {
+    height: 80vh;
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    h1 {
+      font-size: var(--typescale-h2);
+      font-weight: 500;
+    }
+
+    p {
+      max-width: 220px;
+      font-size: 1.2rem;
+    }
+
+    .content {
+      height: 100%;
+      z-index: 10;
+      padding: 0 8rem;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+
+      background: linear-gradient(270deg, transparent 0%, rgb(var(--color-gray-2)) 10%, rgb(var(--color-gray-2)) 90%, transparent 100%);
+
+      text-align: center;
+    }
+
+
+
+    .plants-wall {
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      padding: 2rem;
+
+      display: grid;
+      grid-template-rows: repeat(3, 1fr);
+      gap: 2rem;
+
+      // lines
+      & > div {
+        display: flex;
+        gap: 2rem;
+      }
+
+      .image-container {
+        height: 100%;
+        position: relative;
+        display: inline-block;
+        aspect-ratio: 1 / 1;
+
+        img {
+          height: 100%;
+          object-fit: cover;
+          display: inline-block;
+          border-radius: var(--radius);
+        }
+
+        small {
+          width: 100%;
+          padding: .2rem .5rem;
+          position: absolute;
+          left: 0;
+          bottom: 0;
+          opacity: 0;
+          z-index: 2;
+
+          font-family: "Switzer", Roboto, sans-serif;
+
+          background: linear-gradient(0deg, rgb(var(--color-gray-2)) 0%, transparent 100%);
+          transition: opacity .2s ease;
+        }
+
+        &:hover small {
+          opacity: 1;
+        }
+      }
+    }
+
+  }
+
+}

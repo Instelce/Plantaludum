@@ -23,6 +23,8 @@ import { ImageType } from "../../services/api/types/images";
 import useUser from "../../hooks/auth/useUser";
 import { flore } from "../../services/api/flore";
 import Header from "../../components/Molecules/Header/Header";
+import PlantImageSelector
+  from "../../components/Organisms/PlantImageSelector/PlantImageSelector";
 
 function DeckCreate() {
   const user = useUser();
@@ -56,39 +58,6 @@ function DeckCreate() {
     },
   });
 
-  const {
-    isLoading: imagesLoading,
-    data: imagesData,
-    error,
-    refetch: fetchImages,
-  } = useQuery<PaginationResponseType<ImageType>, Error>({
-    queryKey: ["images"],
-    queryFn: () => flore.images.list({ plant__french_name: plantValue }),
-    staleTime: Infinity,
-    enabled: false,
-  });
-  const plantImagesData = imagesData || null;
-
-  // get all image urls for autocomplete input
-  useEffect(() => {
-    if (plantIsValid) {
-      fetchImages();
-    }
-  }, [fetchImages, plantIsValid]);
-
-  // set plant images to an array of images
-  useEffect(() => {
-    if (plantImagesData) {
-      setPlantImages(() =>
-        deleteDublicates(
-          plantImagesData.results.map((data: ImageType) =>
-            data.url.replace("L", "CRS"),
-          ),
-        ),
-      );
-    }
-  }, [plantImagesData]);
-
   // Navigate to create deck plants form if the deck is successfully created
   useEffect(() => {
     if (isSuccess) {
@@ -112,18 +81,14 @@ function DeckCreate() {
     });
   };
 
-  useEffect(() => {
-    console.log("err", error);
-  }, [error]);
-
   return (
     <>
-      <Navbar>
-        <div className="left">
+      <Navbar.Root>
+        <Navbar.Left>
           <Link to="/mon-jardin">Mon jardin</Link>
           <Link to="/explorer">Explorer</Link>
-        </div>
-      </Navbar>
+        </Navbar.Left>
+      </Navbar.Root>
 
       <Header.Root type="page" center>
         <Header.Title>
@@ -144,41 +109,9 @@ function DeckCreate() {
             <Option>2</Option>
             <Option>3</Option>
           </Dropdown>
-          <ErrorBoundary
-            fallback={<p>Erreur lors de l&apos;obtention des données.</p>}
-          >
-            {imageValue === null && (
-              <>
-                <AutocompleteInput
-                  label="Nom d'une plante"
-                  size="large"
-                  url={`${import.meta.env.VITE_FLORE_API_URL}/api/plants`}
-                  fieldName="french_name"
-                  maxSuggestions={5}
-                  handleValueChange={setPlantValue}
-                  setValidValue={setPlantIsValid}
-                  usageInfoText="Cherche le nom d’une plante, puis choisie l’image
-                de la plante qui te semble la mieux. Choisie la bien car c'est
-                elle qui servira d'image de couverture au decks."
-                  data-not-count
-                />
-              </>
-            )}
-          </ErrorBoundary>
-          {!imagesLoading && plantValue && (
-            <div>
-              {plantImages !== null ? (
-                <Selector
-                  inputId="preview-image-url"
-                  choices={plantImages}
-                  choiceType="img"
-                  setValue={setImageValue}
-                />
-              ) : (
-                <p>Chargement des images</p>
-              )}
-            </div>
-          )}
+
+          <PlantImageSelector handleImageValueChange={setImageValue} />
+
           <Checkbox
             id="private"
             label="Privé"

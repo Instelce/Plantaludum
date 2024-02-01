@@ -86,15 +86,15 @@ function Explorer() {
 
   return (
     <>
-      <Navbar>
-        <div className="left">
+      <Navbar.Root>
+        <Navbar.Left>
           {accessToken ? (
             <Link to="/mon-jardin">Mon jardin</Link>
           ) : (
             <Link to="/">Acceuil</Link>
           )}
-        </div>
-        <div className="right">
+        </Navbar.Left>
+        <Navbar.Right>
           {accessToken ? (
             <Button asChild label="Nouveau deck" size="large" color="gray">
               <Link
@@ -117,8 +117,8 @@ function Explorer() {
               </Button>
             </>
           )}
-        </div>
-      </Navbar>
+        </Navbar.Right>
+      </Navbar.Root>
 
       <div className="page-sticky">
         <Header.Root type="page">

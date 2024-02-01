@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import React, { FormEvent, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Input from "../components/Atoms/Input/Input";
 import Button from "../components/Atoms/Buttons/Button.jsx";
@@ -61,11 +61,12 @@ function Login() {
 
   return (
     <>
-      <Navbar>
-        <div className="left">
+      <Navbar.Root>
+        <Navbar.Left>
           <Link to="/explorer">Explorer</Link>
-        </div>
-        <div className="right">
+        </Navbar.Left>
+        <Navbar.Right>
+          <Link to="/connexion">Connexion</Link>
           <Button asChild label="Inscription" size="large" color="gray">
             <Link
               to="/inscription"
@@ -74,8 +75,8 @@ function Login() {
               S&apos;inscrire
             </Link>
           </Button>
-        </div>
-      </Navbar>
+        </Navbar.Right>
+      </Navbar.Root>
 
       <Header.Root type="page" center>
         <Header.Title>Connexion</Header.Title>

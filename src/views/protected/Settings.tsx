@@ -12,14 +12,40 @@ import { flore } from "../../services/api/flore";
 import { PlantType } from "../../services/api/types/plants";
 
 function Settings() {
+  const [settings, setSettings] = useState({
+    showRankingTab: false,
+    switchingGardenSection: false,
+  })
+
+  useEffect(() => {
+    // set default settings values if they don't exists
+    if (!localStorage.getItem("settings.showRankingTab")) {
+      localStorage.setItem("settings.showRankingTab", "false");
+    } else {
+      setSettings({
+     ...settings,
+        showRankingTab: localStorage.getItem("settings.showRankingTab") === "true",
+      })
+    }
+    if (!localStorage.getItem("settings.switchingGardenSection")) {
+      localStorage.setItem("settings.switchingGardenSection", "false");
+    } else {
+      setSettings({
+     ...settings,
+        switchingGardenSection: localStorage.getItem("settings.switchingGardenSection") === "true",
+      })
+    }
+    console.log(settings)
+  }, []);
+
   return (
     <div>
-      <Navbar>
-        <div className="left">
+      <Navbar.Root>
+        <Navbar.Left>
           <Link to="/mon-jardin">Mon jardin</Link>
           <Link to="/explorer">Explorer</Link>
-        </div>
-        <div className="right">
+        </Navbar.Left>
+        <Navbar.Right>
           <Button asChild label="Nouveau deck" size="large" color="gray">
             <Link
               to="/decks/create"
@@ -28,16 +54,27 @@ function Settings() {
               Nouveau deck
             </Link>
           </Button>
-        </div>
-      </Navbar>
+        </Navbar.Right>
+      </Navbar.Root>
 
       <Header.Root type="page">
         <Header.Title>Paramètres</Header.Title>
       </Header.Root>
 
       <div className="content-container">
-        <Switch label="Afficher l’onglet du classement " takeValue="true" handleValueChange={value => {
-          localStorage.setItem("settings.showRankingTab", value.toString());
+        <Switch className="mb-1" label="Afficher l’onglet du classement" takeValue="true" value={settings.showRankingTab} handleValueChange={value => {
+          setSettings({
+            ...settings,
+            showRankingTab: value,
+          })
+          localStorage.setItem("settings.showRankingTab", (!settings.showRankingTab).toString());
+        }} />
+        <Switch label="Intervertir les sections dans Mon Jardin" takeValue="true" value={settings.switchingGardenSection} handleValueChange={value => {
+          setSettings({
+            ...settings,
+            switchingGardenSection: value,
+          })
+          localStorage.setItem("settings.switchingGardenSection", (!settings.switchingGardenSection).toString());
         }} />
       </div>
 

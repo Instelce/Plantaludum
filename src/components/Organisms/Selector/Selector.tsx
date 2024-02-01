@@ -10,6 +10,7 @@ type SelectorProps = {
   choiceType: "text" | "img";
   multipleChoice?: boolean;
   defaultValue?: string;
+  resetChoice: () => void;
   setValue: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
@@ -19,6 +20,7 @@ function Selector({
   choiceType,
   defaultValue,
   setValue,
+  resetChoice
 }: SelectorProps) {
   const [currentChoice, setCurrentChoice] = useState<string | null>(null);
   const [confirmChoice, setConfirmChoice] = useState(false);
@@ -83,7 +85,7 @@ function Selector({
             })}
           </div>
 
-          <div className="selector-buttons">
+          {choices.length > 0 && <div className="selector-buttons">
             <Button
               type="button"
               label="Confirmer la photo"
@@ -94,18 +96,19 @@ function Selector({
               onClick={handleConfirmButtonClick}
             >
               Confirmer la photo
-              <Check />
+              <Check/>
             </Button>
-          </div>
+          </div>}
+
         </>
       ) : (
         <>
-          <div className={classNames({ grid: choiceType === "img" })}>
+          <div className={classNames({grid: choiceType === "img"})}>
             <div className={`select-${choiceType} selected`}>
               {choiceType === "text" ? (
                 <p>{currentChoice}</p>
               ) : (
-                <img src={currentChoice} alt={currentChoice} />
+                <img src={currentChoice} alt={currentChoice}/>
               )}
               <input
                 id={inputId}
@@ -123,8 +126,12 @@ function Selector({
               color="gray"
               size="medium"
               className="sb"
+              type="button"
               disabled={!currentChoice}
-              onClick={() => setConfirmChoice(false)}
+              onClick={() => {
+                setConfirmChoice(false)
+                resetChoice();
+              }}
             >
               Rechoisir
               <RefreshCcw />

@@ -20,11 +20,12 @@ import OwnDeck from "./routes/OwnDeck";
 import UserProfile from "./views/protected/UserProfile";
 import DeckGameResult from "./views/protected/DeckGameResult.jsx";
 import Settings from "./views/protected/Settings";
+import Help from "./views/Help";
 
+/**
+ * Contains all routes of the app
+ */
 function App() {
-  const { deckId } = useParams();
-  const user = useUser();
-
   return (
     <>
       <Routes>
@@ -42,6 +43,8 @@ function App() {
           <Route path="explorer" element={<Explorer />} />
 
           <Route path="decks/:deckId" element={<DeckDetail />} />
+
+          <Route path="help" element={<Help />} />
 
           <Route element={<PersistLogin />}>
             <Route element={<RequireAuth />}>

@@ -10,11 +10,11 @@ function PageNotFound() {
 
   return (
     <>
-      <Navbar>
-        <div className="left">
+      <Navbar.Root>
+        <Navbar.Left>
           <Link to="/mon-jardin">Mon jardin</Link>
-        </div>
-        <div className="right">
+        </Navbar.Left>
+        <Navbar.Right>
           {user && (
             <Button asChild label="Nouveau deck" size="large" color="gray">
               <Link
@@ -25,8 +25,8 @@ function PageNotFound() {
               </Link>
             </Button>
           )}
-        </div>
-      </Navbar>
+        </Navbar.Right>
+      </Navbar.Root>
 
       <header className="page-header">
         Oups cette page n'existe pas...

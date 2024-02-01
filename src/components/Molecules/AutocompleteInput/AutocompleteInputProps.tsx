@@ -13,6 +13,7 @@ export type AutocompleteInputProps = {
   setValidValue?: React.Dispatch<SetStateAction<boolean>> | null;
   setSelectedValueData?: React.Dispatch<SetStateAction<any>> | null;
   usageInfoText?: string | null;
+  resetFieldOnSubmit?: boolean
 };
 
 export type SuggestionsProps = {
