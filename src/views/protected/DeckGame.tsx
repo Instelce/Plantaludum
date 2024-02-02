@@ -66,11 +66,12 @@ function DeckGame() {
 
   const { mutate: mutateUserStats } = useMutation({
     mutationKey: ["user-stats"],
-    mutationFn: ({level, score}: {level: number, score: number}) => users.update(privateFetch, user?.id as number, {
-      level: level,
-      score: score,
-      games_played: user?.games_played as number + 1,
-    }),
+    mutationFn: ({ level, score }: { level: number; score: number }) =>
+      users.update(privateFetch, user?.id as number, {
+        level: level,
+        score: score,
+        games_played: (user?.games_played as number) + 1,
+      }),
   });
 
   const userPlayedDeckQuery = useMutation<UserPlayedDeckType>({
@@ -258,7 +259,7 @@ function DeckGame() {
       if (user && userPlayedDeckQuery.data) {
         mutateUserStats({
           level: stars === 3 ? user.level + 1 : user.level,
-          score: user.score + score
+          score: user.score + score,
         });
       }
 
@@ -382,10 +383,24 @@ function DeckGame() {
                       <ChoiceBlock
                         key={plant.id}
                         index={index}
-                        title={plant[JSON.parse(localStorage.getItem("settings.gameButtonInfo")! as string).title as keyof PlantType].toString()}
-                        subtitle={plant[JSON.parse(localStorage.getItem("settings.gameButtonInfo")! as string).subtitle as keyof PlantType].toString()}
+                        title={plant[
+                          JSON.parse(
+                            localStorage.getItem(
+                              "settings.gameButtonInfo",
+                            )! as string,
+                          ).title as keyof PlantType
+                        ].toString()}
+                        subtitle={plant[
+                          JSON.parse(
+                            localStorage.getItem(
+                              "settings.gameButtonInfo",
+                            )! as string,
+                          ).subtitle as keyof PlantType
+                        ].toString()}
                         isRightAnswer={plant.id === currentPlant.id}
-                        showResult={plant.id === currentPlant.id ? showResult : false}
+                        showResult={
+                          plant.id === currentPlant.id ? showResult : false
+                        }
                         setShowResult={setShowResult}
                         setIsRight={setIsRight}
                       />

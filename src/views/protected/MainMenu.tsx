@@ -15,7 +15,7 @@ import ManageDeckButton from "../../components/Molecules/ManageDeckButton/Manage
 import useUserDecks from "../../hooks/api/useUserDecks";
 
 function MainMenu() {
-  const user = useUser()
+  const user = useUser();
 
   return (
     <div className="mainmenu">
@@ -47,27 +47,30 @@ function MainMenu() {
       </Header.Root>
 
       <SectionOrder />
-
     </div>
   );
 }
 
 const SectionOrder = () => {
   if (localStorage.getItem("settings.switchingGardenSection") === "true") {
-    return <>
-      <PlayedDeckSection />
-      <CreatedDeckSection />
-    </>
+    return (
+      <>
+        <PlayedDeckSection />
+        <CreatedDeckSection />
+      </>
+    );
   } else {
-    return <>
-      <CreatedDeckSection />
-      <PlayedDeckSection />
-    </>
+    return (
+      <>
+        <CreatedDeckSection />
+        <PlayedDeckSection />
+      </>
+    );
   }
-}
+};
 
 function CreatedDeckSection() {
-  const user = useUser()
+  const user = useUser();
   const [searchInput, setSearchInput] = useState("");
 
   // User decks
@@ -115,7 +118,7 @@ function CreatedDeckSection() {
         )}
       </div>
     </>
-  )
+  );
 }
 
 function PlayedDeckSection() {
@@ -162,10 +165,14 @@ function PlayedDeckSection() {
             {playedDeckFilteredData?.map((playedDeck) => (
               <DeckCard.Root key={playedDeck.id}>
                 <DeckCard.Header deck={playedDeck.deck} height={200}>
-                  <span className="level-progression" style={{
-                    width: `${33.333 * playedDeck.level}%`,
-                    borderBottomRightRadius: playedDeck.level === 3 ? 0 : '10px'
-                  }}></span>
+                  <span
+                    className="level-progression"
+                    style={{
+                      width: `${33.333 * playedDeck.level}%`,
+                      borderBottomRightRadius:
+                        playedDeck.level === 3 ? 0 : "10px",
+                    }}
+                  ></span>
                 </DeckCard.Header>
                 <DeckCard.Buttons>
                   <Button asChild>
@@ -191,7 +198,7 @@ function PlayedDeckSection() {
         )}
       </main>
     </>
-  )
+  );
 }
 
 export default MainMenu;

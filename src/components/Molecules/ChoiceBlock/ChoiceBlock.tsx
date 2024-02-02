@@ -1,4 +1,9 @@
-import React, {ButtonHTMLAttributes, useEffect, useRef, useState} from "react";
+import React, {
+  ButtonHTMLAttributes,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import "./ChoiceBlock.scss";
 import { Check, X } from "react-feather";
@@ -22,7 +27,7 @@ function ChoiceBlock({
   setIsRight,
 }: ChoiceBlockProps) {
   const ref = useRef<HTMLButtonElement>(null);
-  const [isClicked, setIsClicked] = useState(false)
+  const [isClicked, setIsClicked] = useState(false);
 
   const handleDoubleClick = () => {
     setShowResult(true);
@@ -39,7 +44,7 @@ function ChoiceBlock({
   useEffect(() => {
     if (isClicked) {
       setTimeout(() => {
-        setIsClicked(false)
+        setIsClicked(false);
       }, 1000);
     }
   }, [isClicked]);

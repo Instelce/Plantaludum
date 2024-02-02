@@ -45,33 +45,52 @@ function DeckGameResult() {
           <p>{deckGameResultData.times}</p>
           <h2>{deckGameResultData.score}</h2>
           <Stars count={deckGameResultData.stars} />
-          {deckGameResultData.stars === 3 && <>
-            <ConfettiExplosion force={0.6} duration={2500} particleCount={80} width={1000} />
-          </>}
+          {deckGameResultData.stars === 3 && (
+            <>
+              <ConfettiExplosion
+                force={0.6}
+                duration={2500}
+                particleCount={80}
+                width={1000}
+              />
+            </>
+          )}
         </div>
       </header>
 
       <div className="content-container grid-buttons">
-        <Button asChild className="sb" color="gray" disabled={parseInt(deckLevel) === 1}>
+        <Button
+          asChild
+          className="sb"
+          color="gray"
+          disabled={parseInt(deckLevel) === 1}
+        >
           <Link to={`/decks/${deckId}/game/${deckGameResultData.level - 1}`}>
             <ArrowLeft />
             Niveau précédent
           </Link>
         </Button>
 
-        <Button asChild color={deckGameResultData.stars === 3 ? "gray" : "primary"}>
+        <Button
+          asChild
+          color={deckGameResultData.stars === 3 ? "gray" : "primary"}
+        >
           <Link to={`/decks/${deckId}/game/${deckGameResultData.level}`}>
             Recommencer
           </Link>
         </Button>
 
-        {deckGameResultData.stars === 3 || parseInt(deckLevel) < 3 && <Button asChild className="sb">
-          <Link to={`/decks/${deckId}/game/${deckGameResultData.level + 1}`}>
-            Niveau suivant
-            <ArrowRight />
-          </Link>
-        </Button>}
-
+        {deckGameResultData.stars === 3 ||
+          (parseInt(deckLevel) < 3 && (
+            <Button asChild className="sb">
+              <Link
+                to={`/decks/${deckId}/game/${deckGameResultData.level + 1}`}
+              >
+                Niveau suivant
+                <ArrowRight />
+              </Link>
+            </Button>
+          ))}
       </div>
     </div>
   );

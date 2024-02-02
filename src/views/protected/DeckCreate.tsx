@@ -23,8 +23,7 @@ import { ImageType } from "../../services/api/types/images";
 import useUser from "../../hooks/auth/useUser";
 import { flore } from "../../services/api/flore";
 import Header from "../../components/Molecules/Header/Header";
-import PlantImageSelector
-  from "../../components/Organisms/PlantImageSelector/PlantImageSelector";
+import PlantImageSelector from "../../components/Organisms/PlantImageSelector/PlantImageSelector";
 
 function DeckCreate() {
   const user = useUser();

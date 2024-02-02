@@ -1,16 +1,30 @@
 import { apiFlore } from "./axios";
-import { PlantType } from "./types/plants";
-import {PlantImagesType} from "./types/images";
+import { PlantImagesType } from "./types/images";
+import { loadURLParams } from "../../utils/helpers";
+import { CompletePlantImagesType } from "./types/plants";
 
-export function loadRandomPlants(number = 10) {
+export function loadRandomPlants({
+  number = 10,
+  params = {},
+}: {
+  number?: number;
+  params?: {
+    images?: boolean;
+    family?: string;
+  };
+}) {
+  const _params = new URLSearchParams();
+
+  loadURLParams(_params, params);
+
   return apiFlore
-    .get(`api/plants/random/${number}`)
-    .then((r) => r.data as PlantType[]);
+    .get(`api/plants/random/${number}?${_params}`)
+    .then((r) => r.data as CompletePlantImagesType[]);
 }
 
 export function loadPlants({
   search = null,
-  fieldFilters = {
+  filterFields = {
     rank_code: null,
     family__name: null,
     genre__name: null,
@@ -23,11 +37,7 @@ export function loadPlants({
     params.set("search", search);
   }
 
-  for (const [key, value] of Object.entries(fieldFilters)) {
-    if (value !== null) {
-      params.set(key, value);
-    }
-  }
+  loadURLParams(params, filterFields);
 
   return apiFlore.get(`api/plants?${params.toString()}`).then((r) => r.data);
 }

@@ -102,5 +102,13 @@ export function removeAccent(s: string) {
 }
 
 export function getAnotherFormat(imageUrl: string, newFormat: string): string {
-  return imageUrl.replace("L.jpg", `${newFormat}.jpg`)
+  return imageUrl.replace("L.jpg", `${newFormat}.jpg`);
+}
+
+export function loadURLParams(URLParams: URLSearchParams, params: object) {
+  for (const [key, value] of Object.entries(params)) {
+    if (value !== null) {
+      URLParams.set(key, value);
+    }
+  }
 }

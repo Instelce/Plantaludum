@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import classNames from "classnames";
 import {
   ArrowUpRight,
@@ -9,7 +9,7 @@ import {
 } from "react-feather";
 import Button from "../../Atoms/Buttons/Button";
 import "./PlantImageSlider.scss";
-import "../ImageSlider/style.scss"
+import "../ImageSlider/style.scss";
 import { ImageType } from "../../../services/api/types/images";
 import BoxListGroup, { BoxListItem } from "../BoxListGroup/BoxListGroup";
 import { Link } from "react-router-dom";
@@ -18,9 +18,10 @@ import { PlantType } from "../../../services/api/types/plants";
 type PlantImageSliderProps = {
   imagesData: ImageType[];
   plantData: PlantType;
+  doRefresh?: boolean;
 };
 
-function PlantImageSlider({ imagesData, plantData }: PlantImageSliderProps) {
+function PlantImageSlider({ imagesData, plantData, doRefresh = true, ...props }: PlantImageSliderProps) {
   const [current, setCurrent] = useState(0);
   const [showImageInfo, setShowImageInfo] = useState(false);
   const length = imagesData?.length;
@@ -28,17 +29,13 @@ function PlantImageSlider({ imagesData, plantData }: PlantImageSliderProps) {
   // reset imagesData
   const [prevImages, setPrevImages] = useState(imagesData);
   useEffect(() => {
-    if (imagesData !== prevImages) {
-      setCurrent(() => 0);
-      setPrevImages(() => imagesData);
+    if (doRefresh) {
+      if (imagesData !== prevImages) {
+        setCurrent(() => 0);
+        setPrevImages(() => imagesData);
+      }
     }
-
-    console.log("coucou")
-    // console.log(
-    //   "image",
-    //   imagesData.map((im) => im.url),
-    // );
-  }, [imagesData, prevImages]);
+  }, [imagesData, prevImages, doRefresh]);
 
   const next = () => {
     setCurrent((current) => (current === length - 1 ? 0 : current + 1));
@@ -48,18 +45,16 @@ function PlantImageSlider({ imagesData, plantData }: PlantImageSliderProps) {
     setCurrent((current) => (current === 0 ? length - 1 : current - 1));
   };
 
-  if (!Array.isArray(imagesData) || imagesData?.length <= 0) {
-    return null;
-  }
+  // if (!Array.isArray(imagesData) || imagesData?.length === 0) {
+  //   return null;
+  // }
 
-  const toggleShow = () => {
-    setShowImageInfo((show) => !show);
-  };
+  console.log("IMAGE DATA", imagesData)
 
   return (
-    <div className="slider">
+    <div className="slider" {...props}>
       <div className="slide-container">
-        {prevImages === imagesData && (
+        {(prevImages === imagesData && doRefresh) || !doRefresh && (
           <>
             {imagesData?.map((img, index) => (
               <div

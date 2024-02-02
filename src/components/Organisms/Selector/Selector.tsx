@@ -20,7 +20,7 @@ function Selector({
   choiceType,
   defaultValue,
   setValue,
-  resetChoice
+  resetChoice,
 }: SelectorProps) {
   const [currentChoice, setCurrentChoice] = useState<string | null>(null);
   const [confirmChoice, setConfirmChoice] = useState(false);
@@ -85,30 +85,31 @@ function Selector({
             })}
           </div>
 
-          {choices.length > 0 && <div className="selector-buttons">
-            <Button
-              type="button"
-              label="Confirmer la photo"
-              color="primary"
-              size="medium"
-              className="sb"
-              disabled={currentChoice === null}
-              onClick={handleConfirmButtonClick}
-            >
-              Confirmer la photo
-              <Check/>
-            </Button>
-          </div>}
-
+          {choices.length > 0 && (
+            <div className="selector-buttons">
+              <Button
+                type="button"
+                label="Confirmer la photo"
+                color="primary"
+                size="medium"
+                className="sb"
+                disabled={currentChoice === null}
+                onClick={handleConfirmButtonClick}
+              >
+                Confirmer la photo
+                <Check />
+              </Button>
+            </div>
+          )}
         </>
       ) : (
         <>
-          <div className={classNames({grid: choiceType === "img"})}>
+          <div className={classNames({ grid: choiceType === "img" })}>
             <div className={`select-${choiceType} selected`}>
               {choiceType === "text" ? (
                 <p>{currentChoice}</p>
               ) : (
-                <img src={currentChoice} alt={currentChoice}/>
+                <img src={currentChoice} alt={currentChoice} />
               )}
               <input
                 id={inputId}
@@ -129,7 +130,7 @@ function Selector({
               type="button"
               disabled={!currentChoice}
               onClick={() => {
-                setConfirmChoice(false)
+                setConfirmChoice(false);
                 resetChoice();
               }}
             >

@@ -293,20 +293,20 @@ function UserProfile() {
               <>
                 <DeckCard.Root key={deck.id}>
                   <DeckCard.Header deck={deck} />
-                 <DeckCard.Buttons>
-                   <Button asChild label="Découvrir">
-                     <Link to={`/decks/${deck.id}`}>
-                       {currentUser?.id === deck.user.id
-                         ? "Détail"
-                         : "Découvrir"}
-                     </Link>
-                   </Button>
-                   <Button asChild onlyIcon color="yellow">
-                     <Link to={`/decks/${deck.id}/game/1`}>
-                       <Zap />
-                     </Link>
-                   </Button>
-                 </DeckCard.Buttons>
+                  <DeckCard.Buttons>
+                    <Button asChild label="Découvrir">
+                      <Link to={`/decks/${deck.id}`}>
+                        {currentUser?.id === deck.user.id
+                          ? "Détail"
+                          : "Découvrir"}
+                      </Link>
+                    </Button>
+                    <Button asChild onlyIcon color="yellow">
+                      <Link to={`/decks/${deck.id}/game/1`}>
+                        <Zap />
+                      </Link>
+                    </Button>
+                  </DeckCard.Buttons>
                 </DeckCard.Root>
               </>
             ))}

@@ -1,14 +1,19 @@
-import React, {Children, PropsWithChildren, useEffect, useRef, useState} from "react";
+import React, {
+  Children,
+  PropsWithChildren,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import Stars from "../../Atoms/Stars/Stars";
 import "./DeckCard.scss";
 import Flower from "../../Atoms/Icons";
 import { DeckType } from "../../../services/api/types/decks";
 import Button from "../../Atoms/Buttons/Button";
 
-type DeckCardProps = {
-} & PropsWithChildren;
+type DeckCardProps = {} & PropsWithChildren;
 
-function Root({children, ...props }: DeckCardProps) {
+function Root({ children, ...props }: DeckCardProps) {
   const cardRef = useRef<HTMLDivElement | null>(null);
 
   const handleMouseLeave = () => {
@@ -67,14 +72,14 @@ function Root({children, ...props }: DeckCardProps) {
 }
 
 type HeaderProps = {
-  deck: DeckType,
-  height?: number
-  children?: React.ReactNode
-}
+  deck: DeckType;
+  height?: number;
+  children?: React.ReactNode;
+};
 
-function Header({deck, height = 400, children}: HeaderProps) {
+function Header({ deck, height = 400, children }: HeaderProps) {
   return (
-    <div className="card-header" style={{maxHeight: `${height}px`}}>
+    <div className="card-header" style={{ maxHeight: `${height}px` }}>
       <img
         className="active"
         src={deck.preview_image_url}
@@ -82,25 +87,21 @@ function Header({deck, height = 400, children}: HeaderProps) {
       />
       <div className="card-content">
         <h3>{deck.name}</h3>
-        <Stars count={deck.difficulty} icon={<Flower/>}/>
+        <Stars count={deck.difficulty} icon={<Flower />} />
       </div>
       {children}
     </div>
-  )
+  );
 }
 
-function Buttons ({children}: PropsWithChildren) {
-  return (
-    <div className="card-button">
-      {children}
-    </div>
-  )
+function Buttons({ children }: PropsWithChildren) {
+  return <div className="card-button">{children}</div>;
 }
 
 const DeckCard = {
   Root,
   Header,
-  Buttons
+  Buttons,
 };
 
 export default DeckCard;

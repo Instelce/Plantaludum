@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../components/Molecules/Header/Header";
 import Switch from "../../components/Atoms/Switch/Switch/Switch";
 import { Link } from "react-router-dom";
@@ -15,7 +15,7 @@ function Settings() {
   const [settings, setSettings] = useState({
     showRankingTab: false,
     switchingGardenSection: false,
-  })
+  });
 
   useEffect(() => {
     // set default settings values if they don't exists
@@ -23,19 +23,21 @@ function Settings() {
       localStorage.setItem("settings.showRankingTab", "false");
     } else {
       setSettings({
-     ...settings,
-        showRankingTab: localStorage.getItem("settings.showRankingTab") === "true",
-      })
+        ...settings,
+        showRankingTab:
+          localStorage.getItem("settings.showRankingTab") === "true",
+      });
     }
     if (!localStorage.getItem("settings.switchingGardenSection")) {
       localStorage.setItem("settings.switchingGardenSection", "false");
     } else {
       setSettings({
-     ...settings,
-        switchingGardenSection: localStorage.getItem("settings.switchingGardenSection") === "true",
-      })
+        ...settings,
+        switchingGardenSection:
+          localStorage.getItem("settings.switchingGardenSection") === "true",
+      });
     }
-    console.log(settings)
+    console.log(settings);
   }, []);
 
   return (
@@ -62,20 +64,37 @@ function Settings() {
       </Header.Root>
 
       <div className="content-container">
-        <Switch className="mb-1" label="Afficher l’onglet du classement" takeValue="true" value={settings.showRankingTab} handleValueChange={value => {
-          setSettings({
-            ...settings,
-            showRankingTab: value,
-          })
-          localStorage.setItem("settings.showRankingTab", (!settings.showRankingTab).toString());
-        }} />
-        <Switch label="Intervertir les sections dans Mon Jardin" takeValue="true" value={settings.switchingGardenSection} handleValueChange={value => {
-          setSettings({
-            ...settings,
-            switchingGardenSection: value,
-          })
-          localStorage.setItem("settings.switchingGardenSection", (!settings.switchingGardenSection).toString());
-        }} />
+        <Switch
+          className="mb-1"
+          label="Afficher l’onglet du classement"
+          takeValue="true"
+          value={settings.showRankingTab}
+          handleValueChange={(value) => {
+            setSettings({
+              ...settings,
+              showRankingTab: value,
+            });
+            localStorage.setItem(
+              "settings.showRankingTab",
+              (!settings.showRankingTab).toString(),
+            );
+          }}
+        />
+        <Switch
+          label="Intervertir les sections dans Mon Jardin"
+          takeValue="true"
+          value={settings.switchingGardenSection}
+          handleValueChange={(value) => {
+            setSettings({
+              ...settings,
+              switchingGardenSection: value,
+            });
+            localStorage.setItem(
+              "settings.switchingGardenSection",
+              (!settings.switchingGardenSection).toString(),
+            );
+          }}
+        />
       </div>
 
       <ButtonInfoSection />
@@ -89,34 +108,45 @@ function ButtonInfoSection() {
 
   const randomPlantQuery = useQuery({
     queryKey: ["randomPlant"],
-    queryFn: () => flore.plants.random(1),
+    queryFn: () =>
+      flore.plants.random({
+        number: 1,
+      }),
   });
 
   const t = {
     scientific_name: "Nom scientifique",
     correct_name: "Nom correct",
     french_name: "Nom français",
-    num_inpn: "Numéro Inpn"
-  }
+    num_inpn: "Numéro Inpn",
+  };
 
   useEffect(() => {
     if (localStorage.getItem("settings.gameButtonInfo")) {
-      const { title, subtitle } = JSON.parse(localStorage.getItem("settings.gameButtonInfo")!);
+      const { title, subtitle } = JSON.parse(
+        localStorage.getItem("settings.gameButtonInfo")!,
+      );
       setTitle(title);
       setSubTitle(subtitle);
     } else {
-      localStorage.setItem("settings.gameButtonInfo", JSON.stringify({
-        title: "french_name",
-        subtitle: "scientific_name"
-      }));
+      localStorage.setItem(
+        "settings.gameButtonInfo",
+        JSON.stringify({
+          title: "french_name",
+          subtitle: "scientific_name",
+        }),
+      );
     }
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("settings.gameButtonInfo", JSON.stringify({
-      title: title,
-      subtitle: subTitle
-    }));
+    localStorage.setItem(
+      "settings.gameButtonInfo",
+      JSON.stringify({
+        title: title,
+        subtitle: subTitle,
+      }),
+    );
   }, [title, subTitle]);
 
   return (
@@ -126,10 +156,15 @@ function ButtonInfoSection() {
       </Header.Root>
 
       <div className="content-container">
-        <form style={{maxWidth: "400px"}}>
+        <form style={{ maxWidth: "400px" }}>
           <Dropdown
             label="Titre"
-            defaultValue={t[JSON.parse(localStorage.getItem("settings.gameButtonInfo")!)?.title]}
+            defaultValue={
+              t[
+                JSON.parse(localStorage.getItem("settings.gameButtonInfo")!)
+                  ?.title
+              ]
+            }
             handleValueChange={setTitle}
           >
             <Option value="scientific_name">Nom scientifique</Option>
@@ -140,7 +175,12 @@ function ButtonInfoSection() {
 
           <Dropdown
             label="Sous titre"
-            defaultValue={t[JSON.parse(localStorage.getItem("settings.gameButtonInfo")!)?.subtitle]}
+            defaultValue={
+              t[
+                JSON.parse(localStorage.getItem("settings.gameButtonInfo")!)
+                  ?.subtitle
+              ]
+            }
             handleValueChange={setSubTitle}
           >
             <Option value="scientific_name">Nom scientifique</Option>
@@ -153,7 +193,7 @@ function ButtonInfoSection() {
         <h4 className="mb-1 mt-1">Aperçu</h4>
 
         {randomPlantQuery.isSuccess && (
-          <div style={{maxWidth: "400px"}}>
+          <div style={{ maxWidth: "400px" }}>
             <ChoiceBlock
               title={randomPlantQuery.data[0][title] as string}
               subtitle={randomPlantQuery.data[0][subTitle] as string}

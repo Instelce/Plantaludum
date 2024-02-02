@@ -6,8 +6,8 @@ import { useQuery } from "@tanstack/react-query";
 import { ImageType } from "../../../services/api/types/images";
 import { flore } from "../../../services/api/flore";
 import { useEffect, useState } from "react";
-import {deleteDublicates, getAnotherFormat} from "../../../utils/helpers";
-import {PaginationResponseType} from "../../../services/api/types/pagination";
+import { deleteDublicates, getAnotherFormat } from "../../../utils/helpers";
+import { PaginationResponseType } from "../../../services/api/types/pagination";
 
 type PlantImageSelectorProps = {
   handleImageValueChange: (value: string) => void;
@@ -22,7 +22,7 @@ function PlantImageSelector({
   const [plantIsValid, setPlantIsValid] = useState(false);
   const [plantImages, setPlantImages] = useState(null);
   const [imageValue, setImageValue] = useState<string | null>(null);
-  const [isFirst, setIsFirst] = useState(true)
+  const [isFirst, setIsFirst] = useState(true);
 
   const {
     isLoading: imagesLoading,
@@ -42,7 +42,7 @@ function PlantImageSelector({
     if (defaultValue === "") {
       setImageValue(null);
     } else {
-      setImageValue(defaultValue)
+      setImageValue(defaultValue);
     }
   }, [defaultValue]);
 
@@ -50,7 +50,7 @@ function PlantImageSelector({
   useEffect(() => {
     if (plantIsValid) {
       fetchImages();
-      setIsFirst(false)
+      setIsFirst(false);
     }
   }, [fetchImages, plantIsValid]);
 
@@ -69,7 +69,9 @@ function PlantImageSelector({
 
   return (
     <>
-      <ErrorBoundary fallback={<p>Erreur lors de l&apos;obtention des images.</p>}>
+      <ErrorBoundary
+        fallback={<p>Erreur lors de l&apos;obtention des images.</p>}
+      >
         {!imageValue && (
           <>
             <AutocompleteInput
