@@ -11,9 +11,11 @@ import Flower from "../../Atoms/Icons";
 import { DeckType } from "../../../services/api/types/decks";
 import Button from "../../Atoms/Buttons/Button";
 
-type DeckCardProps = {} & PropsWithChildren;
+type DeckCardProps = {
+  followMouse?: boolean;
+} & PropsWithChildren;
 
-function Root({ children, ...props }: DeckCardProps) {
+function Root({ followMouse = true, children, ...props }: DeckCardProps) {
   const cardRef = useRef<HTMLDivElement | null>(null);
 
   const handleMouseLeave = () => {
@@ -25,37 +27,39 @@ function Root({ children, ...props }: DeckCardProps) {
 
   // mouse follow
   useEffect(() => {
-    const cardRect = cardRef.current?.getBoundingClientRect();
-    let x: number, y: number;
-    let currentScrollTop: number;
-    const container = document.querySelector(".container") as HTMLDivElement;
+    if (followMouse) {
+      const cardRect = cardRef.current?.getBoundingClientRect();
+      let x: number, y: number;
+      let currentScrollTop: number;
+      const container = document.querySelector(".container") as HTMLDivElement;
 
-    const handleMoveSlide = (e: MouseEvent) => {
-      // console.log(e, cardRect, nameRect)
-      if (cardRect) {
-        x = e.pageX - cardRect.left - cardRect.width / 2;
-        y = e.pageY - cardRect.top - cardRect.height / 2 + currentScrollTop;
+      const handleMoveSlide = (e: MouseEvent) => {
+        // console.log(e, cardRect, nameRect)
+        if (cardRect) {
+          x = e.pageX - cardRect.left - cardRect.width / 2;
+          y = e.pageY - cardRect.top - cardRect.height / 2 + currentScrollTop;
 
-        if (cardRef.current) {
-          cardRef.current.style.transform = `translate(${x * 0.02}px, ${
-            y * 0.02
-          }px) scale(1.02)`;
+          if (cardRef.current) {
+            cardRef.current.style.transform = `translate(${x * 0.02}px, ${
+              y * 0.02
+            }px) scale(1.02)`;
+          }
         }
-      }
-    };
+      };
 
-    // update the current scroll top
-    const handleScroll = (e: MouseEvent) => {
-      currentScrollTop = container.scrollTop;
-    };
+      // update the current scroll top
+      const handleScroll = (e: MouseEvent) => {
+        currentScrollTop = container.scrollTop;
+      };
 
-    cardRef.current?.addEventListener("mousemove", handleMoveSlide);
-    container.addEventListener("scroll", handleScroll);
+      cardRef.current?.addEventListener("mousemove", handleMoveSlide);
+      container.addEventListener("scroll", handleScroll);
 
-    return () => {
-      cardRef.current?.removeEventListener("mousemove", handleMoveSlide);
-      container.removeEventListener("scroll", handleScroll);
-    };
+      return () => {
+        cardRef.current?.removeEventListener("mousemove", handleMoveSlide);
+        container.removeEventListener("scroll", handleScroll);
+      };
+    }
   }, []);
 
   return (

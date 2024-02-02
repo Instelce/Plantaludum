@@ -1,0 +1,38 @@
+.mobile {
+  height: 100vh;
+  padding: 0 1rem;
+
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 4rem;
+
+  background: rgb(var(--color-gray-2));
+
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    p {
+      text-align: center;
+      width: 30ch;
+    }
+  }
+
+  img {
+    width: 80px;
+    margin-bottom: 2rem;
+  }
+
+  h1 {
+    font-size: var(--typescale-h3);
+  }
+
+  .message {
+    padding: 1rem;
+    background: rgb(var(--color-gray-3));
+    border-radius: var(--radius);
+  }
+}

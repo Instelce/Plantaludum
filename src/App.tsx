@@ -26,6 +26,26 @@ import Help from "./views/Help";
  * Contains all routes of the app
  */
 function App() {
+  // mobile message
+  if (window.innerWidth <= 900) {
+    return (
+      <div className="mobile">
+        <header>
+          <img src="/icon.svg" alt="Plantaludum logo" />
+          <h1>Plantaludum</h1>
+          <p>Un jeux pour découvrir et apprendre à reconnaitre les plantes !</p>
+        </header>
+
+        <div className="message">
+          <p>
+            Désolé, Plantaludum n&apos;est pas disponible sur mobile. Une
+            application arrivera sans doute un jour.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       <Routes>

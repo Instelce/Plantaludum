@@ -21,7 +21,12 @@ type PlantImageSliderProps = {
   doRefresh?: boolean;
 };
 
-function PlantImageSlider({ imagesData, plantData, doRefresh = true, ...props }: PlantImageSliderProps) {
+function PlantImageSlider({
+  imagesData,
+  plantData,
+  doRefresh = true,
+  ...props
+}: PlantImageSliderProps) {
   const [current, setCurrent] = useState(0);
   const [showImageInfo, setShowImageInfo] = useState(false);
   const length = imagesData?.length;
@@ -45,29 +50,28 @@ function PlantImageSlider({ imagesData, plantData, doRefresh = true, ...props }:
     setCurrent((current) => (current === 0 ? length - 1 : current - 1));
   };
 
-  // if (!Array.isArray(imagesData) || imagesData?.length === 0) {
-  //   return null;
-  // }
-
-  console.log("IMAGE DATA", imagesData)
+  if (!Array.isArray(imagesData) || imagesData?.length === 0) {
+    return null;
+  }
 
   return (
     <div className="slider" {...props}>
       <div className="slide-container">
-        {(prevImages === imagesData && doRefresh) || !doRefresh && (
-          <>
-            {imagesData?.map((img, index) => (
-              <div
-                key={index}
-                className={classNames("slide", {
-                  active: index === current,
-                })}
-              >
-                <img src={img.url} alt={index.toString()} />
-              </div>
-            ))}
-          </>
-        )}
+        {(prevImages === imagesData && doRefresh) ||
+          (!doRefresh && (
+            <>
+              {imagesData?.map((img, index) => (
+                <div
+                  key={index}
+                  className={classNames("slide", {
+                    active: index === current,
+                  })}
+                >
+                  <img src={img.url} alt={index.toString()} />
+                </div>
+              ))}
+            </>
+          ))}
 
         {!showImageInfo && (
           <>

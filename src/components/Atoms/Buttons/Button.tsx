@@ -3,6 +3,7 @@ import classNames from "classnames";
 import { ForwardedRef, forwardRef } from "react";
 import { ButtonProps } from "./ButtonProps";
 import Slot from "../Slot";
+import { MouseEvent } from "react";
 
 const Button = forwardRef<HTMLElement, ButtonProps>((props, forwardedRef) => {
   const {
@@ -21,6 +22,11 @@ const Button = forwardRef<HTMLElement, ButtonProps>((props, forwardedRef) => {
   } = props;
   const Comp = asChild ? Slot : "button";
 
+  function soundEffect() {
+    const audio = new Audio("/click.ogg");
+    audio.play();
+  }
+
   return (
     <Comp
       title={label ? label : ""}
@@ -37,6 +43,11 @@ const Button = forwardRef<HTMLElement, ButtonProps>((props, forwardedRef) => {
       disabled={disabled}
       {...otherProps}
       ref={forwardedRef as ForwardedRef<HTMLButtonElement>}
+      onClick={(e: MouseEvent<HTMLButtonElement>) => {
+        localStorage.getItem("settings.buttonsSound") === "true" &&
+          soundEffect();
+        props.onClick && props.onClick(e);
+      }}
     >
       {children}
     </Comp>

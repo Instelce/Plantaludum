@@ -50,7 +50,36 @@ function Root() {
           <div className="scroller">
             <Outlet />
           </div>
-          <footer>© 2024 - Plantaludum Github</footer>
+
+          <footer>
+            <div className="up">
+              <div>
+                <div className="section">
+                  <a href="https://github.com/Plantaludum/Plantaludum/issues/new">
+                    Reporter un bug
+                  </a>
+                  <a href="https://github.com/Plantaludum/Plantaludum/issues/new">
+                    Proposer une fonctionnalité
+                  </a>
+                </div>
+
+                <div className="section">
+                  <a href="https://github.com/Plantaludum/API">
+                    API de Plantaludum
+                  </a>
+                  <a href="https://github.com/Instelce/FloreAPI">FloreAPI</a>
+                </div>
+              </div>
+
+              <a href="https://github.com/Plantaludum">
+                <img src="/logos/github-logo.svg" alt="Github logo" />
+              </a>
+            </div>
+
+            <div className="down">
+              <Link to="/mention-legale">Mentions légales</Link>
+            </div>
+          </footer>
         </div>
         <ButtonsMenu />
       </div>

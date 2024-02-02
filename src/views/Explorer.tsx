@@ -216,7 +216,7 @@ function Explorer() {
           )}
 
           {!hasNextPage && (
-            <div className="flex center pt-1 pb-1">
+            <div className="flex center pt-2 pb-2">
               <p className="t-center">
                 Plus aucun deck à charger ! <br />
                 Si tu pense qu'il manque un deck,{" "}

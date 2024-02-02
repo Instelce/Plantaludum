@@ -15,6 +15,7 @@ function Settings() {
   const [settings, setSettings] = useState({
     showRankingTab: false,
     switchingGardenSection: false,
+    buttonsSound: true,
   });
 
   useEffect(() => {
@@ -35,6 +36,14 @@ function Settings() {
         ...settings,
         switchingGardenSection:
           localStorage.getItem("settings.switchingGardenSection") === "true",
+      });
+    }
+    if (!localStorage.getItem("settings.buttonsSound")) {
+      localStorage.setItem("settings.buttonsSound", "false");
+    } else {
+      setSettings({
+        ...settings,
+        buttonsSound: localStorage.getItem("settings.buttonsSound") === "true",
       });
     }
     console.log(settings);
@@ -81,6 +90,7 @@ function Settings() {
           }}
         />
         <Switch
+          className="mb-1"
           label="Intervertir les sections dans Mon Jardin"
           takeValue="true"
           value={settings.switchingGardenSection}
@@ -92,6 +102,21 @@ function Settings() {
             localStorage.setItem(
               "settings.switchingGardenSection",
               (!settings.switchingGardenSection).toString(),
+            );
+          }}
+        />
+        <Switch
+          label="Son des boutons"
+          takeValue="true"
+          value={settings.buttonsSound}
+          handleValueChange={(value) => {
+            setSettings({
+              ...settings,
+              buttonsSound: value,
+            });
+            localStorage.setItem(
+              "settings.buttonsSound",
+              (!settings.buttonsSound).toString(),
             );
           }}
         />

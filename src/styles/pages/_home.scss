@@ -11,6 +11,14 @@
 
   section {
     margin: 6rem 0;
+    position: relative;
+    padding: 2rem 20%;
+
+    & > p,
+    & > * > p {
+      max-width: 50ch;
+      font-size: 1.2rem;
+    }
   }
 
   header {
@@ -29,11 +37,11 @@
       bottom: 0;
       left: 0;
       position: absolute;
-      background: linear-gradient(
-        0deg,
-        rgb(var(--color-gray-2)) 0%,
-        transparent 100%
-      );
+      //background: linear-gradient(
+      //  0deg,
+      //  rgb(var(--color-gray-2)) 0%,
+      //  transparent 100%
+      //);
     }
 
     p {
@@ -42,7 +50,7 @@
     }
 
     .content {
-      height: 100%;
+      height: calc(100% / 3);
       z-index: 10;
       padding: 0 8rem;
 
@@ -63,25 +71,33 @@
     }
 
     .plants-wall {
-      height: 100%;
       width: 100%;
+      height: 100%;
       position: absolute;
-      top: 50%;
       left: 0;
-      transform: translateY(-50%);
       padding: 2rem;
 
       display: grid;
-      grid-template-columns: 1fr;
-      grid-template-rows: repeat(3, calc(100% / 3));
+      grid-template-rows: repeat(3, calc((100% - 10%) / 3));
       gap: 2rem;
 
       // lines
       .line {
+        height: 100%;
         width: 100%;
         display: flex;
         gap: 2rem;
         white-space: nowrap;
+
+        &:nth-child(1) {
+          transform: translateX(-1%);
+        }
+        &:nth-child(2) {
+          transform: translateX(-3%);
+        }
+        &:nth-child(3) {
+          transform: translateX(-6%);
+        }
       }
 
       .part {
@@ -103,12 +119,16 @@
         height: 100%;
         position: relative;
         aspect-ratio: 1 / 1;
+        overflow: hidden;
+        border-radius: var(--radius);
+        transition: transform 0.3s ease;
 
         img {
           height: 100%;
           object-fit: cover;
-          border-radius: var(--radius);
-          transition: opacity 0.3s ease;
+          transition:
+            opacity 0.3s ease,
+            transform 0.3s ease;
         }
 
         small {
@@ -130,8 +150,16 @@
           transition: opacity 0.2s ease;
         }
 
-        &:hover small {
-          opacity: 1;
+        &:hover {
+          transform: scale(1.05);
+
+          img {
+            transform: scale(1.1);
+          }
+
+          small {
+            opacity: 1;
+          }
         }
       }
     }
@@ -139,7 +167,6 @@
 
   .game-explanation {
     //min-height: 200vh;
-    padding: 2rem 10% 2rem 20%;
     overflow: hidden;
 
     display: grid;
@@ -158,8 +185,9 @@
     }
 
     .contents {
+      padding-top: 5rem;
       display: flex;
-      align-items: center;
+      align-items: flex-end;
       justify-content: space-between;
       flex-direction: column;
       gap: 10rem;
@@ -169,14 +197,189 @@
       }
 
       // buttons
-      & > div:nth-child(2) button {
-        min-width: 400px;
-        max-width: 400px;
+      & > div:nth-child(2) {
+        button {
+          min-width: 400px;
+          max-width: 400px;
+        }
+
+        & > p {
+          max-width: 400px;
+          line-height: 1.4rem;
+        }
+      }
+
+    }
+  }
+
+  .deck-test {
+    height: 100vh;
+    padding: 2rem 20%;
+
+    .contents {
+      height: 100%;
+      z-index: 4;
+      position: relative;
+
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+
+      .cards {
+        padding: 2rem 0;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+
+        & > div:nth-child(2) {
+          margin-top: 30%;
+        }
+
+        & > div:nth-child(3) {
+          margin-top: 60%;
+        }
+      }
+
+      .deck-card {
+        cursor: pointer;
+      }
+
+      .card-content {
+        padding-bottom: 0;
+      }
+    }
+
+    .background {
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      position: absolute;
+      overflow: hidden;
+
+      display: flex;
+      gap: 3rem;
+      z-index: 1;
+
+      &::before,
+      &::after {
+        content: "";
+        width: 100%;
+        height: 10%;
+        left: 0;
+        position: absolute;
+        z-index: 2;
+        background: linear-gradient(
+          0deg,
+          transparent 0%,
+          rgb(var(--color-gray-2)) 50%
+        );
+      }
+
+      &::after {
+        bottom: 0;
+        background: linear-gradient(
+          180deg,
+          transparent 0%,
+          rgb(var(--color-gray-2)) 50%
+        );
+      }
+
+      div {
+        --t: 100s;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        gap: 3rem;
+
+        white-space: nowrap;
+
+        animation: slide-one var(--t) linear infinite;
+        animation-delay: calc(var(--t) * -1);
+      }
+
+      & > div:nth-child(2) {
+        animation: slide-two var(--t) linear infinite;
+        animation-delay: calc(var(--t) / -2);
+      }
+
+      span {
+        width: 100px;
+        height: 150%;
+
+        display: block;
+        transform: rotate(45deg);
+        transform-origin: 0 0;
+
+        background: rgb(var(--color-gray-1));
       }
     }
   }
 
+  .simple-section {
+    display: flex;
+    justify-content: space-between;
 
+    img {
+      max-width: 400px;
+      border-radius: var(--radius);
+      display: block;
+      align-self: center;
+    }
+
+    svg {
+      align-self: center;
+    }
+
+    article {
+      display: flex;
+    }
+  }
+
+  .thanks-section {
+    h2 {
+      margin-bottom: 1rem;
+    }
+
+    & > div {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    article {
+      display: flex;
+      gap: 1rem;
+
+      h3 {
+        font-size: var(--typescale-h5);
+        font-weight: 500;
+      }
+
+      .img-container {
+        width: 100px;
+        height: 100px;
+        padding: 1rem;
+
+        background: rgb(var(--color-gray-3));
+        border-radius: var(--radius);
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        img {
+          width: 80px;
+        }
+      }
+
+      div {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+      }
+    }
+  }
 }
 
 @keyframes slide-one {
