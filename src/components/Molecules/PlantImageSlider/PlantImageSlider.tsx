@@ -57,8 +57,7 @@ function PlantImageSlider({
   return (
     <div className="slider" {...props}>
       <div className="slide-container">
-        {(prevImages === imagesData && doRefresh) ||
-          (!doRefresh && (
+        {((prevImages === imagesData && doRefresh) || !doRefresh) && (
             <>
               {imagesData?.map((img, index) => (
                 <div
@@ -67,11 +66,11 @@ function PlantImageSlider({
                     active: index === current,
                   })}
                 >
-                  <img src={img.url} alt={index.toString()} />
+                  <img src={img.url} alt={`Photo de ${img.author}`} />
                 </div>
               ))}
             </>
-          ))}
+          )}
 
         {!showImageInfo && (
           <>

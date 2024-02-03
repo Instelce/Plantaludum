@@ -6,13 +6,15 @@ import { Query, useQuery, UseQueryResult } from "@tanstack/react-query";
 import { flore } from "../services/api/flore";
 import { getAnotherFormat } from "../utils/helpers";
 import PlantImageSlider from "../components/Molecules/PlantImageSlider/PlantImageSlider";
-import { CompletePlantImagesType } from "../services/api/types/plants";
+import {CompletePlantImagesType, PlantType} from "../services/api/types/plants";
 import ChoiceBlock from "../components/Molecules/ChoiceBlock/ChoiceBlock";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import DeckCard from "../components/Molecules/DeckCard/DeckCard";
 import { decks } from "../services/api";
+import useDeck from "../hooks/api/useDeck";
+import {DeckType} from "../services/api/types/decks";
 
 function Home() {
   const plantsQuery = useQuery({
@@ -29,24 +31,6 @@ function Home() {
 
   return (
     <div className="home">
-      <Navbar.Root>
-        <Navbar.Left>
-          <Link to="/explorer">Explorer</Link>
-        </Navbar.Left>
-
-        <Navbar.Right>
-          <Link to="/connexion">Connexion</Link>
-          <Button asChild label="Inscription" size="large" color="gray">
-            <Link
-              to="/inscription"
-              state={{ from: { pathname: location.pathname } }}
-            >
-              S&apos;inscrire
-            </Link>
-          </Button>
-        </Navbar.Right>
-      </Navbar.Root>
-
       {plantsQuery.isSuccess && (
         <>
           <HomeHeader plantsQuery={plantsQuery} />
@@ -345,7 +329,21 @@ function DeckTestSection() {
       }),
   });
 
-  useGSAP(() => {});
+  // Background effect
+  useGSAP(() => {
+    gsap.from(".background div", {
+      scrollTrigger: {
+        scroller: ".container",
+        trigger: ".deck-test",
+        start: "top center",
+        end: "bottom center",
+        scrub: true,
+        toggleActions: "restart pause pause reset",
+      },
+      x: -200,
+      ease: "none"
+    })
+  });
 
   return (
     <section className="deck-test">
@@ -366,10 +364,13 @@ function DeckTestSection() {
           {decksQuery.isSuccess && (
             <>
               {[...decksQuery.data.results].splice(0, 3).map((deck) => (
-                <div key={deck.id}>
-                  <DeckCard.Root followMouse={false}>
-                    <DeckCard.Header deck={deck} />
-                  </DeckCard.Root>
+                <div key={deck.id} onClick={() => {
+                }}>
+                  <Link to={`/decks/${deck.id}/game/1`}>
+                    <DeckCard.Root followMouse={false}>
+                      <DeckCard.Header deck={deck}/>
+                    </DeckCard.Root>
+                  </Link>
                 </div>
               ))}
             </>

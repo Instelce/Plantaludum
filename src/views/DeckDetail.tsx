@@ -101,25 +101,6 @@ function DeckDetail() {
         </Modal>
       )}
 
-      <Navbar.Root>
-        <Navbar.Left>
-          <Link to="/mon-jardin">Mon jardin</Link>
-          <Link to="/explorer">Explorer</Link>
-        </Navbar.Left>
-        <Navbar.Right>
-          {user && (
-            <Button asChild label="Nouveau deck" size="large" color="gray">
-              <Link
-                to="/decks/create"
-                state={{ from: { pathname: location.pathname } }}
-              >
-                Nouveau deck
-              </Link>
-            </Button>
-          )}
-        </Navbar.Right>
-      </Navbar.Root>
-
       {deckQuery.isSuccess && (
         <>
           <header className="page-header center">

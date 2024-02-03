@@ -8,19 +8,22 @@ import { PlantImagesType } from "../../services/api/types/images";
 import { DeckType } from "../../services/api/types/decks";
 
 type UseDeckArgs = {
-  deckId: string;
+  deckId: string | number;
   fetchPlants?: boolean;
   fetchImages?: boolean;
+  enabled?: boolean;
 };
 
 function useDeck({
   deckId,
   fetchPlants = false,
   fetchImages = false,
+  enabled = true,
 }: UseDeckArgs) {
   const deckQuery = useQuery<DeckType>({
     queryKey: ["decks", deckId],
     queryFn: () => decks.details(parseInt(deckId)),
+    enabled: enabled
   });
 
   const deckPlantsQuery = useQuery<PlantType[]>({
@@ -63,6 +66,7 @@ function useDeck({
   }, [deckPlantsQuery.isSuccess]);
 
   return {
+    refetch: deckQuery.refetch,
     deckQuery: deckQuery || {},
     deckPlantsQuery: plantsQuery || {},
     deckPlantsImagesQuery: plantsImagesQuery || {},

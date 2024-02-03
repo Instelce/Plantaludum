@@ -13,28 +13,13 @@ import Input from "../../components/Atoms/Input/Input";
 import useObjectSearch from "../../hooks/useObjectSearch";
 import ManageDeckButton from "../../components/Molecules/ManageDeckButton/ManageDeckButton";
 import useUserDecks from "../../hooks/api/useUserDecks";
+import Stars from "../../components/Atoms/Stars/Stars";
 
 function MainMenu() {
   const user = useUser();
 
   return (
     <div className="mainmenu">
-      <Navbar.Root>
-        <Navbar.Left>
-          <Link to="/explorer">Explorer</Link>
-        </Navbar.Left>
-        <Navbar.Right>
-          <Button asChild label="Nouveau deck" size="large" color="gray">
-            <Link
-              to="/decks/create"
-              state={{ from: { pathname: location.pathname } }}
-            >
-              Nouveau deck
-            </Link>
-          </Button>
-        </Navbar.Right>
-      </Navbar.Root>
-
       <Header.Root type="page">
         <Header.Title>
           Mon <span className="highlight">jardin</span>
@@ -175,7 +160,7 @@ function PlayedDeckSection() {
                   ></span>
                 </DeckCard.Header>
                 <DeckCard.Buttons>
-                  <Button asChild>
+                  <Button asChild className="sb">
                     <Link
                       to={`/decks/${playedDeck.deck.id}/game/${playedDeck.level}`}
                     >

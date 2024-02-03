@@ -7,10 +7,12 @@ import Stars from "../../components/Atoms/Stars/Stars";
 import DeckLevelCard from "../../components/Molecules/DeckLevelCard/DeckLevelCard";
 import { ArrowLeft, ArrowRight } from "react-feather";
 import ConfettiExplosion from "react-confetti-explosion";
+import {useAuth} from "../../context/AuthProvider";
 
 function DeckGameResult() {
   const { deckId, deckLevel } = useParams();
   const user = useUser();
+  const {accessToken} = useAuth()
 
   const location = useLocation();
   const deckGameResultData = location.state?.data;
@@ -21,25 +23,6 @@ function DeckGameResult() {
 
   return (
     <div className="deck-results">
-      <Navbar.Root>
-        <Navbar.Left>
-          <Link to="/mon-jardin">Mon jardin</Link>
-          <Link to="/explorer">Explorer</Link>
-        </Navbar.Left>
-        <Navbar.Right>
-          {user && (
-            <Button asChild label="Nouveau deck" size="large" color="gray">
-              <Link
-                to="/decks/create"
-                state={{ from: { pathname: location.pathname } }}
-              >
-                Nouveau deck
-              </Link>
-            </Button>
-          )}
-        </Navbar.Right>
-      </Navbar.Root>
-
       <header>
         <div>
           <p>{deckGameResultData.times}</p>
@@ -59,17 +42,16 @@ function DeckGameResult() {
       </header>
 
       <div className="content-container grid-buttons">
-        <Button
+        {deckGameResultData.level > 1 ? <Button
           asChild
           className="sb"
           color="gray"
-          disabled={parseInt(deckLevel) === 1}
         >
           <Link to={`/decks/${deckId}/game/${deckGameResultData.level - 1}`}>
             <ArrowLeft />
             Niveau précédent
           </Link>
-        </Button>
+        </Button> : <span></span>}
 
         <Button
           asChild
@@ -80,8 +62,7 @@ function DeckGameResult() {
           </Link>
         </Button>
 
-        {deckGameResultData.stars === 3 ||
-          (parseInt(deckLevel) < 3 && (
+        {deckGameResultData.stars === 3 && deckGameResultData.level < 3 && (
             <Button asChild className="sb">
               <Link
                 to={`/decks/${deckId}/game/${deckGameResultData.level + 1}`}
@@ -90,8 +71,12 @@ function DeckGameResult() {
                 <ArrowRight />
               </Link>
             </Button>
-          ))}
+          )}
       </div>
+
+      {!accessToken && <div className="content-container center">
+        <p>Veuillez vous <Link to="/connexion" className="link">connecter</Link> pour sauvegarder votre progression.</p>
+      </div>}
     </div>
   );
 }

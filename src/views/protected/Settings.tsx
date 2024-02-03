@@ -10,119 +10,76 @@ import ChoiceBlock from "../../components/Molecules/ChoiceBlock/ChoiceBlock";
 import { useQuery } from "@tanstack/react-query";
 import { flore } from "../../services/api/flore";
 import { PlantType } from "../../services/api/types/plants";
+import {SettingsType} from "../../types/helpers";
 
 function Settings() {
-  const [settings, setSettings] = useState({
-    showRankingTab: false,
-    switchingGardenSection: false,
-    buttonsSound: true,
-  });
+  const [settings, setSettings] = useState<SettingsType>({});
+  const [showSettings, setShowSettings] = useState(false)
 
   useEffect(() => {
     // set default settings values if they don't exists
-    if (!localStorage.getItem("settings.showRankingTab")) {
+    if (localStorage.getItem("settings.showRankingTab") === null) {
       localStorage.setItem("settings.showRankingTab", "false");
-    } else {
-      setSettings({
-        ...settings,
-        showRankingTab:
-          localStorage.getItem("settings.showRankingTab") === "true",
-      });
     }
-    if (!localStorage.getItem("settings.switchingGardenSection")) {
+    if (localStorage.getItem("settings.switchingGardenSection") === null) {
       localStorage.setItem("settings.switchingGardenSection", "false");
-    } else {
-      setSettings({
-        ...settings,
-        switchingGardenSection:
-          localStorage.getItem("settings.switchingGardenSection") === "true",
-      });
     }
-    if (!localStorage.getItem("settings.buttonsSound")) {
+    if (localStorage.getItem("settings.buttonsSound") === null) {
       localStorage.setItem("settings.buttonsSound", "false");
-    } else {
-      setSettings({
-        ...settings,
-        buttonsSound: localStorage.getItem("settings.buttonsSound") === "true",
-      });
     }
-    console.log(settings);
+    setSettings({
+      showRankingTab: JSON.parse(localStorage.getItem("settings.showRankingTab") as string),
+      switchingGardenSection: JSON.parse(localStorage.getItem("settings.switchingGardenSection") as string),
+      buttonsSound: JSON.parse(localStorage.getItem("settings.buttonsSound") as string),
+    });
+    setShowSettings(true)
   }, []);
+
+  console.log(settings);
+
+  function switchSettings(value: boolean, settingsName: keyof SettingsType) {
+    setSettings({
+      ...settings,
+      [settingsName]: value,
+    });
+    localStorage.setItem(
+      `settings.${settingsName}`,
+      (!settings[settingsName]).toString(),
+    );
+  }
 
   return (
     <div>
-      <Navbar.Root>
-        <Navbar.Left>
-          <Link to="/mon-jardin">Mon jardin</Link>
-          <Link to="/explorer">Explorer</Link>
-        </Navbar.Left>
-        <Navbar.Right>
-          <Button asChild label="Nouveau deck" size="large" color="gray">
-            <Link
-              to="/decks/create"
-              state={{ from: { pathname: location.pathname } }}
-            >
-              Nouveau deck
-            </Link>
-          </Button>
-        </Navbar.Right>
-      </Navbar.Root>
-
       <Header.Root type="page">
         <Header.Title>Paramètres</Header.Title>
       </Header.Root>
 
-      <div className="content-container">
-        <Switch
-          className="mb-1"
-          label="Afficher l’onglet du classement"
-          takeValue="true"
-          value={settings.showRankingTab}
-          handleValueChange={(value) => {
-            setSettings({
-              ...settings,
-              showRankingTab: value,
-            });
-            localStorage.setItem(
-              "settings.showRankingTab",
-              (!settings.showRankingTab).toString(),
-            );
-          }}
-        />
-        <Switch
-          className="mb-1"
-          label="Intervertir les sections dans Mon Jardin"
-          takeValue="true"
-          value={settings.switchingGardenSection}
-          handleValueChange={(value) => {
-            setSettings({
-              ...settings,
-              switchingGardenSection: value,
-            });
-            localStorage.setItem(
-              "settings.switchingGardenSection",
-              (!settings.switchingGardenSection).toString(),
-            );
-          }}
-        />
-        <Switch
-          label="Son des boutons"
-          takeValue="true"
-          value={settings.buttonsSound}
-          handleValueChange={(value) => {
-            setSettings({
-              ...settings,
-              buttonsSound: value,
-            });
-            localStorage.setItem(
-              "settings.buttonsSound",
-              (!settings.buttonsSound).toString(),
-            );
-          }}
-        />
-      </div>
+      {showSettings && <>
+        <div className="content-container">
+          <Switch
+            className="mb-1"
+            label="Afficher l’onglet du classement"
+            takeValue={true}
+            value={settings.showRankingTab}
+            handleValueChange={(value) => switchSettings(value as boolean, "showRankingTab")}
+          />
+          <Switch
+            className="mb-1"
+            label="Intervertir les sections dans Mon Jardin"
+            takeValue={true}
+            value={settings.switchingGardenSection}
+            handleValueChange={(value) => switchSettings(value as boolean, "switchingGardenSection")}
+          />
+          <Switch
+            label="Son des boutons"
+            takeValue={true}
+            value={settings.buttonsSound}
+            handleValueChange={(value) => switchSettings(value as boolean, "buttonsSound")}
+          />
+        </div>
 
-      <ButtonInfoSection />
+        <ButtonInfoSection/>
+      </>}
     </div>
   );
 }
@@ -146,9 +103,10 @@ function ButtonInfoSection() {
     num_inpn: "Numéro Inpn",
   };
 
+  // default values
   useEffect(() => {
     if (localStorage.getItem("settings.gameButtonInfo")) {
-      const { title, subtitle } = JSON.parse(
+      const {title, subtitle} = JSON.parse(
         localStorage.getItem("settings.gameButtonInfo")!,
       );
       setTitle(title);

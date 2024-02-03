@@ -3,6 +3,8 @@ import Button from "../components/Atoms/Buttons/Button";
 import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../components/Organisms/Navbar/Navbar";
 import { useAuth } from "../context/AuthProvider";
+import Header from "../components/Molecules/Header/Header";
+import header from "../components/Molecules/Header/Header";
 
 function PageNotFound() {
   const navigate = useNavigate();
@@ -10,28 +12,12 @@ function PageNotFound() {
 
   return (
     <>
-      <Navbar.Root>
-        <Navbar.Left>
-          <Link to="/mon-jardin">Mon jardin</Link>
-        </Navbar.Left>
-        <Navbar.Right>
-          {user && (
-            <Button asChild label="Nouveau deck" size="large" color="gray">
-              <Link
-                to="/decks/create"
-                state={{ from: { pathname: location.pathname } }}
-              >
-                Nouveau deck
-              </Link>
-            </Button>
-          )}
-        </Navbar.Right>
-      </Navbar.Root>
-
-      <header className="page-header">
-        Oups cette page n'existe pas...
-        <Button onClick={() => navigate(-1)}>Revenir en arrière</Button>
-      </header>
+      <Header.Root type="section">
+        <Header.Title>Oups cette page n'existe pas...</Header.Title>
+        <Header.Right>
+          <Button onClick={() => navigate(-1)}>Revenir en arrière</Button>
+        </Header.Right>
+      </Header.Root>
     </>
   );
 }

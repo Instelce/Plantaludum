@@ -17,7 +17,7 @@ function Root({ children }: PropsWithChildren) {
     <div className="navbar">
       <div className="left">
         <Link to="/" className="logo">
-          <img src="/icon.svg" alt="Plantaludum icon" width={40} />
+          <img src="/logos/logo.svg" alt="Plantaludum icon" width={40} />
         </Link>
 
         {leftElements}

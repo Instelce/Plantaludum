@@ -31,7 +31,7 @@ function App() {
     return (
       <div className="mobile">
         <header>
-          <img src="/icon.svg" alt="Plantaludum logo" />
+          <img src="/logos/logo.svg" alt="Plantaludum logo" />
           <h1>Plantaludum</h1>
           <p>Un jeux pour découvrir et apprendre à reconnaitre les plantes !</p>
         </header>
@@ -62,7 +62,16 @@ function App() {
 
           <Route path="explorer" element={<Explorer />} />
 
-          <Route path="decks/:deckId" element={<DeckDetail />} />
+          <Route path="decks/">
+            <Route path=":deckId" element={<DeckDetail />} />
+
+            <Route path=":deckId/game/:deckLevel" element={<DeckGame />} />
+
+            <Route
+              path=":deckId/game/:deckLevel/resultat"
+              element={<DeckGameResult />}
+            />
+          </Route>
 
           <Route path="help" element={<Help />} />
 
@@ -76,12 +85,6 @@ function App() {
               </Route>
 
               <Route path="decks/">
-                <Route path=":deckId/game/:deckLevel" element={<DeckGame />} />
-                <Route
-                  path=":deckId/game/:deckLevel/resultat"
-                  element={<DeckGameResult />}
-                />
-
                 <Route path="create" element={<DeckCreate />} />
                 <Route path=":deckId/plants" element={<DeckPlants />} />
 

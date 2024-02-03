@@ -61,23 +61,6 @@ function Login() {
 
   return (
     <>
-      <Navbar.Root>
-        <Navbar.Left>
-          <Link to="/explorer">Explorer</Link>
-        </Navbar.Left>
-        <Navbar.Right>
-          <Link to="/connexion">Connexion</Link>
-          <Button asChild label="Inscription" size="large" color="gray">
-            <Link
-              to="/inscription"
-              state={{ from: { pathname: location.pathname } }}
-            >
-              S&apos;inscrire
-            </Link>
-          </Button>
-        </Navbar.Right>
-      </Navbar.Root>
-
       <Header.Root type="page" center>
         <Header.Title>Connexion</Header.Title>
       </Header.Root>

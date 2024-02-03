@@ -156,13 +156,6 @@ function DeckPlants() {
 
   return (
     <>
-      <Navbar.Root>
-        <Navbar.Left>
-          <Link to="/mon-jardin">Mon jardin</Link>
-          <Link to="/explorer">Explorer</Link>
-        </Navbar.Left>
-      </Navbar.Root>
-
       <Header.Root type="page" center>
         <Header.Title>
           <span className="highlight">Ajoute </span>

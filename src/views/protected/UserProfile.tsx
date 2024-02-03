@@ -173,23 +173,6 @@ function UserProfile() {
         </Modal>
       )}
 
-      <Navbar.Root>
-        <Navbar.Left>
-          <Link to="/mon-jardin">Mon jardin</Link>
-          <Link to="/explorer">Explorer</Link>
-        </Navbar.Left>
-        <Navbar.Right>
-          <Button asChild label="Nouveau deck" size="large" color="gray">
-            <Link
-              to="/decks/create"
-              state={{ from: { pathname: location.pathname } }}
-            >
-              Nouveau deck
-            </Link>
-          </Button>
-        </Navbar.Right>
-      </Navbar.Root>
-
       <Header.Root type="page">
         {userData && currentUser && (
           <Header.Title>{userData.username}</Header.Title>

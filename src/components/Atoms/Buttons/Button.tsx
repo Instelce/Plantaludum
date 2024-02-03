@@ -23,7 +23,7 @@ const Button = forwardRef<HTMLElement, ButtonProps>((props, forwardedRef) => {
   const Comp = asChild ? Slot : "button";
 
   function soundEffect() {
-    const audio = new Audio("/click.ogg");
+    const audio = new Audio("/sounds/click.ogg");
     audio.play();
   }
 
@@ -44,7 +44,7 @@ const Button = forwardRef<HTMLElement, ButtonProps>((props, forwardedRef) => {
       {...otherProps}
       ref={forwardedRef as ForwardedRef<HTMLButtonElement>}
       onClick={(e: MouseEvent<HTMLButtonElement>) => {
-        localStorage.getItem("settings.buttonsSound") === "true" &&
+        JSON.parse(localStorage.getItem("settings.buttonsSound") as string) &&
           soundEffect();
         props.onClick && props.onClick(e);
       }}

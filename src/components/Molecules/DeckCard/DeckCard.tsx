@@ -10,6 +10,7 @@ import "./DeckCard.scss";
 import Flower from "../../Atoms/Icons";
 import { DeckType } from "../../../services/api/types/decks";
 import Button from "../../Atoms/Buttons/Button";
+import {getAnotherFormat} from "../../../utils/helpers";
 
 type DeckCardProps = {
   followMouse?: boolean;
@@ -86,8 +87,8 @@ function Header({ deck, height = 400, children }: HeaderProps) {
     <div className="card-header" style={{ maxHeight: `${height}px` }}>
       <img
         className="active"
-        src={deck.preview_image_url}
-        alt="Preview image"
+        src={getAnotherFormat(deck.preview_image_url, "CRL")}
+        alt="Photo de présentation"
       />
       <div className="card-content">
         <h3>{deck.name}</h3>
