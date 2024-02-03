@@ -1,10 +1,10 @@
-import "./BoxListGroup.scss";
-import BoxListGroup, { BoxListItem } from "./BoxListGroup";
+import "./BoxList.scss";
+import BoxList from "./BoxList";
 import React from "react";
 
 export default {
   title: "Molecules/BoxListGroup",
-  component: BoxListGroup,
+  component: BoxList.Group,
   parameters: {},
   argTypes: {},
   tags: ["autodocs"],

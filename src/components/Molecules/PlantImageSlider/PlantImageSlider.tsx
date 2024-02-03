@@ -11,7 +11,7 @@ import Button from "../../Atoms/Buttons/Button";
 import "./PlantImageSlider.scss";
 import "../ImageSlider/style.scss";
 import { ImageType } from "../../../services/api/types/images";
-import BoxListGroup, { BoxListItem } from "../BoxListGroup/BoxListGroup";
+import BoxList from "../BoxList/BoxList";
 import { Link } from "react-router-dom";
 import { PlantType } from "../../../services/api/types/plants";
 
@@ -58,19 +58,19 @@ function PlantImageSlider({
     <div className="slider" {...props}>
       <div className="slide-container">
         {((prevImages === imagesData && doRefresh) || !doRefresh) && (
-            <>
-              {imagesData?.map((img, index) => (
-                <div
-                  key={index}
-                  className={classNames("slide", {
-                    active: index === current,
-                  })}
-                >
-                  <img src={img.url} alt={`Photo de ${img.author}`} />
-                </div>
-              ))}
-            </>
-          )}
+          <>
+            {imagesData?.map((img, index) => (
+              <div
+                key={index}
+                className={classNames("slide", {
+                  active: index === current,
+                })}
+              >
+                <img src={img.url} alt={`Photo de ${img.author}`} />
+              </div>
+            ))}
+          </>
+        )}
 
         {!showImageInfo && (
           <>
@@ -119,11 +119,11 @@ function PlantImageSlider({
               <X />
             </Button>
 
-            <BoxListGroup size="large" rounded={true}>
-              <BoxListItem>@{imagesData[current].author}</BoxListItem>
-              <BoxListItem>{imagesData[current].location}</BoxListItem>
-              <BoxListItem>{imagesData[current].publ_date}</BoxListItem>
-            </BoxListGroup>
+            <BoxList.Group size="large" rounded={true}>
+              <BoxList.Item>@{imagesData[current].author}</BoxList.Item>
+              <BoxList.Item>{imagesData[current].location}</BoxList.Item>
+              <BoxList.Item>{imagesData[current].publ_date}</BoxList.Item>
+            </BoxList.Group>
 
             <Button asChild className="sb" label="Télécharger" fill>
               <Link to={plantData?.eflore_url} target="_blank">

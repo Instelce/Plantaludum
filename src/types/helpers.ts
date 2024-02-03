@@ -7,4 +7,6 @@ export type SettingsType = {
   showRankingTab: boolean;
   switchingGardenSection: boolean;
   buttonsSound: boolean;
-}
+};
+
+export type ColorType = "primary" | "gray" | "dark-gray" | "yellow" | "success" | "danger";

@@ -23,7 +23,7 @@ function useDeck({
   const deckQuery = useQuery<DeckType>({
     queryKey: ["decks", deckId],
     queryFn: () => decks.details(parseInt(deckId)),
-    enabled: enabled
+    enabled: enabled,
   });
 
   const deckPlantsQuery = useQuery<PlantType[]>({

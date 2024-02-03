@@ -6,7 +6,10 @@ import { Query, useQuery, UseQueryResult } from "@tanstack/react-query";
 import { flore } from "../services/api/flore";
 import { getAnotherFormat } from "../utils/helpers";
 import PlantImageSlider from "../components/Molecules/PlantImageSlider/PlantImageSlider";
-import {CompletePlantImagesType, PlantType} from "../services/api/types/plants";
+import {
+  CompletePlantImagesType,
+  PlantType,
+} from "../services/api/types/plants";
 import ChoiceBlock from "../components/Molecules/ChoiceBlock/ChoiceBlock";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -14,7 +17,7 @@ import { useGSAP } from "@gsap/react";
 import DeckCard from "../components/Molecules/DeckCard/DeckCard";
 import { decks } from "../services/api";
 import useDeck from "../hooks/api/useDeck";
-import {DeckType} from "../services/api/types/decks";
+import { DeckType } from "../services/api/types/decks";
 
 function Home() {
   const plantsQuery = useQuery({
@@ -311,7 +314,10 @@ function GameExplanationSection({
               setShowResult={() => true}
             />
           ))}
-          <p>Double click sur une proposition pour voir si c'est la bonne reponse.</p>
+          <p>
+            Double click sur une proposition pour voir si c'est la bonne
+            reponse.
+          </p>
         </div>
       </div>
     </section>
@@ -341,8 +347,8 @@ function DeckTestSection() {
         toggleActions: "restart pause pause reset",
       },
       x: -200,
-      ease: "none"
-    })
+      ease: "none",
+    });
   });
 
   return (
@@ -364,11 +370,10 @@ function DeckTestSection() {
           {decksQuery.isSuccess && (
             <>
               {[...decksQuery.data.results].splice(0, 3).map((deck) => (
-                <div key={deck.id} onClick={() => {
-                }}>
+                <div key={deck.id} onClick={() => {}}>
                   <Link to={`/decks/${deck.id}/game/1`}>
                     <DeckCard.Root followMouse={false}>
-                      <DeckCard.Header deck={deck}/>
+                      <DeckCard.Header deck={deck} />
                     </DeckCard.Root>
                   </Link>
                 </div>

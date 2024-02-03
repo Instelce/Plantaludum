@@ -1,4 +1,4 @@
-import {Link, LinkProps, Outlet, useLocation} from "react-router-dom";
+import { Link, LinkProps, Outlet, useLocation } from "react-router-dom";
 import { HelpCircle, LogOut, Settings, User } from "react-feather";
 import Button from "../components/Atoms/Buttons/Button";
 import useLogout from "../hooks/auth/useLogout";
@@ -18,7 +18,12 @@ function ButtonsMenu() {
 
   return (
     <div className="buttons-menu">
-      <Button asChild color={location.pathname === "/help" ? "gray" : "dark-gray"} size="medium" onlyIcon>
+      <Button
+        asChild
+        color={location.pathname === "/help" ? "gray" : "dark-gray"}
+        size="medium"
+        onlyIcon
+      >
         <Link to="/help">
           <HelpCircle />
         </Link>
@@ -27,12 +32,24 @@ function ButtonsMenu() {
       {accessToken && (
         <>
           {" "}
-          <Button asChild color={location.pathname === "/settings" ? "gray" : "dark-gray"} size="medium" onlyIcon>
+          <Button
+            asChild
+            color={location.pathname === "/settings" ? "gray" : "dark-gray"}
+            size="medium"
+            onlyIcon
+          >
             <Link to="/settings">
               <Settings />
             </Link>
           </Button>
-          <Button asChild color={location.pathname.includes("/profile") ? "gray" : "dark-gray"} size="medium" onlyIcon>
+          <Button
+            asChild
+            color={
+              location.pathname.includes("/profile") ? "gray" : "dark-gray"
+            }
+            size="medium"
+            onlyIcon
+          >
             <Link to={`profile/${currentUser?.id}`}>
               <User />
             </Link>
@@ -47,45 +64,59 @@ function ButtonsMenu() {
 }
 
 function Root() {
-  const {accessToken} = useAuth()
+  const { accessToken } = useAuth();
   return (
     <>
       <div className="page-container">
         <div className="container">
           <div className="scroller">
-            {!location.pathname.includes("game") && <Navbar.Root>
-              <Navbar.Left>
-                {accessToken ? (
-                  <LocationLink to="/mon-jardin">Mon jardin</LocationLink>
-                ) : (
-                  <LocationLink to="/">Acceuil</LocationLink>
-                )}
-                <LocationLink to="/explorer">Explorer</LocationLink>
-                {localStorage.getItem("settings.showRankingTab") === "true" && accessToken && <LocationLink to="/classement">Classement</LocationLink>}
-              </Navbar.Left>
-              <Navbar.Right>
-                {accessToken ? (
-                  <Button asChild label="Nouveau deck" size="large" color="gray">
-                    <LocationLink
-                      to="/decks/create"
+            {!(
+              location.pathname.includes("game") &&
+              !location.pathname.includes("resultat")
+            ) && (
+              <Navbar.Root>
+                <Navbar.Left>
+                  {accessToken ? (
+                    <LocationLink to="/mon-jardin">Mon jardin</LocationLink>
+                  ) : (
+                    <LocationLink to="/">Acceuil</LocationLink>
+                  )}
+                  <LocationLink to="/explorer">Explorer</LocationLink>
+                  {localStorage.getItem("settings.showRankingTab") === "true" &&
+                    accessToken && (
+                      <LocationLink to="/classement">Classement</LocationLink>
+                    )}
+                </Navbar.Left>
+                <Navbar.Right>
+                  {accessToken ? (
+                    <Button
+                      asChild
+                      label="Nouveau deck"
+                      size="large"
+                      color="gray"
                     >
-                      Nouveau deck
-                    </LocationLink>
-                  </Button>
-                ) : (
-                  <>
-                    <LocationLink to="/connexion">Connexion</LocationLink>
-                    <Button asChild label="Inscription" size="large" color="gray">
-                      <LocationLink
-                        to="/inscription"
-                      >
-                        S&apos;inscrire
+                      <LocationLink to="/decks/create">
+                        Nouveau deck
                       </LocationLink>
                     </Button>
-                  </>
-                )}
-              </Navbar.Right>
-            </Navbar.Root>}
+                  ) : (
+                    <>
+                      <LocationLink to="/connexion">Connexion</LocationLink>
+                      <Button
+                        asChild
+                        label="Inscription"
+                        size="large"
+                        color="gray"
+                      >
+                        <LocationLink to="/inscription">
+                          S&apos;inscrire
+                        </LocationLink>
+                      </Button>
+                    </>
+                  )}
+                </Navbar.Right>
+              </Navbar.Root>
+            )}
 
             <Outlet />
           </div>
@@ -126,9 +157,17 @@ function Root() {
   );
 }
 
-function LocationLink({...props}: LinkProps) {
-  const location = useLocation()
-  return <Link className={classNames({"active": location.pathname === props.to.toString()})} {...props} state={{ from: { pathname: location.pathname } }} />;
+function LocationLink({ ...props }: LinkProps) {
+  const location = useLocation();
+  return (
+    <Link
+      className={classNames({
+        active: location.pathname === props.to.toString(),
+      })}
+      {...props}
+      state={{ from: { pathname: location.pathname } }}
+    />
+  );
 }
 
 export default Root;

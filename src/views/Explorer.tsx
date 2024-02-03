@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useRef, useState} from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Input from "../components/Atoms/Input/Input";
 import DeckCard from "../components/Molecules/DeckCard/DeckCard";
 import Modal from "../components/Molecules/Modal/Modal";
@@ -6,22 +6,22 @@ import Button from "../components/Atoms/Buttons/Button.jsx";
 import Dropdown from "../components/Molecules/Dropdown/Dropdown";
 import classNames from "classnames";
 import Option from "../components/Atoms/Option/Option";
-import {useInfiniteQuery} from "@tanstack/react-query";
-import {decks} from "../services/api";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { decks } from "../services/api";
 import Loader from "../components/Atoms/Loader/index.jsx";
-import {Link} from "react-router-dom";
-import {Edit, Search, Sliders, Zap} from "react-feather";
-import {useAuth} from "../context/AuthProvider";
-import {DeckType} from "../services/api/types/decks";
+import { Link } from "react-router-dom";
+import { Edit, Search, Sliders, Zap } from "react-feather";
+import { useAuth } from "../context/AuthProvider";
+import { DeckType } from "../services/api/types/decks";
 import useObjectSearch from "../hooks/useObjectSearch";
-import {useInView} from "react-intersection-observer";
+import { useInView } from "react-intersection-observer";
 import useDebounce from "../hooks/useDebounce";
 import useUser from "../hooks/auth/useUser";
 import Header from "../components/Molecules/Header/Header";
 import gsap from "gsap";
-import {ScrollTrigger} from "gsap/ScrollTrigger";
-import {useGSAP} from "@gsap/react";
-import {PaginationResponseType} from "../services/api/types/pagination";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+import { PaginationResponseType } from "../services/api/types/pagination";
 
 function Explorer() {
   const { accessToken } = useAuth();
@@ -54,7 +54,10 @@ function Explorer() {
       }),
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => {
-      return lastPage.results.length === 6 && lastPage.count > lastPage.results.length ? allPages.length + 1 : undefined;
+      return lastPage.results.length === 6 &&
+        lastPage.count > lastPage.results.length
+        ? allPages.length + 1
+        : undefined;
     },
   });
 
@@ -87,7 +90,7 @@ function Explorer() {
 
   // Header when scrolling
   useGSAP(() => {
-    gsap.registerPlugin(ScrollTrigger)
+    gsap.registerPlugin(ScrollTrigger);
 
     gsap.to(".header", {
       scrollTrigger: {
@@ -97,10 +100,10 @@ function Explorer() {
         end: "bottom top",
         toggleActions: "play pause pause reset",
       },
-      duration: .5,
+      duration: 0.5,
       paddingTop: "0.5rem",
       paddingBottom: "0.5rem",
-    })
+    });
     gsap.to(".header .title", {
       scrollTrigger: {
         scroller: ".container",
@@ -109,10 +112,10 @@ function Explorer() {
         end: "bottom top",
         toggleActions: "play pause pause reset",
       },
-      duration: .5,
-      fontSize: "2rem"
-    })
-  })
+      duration: 0.5,
+      fontSize: "2rem",
+    });
+  });
 
   return (
     <>
@@ -200,7 +203,7 @@ function Explorer() {
             )}
           </div>
 
-          {hasNextPage  && (
+          {hasNextPage && (
             <div
               ref={loaderSectionRef}
               className={classNames("deck-loader", {
@@ -214,7 +217,7 @@ function Explorer() {
           {!hasNextPage && searchInput.length === 0 ? (
             <div className="flex center pt-2 pb-2">
               <p className="t-center">
-                Plus aucun deck à charger ! <br/>
+                Plus aucun deck à charger ! <br />
                 Si tu pense qu'il manque un deck,{" "}
                 <Link to="/decks/create" className="link">
                   créer en un
@@ -222,17 +225,19 @@ function Explorer() {
                 .
               </p>
             </div>
-          ) : <div className="flex center pt-2 pb-2">
-            <p className="t-center">
-              Aucun decks ayant le nom : {searchInput}
-            </p>
-          </div>}
+          ) : (
+            <div className="flex center pt-2 pb-2">
+              <p className="t-center">
+                Aucun decks ayant le nom : {searchInput}
+              </p>
+            </div>
+          )}
         </>
       )}
 
       {isLoading && (
         <div className="center-loader">
-          <Loader/>
+          <Loader />
         </div>
       )}
     </>

@@ -21,6 +21,7 @@ import UserProfile from "./views/protected/UserProfile";
 import DeckGameResult from "./views/protected/DeckGameResult.jsx";
 import Settings from "./views/protected/Settings";
 import Help from "./views/Help";
+import Ranking from "./views/protected/Ranking";
 
 /**
  * Contains all routes of the app
@@ -77,6 +78,8 @@ function App() {
 
           <Route element={<PersistLogin />}>
             <Route element={<RequireAuth />}>
+              <Route path="classement" element={<Ranking />} />
+
               <Route path="settings" element={<Settings />} />
               <Route path="profile/:userId" element={<UserProfile />} />
 

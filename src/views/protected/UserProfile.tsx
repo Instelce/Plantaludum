@@ -15,6 +15,7 @@ import Input from "../../components/Atoms/Input/Input";
 import { auth } from "../../services/api";
 import usePrivateFetch from "../../hooks/auth/usePrivateFetch";
 import { useNotification } from "../../context/NotificationsProvider";
+import BoxList from "../../components/Molecules/BoxList/BoxList";
 
 function UserProfile() {
   const { userId } = useParams();
@@ -179,7 +180,7 @@ function UserProfile() {
         )}
 
         <Header.Right>
-          <span>Score</span>
+          <span>Points</span>
           <h2>{userData?.score}</h2>
         </Header.Right>
       </Header.Root>
@@ -252,10 +253,24 @@ function UserProfile() {
 
                 <Tabs.Content value="donnees">
                   <div className="content-container">
-                    <p>Email : {currentUser.email}</p>
-                    <p>Score : {currentUser.score}</p>
-                    <p>Level : {currentUser.level}</p>
-                    <p>Parties joué : {currentUser.games_played}</p>
+                    <BoxList.Group size="medium" rounded background="gray">
+                      <BoxList.Item className="sb">
+                        <span>Email</span>
+                        <span>{currentUser.email}</span>
+                      </BoxList.Item>
+                      <BoxList.Item className="sb">
+                        <span>Points</span>
+                        <span>{currentUser.score}</span>
+                      </BoxList.Item>
+                      <BoxList.Item className="sb">
+                        <span>Level</span>
+                        <span>{currentUser.level}</span>
+                      </BoxList.Item>
+                      <BoxList.Item className="sb">
+                        <span>Parties jouées</span>
+                        <span>{currentUser.games_played}</span>
+                      </BoxList.Item>
+                    </BoxList.Group>
                   </div>
                 </Tabs.Content>
               </Tabs.Root>

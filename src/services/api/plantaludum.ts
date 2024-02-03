@@ -78,6 +78,7 @@ export const decks = {
 };
 
 export const users = {
+  list: (privateFetch: AxiosInstance) => privateFetch.get("/api/auth/users").then(r => r.data),
   details: (userId: number) =>
     apiRequest.get(`/api/auth/users/${userId}`).then((r) => {
       return r.data as UserType;

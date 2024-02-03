@@ -24,7 +24,10 @@
     & > a:not(.button) {
       padding: 0 0.5rem;
       margin-right: 1.5rem;
-      transition: color 0.3s ease, background-color .3s ease;
+      border-radius: var(--radius);
+      transition:
+        color 0.3s ease,
+        background-color 0.3s ease;
 
       &:hover {
         color: rgb(var(--color-primary-light));
@@ -32,7 +35,6 @@
 
       &.active {
         background: rgb(var(--color-gray-3));
-        border-radius: var(--radius);
 
         &:hover {
           color: rgb(var(--color-white));

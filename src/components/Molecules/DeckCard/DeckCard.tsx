@@ -10,7 +10,7 @@ import "./DeckCard.scss";
 import Flower from "../../Atoms/Icons";
 import { DeckType } from "../../../services/api/types/decks";
 import Button from "../../Atoms/Buttons/Button";
-import {getAnotherFormat} from "../../../utils/helpers";
+import { getAnotherFormat } from "../../../utils/helpers";
 
 type DeckCardProps = {
   followMouse?: boolean;

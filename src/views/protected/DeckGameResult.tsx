@@ -7,12 +7,12 @@ import Stars from "../../components/Atoms/Stars/Stars";
 import DeckLevelCard from "../../components/Molecules/DeckLevelCard/DeckLevelCard";
 import { ArrowLeft, ArrowRight } from "react-feather";
 import ConfettiExplosion from "react-confetti-explosion";
-import {useAuth} from "../../context/AuthProvider";
+import { useAuth } from "../../context/AuthProvider";
 
 function DeckGameResult() {
   const { deckId, deckLevel } = useParams();
   const user = useUser();
-  const {accessToken} = useAuth()
+  const { accessToken } = useAuth();
 
   const location = useLocation();
   const deckGameResultData = location.state?.data;
@@ -42,16 +42,16 @@ function DeckGameResult() {
       </header>
 
       <div className="content-container grid-buttons">
-        {deckGameResultData.level > 1 ? <Button
-          asChild
-          className="sb"
-          color="gray"
-        >
-          <Link to={`/decks/${deckId}/game/${deckGameResultData.level - 1}`}>
-            <ArrowLeft />
-            Niveau précédent
-          </Link>
-        </Button> : <span></span>}
+        {deckGameResultData.level > 1 ? (
+          <Button asChild className="sb" color="gray">
+            <Link to={`/decks/${deckId}/game/${deckGameResultData.level - 1}`}>
+              <ArrowLeft />
+              Niveau précédent
+            </Link>
+          </Button>
+        ) : (
+          <span></span>
+        )}
 
         <Button
           asChild
@@ -63,20 +63,26 @@ function DeckGameResult() {
         </Button>
 
         {deckGameResultData.stars === 3 && deckGameResultData.level < 3 && (
-            <Button asChild className="sb">
-              <Link
-                to={`/decks/${deckId}/game/${deckGameResultData.level + 1}`}
-              >
-                Niveau suivant
-                <ArrowRight />
-              </Link>
-            </Button>
-          )}
+          <Button asChild className="sb">
+            <Link to={`/decks/${deckId}/game/${deckGameResultData.level + 1}`}>
+              Niveau suivant
+              <ArrowRight />
+            </Link>
+          </Button>
+        )}
       </div>
 
-      {!accessToken && <div className="content-container center">
-        <p>Veuillez vous <Link to="/connexion" className="link">connecter</Link> pour sauvegarder votre progression.</p>
-      </div>}
+      {!accessToken && (
+        <div className="content-container center">
+          <p>
+            Veuillez vous{" "}
+            <Link to="/connexion" className="link">
+              connecter
+            </Link>{" "}
+            pour sauvegarder votre progression.
+          </p>
+        </div>
+      )}
     </div>
   );
 }

@@ -10,11 +10,11 @@ import ChoiceBlock from "../../components/Molecules/ChoiceBlock/ChoiceBlock";
 import { useQuery } from "@tanstack/react-query";
 import { flore } from "../../services/api/flore";
 import { PlantType } from "../../services/api/types/plants";
-import {SettingsType} from "../../types/helpers";
+import { SettingsType } from "../../types/helpers";
 
 function Settings() {
   const [settings, setSettings] = useState<SettingsType>({});
-  const [showSettings, setShowSettings] = useState(false)
+  const [showSettings, setShowSettings] = useState(false);
 
   useEffect(() => {
     // set default settings values if they don't exists
@@ -28,11 +28,17 @@ function Settings() {
       localStorage.setItem("settings.buttonsSound", "false");
     }
     setSettings({
-      showRankingTab: JSON.parse(localStorage.getItem("settings.showRankingTab") as string),
-      switchingGardenSection: JSON.parse(localStorage.getItem("settings.switchingGardenSection") as string),
-      buttonsSound: JSON.parse(localStorage.getItem("settings.buttonsSound") as string),
+      showRankingTab: JSON.parse(
+        localStorage.getItem("settings.showRankingTab") as string,
+      ),
+      switchingGardenSection: JSON.parse(
+        localStorage.getItem("settings.switchingGardenSection") as string,
+      ),
+      buttonsSound: JSON.parse(
+        localStorage.getItem("settings.buttonsSound") as string,
+      ),
     });
-    setShowSettings(true)
+    setShowSettings(true);
   }, []);
 
   console.log(settings);
@@ -54,32 +60,40 @@ function Settings() {
         <Header.Title>Paramètres</Header.Title>
       </Header.Root>
 
-      {showSettings && <>
-        <div className="content-container">
-          <Switch
-            className="mb-1"
-            label="Afficher l’onglet du classement"
-            takeValue={true}
-            value={settings.showRankingTab}
-            handleValueChange={(value) => switchSettings(value as boolean, "showRankingTab")}
-          />
-          <Switch
-            className="mb-1"
-            label="Intervertir les sections dans Mon Jardin"
-            takeValue={true}
-            value={settings.switchingGardenSection}
-            handleValueChange={(value) => switchSettings(value as boolean, "switchingGardenSection")}
-          />
-          <Switch
-            label="Son des boutons"
-            takeValue={true}
-            value={settings.buttonsSound}
-            handleValueChange={(value) => switchSettings(value as boolean, "buttonsSound")}
-          />
-        </div>
+      {showSettings && (
+        <>
+          <div className="content-container">
+            <Switch
+              className="mb-1"
+              label="Afficher l’onglet du classement"
+              takeValue={true}
+              value={settings.showRankingTab}
+              handleValueChange={(value) =>
+                switchSettings(value as boolean, "showRankingTab")
+              }
+            />
+            <Switch
+              className="mb-1"
+              label="Intervertir les sections dans Mon Jardin"
+              takeValue={true}
+              value={settings.switchingGardenSection}
+              handleValueChange={(value) =>
+                switchSettings(value as boolean, "switchingGardenSection")
+              }
+            />
+            <Switch
+              label="Son des boutons"
+              takeValue={true}
+              value={settings.buttonsSound}
+              handleValueChange={(value) =>
+                switchSettings(value as boolean, "buttonsSound")
+              }
+            />
+          </div>
 
-        <ButtonInfoSection/>
-      </>}
+          <ButtonInfoSection />
+        </>
+      )}
     </div>
   );
 }
@@ -106,7 +120,7 @@ function ButtonInfoSection() {
   // default values
   useEffect(() => {
     if (localStorage.getItem("settings.gameButtonInfo")) {
-      const {title, subtitle} = JSON.parse(
+      const { title, subtitle } = JSON.parse(
         localStorage.getItem("settings.gameButtonInfo")!,
       );
       setTitle(title);

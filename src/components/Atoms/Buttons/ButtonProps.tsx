@@ -1,10 +1,11 @@
 import { ButtonHTMLAttributes, ReactNode } from "react";
+import {ColorType} from "../../../types/helpers";
 
 export type ButtonProps = {
   asChild?: boolean;
   label?: string | null;
   onlyIcon?: boolean;
-  color?: "primary" | "gray" | "dark-gray" | "yellow" | "success" | "danger";
+  color?: ColorType;
   size?: "small" | "medium" | "large";
   bounce?: boolean;
   fill?: boolean;
