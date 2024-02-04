@@ -1,0 +1,11 @@
+.infinite-loader {
+  width: 100%;
+  padding: 2rem 4rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgb(var(--color-primary-light));
+  color: rgb(var(--color-gray-3));
+}

@@ -6,7 +6,7 @@ import { auth } from "../../services/api";
 import { UserType } from "../../services/api/types/users";
 
 function useUser() {
-  const { setUser } = useAuth();
+  const { setUser, user } = useAuth();
   const privateFetch = usePrivateFetch();
 
   const userQuery = useQuery<UserType>({
@@ -16,7 +16,15 @@ function useUser() {
       setUser(response.data);
       return response.data;
     },
+    staleTime: 10 * 60,
+    // enabled: false,
   });
+
+  // useEffect(() => {
+  //   if ((!user && userQuery.isStale) || !userQuery.isFetched) {
+  //     userQuery.refetch();
+  //   }
+  // }, [userQuery.isStale]);
 
   return userQuery.data;
 }

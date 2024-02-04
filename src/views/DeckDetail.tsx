@@ -18,7 +18,7 @@ import { useNotification } from "../context/NotificationsProvider";
 import useCacheImages from "../hooks/useCacheImages";
 import DeckLevelCard from "../components/Molecules/DeckLevelCard/DeckLevelCard";
 import { UserPlayedDeckType } from "../services/api/types/decks";
-import { users } from "../services/api/plantaludum";
+import { users } from "../services/api/plantaludum/users";
 import { AxiosError } from "axios";
 
 function DeckDetail() {

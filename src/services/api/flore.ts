@@ -1,7 +1,7 @@
-import { apiFlore } from "./axios";
-import { PlantImagesType } from "./types/images";
-import { loadURLParams } from "../../utils/helpers";
-import { CompletePlantImagesType } from "./types/plants";
+import {apiFlore} from "./axios";
+import {ImageType, PlantImagesType} from "./types/images";
+import {loadURLParams} from "../../utils/helpers";
+import {CompletePlantImagesType} from "./types/plants";
 
 export function loadRandomPlants({
   number = 10,
@@ -62,6 +62,16 @@ export function loadPlantsIdsListImages(ids: number[]) {
     .then((r) => r.data as PlantImagesType[]);
 }
 
+function loadImagesIdsList(ids: number[]) {
+  const params = new URLSearchParams();
+
+  params.set("ids", ids.join(","));
+
+  return apiFlore
+    .get(`api/images-list?${params.toString()}`)
+    .then((r) => r.data as ImageType[]);
+}
+
 type LoadImagesArgs = {
   plant__id?: number | null;
   plant__french_name?: string | null;
@@ -97,6 +107,7 @@ const plants = {
 const images = {
   list: loadImages,
   getWithPlantsIds: loadPlantsIdsListImages,
+  getWithIds: loadImagesIdsList,
 };
 
 export const flore = {

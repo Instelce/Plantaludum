@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { users } from "../../services/api/plantaludum";
+import { users } from "../../services/api/plantaludum/users";
 
 type UseUserDecksArgs = {
   id: number;
@@ -24,7 +24,7 @@ const useUserDecks = ({ id, fieldFilters }: UseUserDecksArgs) => {
       console.log(id, userDecksQuery.data);
       userDecksQuery.refetch();
     }
-  }, [id, userDecksQuery]);
+  }, [id]);
 
   return userDecksQuery;
 };

@@ -1,5 +1,5 @@
 import "./BoxList.scss";
-import {ColorType, SizeProp} from "../../../types/helpers";
+import { ColorType, SizeProp } from "../../../types/helpers";
 import React, { LiHTMLAttributes, PropsWithChildren } from "react";
 import classNames from "classnames";
 
@@ -10,9 +10,23 @@ type BoxListGroupProps = {
   hasBorder?: boolean;
 } & PropsWithChildren;
 
-function Group({ size, rounded = true, background = "dark-gray", hasBorder = true, children }: BoxListGroupProps) {
+function Group({
+  size,
+  rounded = true,
+  background = "dark-gray",
+  hasBorder = true,
+  children,
+}: BoxListGroupProps) {
   return (
-    <ul className={classNames("box-list-group", size, { border: hasBorder }, { rounded: rounded }, background)}>
+    <ul
+      className={classNames(
+        "box-list-group",
+        size,
+        { border: hasBorder },
+        { rounded: rounded },
+        background,
+      )}
+    >
       {children}
     </ul>
   );
@@ -20,7 +34,7 @@ function Group({ size, rounded = true, background = "dark-gray", hasBorder = tru
 
 type BoxListItemProps = {
   color?: ColorType;
-  active?: boolean
+  active?: boolean;
 } & PropsWithChildren &
   LiHTMLAttributes<HTMLLIElement>;
 
@@ -31,7 +45,15 @@ export function Item({
   ...props
 }: BoxListItemProps) {
   return (
-    <li {...props} className={classNames("box-list-item", {active: active}, color, props.className)}>
+    <li
+      {...props}
+      className={classNames(
+        "box-list-item",
+        { active: active },
+        color,
+        props.className,
+      )}
+    >
       {children}
     </li>
   );

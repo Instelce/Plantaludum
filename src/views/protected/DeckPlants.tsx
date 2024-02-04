@@ -52,16 +52,21 @@ function DeckPlants() {
       decks.createPlant(privateFetch, data),
     onSuccess: (data) => {
       queryClient.invalidateQueries({
+        queryKey: ["decks", deckId],
+      });
+      queryClient.invalidateQueries({
         queryKey: ["decks-plants", deckId],
       });
       queryClient.invalidateQueries({
         queryKey: ["decks-plants-infos", deckId],
+        stale: false,
       });
       queryClient.invalidateQueries({
         queryKey: ["decks-plants-images", deckId],
+        stale: false,
       });
 
-      navigate(`/decks/${deckId}`, { replace: true });
+      navigate(`/decks/${deckId}`);
     },
   });
   const { mutate: mutateDeletePlantDeck } = useMutation({
@@ -69,14 +74,19 @@ function DeckPlants() {
     mutationFn: (plantId: number) =>
       decks.deletePlant(privateFetch, parseInt(deckId as string), plantId),
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["decks-plants", deckId] });
+      queryClient.invalidateQueries({
+        queryKey: ["decks", deckId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["decks-plants", deckId]
+      });
       queryClient.invalidateQueries({
         queryKey: ["decks-plants-infos", deckId],
-        exact: true,
+        stale: false,
       });
       queryClient.invalidateQueries({
         queryKey: ["decks-plants-images", deckId],
-        exact: true,
+        stale: false,
       });
       navigate(`/decks/${deckId}`, { replace: true });
     },

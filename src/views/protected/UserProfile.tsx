@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import Button from "../../components/Atoms/Buttons/Button";
 import Navbar from "../../components/Organisms/Navbar/Navbar";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { users } from "../../services/api/plantaludum";
+import { users } from "../../services/api/plantaludum/users";
 import useUserDecks from "../../hooks/api/useUserDecks";
 import DeckCard from "../../components/Molecules/DeckCard/DeckCard";
 import { Check, RefreshCcw, Trash, Zap } from "react-feather";
@@ -190,7 +190,7 @@ function UserProfile() {
           {currentUserProfile && (
             <>
               <Tabs.Root defaultValue="donnees">
-                <div className="fill-horizontal center sep-bottom">
+                <div className="fill-horizontal sep-bottom page-padding">
                   <Tabs.List>
                     <Tabs.Trigger value="donnees">Infos Compte</Tabs.Trigger>
                     <Tabs.Trigger value="actions">Actions</Tabs.Trigger>
@@ -253,7 +253,7 @@ function UserProfile() {
 
                 <Tabs.Content value="donnees">
                   <div className="content-container">
-                    <BoxList.Group size="medium" rounded background="gray">
+                    <BoxList.Group size="large" rounded background="dark-gray">
                       <BoxList.Item className="sb">
                         <span>Email</span>
                         <span>{currentUser.email}</span>

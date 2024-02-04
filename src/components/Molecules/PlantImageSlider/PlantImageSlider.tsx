@@ -97,7 +97,7 @@ function PlantImageSlider({
             <Button
               onlyIcon
               color="gray"
-              size="small"
+              size="medium"
               className="show-info"
               onClick={() => setShowImageInfo((show) => !show)}
               bounce={false}
@@ -111,7 +111,7 @@ function PlantImageSlider({
             <Button
               onlyIcon
               color="gray"
-              size="small"
+              size="medium"
               className="show-info"
               onClick={() => setShowImageInfo((show) => !show)}
               bounce={false}

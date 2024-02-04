@@ -22,6 +22,7 @@ import DeckGameResult from "./views/protected/DeckGameResult.jsx";
 import Settings from "./views/protected/Settings";
 import Help from "./views/Help";
 import Ranking from "./views/protected/Ranking";
+import Identifications from "./views/protected/Identifications";
 
 /**
  * Contains all routes of the app
@@ -76,6 +77,7 @@ function App() {
 
           <Route path="help" element={<Help />} />
 
+          {/* Protected */}
           <Route element={<PersistLogin />}>
             <Route element={<RequireAuth />}>
               <Route path="classement" element={<Ranking />} />
@@ -86,6 +88,8 @@ function App() {
               <Route path="mon-jardin" element={<MainMenu />}>
                 <Route path="choix" element={<DeckChoice />} />
               </Route>
+
+              <Route path="identifications" element={<Identifications />} />
 
               <Route path="decks/">
                 <Route path="create" element={<DeckCreate />} />

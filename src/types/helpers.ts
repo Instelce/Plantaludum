@@ -9,4 +9,10 @@ export type SettingsType = {
   buttonsSound: boolean;
 };
 
-export type ColorType = "primary" | "gray" | "dark-gray" | "yellow" | "success" | "danger";
+export type ColorType =
+  | "primary"
+  | "gray"
+  | "dark-gray"
+  | "yellow"
+  | "success"
+  | "danger";

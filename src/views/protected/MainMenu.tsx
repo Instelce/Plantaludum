@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import usePrivateFetch from "../../hooks/auth/usePrivateFetch.js";
-import Navbar from "../../components/Organisms/Navbar/Navbar";
 import Button from "../../components/Atoms/Buttons/Button";
 import { DeckType, UserPlayedDeckType } from "../../services/api/types/decks";
 import { useQuery } from "@tanstack/react-query";
-import { decks, users } from "../../services/api/plantaludum";
+import { users } from "../../services/api/plantaludum/users";
 import useUser from "../../hooks/auth/useUser";
 import DeckCard from "../../components/Molecules/DeckCard/DeckCard";
 import Header from "../../components/Molecules/Header/Header";
@@ -13,7 +11,6 @@ import Input from "../../components/Atoms/Input/Input";
 import useObjectSearch from "../../hooks/useObjectSearch";
 import ManageDeckButton from "../../components/Molecules/ManageDeckButton/ManageDeckButton";
 import useUserDecks from "../../hooks/api/useUserDecks";
-import Stars from "../../components/Atoms/Stars/Stars";
 
 function MainMenu() {
   const user = useUser();
@@ -121,7 +118,7 @@ function PlayedDeckSection() {
     if (user && playedDecksQuery.isStale) {
       playedDecksQuery.refetch();
     }
-  }, [playedDecksQuery.isStale, user]);
+  }, [user]);
 
   const playedDeckFilteredData = useObjectSearch<UserPlayedDeckType>({
     data: playedDecksQuery?.data,
@@ -155,12 +152,14 @@ function PlayedDeckSection() {
                     style={{
                       width: `${33.333 * playedDeck.level}%`,
                       borderBottomRightRadius:
-                        playedDeck.level === 3 ? 0 : "10px",
+                        playedDeck.level === 3 ? 0 : "var(--radius)",
+                      borderTopRightRadius:
+                        playedDeck.level === 3 ? "var(--radius)" : 0,
                     }}
                   ></span>
                 </DeckCard.Header>
                 <DeckCard.Buttons>
-                  <Button asChild className="sb">
+                  <Button asChild>
                     <Link
                       to={`/decks/${playedDeck.deck.id}/game/${playedDeck.level}`}
                     >

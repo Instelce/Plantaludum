@@ -76,9 +76,10 @@ function Root() {
             ) && (
               <Navbar.Root>
                 <Navbar.Left>
-                  {accessToken ? (
+                  {accessToken ? <>
                     <LocationLink to="/mon-jardin">Mon jardin</LocationLink>
-                  ) : (
+                    <LocationLink to="/identifications">Identifications</LocationLink>
+                  </> : (
                     <LocationLink to="/">Acceuil</LocationLink>
                   )}
                   <LocationLink to="/explorer">Explorer</LocationLink>

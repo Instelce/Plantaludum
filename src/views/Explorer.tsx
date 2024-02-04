@@ -22,13 +22,13 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { PaginationResponseType } from "../services/api/types/pagination";
+import InfiniteLoader from "../components/Molecules/InfiniteLoader/InfiniteLoader/InfiniteLoader";
 
 function Explorer() {
   const { accessToken } = useAuth();
   const user = useUser();
   const [searchInput, setSearchInput] = useState("");
   const [showFilter, setShowFilter] = useState(false);
-  const { ref: loaderSectionRef, inView: loaderInView } = useInView();
 
   // search and filters
   const panelRef = useRef<HTMLDivElement>(null);
@@ -82,12 +82,6 @@ function Explorer() {
     console.log("search", searchFilteredDecks);
   }, [searchFilteredDecks, filteredDecks]);
 
-  useEffect(() => {
-    if (loaderInView && hasNextPage) {
-      fetchNextPage();
-    }
-  }, [fetchNextPage, hasNextPage, loaderInView]);
-
   // Header when scrolling
   useGSAP(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -97,8 +91,8 @@ function Explorer() {
         scroller: ".container",
         trigger: ".header",
         start: "top top",
-        end: "bottom top",
         toggleActions: "play pause pause reset",
+        scrub: true,
       },
       duration: 0.5,
       paddingTop: "0.5rem",
@@ -109,8 +103,8 @@ function Explorer() {
         scroller: ".container",
         trigger: ".header",
         start: "top top",
-        end: "bottom top",
         toggleActions: "play pause pause reset",
+        scrub: true,
       },
       duration: 0.5,
       fontSize: "2rem",
@@ -203,16 +197,11 @@ function Explorer() {
             )}
           </div>
 
-          {hasNextPage && (
-            <div
-              ref={loaderSectionRef}
-              className={classNames("deck-loader", {
-                "no-results": !hasNextPage,
-              })}
-            >
-              <p>Chargement...</p>
-            </div>
-          )}
+          <InfiniteLoader
+            message={"Chargement des decks"}
+            hasNextPage={hasNextPage}
+            fetchNextPage={fetchNextPage}
+          />
 
           {!hasNextPage && searchInput.length === 0 ? (
             <div className="flex center pt-2 pb-2">

@@ -42,7 +42,7 @@ function Root({ followMouse = true, children, ...props }: DeckCardProps) {
 
           if (cardRef.current) {
             cardRef.current.style.transform = `translate(${x * 0.02}px, ${
-              y * 0.02
+              y * 0.03
             }px) scale(1.02)`;
           }
         }

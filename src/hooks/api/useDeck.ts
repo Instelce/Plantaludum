@@ -37,7 +37,7 @@ function useDeck({
       flore.plants.getWithIds(
         getObjectKeyValues(deckPlantsQuery.data, "plant_id"), // array of plant id
       ),
-    staleTime: Infinity,
+    staleTime: 100_000,
     enabled: false,
   });
 
@@ -47,7 +47,7 @@ function useDeck({
       flore.images.getWithPlantsIds(
         getObjectKeyValues(deckPlantsQuery.data, "plant_id"),
       ),
-    staleTime: Infinity,
+    staleTime: 100_000,
     enabled: false,
   });
 

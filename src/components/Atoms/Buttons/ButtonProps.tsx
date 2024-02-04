@@ -1,5 +1,5 @@
 import { ButtonHTMLAttributes, ReactNode } from "react";
-import {ColorType} from "../../../types/helpers";
+import { ColorType } from "../../../types/helpers";
 
 export type ButtonProps = {
   asChild?: boolean;

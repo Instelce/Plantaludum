@@ -15,8 +15,8 @@ import useCacheImages from "../../hooks/useCacheImages.js";
 import PlantImageSlider from "../../components/Molecules/PlantImageSlider/PlantImageSlider";
 import Button from "../../components/Atoms/Buttons/Button";
 import { PlantType } from "../../services/api/types/plants";
-import {useMutation, useQueryClient} from "@tanstack/react-query";
-import { users } from "../../services/api/plantaludum";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { users } from "../../services/api/plantaludum/users";
 import usePrivateFetch from "../../hooks/auth/usePrivateFetch";
 import useUser from "../../hooks/auth/useUser";
 import { AxiosError } from "axios";
@@ -27,7 +27,7 @@ import { useAuth } from "../../context/AuthProvider";
 
 function DeckGame() {
   const navigate = useNavigate();
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
   let { deckId, deckLevel } = useParams();
   const { accessToken } = useAuth();
   const privateFetch = usePrivateFetch();
@@ -79,8 +79,8 @@ function DeckGame() {
         games_played: (user?.games_played as number) + 1,
       }),
     onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: ["users"]})
-    }
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+    },
   });
 
   const userPlayedDeckQuery = useMutation<UserPlayedDeckType>({
@@ -102,7 +102,7 @@ function DeckGame() {
     mutationFn: () =>
       users.playedDecks.create(privateFetch, user?.id as number, {
         deck: parseInt(deckId as string),
-        level: stars === 3 ? 2 : stars,
+        level: stars === 3 ? 2 : 1,
         current_stars: stars,
       }),
   });
@@ -247,7 +247,7 @@ function DeckGame() {
     // or when time is finished
     if (progress === maxQuestions || seconds === 0) {
       console.log("Deck quiz finished");
-      if (isFisrtPlay && accessToken) {
+      if (isFisrtPlay) {
         console.log("Create deck", stars);
         mutateCreatePlayedDeck();
       } else {
@@ -255,7 +255,7 @@ function DeckGame() {
         console.log("Update deck", stars);
 
         if (userPlayedDeckQuery.data) {
-          if (stars === 3 && accessToken) {
+          if (stars === 3) {
             console.log("................................");
             mutateUpdatePlayedDeckLevel({
               level: userPlayedDeckQuery.data.level + 1,
@@ -270,7 +270,7 @@ function DeckGame() {
       }
 
       // update user stats
-      if (accessToken && user && userPlayedDeckQuery.data) {
+      if (user) {
         mutateUserStats({
           level: stars === 3 ? user.level + 1 : user.level,
           score: user.score + score,

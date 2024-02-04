@@ -77,7 +77,7 @@ function Selector({
                     key={choice}
                     onClick={() => setCurrentChoice(() => choice)}
                   >
-                    <img src={choice} alt="image" />
+                    <img src={choice} alt="Image" />
                     <span></span>
                   </div>
                 );
