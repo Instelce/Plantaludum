@@ -23,6 +23,7 @@ import Settings from "./views/protected/Settings";
 import Help from "./views/Help";
 import Ranking from "./views/protected/Ranking";
 import Identifications from "./views/protected/Identifications";
+import IdentificationResponse from "./views/protected/IdentificationResponse";
 
 /**
  * Contains all routes of the app
@@ -90,6 +91,10 @@ function App() {
               </Route>
 
               <Route path="identifications" element={<Identifications />} />
+              <Route
+                path="identifications/:identificationId"
+                element={<IdentificationResponse />}
+              />
 
               <Route path="decks/">
                 <Route path="create" element={<DeckCreate />} />

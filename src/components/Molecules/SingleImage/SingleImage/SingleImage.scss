@@ -1,13 +1,9 @@
-
 .single-image {
-  --padding-vertical: .5rem;
-  --padding-horizontal: 1rem;
-
   position: relative;
   border-radius: var(--radius);
   overflow: hidden;
 
-  transition: box-shadow .2s ease;
+  transition: box-shadow 0.2s ease;
 
   .img-container {
     width: 100%;
@@ -31,16 +27,14 @@
 
   .up,
   .down {
+    width: 100%;
     position: absolute;
-    left: var(--padding-horizontal);
   }
 
   .up {
-    top: var(--padding-vertical);
   }
 
   .down {
-    bottom: var(--padding-vertical);
   }
 
   &.is-clickable {

@@ -1,7 +1,7 @@
-import {AxiosInstance} from "axios";
-import api, {apiRequest} from "../axios";
-import {UserType} from "../types/users";
-import {DeckType, UserPlayedDeckType} from "../types/decks";
+import { AxiosInstance } from "axios";
+import api, { apiRequest } from "../axios";
+import { UserType } from "../types/users";
+import { DeckType, UserPlayedDeckType } from "../types/decks";
 
 export const users = {
   list: (privateFetch: AxiosInstance, pageParam: string) => {
@@ -21,9 +21,9 @@ export const users = {
     privateFetch.delete(`/api/auth/users/${userId}`).then((r) => r.data),
 
   decks: ({
-            userId,
-            fieldFilters = {},
-          }: {
+    userId,
+    fieldFilters = {},
+  }: {
     userId?: number;
     fieldFilters?: object;
   }) => {

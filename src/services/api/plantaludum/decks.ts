@@ -1,13 +1,13 @@
-import {apiRequest} from "../axios";
-import {PaginationResponseType} from "../types/pagination";
+import { apiRequest } from "../axios";
+import { PaginationResponseType } from "../types/pagination";
 import {
   CreateDeckFormDataType,
   CreateDeckPlantFormDataType,
   DeckType,
-  UpdateDeckFormDataType
+  UpdateDeckFormDataType,
 } from "../types/decks";
-import {AxiosInstance} from "axios";
-import {PlantType} from "../types/plants";
+import { AxiosInstance } from "axios";
+import { PlantType } from "../types/plants";
 
 type DeckListArgsType = {
   search?: string | null;

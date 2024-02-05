@@ -38,7 +38,7 @@ function useDeck({
         getObjectKeyValues(deckPlantsQuery.data, "plant_id"), // array of plant id
       ),
     staleTime: 100_000,
-    enabled: false,
+    enabled: fetchPlants,
   });
 
   const plantsImagesQuery = useQuery<PlantImagesType[], Error>({
@@ -48,22 +48,22 @@ function useDeck({
         getObjectKeyValues(deckPlantsQuery.data, "plant_id"),
       ),
     staleTime: 100_000,
-    enabled: false,
+    enabled: fetchImages,
   });
 
   // fetch quiz plants
-  useEffect(() => {
-    if (deckPlantsQuery.isSuccess && fetchPlants) {
-      plantsQuery.refetch();
-    }
-  }, [deckPlantsQuery.isSuccess]);
-
-  // fetch plants images
-  useEffect(() => {
-    if (deckPlantsQuery.isSuccess && fetchImages) {
-      plantsImagesQuery.refetch();
-    }
-  }, [deckPlantsQuery.isSuccess]);
+  // useEffect(() => {
+  //   if (deckPlantsQuery.isSuccess && fetchPlants) {
+  //     plantsQuery.refetch();
+  //   }
+  // }, [deckPlantsQuery.isSuccess]);
+  //
+  // // fetch plants images
+  // useEffect(() => {
+  //   if (deckPlantsQuery.isSuccess && fetchImages) {
+  //     plantsImagesQuery.refetch();
+  //   }
+  // }, [deckPlantsQuery.isSuccess]);
 
   return {
     refetch: deckQuery.refetch,

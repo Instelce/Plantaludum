@@ -78,7 +78,7 @@ function DeckPlants() {
         queryKey: ["decks", deckId],
       });
       queryClient.invalidateQueries({
-        queryKey: ["decks-plants", deckId]
+        queryKey: ["decks-plants", deckId],
       });
       queryClient.invalidateQueries({
         queryKey: ["decks-plants-infos", deckId],

@@ -111,14 +111,8 @@ function PlayedDeckSection() {
   const playedDecksQuery = useQuery<UserPlayedDeckType[]>({
     queryKey: ["user-played-decks"],
     queryFn: () => users.playedDecks.list(user?.id as number),
-    enabled: false,
+    enabled: user != null,
   });
-
-  useEffect(() => {
-    if (user && playedDecksQuery.isStale) {
-      playedDecksQuery.refetch();
-    }
-  }, [user]);
 
   const playedDeckFilteredData = useObjectSearch<UserPlayedDeckType>({
     data: playedDecksQuery?.data,
@@ -171,7 +165,7 @@ function PlayedDeckSection() {
             ))}
             {playedDecksQuery.data.length === 0 && (
               <p>
-                Tu n'as pas encore joué à un deck. Découvre la diversité florale{" "}
+                Tu n&apos;as pas encore joué à un deck. Découvre la diversité florale{" "}
                 <Link to="/explorer" className="link">
                   ici
                 </Link>

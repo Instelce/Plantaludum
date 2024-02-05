@@ -15,16 +15,14 @@ const useUserDecks = ({ id, fieldFilters }: UseUserDecksArgs) => {
         userId: id,
         fieldFilters: fieldFilters,
       }),
-    enabled: false,
+    enabled: id != null,
   });
 
-  useEffect(() => {
-    if (id) {
-      console.log("Fetch to get user decks");
-      console.log(id, userDecksQuery.data);
-      userDecksQuery.refetch();
-    }
-  }, [id]);
+  // useEffect(() => {
+  //   if (id) {
+  //     userDecksQuery.refetch();
+  //   }
+  // }, [id]);
 
   return userDecksQuery;
 };

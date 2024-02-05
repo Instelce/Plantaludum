@@ -65,6 +65,7 @@ function ButtonsMenu() {
 
 function Root() {
   const { accessToken } = useAuth();
+  const location = useLocation();
   return (
     <>
       <div className="page-container">
@@ -76,10 +77,14 @@ function Root() {
             ) && (
               <Navbar.Root>
                 <Navbar.Left>
-                  {accessToken ? <>
-                    <LocationLink to="/mon-jardin">Mon jardin</LocationLink>
-                    <LocationLink to="/identifications">Identifications</LocationLink>
-                  </> : (
+                  {accessToken ? (
+                    <>
+                      <LocationLink to="/mon-jardin">Mon jardin</LocationLink>
+                      <LocationLink to="/identifications">
+                        Identifications
+                      </LocationLink>
+                    </>
+                  ) : (
                     <LocationLink to="/">Acceuil</LocationLink>
                   )}
                   <LocationLink to="/explorer">Explorer</LocationLink>
@@ -126,10 +131,10 @@ function Root() {
             <div className="up">
               <div>
                 <div className="section">
-                  <a href="https://github.com/Plantaludum/Plantaludum/issues/new">
+                  <a href="https://github.com/Plantaludum/Plantaludum/issues/new?labels=bug">
                     Reporter un bug
                   </a>
-                  <a href="https://github.com/Plantaludum/Plantaludum/issues/new">
+                  <a href="https://github.com/Plantaludum/Plantaludum/issues/new?labels=enhancement">
                     Proposer une fonctionnalité
                   </a>
                 </div>

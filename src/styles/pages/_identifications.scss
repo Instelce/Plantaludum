@@ -1,0 +1,59 @@
+.identifications-page {
+  .single-image:hover {
+    .identification-index {
+      color: rgb(var(--color-gray-2));
+
+      &::before {
+        transform: translate(0, 0);
+      }
+    }
+
+    .delete {
+      opacity: 1;
+    }
+  }
+
+  .identification-index {
+    width: 4rem;
+    height: 4rem;
+    padding: 1rem;
+    position: relative;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+
+    &::after,
+    &::before {
+      content: "";
+      bottom: 0;
+      left: 0;
+      width: 170%;
+      height: 170%;
+      position: absolute;
+      z-index: 1;
+      background: rgb(var(--color-gray-3));
+      clip-path: polygon(0 0, 0% 100%, 100% 100%);
+    }
+
+    &::before {
+      z-index: 2;
+      background: rgb(var(--color-primary-light));
+      transform: translate(-100%, 100%);
+      transition: transform 0.2s ease;
+    }
+
+    h4 {
+      z-index: 3;
+      transition: color 0.2s ease;
+    }
+  }
+
+  .delete {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+}

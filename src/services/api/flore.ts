@@ -1,7 +1,7 @@
-import {apiFlore} from "./axios";
-import {ImageType, PlantImagesType} from "./types/images";
-import {loadURLParams} from "../../utils/helpers";
-import {CompletePlantImagesType} from "./types/plants";
+import { apiFlore } from "./axios";
+import { ImageType, PlantImagesType } from "./types/images";
+import { loadURLParams } from "../../utils/helpers";
+import { CompletePlantImagesType } from "./types/plants";
 
 export function loadRandomPlants({
   number = 10,

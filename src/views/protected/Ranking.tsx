@@ -9,6 +9,7 @@ import BoxList from "../../components/Molecules/BoxList/BoxList";
 import useUser from "../../hooks/auth/useUser";
 import InfiniteLoader from "../../components/Molecules/InfiniteLoader/InfiniteLoader/InfiniteLoader";
 import { Link } from "react-router-dom";
+import { numberWithSpaces } from "../../utils/helpers";
 
 function Ranking() {
   const privateFetch = usePrivateFetch();
@@ -83,7 +84,7 @@ function UserItem({ index, user }: { index: number; user: UserType }) {
         <span className="h5 mr-2">{index + 1}</span>
         <Link to={`/profile/${user.id}`}>{user.username}</Link>
       </div>
-      <span className="h5">{user.score}</span>
+      <span className="h5">{numberWithSpaces(user.score)}</span>
     </>
   );
 }

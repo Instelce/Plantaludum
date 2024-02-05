@@ -31,9 +31,24 @@
     top: 0;
     left: 0;
     height: var(--radius);
-    background: linear-gradient(0deg, transparent 0%, rgb(var(--color-yellow-light), 1) 100%,);
+    background: linear-gradient(
+      0deg,
+      transparent 0%,
+      rgba(var(--color-yellow-light), 0.5) 100%
+    );
     border-top-left-radius: var(--radius);
     border-top-right-radius: 0;
     border-bottom-right-radius: var(--radius);
+    overflow: hidden;
+
+    &::after {
+      content: "";
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      position: absolute;
+      background: rgb(var(--color-yellow-light));
+    }
   }
 }

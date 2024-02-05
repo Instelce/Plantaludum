@@ -30,7 +30,7 @@ function PlantImageSelector({
     error,
     refetch: fetchImages,
   } = useQuery<PaginationResponseType<ImageType>, Error>({
-    queryKey: ["images"],
+    queryKey: ["selector-images"],
     queryFn: () => flore.images.list({ plant__french_name: plantValue }),
     staleTime: Infinity,
     enabled: false,
@@ -70,7 +70,7 @@ function PlantImageSelector({
   return (
     <>
       <ErrorBoundary
-        fallback={<p>Erreur lors de l&apos;obtention des images.</p>}
+        fallback={<p>Erreur lors de l&apos;obtention des données.</p>}
       >
         {!imageValue && (
           <>
@@ -79,7 +79,7 @@ function PlantImageSelector({
               size="large"
               url={`${import.meta.env.VITE_FLORE_API_URL}/api/plants`}
               fieldName="french_name"
-              maxSuggestions={5}
+              maxSuggestions={10}
               handleValueChange={setPlantValue}
               setValidValue={setPlantIsValid}
               usageInfoText="Cherche le nom d’une plante, puis choisie l’image

@@ -9,7 +9,7 @@ export default {
 export const Default = () => {
   return (
     <>
-      <SingleImage/>
+      <SingleImage />
     </>
   );
 };
