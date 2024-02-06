@@ -1,5 +1,5 @@
 import "./Header.scss";
-import { PropsWithChildren } from "react";
+import {HTMLAttributes, PropsWithChildren} from "react";
 import classNames from "classnames";
 
 type HeaderProps = {
@@ -23,8 +23,8 @@ function Root({ type, sticky, center, children }: HeaderProps) {
   );
 }
 
-function Title({ children }: PropsWithChildren) {
-  return <h2 className={classNames("title")}>{children}</h2>;
+function Title({ children, ...props }: PropsWithChildren & HTMLAttributes<HTMLHeadingElement>) {
+  return <h2 {...props} className={classNames("title", props.className)}>{children}</h2>;
 }
 
 function Right({ children }: PropsWithChildren) {

@@ -1,5 +1,9 @@
 import { AxiosInstance } from "axios";
-import { IdentificationType } from "../types/identifications";
+import {
+  CreateIdentificationAnswerType, IdentificationAnswerType,
+  IdentificationType, UpdateIdentificationType
+} from "../types/identifications";
+import {loadURLParams} from "../../../utils/helpers";
 
 export default {
   list: (privateFetch: AxiosInstance, userId: number) =>
@@ -10,4 +14,5 @@ export default {
     privateFetch
       .delete(`/api/identifications/${identificationId}`)
       .then((r) => r.data),
+  update: (privateFetch: AxiosInstance, identificationId: number | string, data: UpdateIdentificationType) => privateFetch.patch(`/api/identifications/${identificationId}`, data)
 };

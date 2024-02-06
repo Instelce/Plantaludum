@@ -38,7 +38,7 @@ function useDeck({
         getObjectKeyValues(deckPlantsQuery.data, "plant_id"), // array of plant id
       ),
     staleTime: 100_000,
-    enabled: fetchPlants,
+    enabled: fetchPlants && deckPlantsQuery.data != null,
   });
 
   const plantsImagesQuery = useQuery<PlantImagesType[], Error>({
@@ -48,7 +48,7 @@ function useDeck({
         getObjectKeyValues(deckPlantsQuery.data, "plant_id"),
       ),
     staleTime: 100_000,
-    enabled: fetchImages,
+    enabled: fetchImages && deckPlantsQuery.data != null,
   });
 
   // fetch quiz plants

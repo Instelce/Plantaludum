@@ -4,4 +4,13 @@ export type IdentificationType = {
   user_played_deck: number;
   plant_id: number;
   image_id: number;
+  answer: number;
 };
+
+export type UpdateIdentificationType = {
+  user?: number;
+  user_played_deck?: number;
+  plant_id?: number;
+  image_id?: number;
+  answer?: number;
+}

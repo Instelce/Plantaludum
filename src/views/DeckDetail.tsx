@@ -243,7 +243,7 @@ function DeckDetail() {
                 </div>
               </div>
 
-              {deckPlantsQuery.isLoading && <Loader />}
+              {deckPlantsQuery.isLoading && <div className="center-loader"><Loader /></div>}
             </Tabs.Content>
 
             <Tabs.Content value="plus-infos">

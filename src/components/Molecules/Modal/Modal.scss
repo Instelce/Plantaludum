@@ -12,6 +12,7 @@
   background: rgba(var(--color-gray-1), 0.4);
 
   .modal {
+    min-width: 30%;
     border-radius: 10px;
     position: absolute;
     background: rgb(var(--color-gray-2));

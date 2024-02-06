@@ -241,6 +241,10 @@
 
       .deck-card {
         cursor: pointer;
+
+        &:hover {
+          transform: scale(1.02) !important;
+        }
       }
 
       .card-content {

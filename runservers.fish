@@ -1,6 +1,7 @@
 #!/usr/bin/env fish
 
-#systemctl start postgresql
+sudo systemctl start postgresql
+sudo systemctl start redis
 
 set FLORE_API_PATH "$HOME/documents/lab/FloreAPI"
 set PLANTALUDUM_API_PATH "$HOME/documents/lab/Plantaludum/API"
