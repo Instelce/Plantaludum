@@ -2,6 +2,7 @@ import "./SingleImage.scss";
 import { ImageType } from "../../../../services/api/types/images";
 import { HTMLAttributes, PropsWithChildren } from "react";
 import classNames from "classnames";
+import Image, {AsyncImage} from "../../../Atoms/Image/Image";
 
 type SingleImageProps = {
   image: ImageType;
@@ -29,7 +30,7 @@ function Root({
       style={{ width: size ? `${size}rem` : "auto" }}
     >
       <div className="img-container" onClick={onClick}>
-        <img src={image.url} alt={`Par ${image.author}`} />
+        <AsyncImage src={image.url} alt={`Par ${image.author}`} isAbsolute />
       </div>
       {children}
     </div>
@@ -43,8 +44,8 @@ type PartsProps = {
   HTMLAttributes<HTMLDivElement>;
 
 function Up({
-  paddingHorizontal = 1,
-  paddingVertical = 1,
+  paddingHorizontal = 0,
+  paddingVertical = 0,
   children,
   ...props
 }: PartsProps) {
@@ -60,8 +61,8 @@ function Up({
 }
 
 function Down({
-  paddingHorizontal = 1,
-  paddingVertical = 1,
+  paddingHorizontal = 0,
+  paddingVertical = 0,
   children,
   ...props
 }: PartsProps) {

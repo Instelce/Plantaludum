@@ -4,6 +4,7 @@ import Button from "../../Atoms/Buttons/Button";
 import { Edit, Lock } from "react-feather";
 import Flower from "../../Atoms/Icons";
 import { Link } from "react-router-dom";
+import {AsyncImage} from "../../Atoms/Image/Image";
 
 type ManageDeckButtonProps = {
   deck: DeckType;
@@ -13,7 +14,7 @@ function ManageDeckButton({ deck }: ManageDeckButtonProps) {
   return (
     <div className="manage-deck-button">
       <div className="img-container">
-        <img src={deck.preview_image_url} alt="preview image" />
+        <AsyncImage src={deck.preview_image_url} alt="preview image" />
       </div>
       <div className="flex center">
         <Link to={`/decks/${deck.id}`}>{deck.name}</Link>

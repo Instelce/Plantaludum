@@ -5,7 +5,7 @@ import classNames from "classnames";
 import Option from "../../Atoms/Option/Option";
 import useDebounce from "../../../hooks/useDebounce";
 import axios from "axios";
-import { deleteDublicates } from "../../../utils/helpers";
+import { deleteDublicates, removeAccent } from "../../../utils/helpers";
 import {
   AutocompleteInputProps,
   SuggestionsProps,
@@ -110,14 +110,15 @@ function Suggestions({
       // first get only fieldName key values
       let results = suggestions.map((el: any[]) => el[fieldName]);
       // then filter by search value
-      results = results.filter(
-        (value: string) =>
-          value
-            ?.toLowerCase()
-            .startsWith(searchValue.toLowerCase().charAt(1)) ||
-          value?.toLowerCase().indexOf(searchValue?.toLowerCase()) != -1 ||
-          value?.toLowerCase().search(searchValue.toLowerCase()) > -1,
-      );
+      results = results.filter((value: string) => {
+        let fvalue = value ? removeAccent(value.toLowerCase()) : "";
+        let fsearch = removeAccent(searchValue.toLowerCase());
+        return (
+          fvalue.startsWith(fsearch.charAt(1)) ||
+          fvalue.indexOf(fsearch) != -1 ||
+          fvalue.search(fsearch) > -1
+        );
+      });
       // and get only keep 0 to maxSuggestions values
       results = results.slice(0, maxSuggestions);
 

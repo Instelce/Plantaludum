@@ -20,6 +20,7 @@ import DeckLevelCard from "../components/Molecules/DeckLevelCard/DeckLevelCard";
 import { UserPlayedDeckType } from "../services/api/types/decks";
 import { users } from "../services/api/plantaludum/users";
 import { AxiosError } from "axios";
+import {AsyncImage} from "../components/Atoms/Image/Image";
 
 function DeckDetail() {
   const queryClient = useQueryClient();
@@ -106,7 +107,7 @@ function DeckDetail() {
           <header className="page-header center">
             <div className="header-img">
               <div className="img-container">
-                <img
+                <AsyncImage
                   src={deckQuery.data.preview_image_url}
                   alt="Preview image"
                 />
@@ -139,7 +140,16 @@ function DeckDetail() {
                   Jouer
                 </Link>
               </Button>
-              <Button color="gray" onlyIcon>
+              <Button
+                color="gray"
+                onlyIcon
+                onClick={() => {
+                  navigator.clipboard.writeText(location.href);
+                  notification.success({
+                    message: "Url copié"
+                  })
+                }}
+              >
                 <Share />
               </Button>
             </div>
@@ -243,7 +253,11 @@ function DeckDetail() {
                 </div>
               </div>
 
-              {deckPlantsQuery.isLoading && <div className="center-loader"><Loader /></div>}
+              {deckPlantsQuery.isLoading && (
+                <div className="center-loader">
+                  <Loader />
+                </div>
+              )}
             </Tabs.Content>
 
             <Tabs.Content value="plus-infos">

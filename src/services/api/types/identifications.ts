@@ -13,4 +13,4 @@ export type UpdateIdentificationType = {
   plant_id?: number;
   image_id?: number;
   answer?: number;
-}
+};

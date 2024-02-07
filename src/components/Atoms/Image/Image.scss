@@ -1,0 +1,33 @@
+
+.async-image {
+  width: 100%;
+  height: 100%;
+
+  &.absolute {
+    position: absolute;
+  }
+
+  img {
+    transition: opacity .2s ease .2s;
+  }
+}
+
+.img-loading {
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: rgb(var(--color-gray-3));
+  animation: img-loading 2s ease infinite;
+}
+
+@keyframes img-loading {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

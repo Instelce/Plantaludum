@@ -32,20 +32,7 @@ export function shuffleArray(array: any[]) {
 }
 
 export function removeAccent(s: string) {
-  let r = s.toLowerCase();
-  r = r.replace(new RegExp("\\s", "g"), "");
-  r = r.replace(new RegExp("[àáâãäå]", "g"), "a");
-  r = r.replace(new RegExp("æ", "g"), "ae");
-  r = r.replace(new RegExp("ç", "g"), "c");
-  r = r.replace(new RegExp("[èéêë]", "g"), "e");
-  r = r.replace(new RegExp("[ìíîï]", "g"), "i");
-  r = r.replace(new RegExp("ñ", "g"), "n");
-  r = r.replace(new RegExp("[òóôõö]", "g"), "o");
-  r = r.replace(new RegExp("œ", "g"), "oe");
-  r = r.replace(new RegExp("[ùúûü]", "g"), "u");
-  r = r.replace(new RegExp("[ýÿ]", "g"), "y");
-  r = r.replace(new RegExp("\\W", "g"), "");
-  return r;
+  return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
 export function getAnotherFormat(imageUrl: string, newFormat: string): string {
@@ -71,4 +58,10 @@ export function getCurrentTime() {
 
 export function numberWithSpaces(number: number): string {
   return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+}
+
+export function numberWithZero(number: number): string {
+  return number.toLocaleString("en-US", {
+    minimumIntegerDigits: 2,
+  });
 }

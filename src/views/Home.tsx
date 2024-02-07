@@ -18,6 +18,7 @@ import DeckCard from "../components/Molecules/DeckCard/DeckCard";
 import { decks } from "../services/api";
 import useDeck from "../hooks/api/useDeck";
 import { DeckType } from "../services/api/types/decks";
+import {AsyncImage} from "../components/Atoms/Image/Image";
 
 function Home() {
   const plantsQuery = useQuery({
@@ -166,7 +167,7 @@ function HomeHeader({ plantsQuery }: { plantsQuery: UseQueryResult }) {
                 "--r": i % 2 === 0 ? "reverse" : "normal",
               }}
             >
-              {[0, 1].map((n) => (
+              {[0].map((n) => (
                 <div key={n} className="part">
                   {lines.map((plant) => {
                     let image = plant.images[0];
@@ -179,10 +180,7 @@ function HomeHeader({ plantsQuery }: { plantsQuery: UseQueryResult }) {
                           key={image.id}
                           className="image-container"
                         >
-                          <img
-                            style={{
-                              opacity: imagesLoadedCount >= 30 ? "1" : "0",
-                            }}
+                          <AsyncImage
                             src={getAnotherFormat(image.url, "CRS")}
                             alt={`Image de ${image.author}`}
                             onLoad={() =>

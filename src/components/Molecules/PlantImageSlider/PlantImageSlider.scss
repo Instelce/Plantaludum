@@ -1,4 +1,7 @@
 .slider {
+  overflow: hidden;
+  border-radius: var(--radius);
+
   .images-info {
     width: 100%;
     height: 100%;

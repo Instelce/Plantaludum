@@ -36,7 +36,11 @@ function Login() {
       setCSRFToken(response.headers["x-csrftoken"]);
       setLoading(false);
 
-      navigate(fromLocation, { replace: true });
+      if (fromLocation.includes("/")) {
+        navigate("/mon-jardin");
+      } else {
+        navigate(fromLocation, { replace: true });
+      }
       notification.success({ message: "Connexion réussie" });
     },
     onError: (error: AxiosError) => {

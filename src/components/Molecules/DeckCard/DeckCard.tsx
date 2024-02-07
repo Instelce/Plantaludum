@@ -11,6 +11,7 @@ import Flower from "../../Atoms/Icons";
 import { DeckType } from "../../../services/api/types/decks";
 import Button from "../../Atoms/Buttons/Button";
 import { getAnotherFormat } from "../../../utils/helpers";
+import {AsyncImage} from "../../Atoms/Image/Image";
 
 type DeckCardProps = {
   followMouse?: boolean;
@@ -85,7 +86,7 @@ type HeaderProps = {
 function Header({ deck, height = 400, children }: HeaderProps) {
   return (
     <div className="card-header" style={{ maxHeight: `${height}px` }}>
-      <img
+      <AsyncImage
         className="active"
         src={getAnotherFormat(deck.preview_image_url, "CRL")}
         alt="Photo de présentation"

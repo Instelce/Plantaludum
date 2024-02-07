@@ -34,7 +34,8 @@
     "react-feather": "^2.0.10",
     "react-intersection-observer": "^9.6.0",
     "react-router-dom": "^6.21.3",
-    "sass": "^1.70.0"
+    "sass": "^1.70.0",
+    "transitions-kit": "^1.2.2"
   },
   "devDependencies": {
     "@storybook/addon-essentials": "7.5.1",

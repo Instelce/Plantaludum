@@ -3,6 +3,8 @@
   border-radius: var(--radius);
   overflow: hidden;
 
+  box-shadow: 0 0 0 1px rgb(var(--color-gray-3));
+
   transition: box-shadow 0.2s ease;
 
   .img-container {
@@ -29,6 +31,7 @@
   .down {
     width: 100%;
     position: absolute;
+    display: flex;
   }
 
   .up {

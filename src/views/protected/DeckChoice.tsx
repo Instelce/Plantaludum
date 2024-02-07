@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import "locomotive-scroll/src/locomotive-scroll.scss";
 import Checkbox from "../../components/Atoms/Checkbox/Checkbox";
 import Stars from "../../components/Atoms/Stars/Stars";
+import {AsyncImage} from "../../components/Atoms/Image/Image";
 
 const quizzes = [
   {
@@ -70,7 +71,7 @@ function Card({ quiz }) {
   return (
     <Link to={quiz.url} className="quiz-card">
       <div className="image-container">
-        <img src={quiz.src} />
+        <AsyncImage src={quiz.src} />
       </div>
       <div className="quiz-info">
         <h6>{quiz.name}</h6>

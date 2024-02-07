@@ -1,3 +1,5 @@
+@import "../utilities/mixins";
+
 .identifications-page {
   .single-image:hover {
     .identification-index {
@@ -55,5 +57,47 @@
     right: 1rem;
     opacity: 0;
     transition: opacity 0.2s ease;
+  }
+
+  .good-answers,
+  .bad-answers {
+    width: 3rem;
+    height: 3rem;
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: var(--radius);
+    background: rgb(var(--color-primary-light));
+
+    font-size: var(--typescale-h5);
+    font-family: "Satoshi", sans-serif;
+    font-weight: 500;
+    color: rgb(var(--color-gray-3));
+  }
+
+  .bad-answers {
+    bottom: 1rem;
+    background: rgb(var(--color-danger-light));
+  }
+
+  .bottom {
+    min-height: 5rem;
+
+    p {
+      position: absolute;
+      bottom: 0;
+      padding: 0.5rem 1rem;
+      background: linear-gradient(
+        180deg,
+        transparent 0%,
+        rgba(var(--color-gray-2), 0.5) 25%,
+        rgb(var(--color-gray-2)) 85%
+      );
+      width: 100%;
+    }
   }
 }

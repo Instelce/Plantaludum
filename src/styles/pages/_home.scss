@@ -102,9 +102,9 @@
 
       .part {
         flex-shrink: 0;
-        display: inline-flex;
         gap: 2rem;
         white-space: nowrap;
+        display: flex;
 
         //animation: slide-one var(--t) linear infinite var(--r);
         animation-delay: calc(var(--t) * -1);
@@ -128,7 +128,7 @@
           object-fit: cover;
           transition:
             opacity 0.3s ease,
-            transform 0.3s ease;
+            transform 0.3s ease !important;
         }
 
         small {

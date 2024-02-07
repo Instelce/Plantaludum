@@ -3,6 +3,7 @@ import Button from "../../Atoms/Buttons/Button";
 import classNames from "classnames";
 import React, { useEffect, useState } from "react";
 import { Check, RefreshCcw } from "react-feather";
+import {AsyncImage} from "../../Atoms/Image/Image";
 
 type SelectorProps = {
   inputId?: string;
@@ -77,7 +78,7 @@ function Selector({
                     key={choice}
                     onClick={() => setCurrentChoice(() => choice)}
                   >
-                    <img src={choice} alt="Image" />
+                    <AsyncImage src={choice} alt="Image" />
                     <span></span>
                   </div>
                 );
@@ -109,7 +110,7 @@ function Selector({
               {choiceType === "text" ? (
                 <p>{currentChoice}</p>
               ) : (
-                <img src={currentChoice} alt={currentChoice} />
+                <AsyncImage src={currentChoice} alt={currentChoice} />
               )}
               <input
                 id={inputId}

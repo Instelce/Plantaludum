@@ -12,11 +12,15 @@ import PlantCard, {
 } from "../../components/Molecules/PlantCard/PlantCard";
 import { PlantType } from "../../services/api/types/plants";
 import { ImageType } from "../../services/api/types/images";
-import { CreateDeckPlantFormDataType } from "../../services/api/types/decks";
+import {
+  CreateDeckPlantFormDataType,
+  DeckPlantType,
+} from "../../services/api/types/decks";
 import { flore } from "../../services/api/flore";
 import { useNotification } from "../../context/NotificationsProvider";
 import useDeck from "../../hooks/api/useDeck";
 import Header from "../../components/Molecules/Header/Header";
+import { IdentificationType } from "../../services/api/types/identifications";
 
 function DeckPlants() {
   const privateFetch = usePrivateFetch();
@@ -50,22 +54,32 @@ function DeckPlants() {
     mutationKey: ["decks-plants", deckId],
     mutationFn: (data: CreateDeckPlantFormDataType) =>
       decks.createPlant(privateFetch, data),
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({
-        queryKey: ["decks", deckId],
-      });
+    onMutate: async (data: CreateDeckPlantFormDataType) => {
+      await queryClient.cancelQueries({ queryKey: ["decks-plants", deckId] });
+      const previousPlants = queryClient.getQueryData([
+        "decks-plants",
+        deckId,
+      ]) as DeckPlantType[];
+      console.log(previousPlants.length);
+      queryClient.setQueryData(
+        ["decks-plants", deckId],
+        (old: DeckPlantType[]) => [...old, data],
+      );
+      console.log(queryClient.getQueryData(["decks-plants", deckId])?.length);
+      return previousPlants;
+    },
+    onError: (error, variables, context) => {
+      queryClient.setQueryData(
+        ["decks-plants", deckId],
+        (old: DeckPlantType[]) => context.previousPlants,
+      );
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({
         queryKey: ["decks-plants", deckId],
       });
-      queryClient.invalidateQueries({
-        queryKey: ["decks-plants-infos", deckId],
-        stale: false,
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["decks-plants-images", deckId],
-        stale: false,
-      });
-
+    },
+    onSuccess: () => {
       navigate(`/decks/${deckId}`);
     },
   });
@@ -73,22 +87,23 @@ function DeckPlants() {
     mutationKey: ["decks-plants", deckId],
     mutationFn: (plantId: number) =>
       decks.deletePlant(privateFetch, parseInt(deckId as string), plantId),
+    onMutate: async (plantId: number) => {
+      await queryClient.cancelQueries({ queryKey: ["decks-plants", deckId] });
+      const previousIdentifications = queryClient.getQueryData([
+        "decks-plants",
+        deckId,
+      ]) as DeckPlantType[];
+      queryClient.setQueryData(
+        ["decks-plants", deckId],
+        (old: DeckPlantType[]) => old.filter((p) => p.plant_id != plantId),
+      );
+      return {
+        previousIdentifications: previousIdentifications,
+        deleted: previousIdentifications.filter((t) => t.id === plantId)[0],
+      };
+    },
     onSuccess: (data) => {
-      queryClient.invalidateQueries({
-        queryKey: ["decks", deckId],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["decks-plants", deckId],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["decks-plants-infos", deckId],
-        stale: false,
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["decks-plants-images", deckId],
-        stale: false,
-      });
-      navigate(`/decks/${deckId}`, { replace: true });
+      navigate(`/decks/${deckId}`);
     },
   });
 

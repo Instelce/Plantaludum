@@ -14,6 +14,7 @@ import { ImageType } from "../../../services/api/types/images";
 import BoxList from "../BoxList/BoxList";
 import { Link } from "react-router-dom";
 import { PlantType } from "../../../services/api/types/plants";
+import {AsyncImage} from "../../Atoms/Image/Image";
 
 type PlantImageSliderProps = {
   imagesData: ImageType[];
@@ -66,7 +67,7 @@ function PlantImageSlider({
                   active: index === current,
                 })}
               >
-                <img src={img.url} alt={`Photo de ${img.author}`} />
+                <AsyncImage src={img.url} alt={`Photo de ${img.author}`} isAbsolute />
               </div>
             ))}
           </>

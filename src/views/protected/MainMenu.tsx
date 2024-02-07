@@ -165,7 +165,8 @@ function PlayedDeckSection() {
             ))}
             {playedDecksQuery.data.length === 0 && (
               <p>
-                Tu n&apos;as pas encore joué à un deck. Découvre la diversité florale{" "}
+                Tu n&apos;as pas encore joué à un deck. Découvre la diversité
+                florale{" "}
                 <Link to="/explorer" className="link">
                   ici
                 </Link>
