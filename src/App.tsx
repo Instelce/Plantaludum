@@ -24,6 +24,7 @@ import Help from "./views/Help";
 import Ranking from "./views/protected/Ranking";
 import Identifications from "./views/protected/Identifications";
 import IdentificationResponse from "./views/protected/IdentificationResponse";
+import LegalMentions from "./views/LegalMentions";
 
 /**
  * Contains all routes of the app
@@ -77,6 +78,8 @@ function App() {
           </Route>
 
           <Route path="help" element={<Help />} />
+
+          <Route path="mentions-legales" element={<LegalMentions />} />
 
           {/* Protected */}
           <Route element={<PersistLogin />}>

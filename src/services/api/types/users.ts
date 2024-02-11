@@ -5,6 +5,7 @@ export interface UserType {
   level: number;
   score: number;
   games_played: number;
+  identifications: number;
 }
 
 export interface UserPlayedDeckType {

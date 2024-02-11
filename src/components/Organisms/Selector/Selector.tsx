@@ -78,7 +78,7 @@ function Selector({
                     key={choice}
                     onClick={() => setCurrentChoice(() => choice)}
                   >
-                    <AsyncImage src={choice} alt="Image" />
+                    <AsyncImage src={choice} alt="Image" isAbsolute />
                     <span></span>
                   </div>
                 );
@@ -110,7 +110,7 @@ function Selector({
               {choiceType === "text" ? (
                 <p>{currentChoice}</p>
               ) : (
-                <AsyncImage src={currentChoice} alt={currentChoice} />
+                <AsyncImage src={currentChoice} alt={currentChoice} isAbsolute />
               )}
               <input
                 id={inputId}

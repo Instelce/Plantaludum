@@ -16,9 +16,11 @@ import { auth } from "../../services/api";
 import usePrivateFetch from "../../hooks/auth/usePrivateFetch";
 import { useNotification } from "../../context/NotificationsProvider";
 import BoxList from "../../components/Molecules/BoxList/BoxList";
+import {useAuth} from "../../context/AuthProvider";
 
 function UserProfile() {
   const { userId } = useParams();
+  const {setUser, setAccessToken} = useAuth()
   const privateFetch = usePrivateFetch();
   const notifications = useNotification();
   const [showConfirmationModal, setShowConfirmationModal] = useState({
@@ -162,6 +164,8 @@ function UserProfile() {
                 <Button
                   onClick={() => {
                     deleteUserAccountMutation.mutate();
+                    setUser({});
+                    setAccessToken(null);
                     setShowConfirmationModal({ modal: "", show: false });
                   }}
                   color="danger"
@@ -185,6 +189,7 @@ function UserProfile() {
         </Header.Right>
       </Header.Root>
 
+      {/* User information section */}
       {userData && currentUser && (
         <>
           {currentUserProfile && (
@@ -269,6 +274,10 @@ function UserProfile() {
                       <BoxList.Item className="sb">
                         <span>Parties jouées</span>
                         <span>{currentUser.games_played}</span>
+                      </BoxList.Item>
+                      <BoxList.Item className="sb">
+                        <span>Identifications</span>
+                        <span>{currentUser.identifications}</span>
                       </BoxList.Item>
                     </BoxList.Group>
                   </div>

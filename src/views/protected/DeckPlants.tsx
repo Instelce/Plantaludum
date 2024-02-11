@@ -183,7 +183,7 @@ function DeckPlants() {
     <>
       <Header.Root type="page" center>
         <Header.Title>
-          <span className="highlight">Ajoute </span>
+          <span className="highlight">Ajouter </span>
           des plantes à {deckData?.name}
         </Header.Title>
       </Header.Root>

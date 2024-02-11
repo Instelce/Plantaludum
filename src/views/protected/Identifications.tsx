@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import Button from "../../components/Atoms/Buttons/Button";
 import { Trash } from "react-feather";
 import { IdentificationType } from "../../services/api/types/identifications";
+import Loader from "../../components/Atoms/Loader";
 
 function Identifications() {
   const user = useUser();
@@ -149,8 +150,7 @@ function Identifications() {
       </Header.Root>
 
       <div className="grid gc-4 gg-2 content-container">
-        {identificationsImageQuery.data &&
-          userIdentificationsData.length > 0 && (
+        {userIdentificationsData.length > 0 && identificationsImageQuery.data && (
             <>
               {userIdentificationsData.map((identification, index) => {
                 let image = identificationsImageQuery.data.filter(
@@ -211,6 +211,10 @@ function Identifications() {
           )}
       </div>
 
+      {userIdentificationsQuery.isLoading && <div className="center-loader">
+        <Loader />
+      </div>}
+
       {userIdentificationAnswersData.length > 0 &&
         answeredIdentificationsPlantQuery.data &&
         identificationsImageQuery.data && (
@@ -240,7 +244,7 @@ function Identifications() {
 
                   return (
                     <>
-                      <SingleImage.Root image={image}>
+                      <SingleImage.Root image={image} imageFormat="CRS">
                         {goodAnswer > 0 && (
                           <SingleImage.Up>
                             <span className="good-answers">{goodAnswer}</span>

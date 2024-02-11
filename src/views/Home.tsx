@@ -45,7 +45,7 @@ function Home() {
 
       <section className="simple-section">
         <div>
-          <h2>D’où viens l’idée ?</h2>
+          <h2>D’où vient l’idée ?</h2>
           <p>
             Du jeu de Tela Botanica :{" "}
             <a
@@ -56,7 +56,7 @@ function Home() {
             >
               theplantgame
             </a>
-            , et d’une passion des plantes 😍.
+            , et d’une passion pour les plantes 😍.
           </p>
         </div>
 
@@ -120,7 +120,7 @@ function Home() {
               <h3>
                 <a href="https://www.kenney.nl/">Kenney</a>
               </h3>
-              <p>Pour le song des boutons.</p>
+              <p>Pour le son des boutons.</p>
             </div>
           </article>
         </div>

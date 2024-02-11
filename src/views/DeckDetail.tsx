@@ -163,7 +163,7 @@ function DeckDetail() {
                 )}
                 <Tabs.Trigger value="progression">Progression</Tabs.Trigger>
                 <Tabs.Trigger value="plantes">Plantes</Tabs.Trigger>
-                <Tabs.Trigger value="plus-infos">Plus d'info</Tabs.Trigger>
+                <Tabs.Trigger value="plus-infos">Plus d'infos</Tabs.Trigger>
               </Tabs.List>
             </div>
 

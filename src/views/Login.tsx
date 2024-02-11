@@ -110,9 +110,9 @@ function Login() {
 
           <footer>
             <p>
-              Si tu n’as pas de compte, inscrit toi{" "}
+              Pas de compte ? Par ici l&apos;
               <Link to="/inscription" className="link">
-                ici
+                inscription
               </Link>
               .
             </p>

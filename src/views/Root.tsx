@@ -85,7 +85,7 @@ function Root() {
                       </LocationLink>
                     </>
                   ) : (
-                    <LocationLink to="/">Acceuil</LocationLink>
+                    <LocationLink to="/">Accueil</LocationLink>
                   )}
                   <LocationLink to="/explorer">Explorer</LocationLink>
                   {localStorage.getItem("settings.showRankingTab") === "true" &&

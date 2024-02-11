@@ -3,9 +3,11 @@ import { ImageType } from "../../../../services/api/types/images";
 import { HTMLAttributes, PropsWithChildren } from "react";
 import classNames from "classnames";
 import Image, {AsyncImage} from "../../../Atoms/Image/Image";
+import {getAnotherFormat} from "../../../../utils/helpers";
 
 type SingleImageProps = {
   image: ImageType;
+  imageFormat?: string | null;
   size?: number;
   isClickable?: boolean;
 } & PropsWithChildren &
@@ -17,6 +19,7 @@ function Root({
   isClickable = false,
   children,
   onClick,
+  imageFormat = null,
   ...props
 }: SingleImageProps) {
   return (
@@ -30,7 +33,7 @@ function Root({
       style={{ width: size ? `${size}rem` : "auto" }}
     >
       <div className="img-container" onClick={onClick}>
-        <AsyncImage src={image.url} alt={`Par ${image.author}`} isAbsolute />
+        <AsyncImage src={imageFormat ? getAnotherFormat(image.url, imageFormat) : image.url} alt={`Par ${image.author}`} isAbsolute />
       </div>
       {children}
     </div>

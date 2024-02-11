@@ -157,16 +157,16 @@ function DeckGame() {
   ]);
 
   // load images in cache
-  // useEffect(() => {
-  //   if (deckPlantsImagesQuery.isSuccess) {
-  //     setImagesArray(() =>
-  //       Object.values(deckPlantsImagesQuery.data)
-  //         .map((plants) => plants.images)
-  //         .map((images) => images.map((img) => img.url))
-  //         .flat(1),
-  //     );
-  //   }
-  // }, [deckPlantsImagesQuery.data, deckPlantsImagesQuery.isSuccess]);
+  useEffect(() => {
+    if (deckPlantsImagesQuery.isSuccess) {
+      setImagesArray(() =>
+        Object.values(deckPlantsImagesQuery.data)
+          .map((plants) => plants.images)
+          .map((images) => images.map((img) => img.url))
+          .flat(1),
+      );
+    }
+  }, [deckPlantsImagesQuery.data, deckPlantsImagesQuery.isSuccess]);
 
   // set images
   useEffect(() => {
@@ -402,14 +402,14 @@ function DeckGame() {
                             localStorage.getItem(
                               "settings.gameButtonInfo",
                             )! as string,
-                          ).title as keyof PlantType
+                          )?.title as keyof PlantType || "french_name"
                         ].toString()}
                         subtitle={plant[
                           JSON.parse(
                             localStorage.getItem(
                               "settings.gameButtonInfo",
                             )! as string,
-                          ).subtitle as keyof PlantType
+                          )?.subtitle as keyof PlantType || "scientific_name"
                         ].toString()}
                         isRightAnswer={plant.id === currentPlant.id}
                         showResult={

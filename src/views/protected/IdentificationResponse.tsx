@@ -16,16 +16,27 @@ import Button from "../../components/Atoms/Buttons/Button";
 import { CheckCircle, ChevronLeft, Crosshair, X, XCircle } from "react-feather";
 import { useNotification } from "../../context/NotificationsProvider";
 import { PlantType } from "../../services/api/types/plants";
+import {users} from "../../services/api/plantaludum/users";
+import useUser from "../../hooks/auth/useUser";
 
 function IdentificationResponse() {
   const { identificationId } = useParams();
   const privateFetch = usePrivateFetch();
   const notifications = useNotification();
   const location = useLocation();
+  const user = useUser()
 
   const [isValid, setIsValid] = useState(false);
   const [plantData, setPlantData] = useState<PlantType>({});
   const [isSubmited, setIsSubmited] = useState(false);
+
+  // user mutation for identifications counter
+  const {mutate: addUserIdentification} = useMutation({
+    mutationKey: ["add-identification"],
+    mutationFn: () => users.update(privateFetch, user?.id as number, {
+      identifications: (user?.identifications as number) + 1,
+    })
+  })
 
   // get data passed
   const identificationData = location.state?.data as {
@@ -53,6 +64,9 @@ function IdentificationResponse() {
     e.preventDefault();
 
     if (isValid) {
+      if (plantData.id === identificationData.identification.plant_id) {
+        addUserIdentification();
+      }
       updateIdentificationAnswer({
         answer: plantData.id,
       });
@@ -72,7 +86,7 @@ function IdentificationResponse() {
               <ChevronLeft />
             </Link>
           </Button>
-          Mmh, quel est cette plante ?
+          Mmh, quelle est cette plante ?
         </Header.Title>
       </Header.Root>
       <div className="content-container flex gg-2">

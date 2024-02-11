@@ -149,7 +149,7 @@ function ButtonInfoSection() {
   return (
     <>
       <Header.Root type="sub-section">
-        <Header.Title>Modifier les info des boutons en jeu</Header.Title>
+        <Header.Title>Modifier les infos des boutons en jeu</Header.Title>
       </Header.Root>
 
       <div className="content-container">

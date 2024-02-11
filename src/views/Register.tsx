@@ -14,20 +14,25 @@ import { AxiosError } from "axios";
 import Navbar from "../components/Organisms/Navbar/Navbar";
 import { ArrowRight } from "react-feather";
 import Header from "../components/Molecules/Header/Header";
+import {useNotification} from "../context/NotificationsProvider";
 
 function Register() {
   const navigate = useNavigate();
   const [responseHelper, setResponseHelper] = useState<HelperRegisterType>({});
   const [passwordValue, setPasswordValue] = useState("");
   const { formRef, handleFormChange, isFilled } = useFormFilled();
+  const notification = useNotification()
 
   const { isPending, mutate: mutateRegister } = useMutation({
     mutationKey: ["register"],
     mutationFn: (data: RegisterFormDataType) => auth.register(data),
     onSuccess: () => {
       setTimeout(() => {
+        notification.success({
+          message: "Votre compte à été créé avec succès"
+        })
         navigate("/connexion", { replace: true });
-      }, 2000);
+      }, 1000);
     },
     onError: (error: AxiosError) => {
       setResponseHelper(error.response?.data || {});
@@ -100,11 +105,10 @@ function Register() {
           </Button>
           <footer>
             <p>
-              Créer toi un compte pour pouvoir continer, ou{" "}
+              Créer un compte pour pouvoir continuer, ou se{" "}
               <Link to="/connexion" className="link">
-                connecte
-              </Link>{" "}
-              toi si tu en a déjà un.
+                connecter
+              </Link>.
             </p>
           </footer>
         </form>

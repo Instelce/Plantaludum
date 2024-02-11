@@ -67,7 +67,7 @@ function PlantImageSlider({
                   active: index === current,
                 })}
               >
-                <AsyncImage src={img.url} alt={`Photo de ${img.author}`} isAbsolute />
+                <img src={img.url} alt={`Photo de ${img.author}`} />
               </div>
             ))}
           </>
