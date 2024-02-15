@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: celery-worker
+  labels:
+    deployment: celery-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      pod: celery-worker
+  template:
+    metadata:
+      labels:
+        pod: celery-worker
+    spec:
+      containers:
+      - name: celery-worker
+        image: instelce/django_dev_image:latest
+        command: ["bash", "-c", "celery -A src worker -l INFO"]
+        env:
+          - name: POSTGRES_USER
+            valueFrom:
+              configMapKeyRef:
+                name: app-variables
+                key: POSTGRES_USER
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: app-secrets
+                key: POSTGRES_PASSWORD
+          - name: REDIS_HOST
+            value: redis-service
+        resources:
+          limits:
+            memory: "200Mi"
+            cpu: "200m"
