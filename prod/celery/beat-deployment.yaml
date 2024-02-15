@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: celery-beat
+  labels:
+    deployment: celery-beat
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      pod: celery-beat
+  template:
+    metadata:
+      labels:
+        pod: celery-beat
+    spec:
+      containers:
+        - name: celery-beat
+          image: instelce/django_dev_image:latest
+          command: ["bash", "-c", "celery -A src beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler"]
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: app-variables
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: POSTGRES_PASSWORD
+            - name: REDIS_HOST
+              value: redis-service
