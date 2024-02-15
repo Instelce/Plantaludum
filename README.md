@@ -3,7 +3,7 @@
 <p align="center">Un jeu pour découvrir et apprendre à reconnaitre les plantes !</p>
 <p align="center"><a href="https://plantaludum.org">Visitez</a> ◦ <a href="https://github.com/Plantaludum/Plantaludum/issues/new?labels=bug">Reporter un bug</a></p>
 
-![]()
+![Preview](https://github.com/Plantaludum/Plantaludum/blob/main/github/preview.png)
 
 ## Front
 
