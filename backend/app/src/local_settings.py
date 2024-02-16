@@ -32,13 +32,17 @@ if DJANGO_ENV == "development" or DJANGO_ENV == "production":
         ALLOWED_HOSTS = ["127.0.0.1", "0.0.0.0", "localhost"]
 
     try:
-        CORS_ORIGIN_ALLOW_ALL = True
+        print(
+            "Set CORS_ALLOWED_ORIGINS to",
+            os.environ.get("CORS_ALLOWED_ORIGINS").split(" "),
+        )
         CORS_ALLOWED_ORIGINS = os.environ.get("CORS_ALLOWED_ORIGINS").split(" ")
         CSRF_TRUSTED_ORIGINS = os.environ.get("CORS_ALLOWED_ORIGINS").split(" ")
     except:
+        print("Default CORS settings")
         CORS_ORIGIN_ALLOW_ALL = True
-        CORS_ALLOWED_ORIGINS = "*"
-        CSRF_TRUSTED_ORIGINS = "*"
+        CORS_ALLOWED_ORIGINS = ["http://127.0.0.1:5173", "http://127.0.0.1:3000"]
+        CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:5173", "http://127.0.0.1:3000"]
 
     DATABASES = {
         "default": {

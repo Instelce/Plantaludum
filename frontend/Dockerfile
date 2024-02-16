@@ -21,9 +21,8 @@ RUN apk add --no-cache --virtual .gyp \
 COPY ./app .
 
 # perform npm build
-ARG API_SERVER
-ENV REACT_APP_API_SERVER=${API_SERVER}
-RUN npm run build
+ARG VITE_MODE
+RUN npm run build -- --mode ${VITE_MODE}
 
 #########
 # FINAL #

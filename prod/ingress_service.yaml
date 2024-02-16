@@ -29,14 +29,14 @@ spec:
           # STATIC FOLDER ROUTING #
           ##########################
           - path: /static/admin/
-            pathType: Prefix
+            pathType: Exact
             backend:
               service:
                 name: static-assets-cluster-ip-service
                 port:
                   number: 8000
           - path: /static/rest_framework/
-            pathType: Prefix
+            pathType: Exact
             backend:
               service:
                 name: static-assets-cluster-ip-service
