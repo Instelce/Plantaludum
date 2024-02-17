@@ -144,7 +144,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000"
 ]
 CORS_ALLOW_CREDENTIALS = True
-CSRF_COOKIE_SECURE = True           # only https server
+CSRF_COOKIE_SECURE = True            # only https server
 CSRF_COOKIE_HTTPONLY = True          # csrf token stored in httponly cookie
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",

@@ -14,32 +14,29 @@ npm install -g pnpm
 
 ### Setup
 
-1. Commencer par créer un dossier `Plantaludum` puis, dedans un dossier `WebApp`.
+1. Forker et cloner le repo
 
-```shell
-mkdir Plantaludum
-cd Plantaludum
-mkdir WebApp
-cd WebApp
-```
+    ```shell
+    git clone https://github.com/<Votre-Pseudo>/Plantaludum.git
+    ```
 
-2. Cloner le repo
+2. Rendez-vous dans le dossier `app` dans `frontend`.
 
-```shell
-git clone https://github.com/<Votre-Pseudo>/Plantaludum.git .
-```
+    ```shell
+    cd frontend/app
+    ```
 
-4. Installer les dépendances
+3. Installer les dépendances
 
-```shell
-pnpm i
-```
+    ```shell
+    pnpm i
+    ```
 
-5. Enfin lancer le serveur de développement ou le storybook
+4. Enfin lancer le serveur de développement ou le storybook
 
-```shell
-pnpm run dev
-pnpm run storybook
-```
+    ```shell
+    pnpm run dev
+    pnpm run storybook
+    ```
 
-6. Lancer les API avec les scripts `runservers.fish` ou `runservers.bash`.
+5. Lancer les API avec les scripts `runservers.fish` ou `runservers.bash`.
