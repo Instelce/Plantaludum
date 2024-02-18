@@ -26,7 +26,8 @@ L'api à été conçu avec Django, Django Rest Framework.
 
     ```shell
     python -m venv env
-    ./env/scripts/activate
+    source env/bin/activate (linux ou macos)
+    ./env/scripts/activate (windows)
     ```
 
 4. Installer les dépendances

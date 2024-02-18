@@ -32,22 +32,18 @@ if DJANGO_ENV == "development" or DJANGO_ENV == "production":
         ALLOWED_HOSTS = ["127.0.0.1", "0.0.0.0", "localhost"]
 
     try:
-        print(
-            "Set CORS_ALLOWED_ORIGINS to",
-            os.environ.get("CORS_ALLOWED_ORIGINS").split(" "),
-        )
         CORS_ALLOWED_ORIGINS = os.environ.get("CORS_ALLOWED_ORIGINS").split(" ")
         CSRF_TRUSTED_ORIGINS = os.environ.get("CORS_ALLOWED_ORIGINS").split(" ")
     except:
-        print("Default CORS settings")
         CORS_ORIGIN_ALLOW_ALL = True
-        CORS_ALLOWED_ORIGINS = ["http://127.0.0.1:5173", "http://127.0.0.1:3000"]
-        CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:5173", "http://127.0.0.1:3000"]
+        CSRF_COOKIE_SECURE = False
+        CORS_ALLOWED_ORIGINS = ["http://127.0.0.1:5173", "http://localhost:5173", "http://127.0.0.1:3000"]
+        CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:5173", "http://localhost:5173", "http://127.0.0.1:3000"]
 
     DATABASES = {
         "default": {
-            "ENGINE": os.environ.get("DB_ENGINE", "django.db.backends.sqlite3"),
-            "NAME": os.environ.get("DB_NAME", os.path.join(BASE_DIR, "db.sqlite3")),
+            "ENGINE": os.environ.get("DB_ENGINE", "django.db.backends.postgresql_psycopg2"),
+            "NAME": os.environ.get("DB_NAME", "plantaludumdb"),
             "USER": os.environ.get("DB_USER", "user"),
             "PASSWORD": os.environ.get("DB_PASSWORD", "password"),
             "HOST": os.environ.get("DB_HOST", "localhost"),
@@ -61,7 +57,7 @@ else:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql_psycopg2",
-            "NAME": "predictiondb",
+            "NAME": "plantaludumdb",
             "USER": "postgres_user",
             "PASSWORD": "postgres_password",
             "HOST": "127.0.0.1",
