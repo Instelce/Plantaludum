@@ -33,10 +33,10 @@ function PersistLogin() {
     };
   }, []);
 
-  useEffect(() => {
-    console.log("isLoading", isLoading);
-    console.log("accessToken", JSON.stringify(accessToken));
-  }, [isLoading]);
+  // useEffect(() => {
+  //   console.log("isLoading", isLoading);
+  //   console.log("accessToken", JSON.stringify(accessToken));
+  // }, [isLoading]);
 
   return (
     <>

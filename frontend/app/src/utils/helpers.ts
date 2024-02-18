@@ -8,7 +8,7 @@ export function arrayChoice(array: any[], num: number = 1) {
   for (let i = 0; i < num; i++) {
     let choice = array[Math.floor(Math.random() * array.length)];
     while (choice in choices) {
-      console.log("sup", choice);
+      // console.log("sup", choice);
       choice = array[Math.floor(Math.random() * array.length)];
     }
     choices.push(choice);
@@ -28,6 +28,7 @@ export function deleteDublicates(array: any[]) {
 }
 
 export function shuffleArray(array: any[]) {
+  // eslint-disable-next-line no-unused-vars
   return array.sort((a, b) => 0.5 - Math.random());
 }
 
@@ -64,4 +65,29 @@ export function numberWithZero(number: number): string {
   return number.toLocaleString("en-US", {
     minimumIntegerDigits: 2,
   });
+}
+
+export async function downloadImage(url: string, filename: string) {
+  fetch(url)
+    .then(response => {
+      console.log(response);
+      return response.blob()
+    })
+    .then(blob => {
+      console.log(blob);
+      let blobUrl = window.URL.createObjectURL(blob);
+      let a = document.createElement('a');
+      a.download = filename;
+      a.href = blobUrl;
+      a.target = '_blank'
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => {
+        URL.revokeObjectURL(blobUrl)
+      }, 0);
+    })
+    .catch(error => {
+      console.error('Error downloading image:', error);
+    });
 }

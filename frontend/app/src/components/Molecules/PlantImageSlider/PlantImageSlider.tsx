@@ -4,6 +4,7 @@ import {
   ArrowUpRight,
   ChevronLeft,
   ChevronRight,
+  Download,
   Info,
   X,
 } from "react-feather";
@@ -14,6 +15,7 @@ import { ImageType } from "../../../services/api/types/images";
 import BoxList from "../BoxList/BoxList";
 import { Link } from "react-router-dom";
 import { PlantType } from "../../../services/api/types/plants";
+import { downloadImage, getAnotherFormat } from "../../../utils/helpers";
 
 type PlantImageSliderProps = {
   imagesData: ImageType[];
@@ -127,12 +129,20 @@ function PlantImageSlider({
               <BoxList.Item>{imagesData[current].publ_date}</BoxList.Item>
             </BoxList.Group>
 
-            <Button asChild className="sb" label="Télécharger" fill>
-              <Link to={plantData?.eflore_url} target="_blank">
-                Voir plus
-                <ArrowUpRight />
-              </Link>
-            </Button>
+            <div className="flex gg-1">
+              <Button asChild className="sb" label="Voir plus" fill>
+                <Link to={plantData?.eflore_url} target="_blank">
+                  Voir plus
+                  <ArrowUpRight />
+                </Link>
+              </Button>
+              <Button onlyIcon color="gray" onClick={() => {
+                let filename = `${plantData.scientific_name} par ${imagesData[current].author}`
+                downloadImage(getAnotherFormat(imagesData[current].url, "O"), filename)
+              }}>
+                <Download />
+              </Button>
+            </div>
           </div>
         )}
       </div>

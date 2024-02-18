@@ -13,7 +13,7 @@ function useFormFilled(): UseFormFilledReturnType {
   const handleFormChange = () => {
     let countInputFilled = 0;
     const inputsElements = form.current?.querySelectorAll("input, textarea");
-    console.log(inputsElements);
+    // console.log(inputsElements);
 
     if (inputsElements) {
       // remove checkbox from inputs
@@ -26,7 +26,7 @@ function useFormFilled(): UseFormFilledReturnType {
       // loop all inputs and check their value
       inputs.forEach((input: Element) => {
         const inputElement = input as HTMLInputElement;
-        console.log(inputElement.value);
+        // console.log(inputElement.value);
 
         if (inputElement.value !== "" && inputElement.type !== "checkbox") {
           countInputFilled++;

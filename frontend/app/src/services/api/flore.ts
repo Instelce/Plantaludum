@@ -93,8 +93,6 @@ export function loadImages(
     }
   }
 
-  console.log(params.toString());
-
   return apiFlore.get(`api/images?${params.toString()}`).then((r) => r.data);
 }
 

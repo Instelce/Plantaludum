@@ -137,18 +137,30 @@
     background: rgb(var(--color-background));
   }
 
-  .info-icon {
+  .icons {
     position: absolute;
     right: 2rem;
     top: 50%;
     transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+  }
+
+  .info-icon {
     cursor: pointer;
     opacity: 0.8;
     stroke: rgb(var(--color-white));
+    cursor: pointer;
 
     &:hover {
       opacity: 1;
     }
+  }
+
+  .reset-icon {
+    stroke: rgb(var(--color-primary-light));
+    cursor: pointer;
   }
 
   .icon {

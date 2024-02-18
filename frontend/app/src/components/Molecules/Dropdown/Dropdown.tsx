@@ -104,12 +104,12 @@ function Dropdown({
 
   useEffect(() => {
     if (handleValueChange) {
-      console.log(
-        "CURRENT VALUE",
-        currentValue,
-        "CURRENT REAL VALUE",
-        currentRealValue,
-      );
+      // console.log(
+      //   "CURRENT VALUE",
+      //   currentValue,
+      //   "CURRENT REAL VALUE",
+      //   currentRealValue,
+      // );
       if (currentRealValue !== undefined) handleValueChange(currentRealValue);
       else handleValueChange(currentValue);
     }

@@ -85,6 +85,7 @@ function PlantImageSelector({
               usageInfoText="Cherche le nom d’une plante, puis choisie l’image
                 de la plante qui te semble la mieux. Choisie la bien car c'est
                 elle qui servira d'image de couverture au decks."
+              hasResetButton
               data-not-count
             />
           </>

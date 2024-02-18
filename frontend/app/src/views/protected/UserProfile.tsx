@@ -177,14 +177,14 @@ function UserProfile() {
       )}
 
       <Header.Root type="page">
-        {userData && currentUser && (
+        {userData && currentUser && <>
           <Header.Title>{userData.username}</Header.Title>
-        )}
 
-        <Header.Right>
-          <span>Points</span>
-          <h2>{userData?.score}</h2>
-        </Header.Right>
+          <Header.Right>
+            <span>Points</span>
+            <h2>{userData?.score}</h2>
+          </Header.Right>
+        </>}
       </Header.Root>
 
       {/* User information section */}

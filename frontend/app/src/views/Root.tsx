@@ -131,25 +131,21 @@ function Root() {
             <div className="up">
               <div>
                 <div className="section">
-                  <a href="https://github.com/Plantaludum/Plantaludum/issues/new?labels=bug">
+                  <a href="https://github.com/Instelce/Plantaludum/issues/new?labels=bug">
                     Reporter un bug
                   </a>
-                  <a href="https://github.com/Plantaludum/Plantaludum/issues/new?labels=enhancement">
+                  <a href="https://github.com/Instelce/Plantaludum/issues/new?labels=enhancement">
                     Proposer une fonctionnalité
                   </a>
                 </div>
 
                 <div className="section">
-                  <a href="https://github.com/Plantaludum/API">
-                    API de Plantaludum
-                  </a>
                   <a href="https://github.com/Instelce/FloreAPI">FloreAPI</a>
+                  <a href="https://github.com/Instelce/Plantaludum">Code source</a>
                 </div>
               </div>
 
-              <a href="https://github.com/Plantaludum">
-                <img src="/logos/github-logo.svg" alt="Github logo" />
-              </a>
+              <img src="/logos/logo.svg" alt="Plantaludum logo" />
             </div>
 
             <div className="down">

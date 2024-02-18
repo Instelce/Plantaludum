@@ -170,7 +170,7 @@ function DeckGame() {
 
   // set images
   useEffect(() => {
-    console.log("----", currentPlant?.french_name);
+    // console.log("----", currentPlant?.french_name);
     if (currentPlant) {
       let tempImagesData: PlantImagesType[] =
         deckPlantsImagesQuery.data as PlantImagesType[];
@@ -198,7 +198,7 @@ function DeckGame() {
     }
 
     // set stars
-    console.log("Erreur de l'utilisateur", userErrors, maxQuestions - progress);
+    // console.log("Erreur de l'utilisateur", userErrors, maxQuestions - progress);
     if (progress >= maxQuestions / 3 && userErrors < 2) {
       setStars(() => 1);
     }
@@ -207,7 +207,7 @@ function DeckGame() {
     }
     if (progress >= maxQuestions && userErrors < 4) {
       setStars(() => 3);
-      console.log("STARS", stars);
+      // console.log("STARS", stars);
     }
 
     if (showResult && progress < maxQuestions) {
@@ -245,17 +245,17 @@ function DeckGame() {
     // redirect to result page if progress is done
     // or when time is finished
     if (progress === maxQuestions || seconds === 0) {
-      console.log("Deck quiz finished");
+      // console.log("Deck quiz finished");
       if (isFisrtPlay) {
-        console.log("Create deck", stars);
+        // console.log("Create deck", stars);
         mutateCreatePlayedDeck();
       } else {
-        console.log("Ok lets go");
-        console.log("Update deck", stars);
+        //console.log("Ok lets go");
+        //console.log("Update deck", stars);
 
         if (userPlayedDeckQuery.data) {
           if (stars === 3) {
-            console.log("................................");
+            // console.log("................................");
             mutateUpdatePlayedDeckLevel({
               level: userPlayedDeckQuery.data.level + 1,
               current_stars: 1,

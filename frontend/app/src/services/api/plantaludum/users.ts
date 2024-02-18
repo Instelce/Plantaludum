@@ -1,4 +1,4 @@
-import { AxiosInstance } from "axios";
+import {AxiosInstance, AxiosResponse} from "axios";
 import api, { apiRequest } from "../axios";
 import { UserType } from "../types/users";
 import { DeckType, UserPlayedDeckType } from "../types/decks";
@@ -35,8 +35,6 @@ export const users = {
       }
     }
 
-    console.log(fieldFilters, params);
-
     return api
       .get(`/api/user-decks/${userId}?${params}`)
       .then((r) => r.data as DeckType[]);
@@ -70,4 +68,8 @@ export const users = {
           return r.data;
         }),
   },
+
+  restorePlantaludumStats: (privateFetch: AxiosInstance, data: {username: string, password: string}) => {
+    return privateFetch.post('/api/auth/restore-theplantgame-stats', data)
+  }
 };

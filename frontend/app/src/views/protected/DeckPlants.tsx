@@ -96,6 +96,11 @@ function DeckPlants() {
         deleted: previousIdentifications.filter((t) => t.id === plantId)[0],
       };
     },
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["decks-plants", deckId.toString()],
+      });
+    },
     onSuccess: () => {
       navigate(`/decks/${deckId}`);
     },
@@ -107,6 +112,8 @@ function DeckPlants() {
   });
 
   const handleSubmit = async () => {
+    console.log(plants, removePlantIds);
+
     // create plants
     for (const plant of plants) {
       mutateCreatePlantQuiz({
@@ -194,7 +201,6 @@ function DeckPlants() {
                 size="large"
                 url={`${import.meta.env.VITE_FLORE_API_URL}/api/plants`}
                 fieldName="french_name"
-                maxSuggestions={5}
                 handleValueChange={setPlantValue}
                 setValidValue={setPlantIsValid}
                 setSelectedValueData={setPlantData}
@@ -262,7 +268,7 @@ function DeckPlants() {
       <div className="form-buttons-container">
         <div className="form-buttons-wrapper">
           <Button asChild label="Retour" size="large" color="gray" fill>
-            <Link to={`/decks/${deckId}/update`}>Retour</Link>
+            <Link to={location?.state?.from?.pathname || `/decks/${deckId}/update`} state={{ from: { pathname: location.pathname } }}>Retour</Link>
           </Button>
           {deckPlantsQuery.isSuccess ? (
             <Button

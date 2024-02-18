@@ -125,6 +125,7 @@ function DeckUpdate() {
             defaultChecked={deckQuery.data?.private}
             data-not-count
           />
+
           <div className="form-buttons">
             <Button asChild label="Retour" size="large" color="gray" fill>
               <Link

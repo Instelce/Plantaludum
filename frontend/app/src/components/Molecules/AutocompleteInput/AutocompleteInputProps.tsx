@@ -14,12 +14,5 @@ export type AutocompleteInputProps = {
   setSelectedValueData?: (value: any) => void | null;
   usageInfoText?: string | null;
   resetFieldOnSubmit?: boolean;
-};
-
-export type SuggestionsProps = {
-  searchValue: string;
-  fieldName: string;
-  suggestions: any;
-  maxSuggestions: number;
-  setSelectedValue: (value: string) => void;
+  hasResetButton?: boolean;
 };

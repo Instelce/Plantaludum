@@ -2,7 +2,7 @@ import { InputHTMLAttributes, ReactNode, useId, useState } from "react";
 
 import "./Input.scss";
 import Modal from "../../Molecules/Modal/Modal";
-import { Info } from "react-feather";
+import { Info, X } from "react-feather";
 import { SizeProp } from "../../../types/helpers";
 import Button from "../Buttons/Button";
 
@@ -19,6 +19,7 @@ type InputProps = {
   handleValueChange?: (value: string) => void | null;
   helperText?: string | null;
   usageInfoText?: string | null;
+  hasResetButton?: boolean
 } & InputHTMLAttributes<HTMLInputElement>;
 
 function Input({
@@ -33,6 +34,7 @@ function Input({
   handleValueChange,
   helperText = null,
   usageInfoText = null,
+  hasResetButton = false,
   ...props
 }: InputProps) {
   const defaultId = useId();
@@ -75,12 +77,22 @@ function Input({
             </svg>
           )}
 
-          {usageInfoText !== null && (
-            <Info
-              className="info-icon"
-              onClick={() => setShowInfoModal(() => true)}
-            />
-          )}
+          <div className="icons">
+            {usageInfoText !== null && (
+              <Info
+                className="info-icon"
+                onClick={() => setShowInfoModal(() => true)}
+                size={20}
+              />
+            )}
+
+            {hasResetButton && handleValueChange && value && (
+              <X
+                className="reset-icon"
+                onClick={() => handleValueChange("")}
+              />
+            )}
+          </div>
 
           {icon ? <span className="icon">{icon}</span> : null}
         </div>

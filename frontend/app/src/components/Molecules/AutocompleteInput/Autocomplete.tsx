@@ -1,7 +1,7 @@
 // @ts-nocheck
 import "./Autocomplete.scss";
 import Input from "../../Atoms/Input/Input";
-import { KeyboardEvent, useEffect, useMemo, useState } from "react";
+import { KeyboardEvent, useCallback, useEffect, useMemo, useState } from "react";
 import classNames from "classnames";
 import Option from "../../Atoms/Option/Option";
 import useDebounce from "../../../hooks/useDebounce";
@@ -9,7 +9,6 @@ import axios from "axios";
 import { deleteDublicates, removeAccent } from "../../../utils/helpers";
 import {
   AutocompleteInputProps,
-  SuggestionsProps,
 } from "./AutocompleteInputProps";
 import { SizeProp } from "../../../types/helpers";
 
@@ -25,12 +24,15 @@ function AutocompleteInput({
   setSelectedValueData,
   usageInfoText = null,
   resetFieldOnSubmit = false,
+  hasResetButton = false,
   ...props
 }: AutocompleteInputProps) {
   const [searchValue, setSearchValue] = useState("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const debouncedSearchValue = useDebounce(searchValue, 300);
   const [selectedValue, setSelectedValue] = useState("");
+  // indice of the selected suggestion
+  const [selectedSuggestion, setSelectedSuggestion] = useState(0);
 
   // fetch data from url pass in props
   useEffect(() => {
@@ -56,52 +58,16 @@ function AutocompleteInput({
     setSearchValue(value);
     setValidValue?.(true);
     handleValueChange?.(value);
-    console.log(suggestions);
+    // console.log(suggestions);
     setSelectedValueData?.(
       suggestions &&
-        Object.values(suggestions).filter((p: any) => p[fieldName] === value)[0]
+      Object.values(suggestions).filter((p: any) => p[fieldName] === value)[0]
     );
   };
 
-  // remove enter key submit
-  const checkKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") e.preventDefault();
-  };
-
-  return (
-    <div className="autocomplete">
-      <Input
-        id={id}
-        label={label}
-        size={size ? (size as SizeProp) : "large"}
-        value={searchValue}
-        handleValueChange={setSearchValue}
-        onKeyDown={checkKeyDown}
-        usageInfoText={usageInfoText}
-        {...props}
-      />
-      {searchValue !== selectedValue && (
-        <Suggestions
-          searchValue={searchValue}
-          fieldName={fieldName}
-          suggestions={suggestions}
-          maxSuggestions={maxSuggestions}
-          setSelectedValue={handleOptionClick}
-        />
-      )}
-    </div>
-  );
-}
-
-function Suggestions({
-  searchValue,
-  fieldName,
-  suggestions,
-  maxSuggestions,
-  setSelectedValue,
-}: SuggestionsProps) {
-  const [selectedSuggestion, setSelectedSuggestion] = useState(0);
+  // filter data
   const filteredSuggestions = useMemo(() => {
+    setSelectedSuggestion(0)
     if (searchValue.length === 0) {
       return [];
     } else {
@@ -117,59 +83,66 @@ function Suggestions({
           fvalue.search(fsearch) > -1
         );
       });
-      // and get only keep 0 to maxSuggestions values
+      // and get only 0 to maxSuggestions values
       results = results.slice(0, maxSuggestions);
 
-      console.log(results);
+      // console.log(results);
 
       return deleteDublicates(results);
     }
   }, [fieldName, maxSuggestions, searchValue, suggestions]);
 
-  // Accessibility
-  useEffect(() => {
-    const accessibility = (e: KeyboardEvent) => {
-      switch (e.key) {
-        case "ArrowDown":
-          setSelectedSuggestion((prev) =>
-            prev < filteredSuggestions.length - 1 ? prev + 1 : prev,
-          );
-          break;
-        case "ArrowUp":
-          setSelectedSuggestion((prev) => (prev > 0 ? prev - 1 : prev));
-          break;
-        case "Enter":
-          setSelectedValue(filteredSuggestions[selectedSuggestion]);
-          setSelectedSuggestion(() => 0);
-          break;
-      }
-    };
-
-    window.addEventListener("keydown", (e: Event) => accessibility(e as unknown as KeyboardEvent));
-
-    return () => {
-      window.removeEventListener("keydown", (e: Event) => accessibility(e as unknown as KeyboardEvent));
-    };
-  }, [selectedSuggestion, filteredSuggestions, setSelectedValue]);
+  // remove enter key submit
+  const checkKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault()
+      handleOptionClick(filteredSuggestions[selectedSuggestion]);
+      setSelectedSuggestion(0);
+    }
+    if (e.key === "ArrowUp") {
+      setSelectedSuggestion((prev) => (prev > 0 ? prev - 1 : prev));
+    }
+    if (e.key === "ArrowDown") {
+      setSelectedSuggestion((prev) =>
+        prev < filteredSuggestions.length - 1 ? prev + 1 : prev
+      );
+    }
+  };
 
   return (
-    <div
-      className={classNames("options-container", {
-        show: filteredSuggestions?.length !== 0,
-      })}
-    >
-      {filteredSuggestions?.map((option: string, index: number) => (
-        <Option
-          key={option}
-          value={option}
-          active={selectedSuggestion === index}
-          onClick={() => setSelectedValue(option)}
+    <div className="autocomplete">
+      <Input
+        id={id}
+        label={label}
+        size={size ? (size as SizeProp) : "large"}
+        value={searchValue}
+        handleValueChange={setSearchValue}
+        onKeyDown={checkKeyDown}
+        usageInfoText={usageInfoText}
+        hasResetButton
+        {...props}
+      />
+      {searchValue !== selectedValue && (
+        <div
+          className={classNames("options-container", {
+            show: filteredSuggestions?.length !== 0,
+          })}
         >
-          {option}
-        </Option>
-      ))}
+          {filteredSuggestions?.map((option: string, index: number) => (
+            <Option
+              key={option}
+              value={option}
+              active={selectedSuggestion === index}
+              onClick={() => handleOptionClick(option)}
+            >
+              {option}
+            </Option>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
+
 
 export default AutocompleteInput;

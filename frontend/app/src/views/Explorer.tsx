@@ -78,9 +78,9 @@ function Explorer() {
     });
   }, [searchFilteredDecks, difficultyFilter]);
 
-  useEffect(() => {
-    console.log("search", searchFilteredDecks);
-  }, [searchFilteredDecks, filteredDecks]);
+  // useEffect(() => {
+  //   console.log("search", searchFilteredDecks);
+  // }, [searchFilteredDecks, filteredDecks]);
 
   // Header when scrolling
   useGSAP(() => {

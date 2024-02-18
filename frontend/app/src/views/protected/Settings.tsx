@@ -1,14 +1,21 @@
-import { useEffect, useState } from "react";
+import {FormEvent, useEffect, useState} from "react";
 import Header from "../../components/Molecules/Header/Header";
 import Switch from "../../components/Atoms/Switch/Switch/Switch";
 import Dropdown from "../../components/Molecules/Dropdown/Dropdown";
 import Option from "../../components/Atoms/Option/Option";
 import ChoiceBlock from "../../components/Molecules/ChoiceBlock/ChoiceBlock";
-import { useQuery } from "@tanstack/react-query";
-import { flore } from "../../services/api/flore";
-import { PlantType } from "../../services/api/types/plants";
-import { SettingsType } from "../../types/helpers";
-import { ErrorBoundary } from "react-error-boundary";
+import {useMutation, useQuery} from "@tanstack/react-query";
+import {flore} from "../../services/api/flore";
+import {PlantType} from "../../services/api/types/plants";
+import {SettingsType} from "../../types/helpers";
+import {ErrorBoundary} from "react-error-boundary";
+import Input from "../../components/Atoms/Input/Input";
+import Button from "../../components/Atoms/Buttons/Button";
+import usePrivateFetch from "../../hooks/auth/usePrivateFetch";
+import {users} from "../../services/api/plantaludum/users";
+import {Check} from "react-feather";
+import useUser from "../../hooks/auth/useUser";
+import { AxiosError } from "axios";
 
 function Settings() {
   const [settings, setSettings] = useState<SettingsType>({
@@ -91,7 +98,9 @@ function Settings() {
             />
           </div>
 
-          <ButtonInfoSection />
+          <ButtonInfoSection/>
+
+          <RestoreThePlantGameStats/>
         </>
       )}
     </div>
@@ -127,7 +136,7 @@ function ButtonInfoSection() {
   // default values
   useEffect(() => {
     if (localStorage.getItem("settings.gameButtonInfo")) {
-      const { title, subtitle } = JSON.parse(
+      const {title, subtitle} = JSON.parse(
         localStorage.getItem("settings.gameButtonInfo")!,
       );
       setTitle(title);
@@ -161,14 +170,14 @@ function ButtonInfoSection() {
 
       <div className="content-container">
         <ErrorBoundary fallback={<p>Une erreur est survenu</p>}>
-          <form style={{ maxWidth: "400px" }}>
+          <form style={{maxWidth: "400px"}}>
             <Dropdown
               label="Titre"
               defaultValue={
                 translation[
-                JSON.parse(localStorage.getItem("settings.gameButtonInfo")!)
-                  ?.title as keyof PlantType
-                ] as string
+                  JSON.parse(localStorage.getItem("settings.gameButtonInfo")!)
+                    ?.title as keyof PlantType
+                  ] as string
               }
               handleValueChange={(value) => {
                 setTitle(value as keyof PlantType);
@@ -184,9 +193,9 @@ function ButtonInfoSection() {
               label="Sous titre"
               defaultValue={
                 translation[
-                JSON.parse(localStorage.getItem("settings.gameButtonInfo")!)
-                  ?.subtitle as keyof PlantType
-                ]
+                  JSON.parse(localStorage.getItem("settings.gameButtonInfo")!)
+                    ?.subtitle as keyof PlantType
+                  ]
               }
               handleValueChange={(value) => {
                 setSubTitle(value as keyof PlantType);
@@ -202,7 +211,7 @@ function ButtonInfoSection() {
           <h4 className="mb-1 mt-1">Aperçu</h4>
 
           {randomPlantQuery.isSuccess && (
-            <div style={{ maxWidth: "400px" }}>
+            <div style={{maxWidth: "400px"}}>
               <ChoiceBlock
                 title={randomPlantQuery.data[0][title] as string}
                 subtitle={randomPlantQuery.data[0][subTitle] as string}
@@ -216,6 +225,78 @@ function ButtonInfoSection() {
       </div>
     </>
   );
+}
+
+function RestoreThePlantGameStats() {
+  const privateFetch = usePrivateFetch()
+  const user = useUser()
+
+  const restoreStatsMutation = useMutation({
+    mutationKey: ["restore-theplantgame-stats"],
+    mutationFn: (data: {
+      username: string,
+      password: string
+    }) => users.restorePlantaludumStats(privateFetch, data),
+    onSuccess: (data) => {
+      console.log(data)
+      if (user) {
+        users.update(privateFetch, user.id, {
+          score: data.data.points > user.score ? data.data.points : user.score,
+        })
+      }
+    }
+  })
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.target as HTMLFormElement)
+
+    restoreStatsMutation.mutate({
+      username: formData.get("username") as string,
+      password: formData.get("password") as string
+    })
+  }
+
+  console.log("res", restoreStatsMutation.data, restoreStatsMutation.status)
+
+  return (
+    <>
+      <Header.Root type="sub-section">
+        <Header.Title>Restorer les stats de votre compte
+          ThePlantGame</Header.Title>
+      </Header.Root>
+
+      <div className="content-container">
+        {!restoreStatsMutation.isSuccess &&
+          <form style={{maxWidth: "400px"}} onSubmit={handleSubmit}>
+            <Input label="Pseudo" id="username"/>
+            <Input label="Mot de passe" id="password" type="password"/>
+            <Button type="submit">
+              Restorer
+            </Button>
+          </form>}
+        <div className="mt-1">
+          {restoreStatsMutation.isError && <p style={{
+            maxWidth: "400px",
+            lineHeight: "140%"
+          }}>{(restoreStatsMutation.error as AxiosError<{error: string}>)?.response?.data?.error}</p>}
+          {restoreStatsMutation.isPending && <p>Chargement...</p>}
+        </div>
+
+        {restoreStatsMutation.isSuccess && <>
+          <div className="flex gg-1 mb-1">
+            <Check color="rgb(var(--color-primary-light))"/>
+            <p>Vos données ont été récupéré avec succès !</p>
+          </div>
+          <p className="flex gg-1">Points &#8594; <span
+            className="funique h5">{restoreStatsMutation.data.data.points}</span>
+          </p>
+        </>}
+      </div>
+
+    </>
+  )
 }
 
 export default Settings;

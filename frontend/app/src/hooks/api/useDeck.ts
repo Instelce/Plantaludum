@@ -20,18 +20,18 @@ function useDeck({
   enabled = true,
 }: UseDeckArgs) {
   const deckQuery = useQuery<DeckType>({
-    queryKey: ["decks", deckId],
+    queryKey: ["decks", deckId.toString()],
     queryFn: () => decks.details(deckId),
     enabled: enabled,
   });
 
   const deckPlantsQuery = useQuery<PlantType[]>({
-    queryKey: ["decks-plants", deckId],
+    queryKey: ["decks-plants", deckId.toString()],
     queryFn: () => decks.listPlants(deckId),
   });
 
   const plantsQuery = useQuery<PlantType[], Error>({
-    queryKey: ["decks-plants-infos", deckId],
+    queryKey: ["decks-plants-infos", deckId.toString()],
     queryFn: () =>
       flore.plants.getWithIds(
         getObjectKeyValues(deckPlantsQuery.data as any[], "plant_id").map(Number), // array of plant id
@@ -41,7 +41,7 @@ function useDeck({
   });
 
   const plantsImagesQuery = useQuery<PlantImagesType[], Error>({
-    queryKey: ["decks-plants-images", deckId],
+    queryKey: ["decks-plants-images", deckId.toString()],
     queryFn: () =>
       flore.images.getWithPlantsIds(
         getObjectKeyValues(deckPlantsQuery.data as any[], "plant_id").map(Number),

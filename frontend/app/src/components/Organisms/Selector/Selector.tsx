@@ -28,7 +28,7 @@ function Selector({
   const [confirmChoice, setConfirmChoice] = useState(false);
 
   useEffect(() => {
-    console.log(choices);
+    // console.log(choices);
     if (!confirmChoice) {
       setValue?.(null);
       setCurrentChoice(() => null);

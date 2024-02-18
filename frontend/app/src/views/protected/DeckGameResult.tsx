@@ -1,17 +1,13 @@
-import React from "react";
 import { Link, Navigate, useLocation, useParams } from "react-router-dom";
-import Navbar from "../../components/Organisms/Navbar/Navbar";
 import Button from "../../components/Atoms/Buttons/Button";
-import useUser from "../../hooks/auth/useUser";
 import Stars from "../../components/Atoms/Stars/Stars";
-import DeckLevelCard from "../../components/Molecules/DeckLevelCard/DeckLevelCard";
 import { ArrowLeft, ArrowRight } from "react-feather";
 import ConfettiExplosion from "react-confetti-explosion";
 import { useAuth } from "../../context/AuthProvider";
+import Header from "../../components/Molecules/Header/Header";
 
 function DeckGameResult() {
   const { deckId, deckLevel } = useParams();
-  const user = useUser();
   const { accessToken } = useAuth();
 
   const location = useLocation();
@@ -40,6 +36,10 @@ function DeckGameResult() {
           )}
         </div>
       </header>
+
+      <Header.Root type="section">
+        <Header.Title className="h3">{deckGameResultData.deck.name} niveau {deckLevel}</Header.Title>
+      </Header.Root>
 
       <div className="content-container grid-buttons">
         {deckGameResultData.level > 1 ? (

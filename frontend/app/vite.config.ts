@@ -8,6 +8,7 @@ export default defineConfig(({ command, mode }) => {
   return {
     // vite config
     plugins: [react()],
+    assetsInclude: ["**/*.md"]
     // server: {
     //   port: 8080,
     //   strictPort: true,

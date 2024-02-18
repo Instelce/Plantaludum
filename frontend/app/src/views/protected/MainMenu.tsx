@@ -11,6 +11,9 @@ import Input from "../../components/Atoms/Input/Input";
 import useObjectSearch from "../../hooks/useObjectSearch";
 import ManageDeckButton from "../../components/Molecules/ManageDeckButton/ManageDeckButton";
 import useUserDecks from "../../hooks/api/useUserDecks";
+import Loader from "../../components/Atoms/Loader";
+import SectionLoader
+  from "../../components/Molecules/SectionLoader/SectionLoader";
 
 function MainMenu() {
   const user = useUser();
@@ -99,6 +102,8 @@ function CreatedDeckSection() {
           </>
         )}
       </div>
+
+      <SectionLoader isLoading={userDecksQuery.isLoading} />
     </>
   );
 }
@@ -176,6 +181,8 @@ function PlayedDeckSection() {
           </>
         )}
       </main>
+
+      <SectionLoader isLoading={playedDecksQuery.isLoading} />
     </>
   );
 }

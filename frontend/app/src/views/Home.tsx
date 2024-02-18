@@ -145,12 +145,6 @@ function HomeHeader({ plantsQuery }: { plantsQuery: UseQueryResult<CompletePlant
     }
   }, [plantsQuery.isSuccess]);
 
-  console.log(plantsImagesData);
-
-  useEffect(() => {
-    console.log(imagesLoadedCount);
-  }, [imagesLoadedCount]);
-
   return (
     <>
       <header>

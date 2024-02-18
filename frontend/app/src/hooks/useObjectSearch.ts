@@ -20,7 +20,7 @@ function useObjectSearch<T>({
         if (subField) {
           fieldData = obj[fieldName][subField] as string;
         }
-        console.log(fieldData);
+        // console.log(fieldData);
         return (
           fieldData.toLowerCase().startsWith(searchInput.toLowerCase()) ||
           fieldData.toLowerCase().search(searchInput.toLowerCase()) > -1

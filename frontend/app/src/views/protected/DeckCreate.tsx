@@ -48,18 +48,9 @@ function DeckCreate() {
     },
   });
 
-  // Navigate to create deck plants form if the deck is successfully created
-  useEffect(() => {
-    if (isSuccess) {
-      console.log(deckData);
-    }
-  }, [deckData, isSuccess]);
-
   const handleFormSubmit = (e: FormEvent) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
-
-    console.log(user);
 
     mutateCreateDeck({
       name: formData.get("name") as string,

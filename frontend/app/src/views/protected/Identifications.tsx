@@ -16,6 +16,8 @@ import Button from "../../components/Atoms/Buttons/Button";
 import { Trash } from "react-feather";
 import { IdentificationType } from "../../services/api/types/identifications";
 import Loader from "../../components/Atoms/Loader";
+import SectionLoader
+  from "../../components/Molecules/SectionLoader/SectionLoader";
 
 function Identifications() {
   const user = useUser();
@@ -26,7 +28,7 @@ function Identifications() {
   const userIdentificationsQuery = useQuery({
     queryKey: ["user-identifications"],
     queryFn: () => identifications.list(privateFetch, user?.id as number),
-    enabled: user != null,
+    enabled: (user !== null && user !== undefined),
   });
 
   const identificationsImageQuery = useQuery({
@@ -85,12 +87,21 @@ function Identifications() {
     },
   });
 
+  // separate answered identification to not answered identifications
   const userIdentificationsData = useMemo(() => {
-    return userIdentificationsQuery.data?.filter((i) => i.answer === -1) || [];
+    if (userIdentificationsQuery.data) {
+      return userIdentificationsQuery.data?.filter((i) => i.answer === -1);
+    } else {
+      return []
+    }
   }, [userIdentificationsQuery.data]);
 
   const userIdentificationAnswersData = useMemo(() => {
-    return userIdentificationsQuery.data?.filter((i) => i.answer != -1) || [];
+    if (userIdentificationsQuery.data) {
+      return userIdentificationsQuery.data?.filter((i) => i.answer != -1);
+    } else {
+      return []
+    }
   }, [userIdentificationsQuery.data]);
 
   // filter all the identifications answers by group of plant
@@ -102,54 +113,27 @@ function Identifications() {
     }, {} as { [key: number]: any[] });
   }, [userIdentificationAnswersData]);
 
-  // assignment timer
-  const [timer, setTimer] = useState({
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-  });
-
-  useEffect(() => {
-    if (timer.hours == 0 && timer.minutes == 0 && timer.seconds == 0) {
-      userIdentificationsQuery.refetch()
-      identificationsImageQuery.refetch()
-    }
-  }, [timer]);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      let date = new Date();
-      setTimer({
-        hours: date.getHours() % 2 == 0 ? 1 : 0,
-        minutes: 59 - date.getMinutes(),
-        seconds: 59 - date.getSeconds(),
-      });
-      console.log(timer);
-    }, 1000);
-
-    return () => clearTimeout(interval);
-  }, []);
+  // useEffect(() => {
+  //   if (timer.hours == 0 && timer.minutes == 0 && timer.seconds == 0) {
+  //     userIdentificationsQuery.refetch()
+  //     identificationsImageQuery.refetch()
+  //   }
+  // }, [timer]);
 
   // console.log(Object.entries(userIdentificationAnswersFilteredByPlantData))
 
   return (
     <div className="identifications-page">
-      <Header.Root type="page" center>
-        <div className="center f-col">
-          <span>Prochaine assignation</span>
-          <Header.Title>
-            {numberWithZero(timer.hours)} : {numberWithZero(timer.minutes)} :{" "}
-            {numberWithZero(timer.seconds)}
-          </Header.Title>
-        </div>
-      </Header.Root>
+      <IdentificationHeader />
 
       <Header.Root type="sub-section">
         <Header.Title>A identifier</Header.Title>
       </Header.Root>
 
+      <SectionLoader isLoading={userIdentificationsQuery.isLoading} />
+
       <div className="grid gc-4 gg-2 content-container">
-        {userIdentificationsData.length > 0 && identificationsImageQuery.data && (
+        {userIdentificationsQuery.isSuccess && identificationsImageQuery.data && (
             <>
               {userIdentificationsData.map((identification, index) => {
                 let image = identificationsImageQuery.data.filter(
@@ -225,15 +209,20 @@ function Identifications() {
             <div className="grid gc-4 gg-2 content-container">
               {Object.entries(userIdentificationAnswersFilteredByPlantData).map(
                 (plantGroup) => {
+                  // get plant data
                   let plantId = parseInt(plantGroup[0]);
                   let plantName = answeredIdentificationsPlantQuery.data.filter(
                     (plant) => plant.id === plantId,
                   )[0].french_name;
+
+                  // answered identifications
                   let answers = plantGroup[1] as IdentificationType[];
                   let imageId = answers[0].image_id;
                   let image = identificationsImageQuery.data.filter(
                     (i) => i.id === imageId,
                   )[0];
+
+                  // count bad and good answer
                   let badAnswer = answers.filter(
                     (i) => i.answer !== i.plant_id,
                   ).length;
@@ -243,7 +232,7 @@ function Identifications() {
 
                   return (
                     <>
-                      <SingleImage.Root image={image} imageFormat="CRS">
+                      <SingleImage.Root key={plantId} image={image} imageFormat="CRS">
                         {goodAnswer > 0 && (
                           <SingleImage.Up>
                             <span className="good-answers">{goodAnswer}</span>
@@ -266,6 +255,41 @@ function Identifications() {
         )}
     </div>
   );
+}
+
+function IdentificationHeader() {
+  // assignment timer
+  const [timer, setTimer] = useState({
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      let date = new Date();
+      setTimer({
+        hours: date.getHours() % 2 == 0 ? 1 : 0,
+        minutes: 59 - date.getMinutes(),
+        seconds: 59 - date.getSeconds(),
+      });
+    }, 1000);
+
+    return () => clearTimeout(interval);
+  }, []);
+  return (
+    <>
+    <Header.Root type="page" center>
+        <div className="center f-col">
+          <span>Prochaine assignation</span>
+          <Header.Title>
+            {numberWithZero(timer.hours)} : {numberWithZero(timer.minutes)} :{" "}
+            {numberWithZero(timer.seconds)}
+          </Header.Title>
+        </div>
+      </Header.Root>
+    </>
+  )
 }
 
 export default Identifications;
