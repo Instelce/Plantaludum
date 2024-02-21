@@ -24,6 +24,7 @@ import { UserPlayedDeckType } from "../../services/api/types/decks";
 import Header from "../../components/Molecules/Header/Header";
 import { ImageType, PlantImagesType } from "../../services/api/types/images";
 import { useAuth } from "../../context/AuthProvider";
+import classNames from "classnames";
 
 function DeckGame() {
   const navigate = useNavigate();
@@ -40,12 +41,18 @@ function DeckGame() {
   );
   // const [maxQuestions, setMaxQuestions] = useState(3)
 
+  // Game variables
   const [showResult, setShowResult] = useState(false);
   const [isRight, setIsRight] = useState<boolean | undefined>(undefined);
   const { formattedTime, seconds, start, reset } = useTimer({
     initialSeconds: 5 * 60,
   });
   const [userErrors, setUserErrors] = useState(0);
+  const [streak, setStreak] = useState({
+    current: 0,
+    last: 0,
+    text: ""
+  })
 
   const [isFisrtPlay, setIsFisrtPlay] = useState(false);
 
@@ -59,7 +66,7 @@ function DeckGame() {
   const [currentPlant, setCurrentPlant] = useState<PlantType | null>(null);
   const [currentImages, setCurrentImages] = useState<ImageType[] | null>(null);
 
-  const { isLoading: imagesLoading, setImagesArray: setImagesArray } =
+  const { isLoading: imagesLoading, setImagesArray } =
     useCacheImages();
 
   const deckContent = useRef(null);
@@ -221,12 +228,14 @@ function DeckGame() {
         setCurrentPlant(() => currentPlantData);
 
         // shuffle plants
-        setPlantsData((data) => shuffleArray(data as any[]));
+        if (deckLevel === 3) {
+          setPlantsData((data) => shuffleArray(data as any[]));
+        }
 
         // update progress
         setProgress((p) => p + 1);
         setShowResult(false);
-      }, 1000);
+      }, 1100);
 
       return () => {
         clearTimeout(changeData);
@@ -306,16 +315,41 @@ function DeckGame() {
     userPlayedDeckQuery.data?.level,
   ]);
 
-  // update score
+  // update score, stars
   useEffect(() => {
     if (isRight !== undefined) {
       if (isRight) {
         setScore((score) => score + scoreRightAnswer);
+        setStreak(streak => ({...streak, current: streak.current + 1}));
       } else {
         setUserErrors((errors) => errors + 1);
+        setStreak(streak => ({...streak, last: 0, current: 0}));
       }
 
-      // set stars
+      console.log("s", streak);
+
+      // streak
+      if (streak.current === 4) {
+        setStreak(streak => ({...streak, last: streak.current, text: "+ 50 points"}));
+        setScore((score) => score + 50);
+      } else if (streak.current === 9) {
+        setStreak(streak => ({...streak, last: streak.current, text: "+ 100 points"}));
+        setScore((score) => score + 100);
+      } else if (streak.current === 14) {
+        setStreak(streak => ({...streak, last: streak.current, text: "+ 500 points"}));
+        setScore((score) => score + 500);
+      } else if (streak.current === 19) {
+        setStreak(streak => ({...streak, last: streak.current, text: "+ 1000 points"}));
+        setScore((score) => score + 1000);
+      } else if (streak.current === 24) {
+        setStreak(streak => ({...streak, last: streak.current, text: "+ 2000 points"}));
+        setScore((score) => score + 2000);
+      }
+
+      console.log("e", streak, "\n");
+      console.log();
+
+      // set stars depending on progress and user errors
       let percent = (progress * 100) / maxQuestions;
       let progressStars;
       if (percent <= 33) {
@@ -348,6 +382,7 @@ function DeckGame() {
     setStars(0);
     setShowResult(false);
     setUserErrors(0);
+    setStreak({current: 0, last: 0, text: ""});
   };
 
   return (
@@ -358,7 +393,11 @@ function DeckGame() {
           <RotateCcw onClick={() => resetQuiz()} />
         </div>
         <div className="stats">
-          <Header.Title>{score}</Header.Title>
+          <div className="flex center">
+            {/* <Header.Title>{streak.last} {streak.current} {score}</Header.Title> */}
+            <Header.Title>{score}</Header.Title>
+            <span style={streak.current === streak.last ? {animation: "show 4s ease forwards"}: {opacity: 0, maxWidth: "0", maxHeight: "0"}} className={classNames("streak-text")}>{streak.text}</span>
+          </div>
           <div className="stars-container">
             <Stars count={stars} />
           </div>
@@ -380,7 +419,7 @@ function DeckGame() {
       {!imagesLoading && (
         <div className="game-content">
           {/*<p>{currentPlant?.french_name}</p>*/}
-          {currentImages && currentPlant && (
+          {currentImages && currentPlant && progress < maxQuestions && (
             <div className="game-grid" ref={deckContent}>
               {currentImages && (
                 <PlantImageSlider
@@ -390,7 +429,7 @@ function DeckGame() {
               )}
 
               <div>
-                {deckPlantsQuery.isSuccess ? (
+                {deckPlantsQuery.isSuccess && (
                   <>
                     {plantsData?.map((plant) => (
                       <ChoiceBlock
@@ -419,12 +458,14 @@ function DeckGame() {
                     ))}
                     <p>Double click sur la réponse de ton choix</p>
                   </>
-                ) : (
-                  <p>Fini !</p>
                 )}
               </div>
             </div>
           )}
+
+          {progress === maxQuestions && <>
+            <p>Fini !</p>
+          </>}
         </div>
       )}
 

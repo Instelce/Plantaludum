@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: create-node-storage-directories
+spec:
+  selector:
+    matchLabels:
+      name: create-node-storage-directories
+  template:
+    metadata:
+      labels:
+        name: create-node-storage-directories
+    spec:
+      containers:
+      - name: create-node-storage-directories
+        image: busybox
+        command: ["/bin/sh", "-c"]
+        args:
+        - |
+          if [ ! -d /var/lib/data/postgres_data ]; then
+              mkdir -p /var/lib/data/postgres_data;
+          fi;
+          chmod -R 777 /var/lib/data/postgres_data;
+          chown -R 999:999 /var/lib/data/postgres_data;
+
+          if [ ! -d /var/lib/data/static_assets_data ]; then
+              mkdir -p /var/lib/data/static_assets_data;
+          fi;
+          chmod -R 777 /var/lib/data/static_assets_data;
+          chown -R 999:999 /var/lib/data/static_assets_data;
+
+          echo "Finish !";
+        volumeMounts:
+        - name: host-mount
+          mountPath: /
+        securityContext:
+          privileged: true
+      volumes:
+      - name: host-mount
+        hostPath:
+          path: /
+          type: Directory

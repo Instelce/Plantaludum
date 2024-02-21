@@ -3,7 +3,7 @@ import useFormFilled from "../../hooks/useFormFilled.js";
 import Input from "../../components/Atoms/Input/Input";
 import Textarea from "../../components/Atoms/Textarea/Textarea";
 import Dropdown from "../../components/Molecules/Dropdown/Dropdown";
-import {FormEvent, useEffect, useState} from "react";
+import {FormEvent, useState} from "react";
 import Checkbox from "../../components/Atoms/Checkbox/Checkbox";
 import Option from "../../components/Atoms/Option/Option";
 import {Link, useLocation, useNavigate} from "react-router-dom";
@@ -31,8 +31,8 @@ function DeckCreate() {
   const [, setImageValue] = useState<string | null>(null);
 
   const {
-    isSuccess,
-    data: deckData,
+    // isSuccess,
+    // data: deckData,
     mutate: mutateCreateDeck,
   } = useMutation({
     mutationKey: [],
@@ -77,7 +77,7 @@ function DeckCreate() {
           onChange={handleFormChange}
         >
           <Input id="name" label="Nom" type="text" />
-          <Textarea id="description" label="Description" maxlength={500} />
+          <Textarea id="description" label="Description" maxlength={500} data-not-count/>
           <Dropdown inputId="difficulty" label="Difficulté" size="large">
             <Option>1</Option>
             <Option>2</Option>

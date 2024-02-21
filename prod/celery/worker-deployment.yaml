@@ -15,23 +15,74 @@ spec:
         pod: celery-worker
     spec:
       containers:
-      - name: celery-worker
-        image: instelce/django_dev_image:latest
-        command: ["bash", "-c", "celery -A src worker -l INFO"]
-        env:
-          - name: POSTGRES_USER
-            valueFrom:
-              configMapKeyRef:
-                name: app-variables
-                key: POSTGRES_USER
-          - name: POSTGRES_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: app-secrets
-                key: POSTGRES_PASSWORD
-          - name: REDIS_HOST
-            value: redis-service
-        resources:
-          limits:
-            memory: "200Mi"
-            cpu: "200m"
+        - name: celery-worker
+          image: instelce/django_dev_image:latest
+          command: ["bash", "-c", "celery -A src worker -l INFO"]
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: app-variables
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: POSTGRES_PASSWORD
+            - name: DJANGO_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: app-variables
+                  key: DJANGO_ENV
+            - name: SECRET_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: app-variables
+                  key: SECRET_KEY
+            - name: DEBUG
+              valueFrom:
+                configMapKeyRef:
+                  name: app-variables
+                  key: DEBUG
+            - name: DJANGO_ALLOWED_HOSTS
+              valueFrom:
+                configMapKeyRef:
+                  name: app-variables
+                  key: DJANGO_ALLOWED_HOSTS
+            - name: CORS_ALLOWED_ORIGINS
+              valueFrom:
+                configMapKeyRef:
+                  name: app-variables
+                  key: CORS_ALLOWED_ORIGINS
+            - name: DB_ENGINE
+              valueFrom:
+                configMapKeyRef:
+                  name: app-variables
+                  key: DB_ENGINE
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: app-variables
+                  key: DB_NAME
+            - name: DB_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: app-variables
+                  key: DB_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: DB_PASSWORD
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: app-variables
+                  key: DB_HOST 
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: app-variables
+                  key: DB_PORT
+            - name: REDIS_HOST
+              value: redis-service

@@ -23,7 +23,7 @@ function useObjectSearch<T>({
         // console.log(fieldData);
         return (
           fieldData.toLowerCase().startsWith(searchInput.toLowerCase()) ||
-          fieldData.toLowerCase().search(searchInput.toLowerCase()) > -1
+          fieldData.toLowerCase().includes(searchInput.toLowerCase())
         );
       });
     }

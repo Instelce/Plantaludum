@@ -1,12 +1,12 @@
 import { Link, LinkProps, Outlet, useLocation } from "react-router-dom";
-import { HelpCircle, LogOut, Settings, User } from "react-feather";
+import { HelpCircle, LogOut, Maximize2, Minimize2, Settings, User } from "react-feather";
 import Button from "../components/Atoms/Buttons/Button";
 import useLogout from "../hooks/auth/useLogout";
 import { useAuth } from "../context/AuthProvider";
 import useUser from "../hooks/auth/useUser";
 import Navbar from "../components/Organisms/Navbar/Navbar";
-import React from "react";
 import classNames from "classnames";
+import { useState } from "react";
 
 function ButtonsMenu() {
   const logout = useLogout();
@@ -18,8 +18,10 @@ function ButtonsMenu() {
 
   return (
     <div className="buttons-menu">
+      <ToggleFullscreenButton />
       <Button
         asChild
+        title="Aide"
         color={location.pathname === "/help" ? "gray" : "dark-gray"}
         size="medium"
         onlyIcon
@@ -34,6 +36,7 @@ function ButtonsMenu() {
           {" "}
           <Button
             asChild
+            title="Paramètres"
             color={location.pathname === "/settings" ? "gray" : "dark-gray"}
             size="medium"
             onlyIcon
@@ -44,6 +47,7 @@ function ButtonsMenu() {
           </Button>
           <Button
             asChild
+            title="Profil"
             color={
               location.pathname.includes("/profile") ? "gray" : "dark-gray"
             }
@@ -54,7 +58,7 @@ function ButtonsMenu() {
               <User />
             </Link>
           </Button>
-          <Button onlyIcon color="dark-gray" size="medium" onClick={logout}>
+          <Button onlyIcon title="Déconnexion" color="dark-gray" size="medium" onClick={logout}>
             <LogOut />
           </Button>
         </>
@@ -170,6 +174,21 @@ function LocationLink({ ...props }: LinkProps) {
       state={{ from: { pathname: location.pathname } }}
     />
   );
+}
+
+function ToggleFullscreenButton() {
+  const [icon, setIcon] = useState(<Maximize2 />);
+  return <Button onlyIcon title="Fullscreen" color="dark-gray" size="medium" onClick={() => {
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+      setIcon(<Maximize2 />);
+    } else {
+      document.documentElement.requestFullscreen();
+      setIcon(<Minimize2 />);
+    }
+  }}>
+    {icon}
+  </Button>;
 }
 
 export default Root;

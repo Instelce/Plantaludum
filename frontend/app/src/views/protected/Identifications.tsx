@@ -167,6 +167,7 @@ function Identifications() {
                       </div>
                       <Button
                         onlyIcon
+                        title="Supprimer l'identification"
                         color="danger"
                         className="delete"
                         onClick={() => {
@@ -193,10 +194,6 @@ function Identifications() {
             </div>
           )}
       </div>
-
-      {userIdentificationsQuery.isLoading && <div className="center-loader">
-        <Loader />
-      </div>}
 
       {userIdentificationAnswersData.length > 0 &&
         answeredIdentificationsPlantQuery.data &&

@@ -30,7 +30,7 @@ function PlantImageSelector({
     data: imagesData,
     refetch: fetchImages,
   } = useQuery<PaginationResponseType<ImageType>, Error>({
-    queryKey: ["selector-images"],
+    queryKey: ["selector-plants-images"],
     queryFn: () => flore.images.list({ plant__french_name: plantValue }),
     staleTime: Infinity,
     enabled: false,
@@ -67,6 +67,8 @@ function PlantImageSelector({
     }
   }, [plantImagesData]);
 
+  console.log(plantValue, "-", plantImages)
+
   return (
     <>
       <ErrorBoundary
@@ -84,14 +86,14 @@ function PlantImageSelector({
               setValidValue={setPlantIsValid}
               usageInfoText="Cherche le nom d’une plante, puis choisie l’image
                 de la plante qui te semble la mieux. Choisie la bien car c'est
-                elle qui servira d'image de couverture au decks."
+                elle qui servira d'image de couverture aux decks."
               hasResetButton
               data-not-count
             />
           </>
         )}
       </ErrorBoundary>
-      {!imagesLoading && (
+      {!imagesLoading ? (
         <div>
           {/*{plantImages !== null ? (*/}
           <Selector
@@ -99,7 +101,11 @@ function PlantImageSelector({
             choices={plantImages || []}
             choiceType="img"
             defaultValue={defaultValue}
-            resetChoice={() => setPlantImages([])}
+            resetChoice={() => {
+              setPlantImages([])
+              setImageValue(null)
+              setIsFirst(false)
+            }}
             setValue={(value) => {
               setImageValue(value);
               if (value !== null) {
@@ -107,10 +113,9 @@ function PlantImageSelector({
               }
             }}
           />
-          {/*) : (*/}
-          {/*  <p>Chargement des images</p>*/}
-          {/*)}*/}
         </div>
+      ) : (
+        <p>Chargement des images</p>
       )}
     </>
   );

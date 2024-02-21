@@ -26,12 +26,12 @@ function ManageDeckButton({ deck }: ManageDeckButtonProps) {
       </div>
 
       <div>
-        <Button asChild onlyIcon color="gray" bounce={false}>
+        <Button asChild onlyIcon title="Mettre à jour les plantes" color="gray" bounce={false}>
           <Link to={`/decks/${deck.id}/plants`}>
             <Flower />
           </Link>
         </Button>
-        <Button asChild onlyIcon color="gray" bounce={false}>
+        <Button asChild onlyIcon title="Mettre à jour" color="gray" bounce={false}>
           <Link to={`/decks/${deck.id}/update`}>
             <Edit />
           </Link>

@@ -38,7 +38,9 @@
   }
 
   header {
+    position: relative;
     padding: 1rem var(--page-horizontal-padding);
+
     .stats {
       position: absolute;
       left: 50%;
@@ -59,6 +61,14 @@
       }
     }
 
+    .streak-text {
+      position: absolute;
+      right: 0;
+      color: rgb(var(--color-primary-light));
+      display: inline-block;
+    }
+
+    // stars
     .stars-container {
       padding: 0.5rem 0.5rem;
       position: absolute;
@@ -72,5 +82,27 @@
     .row-stars {
       margin: 0;
     }
+  }
+}
+
+@keyframes show {
+  0% {
+    width: 100%;
+    opacity: 0;
+    transform: scale(0.8) translateX(100%);
+  }
+  33% {
+    opacity: 1;
+    transform: scale(1.4) translateX(100%);
+  }
+  66% {
+    transform: scale(1) translateX(100%);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(.2) translateX(100%);
+    max-width: 0;
+    max-height: 0;
+    overflow: hidden;
   }
 }

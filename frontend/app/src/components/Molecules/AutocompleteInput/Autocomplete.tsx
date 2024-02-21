@@ -74,14 +74,28 @@ function AutocompleteInput({
       // first get only fieldName key values
       let results = suggestions.map((el: any) => el[fieldName]);
       // then filter by search value
+      let fsearch = removeAccent(searchValue.toLowerCase());
       results = results.filter((value: string) => {
         let fvalue = value ? removeAccent(value.toLowerCase()) : "";
-        let fsearch = removeAccent(searchValue.toLowerCase());
         return (
           fvalue.startsWith(fsearch.charAt(1)) ||
           fvalue.indexOf(fsearch) != -1 ||
           fvalue.search(fsearch) > -1
         );
+      });
+      results = results.sort((a, b) => {
+        if (a && b) {
+          const aStartsWithSearch = a.toLowerCase().startsWith(fsearch.toLowerCase());
+          const bStartsWithSearch = b.toLowerCase().startsWith(fsearch.toLowerCase());
+
+          if (aStartsWithSearch && !bStartsWithSearch) {
+            return -1;
+          } else if (!aStartsWithSearch && bStartsWithSearch) {
+            return 1;
+          } else {
+            return 0;
+          }
+        }
       });
       // and get only 0 to maxSuggestions values
       results = results.slice(0, maxSuggestions);

@@ -79,13 +79,6 @@ spec:
                   key: DB_PORT
             - name: REDIS_HOST
               value: redis-service
-          resources:
-            limits:
-              cpu: "1"
-              memory: "512Mi"
-            requests:
-              cpu: "0.5"
-              memory: "256Mi"
 ---
 ###########################
 # Cluster IP Service

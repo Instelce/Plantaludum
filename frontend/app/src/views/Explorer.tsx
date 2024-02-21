@@ -1,7 +1,6 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import {useMemo, useRef, useState } from "react";
 import Input from "../components/Atoms/Input/Input";
 import DeckCard from "../components/Molecules/DeckCard/DeckCard";
-import Modal from "../components/Molecules/Modal/Modal";
 import Button from "../components/Atoms/Buttons/Button.jsx";
 import Dropdown from "../components/Molecules/Dropdown/Dropdown";
 import classNames from "classnames";
@@ -11,11 +10,8 @@ import { decks } from "../services/api";
 import Loader from "../components/Atoms/Loader/index.jsx";
 import { Link } from "react-router-dom";
 import { Edit, Search, Sliders, Zap } from "react-feather";
-import { useAuth } from "../context/AuthProvider";
 import { DeckType } from "../services/api/types/decks";
 import useObjectSearch from "../hooks/useObjectSearch";
-import { useInView } from "react-intersection-observer";
-import useDebounce from "../hooks/useDebounce";
 import useUser from "../hooks/auth/useUser";
 import Header from "../components/Molecules/Header/Header";
 import gsap from "gsap";
@@ -25,14 +21,12 @@ import { PaginationResponseType } from "../services/api/types/pagination";
 import InfiniteLoader from "../components/Molecules/InfiniteLoader/InfiniteLoader/InfiniteLoader";
 
 function Explorer() {
-  const { accessToken } = useAuth();
   const user = useUser();
   const [searchInput, setSearchInput] = useState("");
   const [showFilter, setShowFilter] = useState(false);
 
   // search and filters
   const panelRef = useRef<HTMLDivElement>(null);
-  const debouncedSearchValue = useDebounce(searchInput, 500);
   const [difficultyFilter, setDifficultyFilter] = useState(-1);
 
   // load decks data
@@ -41,7 +35,7 @@ function Explorer() {
     isSuccess,
     data: decksData,
     fetchNextPage,
-    isFetchingNextPage,
+    // isFetchingNextPage,
     hasNextPage,
   } = useInfiniteQuery<PaginationResponseType<DeckType>, Error>({
     queryKey: ["decks"],
@@ -55,11 +49,14 @@ function Explorer() {
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => {
       return lastPage.results.length === 6 &&
-        lastPage.count > lastPage.results.length
+        lastPage.count > lastPage.results.length &&
+        lastPage.next !== null
         ? allPages.length + 1
         : undefined;
     },
   });
+
+  console.log(hasNextPage, decksData);
 
   // filter by search input value
   const searchFilteredDecks = useObjectSearch<DeckType>({
@@ -129,6 +126,7 @@ function Explorer() {
             <Button
               onlyIcon
               color="gray"
+              title="Filtrer les decks"
               onClick={() => setShowFilter((prev) => !prev)}
             >
               <Sliders />
@@ -170,22 +168,22 @@ function Explorer() {
             {filteredDecks && (
               <>
                 {filteredDecks?.map((deck: DeckType) => (
-                  <DeckCard.Root key={deck.id}>
+                  <DeckCard.Root key={deck.id} followMouse={false}>
                     <DeckCard.Header deck={deck} />
                     <DeckCard.Buttons>
-                      <Button asChild label="Découvrir">
+                      <Button asChild title="Découvrir" label="Découvrir">
                         <Link to={`/decks/${deck.id}`}>
                           {user?.id === deck.user.id ? "Détail" : "Découvrir"}
                         </Link>
                       </Button>
                       {user?.id === deck.user.id && (
-                        <Button asChild onlyIcon color="yellow">
+                        <Button asChild onlyIcon title="Mise à jour" color="yellow">
                           <Link to={`/decks/${deck.id}/update`}>
                             <Edit />
                           </Link>
                         </Button>
                       )}
-                      <Button asChild color="yellow" onlyIcon>
+                      <Button asChild title="Jouer au deck" color="yellow" onlyIcon>
                         <Link to={`/decks/${deck.id}/game/1`}>
                           <Zap />
                         </Link>
@@ -207,26 +205,29 @@ function Explorer() {
             <div className="flex center pt-2 pb-2">
               <p className="t-center">
                 Plus aucun deck à charger ! <br />
-                Si tu pense qu'il manque un deck,{" "}
+                Si tu pense qu&apos;il manque un deck,{" "}
                 <Link to="/decks/create" className="link">
                   créer en un
                 </Link>
                 .
               </p>
             </div>
-          ) : (
-            <div className="flex center pt-2 pb-2">
-              <p className="t-center">
-                Aucun decks ayant le nom : {searchInput}
-              </p>
-            </div>
-          )}
+          ) : <>
+            {filteredDecks?.length === 0 && (
+                <div className="flex center pt-2 pb-2">
+                  <p className="t-center">
+                    Aucun decks ayant le nom : {searchInput}
+                  </p>
+                </div>
+              )
+            }
+          </>}
         </>
       )}
 
       {isLoading && (
         <div className="center-loader">
-          <Loader />
+          <Loader/>
         </div>
       )}
     </>

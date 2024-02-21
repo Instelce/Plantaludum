@@ -14,6 +14,7 @@ import useUserDecks from "../../hooks/api/useUserDecks";
 import Loader from "../../components/Atoms/Loader";
 import SectionLoader
   from "../../components/Molecules/SectionLoader/SectionLoader";
+import PlantCard from "../../components/Molecules/PlantCard/PlantCard";
 
 function MainMenu() {
   const user = useUser();
@@ -25,7 +26,7 @@ function MainMenu() {
           Mon <span className="highlight">jardin</span>
         </Header.Title>
         <Header.Right>
-          <Link to={`/profile/${user?.id}`} className="user-avatar">
+          <Link to={`/profile/${user?.id}`} title="Profil" className="user-avatar">
             {user?.username[0].toUpperCase()}
           </Link>
         </Header.Right>
@@ -158,13 +159,15 @@ function PlayedDeckSection() {
                   ></span>
                 </DeckCard.Header>
                 <DeckCard.Buttons>
-                  <Button asChild>
-                    <Link
-                      to={`/decks/${playedDeck.deck.id}/game/${playedDeck.level}`}
-                    >
-                      Niveau {playedDeck.level}
-                    </Link>
-                  </Button>
+                  {Array(playedDeck.level).fill(0).map((_, index) => (
+                    <Button asChild fill key={index}>
+                      <Link
+                        to={`/decks/${playedDeck.deck.id}/game/${index + 1}`}
+                      >
+                        {index + 1}
+                      </Link>
+                    </Button>
+                  ))}
                 </DeckCard.Buttons>
               </DeckCard.Root>
             ))}

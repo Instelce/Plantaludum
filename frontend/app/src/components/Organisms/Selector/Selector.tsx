@@ -28,12 +28,12 @@ function Selector({
   const [confirmChoice, setConfirmChoice] = useState(false);
 
   useEffect(() => {
-    // console.log(choices);
     if (!confirmChoice) {
+      console.log("Reset")
       setValue?.(null);
       setCurrentChoice(() => null);
     }
-  }, [choices, confirmChoice, setValue]);
+  }, [confirmChoice]);
 
   useEffect(() => {
     if (defaultValue) {
@@ -41,6 +41,8 @@ function Selector({
       setConfirmChoice(true);
     }
   }, []);
+
+  console.log("Confirm choice", confirmChoice, currentChoice)
 
   const handleConfirmButtonClick = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
@@ -132,6 +134,7 @@ function Selector({
               type="button"
               disabled={!currentChoice}
               onClick={() => {
+                setCurrentChoice(null)
                 setConfirmChoice(false);
                 resetChoice();
               }}

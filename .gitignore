@@ -1,3 +1,7 @@
 **/app_secrets.yaml
+prod/app_variables.yaml
 **/.idea
 **/.vscode
+.kube
+.tls
+plantaludum.code-workspace

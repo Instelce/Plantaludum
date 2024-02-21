@@ -1,7 +1,5 @@
 #!/bin/sh
 
-sudo su
-
 if [ ! -d /var/lib/data/postgres_data ]; then
     mkdir -p /var/lib/data/postgres_data;
 fi;
@@ -13,3 +11,5 @@ if [ ! -d /var/lib/data/static_assets_data ]; then
 fi;
 chmod -R 777 /var/lib/data/static_assets_data;
 chown -R 999:999 /var/lib/data/static_assets_data;
+
+echo "Finish"

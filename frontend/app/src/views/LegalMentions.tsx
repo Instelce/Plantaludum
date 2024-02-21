@@ -8,7 +8,8 @@ function LegalMentions() {
   useEffect(() => {
     // @ts-ignore
     import("/legal-mentions.md").then(res => {
-      fetch(res.default)
+      const url = res.default as unknown as string;
+      fetch(url)
         .then(response => response.text())
         .then(md => setLegalMentions(md))
     });

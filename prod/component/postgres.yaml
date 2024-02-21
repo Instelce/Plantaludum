@@ -78,13 +78,6 @@ spec:
                 configMapKeyRef:
                   name: app-variables
                   key: POSTGRES_DB
-          resources:
-            limits:
-              cpu: "1"
-              memory: "1Gi"
-            requests:
-              cpu: "100m"
-              memory: "256Mi"
 ---
 ###########################
 # Cluster IP Service

@@ -10,11 +10,11 @@ data:
   # for backend
   DJANGO_ENV: production
   DEBUG: "0"
-  SECRET_KEY: fi*#%n=gs5$gzl+)si(p10cy^npmlvnxna^!y9^2qeeyt0bt%*
-  DJANGO_ALLOWED_HOSTS: "192.168.59.111 [::1]"
-  CORS_ALLOWED_ORIGINS: "http://192.168.59.111:3000 http://127.0.0.1:3000 http://localhost:3000"
-  DJANGO_ADMIN_USER: Instelce
-  DJANGO_ADMIN_EMAIL: "instelce@protonmail.com"
+  SECRET_KEY: $gu)bv_*0uz7k*%fb)86xa%)&c^auabqkmbz6l)!zf#tl@mkh+
+  DJANGO_ALLOWED_HOSTS: "plantaludum.org [::1]"
+  CORS_ALLOWED_ORIGINS: "https://plantaludum.org http://127.0.0.1:3000 http://localhost:3000"
+  DJANGO_ADMIN_USER: celestin
+  DJANGO_ADMIN_EMAIL: "celestin.besson@proton.me"
 
   # for db
   DATABASE: postgres

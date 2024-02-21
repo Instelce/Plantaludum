@@ -14,13 +14,17 @@ celestin.besson@proton.me
 
 ## Hébergeur du site
 
-Nom de l'hébergeur
+Hébergeur : Digital Ocean
 
-Adresse de l'hébergeur
+Société : Digital Ocean
 
-Numéro de téléphone de l'hébergeur
+Adresse web : [https://www.digitalocean.com/](https://www.digitalocean.com/)
 
-Adresse e-mail de l'hébergeur
+Adresse postale : 101 Avenue of the Americas, New York 10013 United States of America
+
+Téléphone : +1.6463978051
+
+Adresse électronique (E-Mail) : contact@digitalocean.com
 
 ## Cookies
 

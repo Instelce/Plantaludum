@@ -9,6 +9,7 @@ import Flower from "../../Atoms/Icons";
 import { DeckType } from "../../../services/api/types/decks";
 import { getAnotherFormat } from "../../../utils/helpers";
 import {AsyncImage} from "../../Atoms/Image/Image";
+import classNames from "classnames";
 
 type DeckCardProps = {
   followMouse?: boolean;
@@ -18,7 +19,7 @@ function Root({ followMouse = true, children, ...props }: DeckCardProps) {
   const cardRef = useRef<HTMLDivElement | null>(null);
 
   const handleMouseLeave = () => {
-    if (cardRef.current) {
+    if (cardRef.current && followMouse) {
       // reset card position
       cardRef.current.style.transform = `translate(0, 0)`;
     }
@@ -27,7 +28,8 @@ function Root({ followMouse = true, children, ...props }: DeckCardProps) {
   // mouse follow
   useEffect(() => {
     if (followMouse) {
-      const cardRect = cardRef.current?.getBoundingClientRect();
+      const currentCardRef = cardRef.current;
+      const cardRect = currentCardRef?.getBoundingClientRect();
       let x: number, y: number;
       let currentScrollTop: number;
       const container = document.querySelector(".container") as HTMLDivElement;
@@ -38,8 +40,8 @@ function Root({ followMouse = true, children, ...props }: DeckCardProps) {
           x = e.pageX - cardRect.left - cardRect.width / 2;
           y = e.pageY - cardRect.top - cardRect.height / 2 + currentScrollTop;
 
-          if (cardRef.current) {
-            cardRef.current.style.transform = `translate(${x * 0.02}px, ${
+          if (currentCardRef) {
+            currentCardRef.style.transform = `translate(${x * 0.02}px, ${
               y * 0.03
             }px) scale(1.02)`;
           }
@@ -48,22 +50,23 @@ function Root({ followMouse = true, children, ...props }: DeckCardProps) {
 
       // update the current scroll top
       const handleScroll = () => {
+        // console.log("", container.scrollTop)
         currentScrollTop = container.scrollTop;
       };
 
-      cardRef.current?.addEventListener("mousemove", handleMoveSlide);
       container.addEventListener("scroll", handleScroll);
+      currentCardRef?.addEventListener("mousemove", handleMoveSlide);
 
       return () => {
-        cardRef.current?.removeEventListener("mousemove", handleMoveSlide);
         container.removeEventListener("scroll", handleScroll);
+        currentCardRef?.removeEventListener("mousemove", handleMoveSlide);
       };
     }
   }, []);
 
   return (
     <div
-      className="deck-card"
+      className={classNames("deck-card", {grow: !followMouse})}
       ref={cardRef}
       onMouseLeave={handleMouseLeave}
       onContextMenu={(e) => e.preventDefault()}

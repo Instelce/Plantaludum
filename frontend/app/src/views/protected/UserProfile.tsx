@@ -296,7 +296,7 @@ function UserProfile() {
           <>
             {userDecksQuery.data?.map((deck) => (
               <>
-                <DeckCard.Root key={deck.id}>
+                <DeckCard.Root key={deck.id} followMouse={false}>
                   <DeckCard.Header deck={deck} />
                   <DeckCard.Buttons>
                     <Button asChild label="Découvrir">
