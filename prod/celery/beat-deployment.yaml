@@ -29,6 +29,11 @@ spec:
                 secretKeyRef:
                   name: app-secrets
                   key: POSTGRES_PASSWORD
+            - name: FLORE_API_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: app-variables
+                  key: FLORE_API_URL
             - name: DJANGO_ENV
               valueFrom:
                 configMapKeyRef:

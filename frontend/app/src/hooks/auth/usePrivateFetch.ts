@@ -29,9 +29,9 @@ export default function usePrivateFetch(): AxiosInstance {
             error?.response?.status === 401) &&
           !prevRequest?.sent
         ) {
+          console.log("New access token");
           prevRequest.sent = true;
-          const { csrfToken: newCSRFToken, accessToken: newAccessToken } =
-            await refresh();
+          const { csrfToken: newCSRFToken, accessToken: newAccessToken } = await refresh();
           setAccessToken(newAccessToken);
           prevRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
           prevRequest.headers["X-CSRFToken"] = newCSRFToken;
