@@ -4,4 +4,5 @@ prod/app_variables.yaml
 **/.vscode
 .kube
 .tls
+.backups
 plantaludum.code-workspace
