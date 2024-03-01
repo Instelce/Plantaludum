@@ -338,7 +338,6 @@ kind: Service
 metadata:
   annotations:
     service.beta.kubernetes.io/do-loadbalancer-enable-proxy-protocol: "true"
-    service.beta.kubernetes.io/do-loadbalancer-hostname: "plantaludum.org"
   labels:
     app.kubernetes.io/component: controller
     app.kubernetes.io/instance: ingress-nginx
@@ -484,10 +483,10 @@ spec:
           periodSeconds: 10
           successThreshold: 1
           timeoutSeconds: 1
-        resources:
-          requests:
-            cpu: 100m
-            memory: 90Mi
+        # resources:
+        #   requests:
+        #     cpu: 100m
+        #     memory: 90Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:

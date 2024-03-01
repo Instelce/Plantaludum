@@ -1,6 +1,10 @@
 import "./BoxList.scss";
 import { ColorType, SizeProp } from "../../../types/helpers";
-import React, { LiHTMLAttributes, PropsWithChildren } from "react";
+import React, {
+  HTMLAttributes,
+  LiHTMLAttributes,
+  PropsWithChildren
+} from "react";
 import classNames from "classnames";
 
 type BoxListGroupProps = {
@@ -8,7 +12,7 @@ type BoxListGroupProps = {
   rounded?: boolean;
   background?: ColorType;
   hasBorder?: boolean;
-} & PropsWithChildren;
+} & PropsWithChildren & HTMLAttributes<HTMLUListElement>;
 
 function Group({
   size,
@@ -16,15 +20,18 @@ function Group({
   background = "dark-gray",
   hasBorder = true,
   children,
+  ...props
 }: BoxListGroupProps) {
   return (
     <ul
+      {...props}
       className={classNames(
         "box-list-group",
         size,
         { border: hasBorder },
         { rounded: rounded },
         background,
+        props.className,
       )}
     >
       {children}

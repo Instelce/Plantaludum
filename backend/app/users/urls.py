@@ -5,6 +5,7 @@ from .views import *
 urlpatterns = [
     path('register', RegisterView.as_view(), name='register'),
     path('user', CurrentUserDetailView.as_view()),
+    path('user/rank', GetCurrentUserRankingView.as_view()),
     path('users', UserListView.as_view()),
     path('users/<int:pk>', UserRetrieveUpdateDestroyView.as_view()),
 

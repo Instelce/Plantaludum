@@ -5,19 +5,22 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
     cert-manager.io/cluster-issuer: letsencrypt-prod
-    # nginx.ingress.kubernetes.io/proxy-set-header: Authorization $http_authorization
+    nginx.ingress.kubernetes.io/proxy-set-header: Authorization Bearer $http_authorization
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/auth-realm: Authentication Required
+    nginx.org/proxy-pass-headers: "Authorization"
     nginx.ingress.kubernetes.io/configuration-snippet: |
-      proxy_set_header Authorization $http_authorization;
-      proxy_pass_header Authorization;
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    # acme.cert-manager.io/http01-edit-in-place: "true"
-    # kubernetes.io/ingress.allow-http: "true"
-    # kubernetes.io/tls-acme: "true"
+      auth_request_set $token $upstream_http_x_auth_request_access_token;
+      add_header 'Authorization' $token;
+    # nginx.ingress.kubernetes.io/configuration-snippet: |
+    #   proxy_set_header Authorization $http_authorization;
+    #   proxy_pass_header Authorization;
 spec:
   # ingressClassName: nginx
   tls:
     - hosts:
-      - plantaludum.org
+        - plantaludum.org
       secretName: plantaludum-tls
   rules:
     - host: plantaludum.org

@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: celery-worker
+  name: celery-worker-deployment
   labels:
     deployment: celery-worker
 spec:

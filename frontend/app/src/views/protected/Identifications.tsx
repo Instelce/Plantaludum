@@ -1,21 +1,21 @@
-import { useEffect, useMemo, useState } from "react";
+import {useEffect, useMemo, useState} from "react";
 import Header from "../../components/Molecules/Header/Header";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import useUser from "../../hooks/auth/useUser";
 import identifications from "../../services/api/plantaludum/identifications";
 import usePrivateFetch from "../../hooks/auth/usePrivateFetch";
-import { flore } from "../../services/api/flore";
+import {flore} from "../../services/api/flore";
 import {
   deleteDublicates,
   getAnotherFormat,
   numberWithZero,
 } from "../../utils/helpers";
-import SingleImage from "../../components/Molecules/SingleImage/SingleImage/SingleImage";
-import { useNavigate } from "react-router-dom";
+import SingleImage
+  from "../../components/Molecules/SingleImage/SingleImage/SingleImage";
+import {Link, useNavigate} from "react-router-dom";
 import Button from "../../components/Atoms/Buttons/Button";
-import { Trash } from "react-feather";
-import { IdentificationType } from "../../services/api/types/identifications";
-import Loader from "../../components/Atoms/Loader";
+import {Trash} from "react-feather";
+import {IdentificationType} from "../../services/api/types/identifications";
 import SectionLoader
   from "../../components/Molecules/SectionLoader/SectionLoader";
 
@@ -24,6 +24,8 @@ function Identifications() {
   const privateFetch = usePrivateFetch();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+
+  const userPlayedDecks: [] | undefined = queryClient.getQueryData(["user-played-decks"])
 
   const userIdentificationsQuery = useQuery({
     queryKey: ["user-identifications"],
@@ -55,12 +57,12 @@ function Identifications() {
     enabled: userIdentificationsQuery.data != null,
   });
 
-  const { mutate: mutateDeleteIdentification } = useMutation({
+  const {mutate: mutateDeleteIdentification} = useMutation({
     mutationKey: ["delete-identification"],
     mutationFn: (identificationId: number) =>
       identifications.delete(privateFetch, identificationId),
     onMutate: async (identificationId: number) => {
-      await queryClient.cancelQueries({ queryKey: ["user-identifications"] });
+      await queryClient.cancelQueries({queryKey: ["user-identifications"]});
       const previousIdentifications = queryClient.getQueryData([
         "user-identifications",
       ]) as IdentificationType[];
@@ -83,7 +85,7 @@ function Identifications() {
       );
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["user-identifications"] });
+      queryClient.invalidateQueries({queryKey: ["user-identifications"]});
     },
   });
 
@@ -124,73 +126,80 @@ function Identifications() {
 
   return (
     <div className="identifications-page">
-      <IdentificationHeader />
+      <IdentificationHeader/>
 
       <Header.Root type="sub-section">
         <Header.Title>A identifier</Header.Title>
       </Header.Root>
 
-      <SectionLoader isLoading={userIdentificationsQuery.isLoading} />
+      <SectionLoader isLoading={userIdentificationsQuery.isLoading}/>
 
       <div className="grid gc-4 gg-2 content-container">
         {userIdentificationsQuery.isSuccess && identificationsImageQuery.data && (
-            <>
-              {userIdentificationsData.map((identification, index) => {
-                let image = identificationsImageQuery.data.filter(
-                  (i) => i.id === identification.image_id,
-                )[0];
-                return (
-                  <SingleImage.Root
-                    key={identification.id}
-                    onClick={() => {
-                      navigate(
-                        `/identifications/${userIdentificationsData[index].id}`,
-                        {
-                          state: {
-                            data: {
-                              identification: userIdentificationsData[index],
-                              image: image,
-                            },
+          <>
+            {userIdentificationsData.map((identification, index) => {
+              let image = identificationsImageQuery.data.filter(
+                (i) => i.id === identification.image_id,
+              )[0];
+              return (
+                <SingleImage.Root
+                  key={identification.id}
+                  onClick={() => {
+                    navigate(
+                      `/identifications/${userIdentificationsData[index].id}`,
+                      {
+                        state: {
+                          data: {
+                            identification: userIdentificationsData[index],
+                            image: image,
                           },
                         },
-                      );
-                    }}
-                    image={{
-                      ...image,
-                      url: getAnotherFormat(image.url, "CRS"),
-                    }}
-                    isClickable
-                  >
-                    <SingleImage.Down>
-                      <div className="identification-index">
-                        <h4 className="h4">{index + 1}</h4>
-                      </div>
-                      <Button
-                        onlyIcon
-                        title="Supprimer l'identification"
-                        color="danger"
-                        className="delete"
-                        onClick={() => {
-                          mutateDeleteIdentification(identification.id);
-                        }}
-                      >
-                        <Trash />
-                      </Button>
-                    </SingleImage.Down>
-                  </SingleImage.Root>
-                );
-              })}
-            </>
-          )}
+                      },
+                    );
+                  }}
+                  image={{
+                    ...image,
+                    url: getAnotherFormat(image.url, "CRS"),
+                  }}
+                  isClickable
+                >
+                  <SingleImage.Down>
+                    <div className="identification-index">
+                      <h4 className="h4">{index + 1}</h4>
+                    </div>
+                    <Button
+                      onlyIcon
+                      title="Supprimer l'identification"
+                      color="danger"
+                      className="delete"
+                      onClick={() => {
+                        mutateDeleteIdentification(identification.id);
+                      }}
+                    >
+                      <Trash/>
+                    </Button>
+                  </SingleImage.Down>
+                </SingleImage.Root>
+              );
+            })}
+          </>
+        )}
 
         {/* No data */}
         {userIdentificationsData.length === 0 &&
           userIdentificationsQuery.isSuccess && (
             <div className="center fill-horizontal">
-              <p>
-                Aucune plante à assigner, veuillez attendre la prochaine
-                assignation.
-              </p>
+              {/* User hasn't play a deck */}
+              {userPlayedDecks && userPlayedDecks.length === 0 ?
+                <p><Link to="/explorer" className="link">Jouer à un
+                  deck</Link> pour pouvoir avoir des identifications.
+                </p> :
+                <p>
+                  Aucune plante à assigner, veuillez attendre la prochaine
+                  assignation.
+                </p>}
+
+
             </div>
           )}
       </div>
@@ -229,7 +238,8 @@ function Identifications() {
 
                   return (
                     <>
-                      <SingleImage.Root key={plantId} image={image} imageFormat="CRS">
+                      <SingleImage.Root key={plantId} image={image}
+                                        imageFormat="CRS">
                         {goodAnswer > 0 && (
                           <SingleImage.Up>
                             <span className="good-answers">{goodAnswer}</span>
@@ -276,7 +286,7 @@ function IdentificationHeader() {
   }, []);
   return (
     <>
-    <Header.Root type="page" center>
+      <Header.Root type="page" center>
         <div className="center f-col">
           <span>Prochaine assignation</span>
           <Header.Title>

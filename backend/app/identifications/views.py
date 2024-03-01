@@ -5,10 +5,12 @@ from rest_framework.generics import ListAPIView, DestroyAPIView, CreateAPIView, 
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+import datetime
 
 from decks.permissions import IsOwner
 from .serializers import *
 from .tasks import assignment_task
+
 
 @api_view(['GET'])
 def schedule_task(request):
@@ -19,14 +21,19 @@ def schedule_task(request):
         # period=IntervalSchedule.SECONDS,
     )
 
-
     periodic = PeriodicTask.objects.get_or_create(
         interval=interval,
         name='assignment-schedule',
-        task='identifications.tasks.assignment_task'
+        task='identifications.tasks.assignment_task',
     )
 
-    return Response({"message": "Task scheduled"})
+    return Response({"message": "Identifications creation task scheduled"})
+
+
+@api_view(['GET'])
+def run_identification_task(request):
+    assignment_task()
+    return Response({"message": "Identifications creation task run"})
 
 
 class UserIdentificationListView(APIView):

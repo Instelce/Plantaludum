@@ -6,8 +6,8 @@ Build and push backend and frontend images. (check `.env.prod` in frontend)
 
 ```shell
 sudo docker build -t instelce/django_dev_image:latest ./backend/
-sudo docker build -t instelce/react_dev_image:latest ./frontend/ --build-arg VITE_MODE=prod
 sudo docker push instelce/django_dev_image:latest
+sudo docker build -t instelce/react_dev_image:latest ./frontend/ --build-arg VITE_MODE=prod
 sudo docker push instelce/react_dev_image:latest
 ```
 
@@ -39,17 +39,22 @@ Launch `create_node_static_storage_directories.sh`.
 ```shell
 kubectl apply -f prod/daemonset_create_node_storage-directories.yaml
 
-kubectl apply -f prod/component_postgres.yaml
+kubectl apply -f prod/component/postgres.yaml
 ... wait
+
+# if there is no backup
 kubectl apply -f prod/job_django.yaml
+# else
+./prod/backup/restore.sh
+
 ... wait
 kubectl apply -f prod/redis/deployment.yaml
 ... wait
 kubectl apply -f prod/redis/service.yaml
 
-kubectl apply -f prod/component_static_assets.yaml
-kubectl apply -f prod/component_django.yaml
-kubectl apply -f prod/component_react.yaml
+kubectl apply -f prod/component/static_assets.yaml
+kubectl apply -f prod/component/django.yaml
+kubectl apply -f prod/component/react.yaml
 
 kubectl apply -f prod/celery/worker-deployment.yaml
 kubectl apply -f prod/celery/beat-deployment.yaml
@@ -71,7 +76,7 @@ kubectl get pods -n cert-manager
 
 ```shell
 kubectl apply -f prod/clusterissuer.yaml
-kubectl apply -f prod/ingress_service.yaml
+kubectl apply -f prod/ingress/service.yaml
 ```
 
 Check `Ready` state
@@ -84,4 +89,13 @@ Backupd the certificate (optional).
 
 ```shell
 kubectl get -n plantaludum -o yaml secret plantaludum-tls > prod-plantaludum.org-cert.yaml
+```
+
+Add this line to `ingress-nginx-controller` :
+
+```yaml
+annotations:
+    ...
+    service.beta.kubernetes.io/do-loadbalancer-hostname: "plantaludum.org"
+    ...
 ```

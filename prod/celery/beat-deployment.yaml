@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: celery-beat
+  name: celery-beat-deployment
   labels:
     deployment: celery-beat
 spec:

@@ -63,7 +63,7 @@ function Home() {
           <p>
             Le projet est{" "}
             <a
-              href="https://github.com/Plantaludum/Plantaludum"
+              href="https://github.com/Instelce/Plantaludum"
               className="link"
             >
               open source

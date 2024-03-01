@@ -19,7 +19,7 @@ import { AxiosError } from "axios";
 
 function Settings() {
   const [settings, setSettings] = useState<SettingsType>({
-    showRankingTab: false,
+    showRankingTab: true,
     switchingGardenSection: false,
     buttonsSound: false,
   });
@@ -28,7 +28,7 @@ function Settings() {
   useEffect(() => {
     // set default settings values if they don't exists
     if (localStorage.getItem("settings.showRankingTab") === null) {
-      localStorage.setItem("settings.showRankingTab", "false");
+      localStorage.setItem("settings.showRankingTab", "true");
     }
     if (localStorage.getItem("settings.switchingGardenSection") === null) {
       localStorage.setItem("settings.switchingGardenSection", "false");

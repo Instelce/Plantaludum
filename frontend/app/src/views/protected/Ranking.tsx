@@ -1,6 +1,6 @@
 import React from "react";
 import Header from "../../components/Molecules/Header/Header";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import {useInfiniteQuery, useQuery} from "@tanstack/react-query";
 import { users } from "../../services/api/plantaludum/users";
 import { PaginationResponseType } from "../../services/api/types/pagination";
 import { UserType } from "../../services/api/types/users";
@@ -21,11 +21,18 @@ function Ranking() {
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => {
       return lastPage.results.length === 10 &&
-        lastPage.count > lastPage.results.length
+        lastPage.count > lastPage.results.length &&
+        lastPage.next !== null
         ? allPages.length + 1
         : undefined;
     },
   });
+
+  const userRank = useQuery({
+    queryKey: ["current-user", currentUser?.id],
+    queryFn: () => users.rank(privateFetch),
+    enabled: currentUser != null
+  })
 
   return (
     <div>
@@ -35,9 +42,20 @@ function Ranking() {
 
       {usersQuery.isSuccess && (
         <div className="content-container">
+          {/* User rank */}
+          {currentUser && userRank.isSuccess && userRank.data.ranking > 1 && <>
+            <BoxList.Group size="large" hasBorder className="mb-2">
+              <BoxList.Item className="sb center">
+                <UserItem index={userRank.data.ranking} user={currentUser} />
+              </BoxList.Item>
+            </BoxList.Group>
+          </>}
+
+          {/* Users ranking */}
           <BoxList.Group size="large" hasBorder>
             {usersQuery.data.pages.map((page, pageIndex) =>
               page.results.map((user, userIndex) => {
+                let index = userIndex + (10 * pageIndex)
                 if (pageIndex === 0 && userIndex === 0) {
                   return (
                     <BoxList.Item
@@ -46,20 +64,20 @@ function Ranking() {
                       active
                       color="yellow"
                     >
-                      <UserItem index={userIndex} user={user} />
+                      <UserItem index={index} user={user} />
                     </BoxList.Item>
                   );
                 }
                 if (user.id === currentUser?.id) {
                   return (
                     <BoxList.Item key={user.id} className="sb center" active>
-                      <UserItem index={userIndex} user={user} />
+                      <UserItem index={index} user={user} />
                     </BoxList.Item>
                   );
                 }
                 return (
                   <BoxList.Item key={user.id} className="sb center">
-                    <UserItem index={userIndex} user={user} />
+                    <UserItem index={index} user={user} />
                   </BoxList.Item>
                 );
               }),

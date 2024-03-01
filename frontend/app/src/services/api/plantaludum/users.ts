@@ -39,6 +39,7 @@ export const users = {
       .get(`/api/user-decks/${userId}?${params}`)
       .then((r) => r.data as DeckType[]);
   },
+  rank: (privateFetch: AxiosInstance) => privateFetch.get('/api/auth/user/rank').then(r => r.data),
   playedDecks: {
     list: (userId: number) =>
       api.get(`/api/users/${userId}/played_decks`).then((r) => {

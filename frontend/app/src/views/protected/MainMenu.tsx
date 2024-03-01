@@ -15,6 +15,7 @@ import Loader from "../../components/Atoms/Loader";
 import SectionLoader
   from "../../components/Molecules/SectionLoader/SectionLoader";
 import PlantCard from "../../components/Molecules/PlantCard/PlantCard";
+import {pluralize} from "../../utils/helpers";
 
 function MainMenu() {
   const user = useUser();
@@ -173,8 +174,7 @@ function PlayedDeckSection() {
             ))}
             {playedDecksQuery.data.length === 0 && (
               <p>
-                Tu n&apos;as pas encore joué à un deck. Découvre la diversité
-                florale{" "}
+                Tu n&apos;as pas encore joué à un deck. Découvre les decks{" "}
                 <Link to="/explorer" className="link">
                   ici
                 </Link>

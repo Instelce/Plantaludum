@@ -15,6 +15,7 @@ import usePrivateFetch from "../../hooks/auth/usePrivateFetch";
 import { useNotification } from "../../context/NotificationsProvider";
 import BoxList from "../../components/Molecules/BoxList/BoxList";
 import {useAuth} from "../../context/AuthProvider";
+import {pluralize} from "../../utils/helpers";
 
 function UserProfile() {
   const userId = parseInt(useParams().userId as string);
@@ -192,6 +193,7 @@ function UserProfile() {
         <>
           {currentUserProfile && (
             <>
+              <p className="page-padding mb-1 mt-1">Ici tu peux voir tes données et modifier ton compte.</p>
               <Tabs.Root defaultValue="donnees">
                 <div className="fill-horizontal sep-bottom page-padding">
                   <Tabs.List>
@@ -204,7 +206,7 @@ function UserProfile() {
                   <div className="content-container">
                     <form onSubmit={submitUpdateForm}>
                       <Input
-                        label="Nom"
+                        label="Pseudo"
                         id="username"
                         defaultValue={userData.username}
                       />
@@ -287,37 +289,39 @@ function UserProfile() {
       )}
 
       {/* User decks section */}
-      <Header.Root type="section">
-        <h2>Decks</h2>
-      </Header.Root>
-
-      <div className="card-grid">
-        {userDecksQuery.isSuccess && (
+        {userDecksQuery.isSuccess && userDecksQuery.data.length > 0 && (
           <>
-            {userDecksQuery.data?.map((deck) => (
-              <>
-                <DeckCard.Root key={deck.id} followMouse={false}>
-                  <DeckCard.Header deck={deck} />
-                  <DeckCard.Buttons>
-                    <Button asChild label="Découvrir">
-                      <Link to={`/decks/${deck.id}`}>
-                        {currentUser?.id === deck.user.id
-                          ? "Détail"
-                          : "Découvrir"}
-                      </Link>
-                    </Button>
-                    <Button asChild onlyIcon color="yellow">
-                      <Link to={`/decks/${deck.id}/game/1`}>
-                        <Zap />
-                      </Link>
-                    </Button>
-                  </DeckCard.Buttons>
-                </DeckCard.Root>
-              </>
-            ))}
+            <Header.Root type="section">
+              <h2>Deck{pluralize(userDecksQuery.data)}</h2>
+            </Header.Root>
+
+            <div className="card-grid">
+                <>
+                  {userDecksQuery.data?.map((deck) => (
+                    <>
+                      <DeckCard.Root key={deck.id} followMouse={false}>
+                        <DeckCard.Header deck={deck} />
+                        <DeckCard.Buttons>
+                          <Button asChild label="Découvrir">
+                            <Link to={`/decks/${deck.id}`}>
+                              {currentUser?.id === deck.user.id
+                                ? "Détail"
+                                : "Découvrir"}
+                            </Link>
+                          </Button>
+                          <Button asChild onlyIcon color="yellow">
+                            <Link to={`/decks/${deck.id}/game/1`}>
+                              <Zap />
+                            </Link>
+                          </Button>
+                        </DeckCard.Buttons>
+                      </DeckCard.Root>
+                    </>
+                  ))}
+                </>
+            </div>
           </>
         )}
-      </div>
     </div>
   );
 }

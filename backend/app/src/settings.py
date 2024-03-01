@@ -145,7 +145,8 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
     "http://localhost:3000"
 ]
-CORS_EXPOSE_HEADERS = ["Content-Type", "Authorization" "X-CSRFToken", "Set-Cookie"]       # allow return csrf in response header
+CORS_ALLOW_HEADERS = ["Content-Type", "Authorization", "X-CSRFToken", "Set-Cookie"]
+CORS_EXPOSE_HEADERS = ["Content-Type", "Authorization", "X-CSRFToken", "Set-Cookie"]       # allow return csrf in response header
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SAMESITE = "None"
 SESSION_COOKIE_SAMESITE = "None"
@@ -153,8 +154,8 @@ SESSION_COOKIE_SAMESITE = "None"
 
 # JWT
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=4),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=5),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=5),
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': False,
     'UPDATE_LAST_LOGIN': False,
@@ -195,7 +196,7 @@ SIMPLE_JWT = {
     'AUTH_COOKIE_HTTP_ONLY': True,
     'AUTH_COOKIE_PATH': '/',        # The path of the auth cookie.
     # Whether to set the flag restricting cookie leaks on cross-site requests. This can be 'Lax', 'Strict', or None to disable the flag.
-    'AUTH_COOKIE_SAMESITE': "None", # TODO: Modify to Lax
+    'AUTH_COOKIE_SAMESITE': "Lax",  # TODO: Modify to Lax
 }
 
 # Rest Framework
@@ -210,7 +211,7 @@ REST_FRAMEWORK = {
 
 
 AUTH_USER_MODEL = "users.User"
-APPEND_SLASH=False
+APPEND_SLASH = False
 
 # Celery settings
 REDIS_URL = f"redis://{os.environ.get('REDIS_HOST', 'localhost')}:{os.environ.get('REDIS_PORT', '6379')}/1"

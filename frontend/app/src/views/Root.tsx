@@ -92,7 +92,7 @@ function Root() {
                     <LocationLink to="/">Accueil</LocationLink>
                   )}
                   <LocationLink to="/explorer">Explorer</LocationLink>
-                  {localStorage.getItem("settings.showRankingTab") === "true" &&
+                  {(localStorage.getItem("settings.showRankingTab") ? localStorage.getItem("settings.showRankingTab") === "true" : true) &&
                     accessToken && (
                       <LocationLink to="/classement">Classement</LocationLink>
                     )}

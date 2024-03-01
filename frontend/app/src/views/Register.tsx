@@ -61,7 +61,7 @@ function Register() {
         <form ref={formRef} onSubmit={handleSubmit} onChange={handleFormChange}>
           <Input
             id="username"
-            label="Nom"
+            label="Pseudo"
             type="text"
             showInfo
             helperText={responseHelper?.username}

@@ -91,3 +91,10 @@ export async function downloadImage(url: string, filename: string) {
       console.error('Error downloading image:', error);
     });
 }
+
+export function pluralize(array: any[] | undefined) {
+  if (array) {
+    return array.length > 1 ? "s" : "";
+  }
+  return ""
+}

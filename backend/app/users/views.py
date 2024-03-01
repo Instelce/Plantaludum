@@ -146,6 +146,16 @@ class CurrentUserDetailView(APIView):
         return Response(serializer.data)
 
 
+class GetCurrentUserRankingView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, format=None):
+        user = User.objects.get(id=request.user.id)
+        users = User.objects.filter(score__gt=user.score)
+        ranking = users.count()
+        return Response({"ranking": ranking})
+
+
 class UserListView(ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -227,7 +237,7 @@ class ThePlantGameUserStatsScrapperView(APIView):
         except NoSuchElementException:
             error = None
 
-        if (error is None):
+        if error is None:
             driver.get(target_url)
             WebDriverWait(driver, 10).until(
                 EC.presence_of_element_located((By.CLASS_NAME, "bottom")))
@@ -254,3 +264,4 @@ class ThePlantGameUserStatsScrapperView(APIView):
 
         driver.close()
         return Response(data=response, status=res_status)
+
