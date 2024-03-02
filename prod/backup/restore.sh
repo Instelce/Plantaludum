@@ -1,5 +1,7 @@
 #!/bin/sh
 
+read -p "Are you sure you want to restore the database? (y/n) " -n 1 -r
+
 # get postgres-deployment name
 postgresDeploymentName="postgres-deployment-$(kubectl get pods --no-headers -o custom-columns="NAME:.metadata.name" | grep -o -P '(?<=postgres-deployment-).*')"
 echo "Postgres deployment pod found :" $postgresDeploymentName

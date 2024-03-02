@@ -106,11 +106,11 @@ function DeckGame() {
   // Create or update the deck currently being played on UserPlayedDecks
   const { mutate: mutateCreatePlayedDeck } = useMutation({
     mutationKey: ["user-played-decks", deckId.toString()],
-    mutationFn: () =>
+    mutationFn: ({level, current_stars}: {level: number, current_stars: number}) =>
       users.playedDecks.create(privateFetch, user?.id as number, {
         deck: deckId,
-        level: stars === 3 ? 2 : 1,
-        current_stars: stars,
+        level: level,
+        current_stars: current_stars,
       }),
   });
   const { mutate: mutateUpdatePlayedDeckLevel } = useMutation({
@@ -257,7 +257,10 @@ function DeckGame() {
       // console.log("Deck quiz finished");
       if (isFisrtPlay) {
         // console.log("Create deck", stars);
-        mutateCreatePlayedDeck();
+        mutateCreatePlayedDeck({
+          level: stars === 3 ? 2 : 1,
+          current_stars: stars
+        });
       } else {
         //console.log("Ok lets go");
         //console.log("Update deck", stars);
@@ -318,30 +321,35 @@ function DeckGame() {
   // update score, stars
   useEffect(() => {
     if (isRight !== undefined) {
+
+      let currentStreak: number;
+
       if (isRight) {
         setScore((score) => score + scoreRightAnswer);
+        currentStreak = streak.current + 1
         setStreak(streak => ({...streak, current: streak.current + 1}));
       } else {
         setUserErrors((errors) => errors + 1);
+        currentStreak = 0
         setStreak(streak => ({...streak, last: 0, current: 0}));
       }
 
       console.log("s", streak);
 
       // streak
-      if (streak.current === 4) {
+      if (currentStreak === 5) {
         setStreak(streak => ({...streak, last: streak.current, text: "+ 50 points"}));
         setScore((score) => score + 50);
-      } else if (streak.current === 9) {
+      } else if (currentStreak === 10) {
         setStreak(streak => ({...streak, last: streak.current, text: "+ 100 points"}));
         setScore((score) => score + 100);
-      } else if (streak.current === 14) {
+      } else if (currentStreak === 15) {
         setStreak(streak => ({...streak, last: streak.current, text: "+ 500 points"}));
         setScore((score) => score + 500);
-      } else if (streak.current === 19) {
+      } else if (currentStreak === 20) {
         setStreak(streak => ({...streak, last: streak.current, text: "+ 1000 points"}));
         setScore((score) => score + 1000);
-      } else if (streak.current === 24) {
+      } else if (currentStreak === 25) {
         setStreak(streak => ({...streak, last: streak.current, text: "+ 2000 points"}));
         setScore((score) => score + 2000);
       }
@@ -390,21 +398,28 @@ function DeckGame() {
       <Header.Root type="page">
         <div className="timer">
           <span>{formattedTime}</span>
-          <RotateCcw onClick={() => resetQuiz()} />
+          <RotateCcw onClick={() => resetQuiz()}/>
         </div>
         <div className="stats">
           <div className="flex center">
             {/* <Header.Title>{streak.last} {streak.current} {score}</Header.Title> */}
             <Header.Title>{score}</Header.Title>
-            <span style={streak.current === streak.last ? {animation: "show 4s ease forwards"}: {opacity: 0, maxWidth: "0", maxHeight: "0"}} className={classNames("streak-text")}>{streak.text}</span>
+
+            {/* Streak text */}
+            {/*<span*/}
+            {/*  style={streak.current > 0 && streak.current === streak.last ? {animation: "show 4s ease forwards"} : {*/}
+            {/*    opacity: 0,*/}
+            {/*    maxWidth: "0",*/}
+            {/*    maxHeight: "0"*/}
+            {/*  }} className={classNames("streak-text")}>{streak.text}</span>*/}
           </div>
           <div className="stars-container">
-            <Stars count={stars} />
+            <Stars count={stars}/>
           </div>
         </div>
         <Button asChild onlyIcon color="dark-gray" bounce={false}>
           <Link to={`/decks/${deckId}`}>
-            <X />
+            <X/>
           </Link>
         </Button>
       </Header.Root>
@@ -435,19 +450,19 @@ function DeckGame() {
                       <ChoiceBlock
                         key={plant.id}
                         title={plant[
-                          JSON.parse(
-                            localStorage.getItem(
-                              "settings.gameButtonInfo",
-                            )! as string,
-                          )?.title as keyof PlantType || "french_name"
-                        ].toString()}
+                        JSON.parse(
+                          localStorage.getItem(
+                            "settings.gameButtonInfo",
+                          )! as string,
+                        )?.title as keyof PlantType || "french_name"
+                          ].toString()}
                         subtitle={plant[
-                          JSON.parse(
-                            localStorage.getItem(
-                              "settings.gameButtonInfo",
-                            )! as string,
-                          )?.subtitle as keyof PlantType || "scientific_name"
-                        ].toString()}
+                        JSON.parse(
+                          localStorage.getItem(
+                            "settings.gameButtonInfo",
+                          )! as string,
+                        )?.subtitle as keyof PlantType || "scientific_name"
+                          ].toString()}
                         isRightAnswer={plant.id === currentPlant.id}
                         showResult={
                           plant.id === currentPlant.id ? showResult : false
@@ -463,15 +478,21 @@ function DeckGame() {
             </div>
           )}
 
-          {progress === maxQuestions && <>
-            <p>Fini !</p>
-          </>}
+          {progress === maxQuestions &&
+            <div className="content-container flex center">
+              <h2 className="h4">Fini !</h2>
+            </div>}
         </div>
       )}
 
+      <div
+        style={streak.current > 0 && streak.current === streak.last ? {animation: "streak-banner-show 1.6s ease forwards"} : {
+          opacity: 0,
+        }} className={classNames("streak-banner")}>{streak.current} bonne réponses d&apos;affilé, {streak.text}</div>
+
       {imagesLoading && (
         <div className="center-loader">
-          <Loader />
+          <Loader/>
         </div>
       )}
     </div>

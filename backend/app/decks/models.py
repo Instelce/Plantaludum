@@ -1,3 +1,5 @@
+import datetime
+from django.utils import timezone
 from django.db import models
 from users.models import User
 
@@ -35,6 +37,7 @@ class UserPlayedDeck(models.Model):
     deck = models.ForeignKey(Deck, on_delete=models.CASCADE)
     level = models.IntegerField(choices=LEVEL, default=1)
     current_stars = models.IntegerField(choices=LEVEL, default=1)
+    last_played = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"{self.user.username} has played the {self.deck.name} decks"

@@ -10,9 +10,12 @@ metadata:
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/auth-realm: Authentication Required
     nginx.org/proxy-pass-headers: "Authorization"
-    nginx.ingress.kubernetes.io/configuration-snippet: |
-      auth_request_set $token $upstream_http_x_auth_request_access_token;
-      add_header 'Authorization' $token;
+    # nginx.ingress.kubernetes.io/configuration-snippet: |
+    #   auth_request_set $token $upstream_http_x_auth_request_access_token;
+    #   add_header 'Authorization' $token;
+    nginx.ingress.kubernetes.io/auth-snippet: |
+      proxy_set_header Authorization $http_authorization;
+      proxy_pass_header Authorization;
     # nginx.ingress.kubernetes.io/configuration-snippet: |
     #   proxy_set_header Authorization $http_authorization;
     #   proxy_pass_header Authorization;

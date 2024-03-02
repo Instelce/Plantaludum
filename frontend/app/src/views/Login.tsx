@@ -68,6 +68,7 @@ function Login() {
 
       <div className="form-page">
         <form ref={formRef} onSubmit={handleSubmit} onChange={handleFormChange}>
+        <p className="mb-2 t-center">Désolé, certains comptes ont été supprimés après une manipulation. Veuillez m&apos;excusez pour ce désagrément.</p>
           <Input
             id="email"
             label="Email"

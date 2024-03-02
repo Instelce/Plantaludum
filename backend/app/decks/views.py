@@ -1,6 +1,6 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status, generics
-from rest_framework.decorators import action
+from rest_framework.decorators import action, api_view
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from rest_framework.pagination import PageNumberPagination
@@ -130,6 +130,24 @@ class UserPlayedDeckRetrieveUpdateDestroyView(PermissionPolicyMixin, RetrieveUpd
         self.perform_destroy(instance)
 
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(['GET'])
+def get_deck_plants_count(request, deck_pk=None, format=None):
+    count = DeckPlant.objects.filter(deck_id=deck_pk).count()
+    return Response({"count": count})
+
+
+@api_view(['GET'])
+def get_all_decks_plants_count(request, format=None):
+    decks = Deck.objects.all()
+    counter = []
+    for deck in decks:
+        counter.append({
+            'deck': deck.id,
+            'plants': DeckPlant.objects.filter(deck_id=deck.id).count()
+        })
+    return Response(counter)
 
 
 class UserDecksListView(generics.ListAPIView):

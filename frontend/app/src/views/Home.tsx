@@ -276,7 +276,7 @@ function GameExplanationSection({
         <h2>Le jeu !</h2>
         <p>
           Apprendre sous la forme d’un quiz. Vous avez plusieurs images d’une
-          même plante et vous devez identifier quelle est le nom qui correspond
+          même plante et vous devez identifier quel est le nom qui correspond
           dans une liste de choix.
         </p>
       </div>
