@@ -195,7 +195,7 @@ function HomeHeader({ plantsQuery }: { plantsQuery: UseQueryResult<CompletePlant
         {/* Title */}
         <div className="content">
           <h1>Plantaludum</h1>
-          <p>Un jeux pour découvrir et apprendre à reconnaitre les plantes !</p>
+          <p>Un jeu pour découvrir et apprendre à reconnaitre les plantes !</p>
         </div>
       </header>
     </>

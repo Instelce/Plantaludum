@@ -97,6 +97,18 @@
         opacity: 1;
       }
     }
+
+    &:disabled {
+      opacity: .6;
+
+      & + label {
+        opacity: .6;
+      }
+
+      &:hover {
+        border: 1px solid rgba(var(--color-gray-4), 0.8);
+      }
+    }
   }
 
   label {

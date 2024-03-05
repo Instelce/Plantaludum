@@ -15,27 +15,30 @@ import usePrivateFetch from "../../hooks/auth/usePrivateFetch";
 import {users} from "../../services/api/plantaludum/users";
 import {Check} from "react-feather";
 import useUser from "../../hooks/auth/useUser";
-import { AxiosError } from "axios";
+import {AxiosError} from "axios";
+import {useAuth} from "../../context/AuthProvider";
 
 function Settings() {
+  const {accessToken} = useAuth()
   const [settings, setSettings] = useState<SettingsType>({
     showRankingTab: true,
     switchingGardenSection: false,
     buttonsSound: false,
+    imageDefilementEnabled: false,
+    imageDefilementTime: "3"
   });
   const [showSettings, setShowSettings] = useState(false);
 
   useEffect(() => {
     // set default settings values if they don't exists
-    if (localStorage.getItem("settings.showRankingTab") === null) {
-      localStorage.setItem("settings.showRankingTab", "true");
+    for (const s of Object.keys(settings)) {
+      let settingName = s as keyof SettingsType
+
+      if (localStorage.getItem(`settings.${settingName}`) === null) {
+        localStorage.setItem(`settings.${settingName}`, settings[settingName].toString());
+      }
     }
-    if (localStorage.getItem("settings.switchingGardenSection") === null) {
-      localStorage.setItem("settings.switchingGardenSection", "false");
-    }
-    if (localStorage.getItem("settings.buttonsSound") === null) {
-      localStorage.setItem("settings.buttonsSound", "false");
-    }
+
     setSettings({
       showRankingTab: JSON.parse(
         localStorage.getItem("settings.showRankingTab") as string,
@@ -46,6 +49,10 @@ function Settings() {
       buttonsSound: JSON.parse(
         localStorage.getItem("settings.buttonsSound") as string,
       ),
+      imageDefilementEnabled: JSON.parse(
+        localStorage.getItem("settings.imageDefilementEnabled") as string
+      ),
+      imageDefilementTime: localStorage.getItem("settings.imageDefilementTime") as string
     });
     setShowSettings(true);
   }, []);
@@ -69,25 +76,25 @@ function Settings() {
 
       {showSettings && (
         <>
-          <div className="content-container">
-            <Switch
-              className="mb-1"
-              label="Afficher l’onglet du classement"
-              takeValue={true}
-              value={settings.showRankingTab as boolean}
-              handleValueChange={(value) =>
-                switchSettings(value as boolean, "showRankingTab")
-              }
-            />
-            <Switch
-              className="mb-1"
-              label="Intervertir les sections dans Mon Jardin"
-              takeValue={true}
-              value={settings.switchingGardenSection}
-              handleValueChange={(value) =>
-                switchSettings(value as boolean, "switchingGardenSection")
-              }
-            />
+          <div className="content-container flex f-col gg-1">
+            {accessToken && <>
+              <Switch
+                label="Afficher l’onglet du classement"
+                takeValue={true}
+                value={settings.showRankingTab as boolean}
+                handleValueChange={(value) =>
+                  switchSettings(value as boolean, "showRankingTab")
+                }
+              />
+              <Switch
+                label="Intervertir les sections dans Mon Jardin"
+                takeValue={true}
+                value={settings.switchingGardenSection}
+                handleValueChange={(value) =>
+                  switchSettings(value as boolean, "switchingGardenSection")
+                }
+              />
+            </>}
             <Switch
               label="Son des boutons"
               takeValue={true}
@@ -96,11 +103,33 @@ function Settings() {
                 switchSettings(value as boolean, "buttonsSound")
               }
             />
+            <Switch
+              label="Activer le défilement automatique des images"
+              takeValue={true}
+              value={settings.imageDefilementEnabled}
+              handleValueChange={(value) =>
+                switchSettings(value as boolean, "imageDefilementEnabled")
+              }
+            />
+            <div className="mt-1">
+              <Input
+                style={{maxWidth: "400px"}}
+                disabled={!settings.imageDefilementEnabled}
+                label="Temps entre chaque défilemment"
+                value={settings.imageDefilementTime}
+                type="number"
+                handleValueChange={value => {
+                  setSettings({...settings, imageDefilementTime: value})
+                  localStorage.setItem("settings.imageDefilementTime", value)
+                }}
+                helperText={parseInt(settings.imageDefilementTime) <= 0 || settings.imageDefilementTime.length === 0 ? "Attention le temps doit être supérieur à 1." : ""}
+              />
+            </div>
           </div>
 
           <ButtonInfoSection/>
 
-          <RestoreThePlantGameStats/>
+          {accessToken && <RestoreThePlantGameStats/>}
         </>
       )}
     </div>
@@ -280,7 +309,9 @@ function RestoreThePlantGameStats() {
           {restoreStatsMutation.isError && <p style={{
             maxWidth: "400px",
             lineHeight: "140%"
-          }}>{(restoreStatsMutation.error as AxiosError<{error: string}>)?.response?.data?.error}</p>}
+          }}>{(restoreStatsMutation.error as AxiosError<{
+            error: string
+          }>)?.response?.data?.error}</p>}
           {restoreStatsMutation.isPending && <p>Chargement...</p>}
         </div>
 

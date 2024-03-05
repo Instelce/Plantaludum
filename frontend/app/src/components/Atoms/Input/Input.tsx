@@ -10,7 +10,7 @@ type InputProps = {
   id?: string | null;
   label: string;
   icon?: ReactNode | null;
-  type?: "text" | "email" | "password" | "search";
+  type?: "text" | "email" | "password" | "search" | "number";
   size?: SizeProp;
   disabled?: boolean;
   showInfo?: boolean;

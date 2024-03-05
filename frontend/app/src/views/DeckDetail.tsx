@@ -89,8 +89,8 @@ function DeckDetail() {
     <div className="deck-detail">
       {isOwner && (
         <Modal show={showDeleteModal}>
-          <h3>Est tu sur ?</h3>
-          <p>Une fois supprimer, impossible de le récupérer.</p>
+          <h3>Es-tu sûr ?</h3>
+          <p>Une fois supprimé, impossible de le récupérer.</p>
           <div className="modal-buttons mt-2">
             <Button onClick={() => setShowDeleteModal(false)} color="gray">
               Non

@@ -77,15 +77,15 @@ function PlantImageSelector({
         {!imageValue && (
           <>
             <AutocompleteInput
-              label="Nom d'une plante"
+              label="Nom d'une plante (autocomplétion)"
               size="large"
               url={`${import.meta.env.VITE_FLORE_API_URL}/api/plants`}
               fieldName="french_name"
               maxSuggestions={10}
               handleValueChange={setPlantValue}
               setValidValue={setPlantIsValid}
-              usageInfoText="Cherche le nom d’une plante, puis choisie l’image
-                de la plante qui te semble la mieux. Choisie la bien car c'est
+              usageInfoText="Cherche le nom d’une plante, puis choisis l’image
+                de la plante qui te semble la mieux. Choisis la bien car c'est
                 elle qui servira d'image de couverture aux decks."
               hasResetButton
               data-not-count

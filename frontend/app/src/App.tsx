@@ -79,17 +79,19 @@ function App() {
 
           <Route path="mentions-legales" element={<LegalMentions />} />
 
+          <Route path="settings" element={<Settings />} />
+
           {/* Protected */}
           <Route element={<PersistLogin />}>
             <Route element={<RequireAuth />}>
               <Route path="classement" element={<Ranking />} />
 
-              <Route path="settings" element={<Settings />} />
               <Route path="profile/:userId" element={<UserProfile />} />
 
               <Route path="mon-jardin" element={<MainMenu />} />
 
               <Route path="identifications" element={<Identifications />} />
+
               <Route
                 path="identifications/:identificationId"
                 element={<IdentificationResponse />}

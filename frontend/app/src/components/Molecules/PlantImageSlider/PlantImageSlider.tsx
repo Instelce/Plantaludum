@@ -1,4 +1,4 @@
-import { MutableRefObject, useEffect, useState } from "react";
+import {MutableRefObject, useEffect, useRef, useState} from "react";
 import classNames from "classnames";
 import {
   ArrowUpRight,
@@ -45,6 +45,32 @@ function PlantImageSlider({
       }
     }
   }, [imagesData, prevImages, doRefresh]);
+
+  // add image defilement
+  const interval = useRef<null | ReturnType<typeof setTimeout>>(null)
+  useEffect(() => {
+    if (
+      localStorage.getItem('settings.imageDefilementEnabled') &&
+      localStorage.getItem('settings.imageDefilementTime')
+    ) {
+      // if enabled
+      if (JSON.parse(localStorage.getItem('settings.imageDefilementEnabled') as string)) {
+        let cooldown = 3
+        if (parseInt(localStorage.getItem('settings.imageDefilementTime') as string) > 0) {
+          cooldown = parseInt(localStorage.getItem('settings.imageDefilementTime') as string)
+        }
+        interval.current = setInterval(() => {
+          setCurrent((current) => (current === length - 1 ? 0 : current + 1));
+        }, cooldown * 1000)
+      }
+    }
+
+    return () => {
+      if (interval.current) {
+        clearInterval(interval.current)
+      }
+    }
+  }, []);
 
   const next = () => {
     setCurrent((current) => (current === length - 1 ? 0 : current + 1));

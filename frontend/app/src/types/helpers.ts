@@ -7,6 +7,8 @@ export type SettingsType = {
   showRankingTab: boolean;
   switchingGardenSection: boolean;
   buttonsSound: boolean;
+  imageDefilementEnabled: boolean;
+  imageDefilementTime: string;
 };
 
 export type ColorType =

@@ -116,7 +116,7 @@ function UserProfile() {
         <Modal show={showConfirmationModal.show}>
           {showConfirmationModal.modal === "reset-stats" ? (
             <>
-              <h3>Est tu sur ?</h3>
+              <h3>Es-tu sûr ?</h3>
               <p>Toutes tes stats vont être supprimé !</p>
               <div className="modal-buttons mt-2">
                 <Button
@@ -143,7 +143,7 @@ function UserProfile() {
             </>
           ) : (
             <>
-              <h3>Est tu sur ?</h3>
+              <h3>Es-tu sûr ?</h3>
               <p>
                 Ton compte vas être supprimé, avec toutes les données allant
                 avec.

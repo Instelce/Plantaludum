@@ -14,7 +14,7 @@ function ButtonsMenu() {
   const currentUser = useUser();
   const location = useLocation();
 
-  if (!accessToken) return null;
+  // if (!accessToken) return null;
 
   return (
     <div className="buttons-menu">
@@ -31,20 +31,20 @@ function ButtonsMenu() {
         </Link>
       </Button>
 
+      <Button
+        asChild
+        title="Paramètres"
+        color={location.pathname === "/settings" ? "gray" : "dark-gray"}
+        size="medium"
+        onlyIcon
+      >
+        <Link to="/settings">
+          <Settings />
+        </Link>
+      </Button>
       {accessToken && (
         <>
           {" "}
-          <Button
-            asChild
-            title="Paramètres"
-            color={location.pathname === "/settings" ? "gray" : "dark-gray"}
-            size="medium"
-            onlyIcon
-          >
-            <Link to="/settings">
-              <Settings />
-            </Link>
-          </Button>
           <Button
             asChild
             title="Profil"
@@ -101,12 +101,12 @@ function Root() {
                   {accessToken ? (
                     <Button
                       asChild
-                      label="Nouveau deck"
                       size="large"
                       color="gray"
+                      title="Créer un deck, et partage le !"
                     >
                       <LocationLink to="/decks/create">
-                        Nouveau deck
+                        Créer un deck
                       </LocationLink>
                     </Button>
                   ) : (

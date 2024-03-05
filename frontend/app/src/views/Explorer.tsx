@@ -205,9 +205,9 @@ function Explorer() {
             <div className="flex center pt-2 pb-2">
               <p className="t-center">
                 Plus aucun deck à charger ! <br />
-                Si tu pense qu&apos;il manque un deck,{" "}
+                Si tu penses qu&apos;il manque un deck,{" "}
                 <Link to="/decks/create" className="link">
-                  créer en un
+                  crées-en un
                 </Link>
                 .
               </p>
