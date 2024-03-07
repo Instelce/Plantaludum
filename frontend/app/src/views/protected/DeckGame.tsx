@@ -461,7 +461,7 @@ function DeckGame() {
                           localStorage.getItem(
                             "settings.gameButtonInfo",
                           )! as string,
-                        )?.subtitle as keyof PlantType || "scientific_name"
+                        )?.subtitle as keyof PlantType || "correct_name"
                           ].toString()}
                         isRightAnswer={plant.id === currentPlant.id}
                         showResult={

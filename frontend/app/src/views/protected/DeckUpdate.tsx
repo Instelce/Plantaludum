@@ -42,7 +42,7 @@ function DeckUpdate() {
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["decks"] });
       queryClient.invalidateQueries({ queryKey: ["decks", deckId] });
-      notification.success({ message: `${data.name} mit à jour avec succès` });
+      notification.success({ message: `${data.name} mise à jour avec succès` });
       navigate(`/decks/${deckId}`);
     },
   });

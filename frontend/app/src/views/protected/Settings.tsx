@@ -115,7 +115,7 @@ function Settings() {
               <Input
                 style={{maxWidth: "400px"}}
                 disabled={!settings.imageDefilementEnabled}
-                label="Temps entre chaque défilemment"
+                label="Temps entre chaque défilement"
                 value={settings.imageDefilementTime}
                 type="number"
                 handleValueChange={value => {
@@ -138,7 +138,7 @@ function Settings() {
 
 function ButtonInfoSection() {
   const [title, setTitle] = useState<keyof PlantType>("french_name");
-  const [subTitle, setSubTitle] = useState<keyof PlantType>("scientific_name");
+  const [subTitle, setSubTitle] = useState<keyof PlantType>("correct_name");
 
   const randomPlantQuery = useQuery({
     queryKey: ["randomPlant"],
@@ -206,7 +206,7 @@ function ButtonInfoSection() {
                 translation[
                   JSON.parse(localStorage.getItem("settings.gameButtonInfo")!)
                     ?.title as keyof PlantType
-                  ] as string
+                  ] as string || "Nom français"
               }
               handleValueChange={(value) => {
                 setTitle(value as keyof PlantType);
@@ -224,7 +224,7 @@ function ButtonInfoSection() {
                 translation[
                   JSON.parse(localStorage.getItem("settings.gameButtonInfo")!)
                     ?.subtitle as keyof PlantType
-                  ]
+                  ] || "Nom correct"
               }
               handleValueChange={(value) => {
                 setSubTitle(value as keyof PlantType);
@@ -292,7 +292,7 @@ function RestoreThePlantGameStats() {
   return (
     <>
       <Header.Root type="sub-section">
-        <Header.Title>Restorer les stats de votre compte
+        <Header.Title>Restaurer les stats de votre compte
           ThePlantGame</Header.Title>
       </Header.Root>
 
@@ -302,7 +302,7 @@ function RestoreThePlantGameStats() {
             <Input label="Pseudo" id="username"/>
             <Input label="Mot de passe" id="password" type="password"/>
             <Button type="submit">
-              Restorer
+              Restaurer
             </Button>
           </form>}
         <div className="mt-1">

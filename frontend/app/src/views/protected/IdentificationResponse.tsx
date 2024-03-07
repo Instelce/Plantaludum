@@ -140,7 +140,7 @@ function IdentificationResponse() {
                   color="rgb(var(--color-primary-light))"
                 />
                 <p>
-                  Bien joué, c&apos;est la{" "}
+                  Bien joué, c&apos;est :{" "}
                   {plantResponseQuery.data[0].french_name}.
                 </p>
               </>
@@ -148,7 +148,7 @@ function IdentificationResponse() {
               <>
                 <XCircle size={30} color="rgb(var(--color-danger-light))" />
                 <p>
-                  Dommage, c&apos;est la{" "}
+                  Dommage, c&apos;est{" "}
                   <a
                     href={plantResponseQuery.data[0].eflore_url}
                     className="link"
