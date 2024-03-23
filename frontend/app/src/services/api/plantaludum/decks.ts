@@ -73,4 +73,7 @@ export const decks = {
     privateFetch
       .delete(`/api/decks/${deckId}/plants/${plantId}`)
       .then((r) => r.data),
+  //
+  updateTimesPlated: (deckId: number) =>
+    apiRequest.post(`/api/decks/times_played/${deckId}`)
 };

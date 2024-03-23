@@ -183,15 +183,22 @@ class UserRetrieveUpdateDestroyView(PermissionPolicyMixin,
         return Response(serializer.data)
 
     def update(self, request, pk=None, *args, **kwargs):
-        if request.user.id != int(pk):
-            return Response(status=status.HTTP_403_FORBIDDEN)
-        print(request.data)
-        user = User.objects.get(id=pk)
-        serializer = UserSerializer(user, data=request.data, partial=True)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
+        if 'HTTP_REFERER' in request.META:
+            referer = request.META['HTTP_REFERER']
 
-        return Response(serializer.data)
+            if 'https://plantaludum.org' in referer:
+                if request.user.id != int(pk):
+                    return Response(status=status.HTTP_403_FORBIDDEN)
+                print(request.data)
+                user = User.objects.get(id=pk)
+                serializer = UserSerializer(user, data=request.data, partial=True)
+                serializer.is_valid(raise_exception=True)
+                serializer.save()
+
+                return Response(serializer.data)
+            else:
+                return Response({"error": "Request from an unexpected URL"}, status=status.HTTP_403_FORBIDDEN)
+        return Response({"error": "No referer header provided in the request"})
 
     def destroy(self, request, pk=None, *args, **kwargs):
         if request.user.id != int(pk):

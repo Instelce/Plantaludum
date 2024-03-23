@@ -38,7 +38,7 @@ function checkPassword(password: string) {
     return [
       40,
       "#FF9330",
-      "Vous y êtes persque... Ajouter peut-être quelques symboles.",
+      "Vous y êtes presque... Ajoutez peut-être quelques symboles.",
     ];
   }
   return [

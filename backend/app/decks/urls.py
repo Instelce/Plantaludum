@@ -35,6 +35,7 @@ urlpatterns = [
     path('decks/plants', deck_plants_create),
     path('decks/<int:deck_pk>/plants/count', get_deck_plants_count),
     path('decks/plants/count', get_all_decks_plants_count),
+    path('decks/times_played/<int:deck_pk>', UpdateDeckTimesPlayedView.as_view()),
 
     path('users/<int:user_pk>/played_decks', user_decks),
     path('users/<int:user_pk>/played_decks/<int:deck_pk>', user_deck_update_or_delete),

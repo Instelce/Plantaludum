@@ -48,6 +48,17 @@ class DeckModelViewSet(PermissionPolicyMixin, ModelViewSet):
         return Response(serializer.data)
 
 
+class UpdateDeckTimesPlayedView(APIView):
+    permission_classes = [AllowAny]
+    authentication_classes = []
+
+    def post(self, request, deck_pk=None, *args, **kwargs):
+        deck = Deck.objects.get(id=deck_pk)
+        deck.times_played += 1
+        deck.save()
+        return Response(status=status.HTTP_200_OK)
+
+
 class DeckPlantModelViewSet(PermissionPolicyMixin, ModelViewSet):
     queryset = DeckPlant.objects.all()
     serializer_class = DeckPlantSerializer

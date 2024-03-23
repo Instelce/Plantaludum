@@ -18,7 +18,7 @@ class Deck(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.name} by {self.user.username}"
+        return f"{self.name} by {self.user.username} | Joué {self.times_played} fois"
 
 
 class DeckPlant(models.Model):

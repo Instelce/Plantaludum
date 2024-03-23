@@ -15,7 +15,7 @@ import useCacheImages from "../../hooks/useCacheImages.js";
 import PlantImageSlider from "../../components/Molecules/PlantImageSlider/PlantImageSlider";
 import Button from "../../components/Atoms/Buttons/Button";
 import { PlantType } from "../../services/api/types/plants";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import { users } from "../../services/api/plantaludum/users";
 import usePrivateFetch from "../../hooks/auth/usePrivateFetch";
 import useUser from "../../hooks/auth/useUser";
@@ -25,6 +25,7 @@ import Header from "../../components/Molecules/Header/Header";
 import { ImageType, PlantImagesType } from "../../services/api/types/images";
 import { useAuth } from "../../context/AuthProvider";
 import classNames from "classnames";
+import {decks} from "../../services/api";
 
 function DeckGame() {
   const navigate = useNavigate();
@@ -40,6 +41,14 @@ function DeckGame() {
     10 + deckLevel * 5,
   );
   // const [maxQuestions, setMaxQuestions] = useState(3)
+
+  // Update times played
+  const updateTimesPlayed = useQuery({
+    queryKey: ['update-times-played'],
+    queryFn: () => decks.updateTimesPlated(deckId),
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false
+  })
 
   // Game variables
   const [showResult, setShowResult] = useState(false);

@@ -57,7 +57,11 @@ function ChoiceBlock({
       className={`choice-block
             ${showResult || isClicked ? "show-result" : ""} 
             ${isRightAnswer ? "right-answer" : ""}`}
-      onDoubleClick={handleDoubleClick}
+      onDoubleClick={() => {
+        if (!isClicked) {
+          handleDoubleClick()
+        }}
+      }
       fill
     >
       <div className="choice-text">
