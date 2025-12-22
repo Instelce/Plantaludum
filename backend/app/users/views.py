@@ -183,10 +183,11 @@ class UserRetrieveUpdateDestroyView(PermissionPolicyMixin,
         return Response(serializer.data)
 
     def update(self, request, pk=None, *args, **kwargs):
+        print(request.META)
+        # check if the request is coming from the frontend
         if 'HTTP_REFERER' in request.META:
             referer = request.META['HTTP_REFERER']
-
-            if 'https://plantaludum.org' in referer:
+            if referer == settings.FRONTEND_URL:
                 if request.user.id != int(pk):
                     return Response(status=status.HTTP_403_FORBIDDEN)
                 print(request.data)

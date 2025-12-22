@@ -1,0 +1,81 @@
+version: "3.9"
+
+services:
+
+  # Django service
+  django:
+    build: ./app
+    restart: always
+    command: gunicorn src.wsgi:application --bind 0.0.0.0:8000 --workers 3 --threads 3
+    env_file:
+      - ./.env
+    expose:
+      - 8000
+    volumes:
+      - static_volume:/code/staticfiles
+      - media_volume:/code/mediafiles
+    depends_on:
+      - postgres
+      - redis
+
+  # Celery service
+  celery:
+    build: .
+    restart: always
+    command: celery -A src worker -l INFO
+    env_file:
+      - ./.env
+    volumes:
+      - .:/code
+    depends_on:
+      - django
+      - redis
+      - postgres
+
+  # Celery beat service
+  celery-beat:
+    build: .
+    restart: always
+    command: celery -A src beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    env_file:
+      - ./.env
+    volumes:
+      - .:/code
+    depends_on:
+      - django
+      - redis
+      - postgres
+      - celery
+
+  # Redis service
+  redis:
+    image: "redis:alpine"
+    restart: always
+
+  # Postgres service
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # NGINX service
+  nginx:
+    build: ./nginx
+    restart: always
+    ports:
+      - ${NGINX_PORT}:80
+    volumes:
+      - static_volume:/code/staticfiles
+      - media_volume:/code/mediafiles
+    depends_on:
+      - django
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:

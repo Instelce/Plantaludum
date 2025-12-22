@@ -221,6 +221,7 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
 
+FRONTEND_URL = 'https://plantaludum.org'
 
 try:
     from .local_settings import *

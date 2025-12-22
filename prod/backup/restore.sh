@@ -16,7 +16,7 @@ kubectl cp .backups/$backupFile $postgresDeploymentName:backups/tmp/$backupFile
 # drop existing database
 kubectl exec $postgresDeploymentName -- sh -c "psql -U postgres_user -d template1 -c 'DROP DATABASE IF EXISTS plantaludumdb;'"
 
-# recreate table
+# recreate database
 kubectl exec $postgresDeploymentName -- sh -c "psql -U postgres_user -d template1 -c 'CREATE DATABASE plantaludumdb;'"
 
 # restore db
